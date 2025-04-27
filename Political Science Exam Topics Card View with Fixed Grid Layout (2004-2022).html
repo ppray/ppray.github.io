@@ -1,0 +1,458 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政治学综合考试题目卡片整理（2004-2022）</title>
+    <!-- TailwindCSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Preline UI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 自定义样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-hover:hover {
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        .highlight {
+            background-color: #fef3c7 !important; /* 高亮颜色 */
+        }
+        /* 确保网格布局一致 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- 头部 -->
+    <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center fixed w-full top-0 z-10">
+        <h1 class="text-2xl font-bold">政治学综合考试题目卡片整理（2004-2022）</h1>
+        <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 focus:outline-none btn-hover">
+            <i class="fas fa-sun"></i>
+        </button>
+    </header>
+
+    <!-- 主体 -->
+    <main class="container mx-auto p-4 space-y-8 mt-20">
+        <!-- 简介 -->
+        <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md fade-in">
+            <h2 class="text-xl font-semibold mb-4">简介</h2>
+            <p>本页面整理了2004年至2022年同等学力人员申请硕士学位学科综合水平全国统一考试政治学试卷中的所有题目，按类别以卡片形式呈现。重点题目（出现3次及以上）以黄色高亮，每张卡片包含题目、题型、关键语句和出现次数统计。关键语句已扩展为详细内容，方便复习记忆。</p>
+        </section>
+
+        <!-- 政治学基础概念 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">政治学基础概念</h2>
+            <div class="grid-container">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治权力</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题、填空题</p>
+                    <p><strong>关键语句</strong>: 政治权力是强制性与合法性的结合，基于资源分配的能力，体现为统治阶级对社会的控制与管理。</p>
+                    <p><strong>出现次数</strong>: 5次 (2004, 2008, 2014, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治文化</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>关键语句</strong>: 政治文化是社会成员对政治体系的价值观、信仰和行为规范的总和，影响政治行为的稳定性与方向。</p>
+                    <p><strong>出现次数</strong>: 5次 (2004, 2009, 2012, 2013, 2016)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治发展</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>关键语句</strong>: 政治发展是国家政治体系向制度化、现代化和民主化方向演进的过程，涉及权力分配与社会参与的扩展。</p>
+                    <p><strong>出现次数</strong>: 3次 (2011, 2012, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治管理</h3>
+                    <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
+                    <p><strong>关键语句</strong>: 政治管理是通过协调、控制和资源配置实现社会秩序与公共利益的活动，核心在于有效治理与合法性维护。</p>
+                    <p><strong>出现次数</strong>: 5次 (2006, 2009, 2011, 2013, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">政治决策</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 政治决策是基于理性分析与程序规范，权威机构为解决公共问题做出的选择，影响资源分配与社会发展。</p>
+                    <p><strong>出现次数</strong>: 2次 (2013, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治参与</h3>
+                    <p><strong>题型</strong>: 简述题、填空题、论述题</p>
+                    <p><strong>关键语句</strong>: 政治参与是公民通过选举、游行、结社等方式影响政治过程的行为，受教育、资源和制度约束。</p>
+                    <p><strong>出现次数</strong>: 4次 (2004, 2005, 2006, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国家结构形式</h3>
+                    <p><strong>题型</strong>: 填空题</p>
+                    <p><strong>关键语句</strong>: 国家结构形式分为单一制与联邦制，反映中央与地方权力关系，影响治理效率与地方自治程度。</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2013, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治民主</h3>
+                    <p><strong>题型</strong>: 论述题、简述题、填空题</p>
+                    <p><strong>关键语句</strong>: 政治民主以经济基础和社会平等为依托，通过公民参与和自治实现权力监督与公平决策。</p>
+                    <p><strong>出现次数</strong>: 3次 (2005, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">政治权利</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 政治权利包括选举权、表达权和监督权，是公民参与政治生活、影响决策的法律保障。</p>
+                    <p><strong>出现次数</strong>: 1次 (2005)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">社会契约说</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 社会契约说认为国家权力源于人民同意，霍布斯等主张通过契约建立政府以维护秩序与安全。</p>
+                    <p><strong>出现次数</strong>: 1次 (2008)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">精英统治论</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 精英统治论认为权力集中于少数精英手中，他们通过专业知识与组织能力主导政治决策。</p>
+                    <p><strong>出现次数</strong>: 1次 (2009)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 社会主义理论与实践 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">社会主义理论与实践</h2>
+            <div class="grid-container">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">科学社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题、填空题</p>
+                    <p><strong>关键语句</strong>: 科学社会主义由马克思、恩格斯创立，以阶级斗争理论为核心，旨在通过革命实现共产主义社会。</p>
+                    <p><strong>出现次数</strong>: 8次 (2004, 2008, 2009, 2010, 2011, 2013, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">苏联模式</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>关键语句</strong>: 苏联模式以高度集中制和计划经济为特征，其弊病包括僵化管理与创新不足，最终导致体制崩溃。</p>
+                    <p><strong>出现次数</strong>: 7次 (2005, 2007, 2009, 2010, 2012, 2014, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">中国特色社会主义</h3>
+                    <p><strong>题型</strong>: 论述题、填空题、名词解释</p>
+                    <p><strong>关键语句</strong>: 中国特色社会主义结合改革开放与社会主义原则，形成以经济建设为中心的理论体系，强调实践意义。</p>
+                    <p><strong>出现次数</strong>: 7次 (2004, 2005, 2011, 2013, 2014, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">新经济政策</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>关键语句</strong>: 新经济政策由列宁提出，通过引入市场机制恢复经济，为社会主义建设过渡提供灵活性与实践经验。</p>
+                    <p><strong>出现次数</strong>: 4次 (2004, 2008, 2009, 2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">空想社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>关键语句</strong>: 空想社会主义以莫尔为代表，设想理想社会但缺乏科学依据，其局限性在于忽视阶级斗争与历史条件。</p>
+                    <p><strong>出现次数</strong>: 3次 (2004, 2007, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">自治社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 自治社会主义强调基层民主与自治管理，旨在通过社区参与实现社会主义的平等与效率。</p>
+                    <p><strong>出现次数</strong>: 1次 (2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">布拉格之春</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>关键语句</strong>: 布拉格之春是1968年捷克斯洛伐克的改革运动，试图推行民主社会主义，最终被苏联镇压。</p>
+                    <p><strong>出现次数</strong>: 2次 (2007, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">三步走发展战略</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 三步走发展战略是中国现代化的分阶段目标，逐步实现温饱、小康和全面现代化社会的建设。</p>
+                    <p><strong>出现次数</strong>: 2次 (2005, 2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">科学发展观</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>关键语句</strong>: 科学发展观以人为本，强调全面、协调、可持续发展，指导中国经济与社会的均衡进步。</p>
+                    <p><strong>出现次数</strong>: 2次 (2012, 2013)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 中国近现代史 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">中国近现代史</h2>
+            <div class="grid-container">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">新文化运动</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 新文化运动提倡民主与科学，推动思想启蒙，为五四运动和中国现代化奠定了思想基础。</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">五四运动</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>关键语句</strong>: 五四运动是1919年的爱国运动，反对帝国主义，促进思想解放，标志中国新民主主义革命的开端。</p>
+                    <p><strong>出现次数</strong>: 3次 (2004, 2009, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">抗日战争</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>关键语句</strong>: 抗日战争促进民族团结，取得反法西斯胜利，增强了中国的国际地位与民族自信心。</p>
+                    <p><strong>出现次数</strong>: 2次 (2005, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">十一届三中全会</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>关键语句</strong>: 十一届三中全会开启改革开放，确立以经济建设为中心的历史转折，推动中国现代化进程。</p>
+                    <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">遵义会议</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 遵义会议确立毛泽东的领导地位，纠正军事错误，是中共历史上的关键转折点。</p>
+                    <p><strong>出现次数</strong>: 1次 (2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">中共一大</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>关键语句</strong>: 中共一大标志中国共产党的成立，为中国革命提供了组织领导，开启新民主主义革命。</p>
+                    <p><strong>出现次数</strong>: 1次 (2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">八七会议</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 八七会议纠正陈独秀右倾错误，确定武装斗争方针，为中共革命道路指明方向。</p>
+                    <p><strong>出现次数</strong>: 1次 (2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新三民主义</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 新三民主义由孙中山提出，强调联合工农与反帝，适应新民主主义革命的需要。</p>
+                    <p><strong>出现次数</strong>: 1次 (2007)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">延安整风运动</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 延安整风运动统一中共思想，改进作风，为抗日战争胜利和新中国建立奠定基础。</p>
+                    <p><strong>出现次数</strong>: 1次 (2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">过渡时期总路线</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>关键语句</strong>: 过渡时期总路线提出社会主义改造与工业化并重，为新中国向社会主义过渡提供了战略指导。</p>
+                    <p><strong>出现次数</strong>: 2次 (2008, 2017)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 国际政治 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">国际政治</h2>
+            <div class="grid-container">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际组织</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>关键语句</strong>: 国际组织如联合国通过协调与合作，促进全球和平、发展与安全，分为政府间与非政府组织。</p>
+                    <p><strong>出现次数</strong>: 7次 (2004, 2005, 2007, 2010, 2013, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际体系</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>关键语句</strong>: 国际体系由国家等行为主体构成，受权力结构与规则影响，21世纪呈现多极化与动态变化趋势。</p>
+                    <p><strong>出现次数</strong>: 4次 (2008, 2013, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国家主权</h3>
+                    <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
+                    <p><strong>关键语句</strong>: 国家主权体现国家对内至高性与对外独立性，全球化时代面临跨国问题与国际干预的挑战。</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2007, 2008)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际合作</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 国际合作基于互利原则，通过机制与协商解决全球问题，促进和平与共同发展。</p>
+                    <p><strong>出现次数</strong>: 3次 (2009, 2013, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">相互依存</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>关键语句</strong>: 相互依存在全球化背景下加深国家间经济与政治联系，促进合作但也可能引发冲突。</p>
+                    <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际政治行为主体</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>关键语句</strong>: 国际政治行为主体包括国家与非国家实体（如跨国公司），需具备领土、人口与自主性等条件。</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2008, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">国际政治格局</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>关键语句</strong>: 国际政治格局反映全球权力分布，冷战后趋向多极化，呈现动态平衡与区域合作的特征。</p>
+                    <p><strong>出现次数</strong>: 2次 (2010, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">国际冲突</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 国际冲突因利益与意识形态矛盾引发，可能表现为战争或外交争端，需通过协商化解。</p>
+                    <p><strong>出现次数</strong>: 1次 (2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">非零和对策</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 非零和对策强调合作共赢，国家通过协商实现共同利益，区别于零和博弈的竞争性。</p>
+                    <p><strong>出现次数</strong>: 1次 (2005)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">零和博弈</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 零和博弈指一方收益等于另一方损失的竞争模式，常用于分析国际关系中的对抗性行为。</p>
+                    <p><strong>出现次数</strong>: 1次 (2022)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 其他理论与学派 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">其他理论与学派</h2>
+            <div class="grid-container">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">现实主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>关键语句</strong>: 现实主义学派强调国家利益与权力斗争，认为国际关系以无政府状态下的竞争为核心。</p>
+                    <p><strong>出现次数</strong>: 2次 (2007, 2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新现实主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 新现实主义学派关注国际体系结构，强调权力分配与体系稳定性对国家行为的决定性影响。</p>
+                    <p><strong>出现次数</strong>: 2次 (2004, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新自由制度主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 新自由制度主义学派主张国际制度与规则促进合作，降低交易成本，增强国家间的互信。</p>
+                    <p><strong>出现次数</strong>: 2次 (2013, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">理想主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>关键语句</strong>: 理想主义学派倡导通过国际法与合作实现和平，强调道德与集体安全的重要性。</p>
+                    <p><strong>出现次数</strong>: 2次 (2008, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">行为主义学派</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>关键语句</strong>: 行为主义学派运用科学方法与数据分析研究政治行为，强调实证研究与理论的可验证性。</p>
+                    <p><strong>出现次数</strong>: 2次 (2004, 2013)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="bg-white dark:bg-gray-800 p-4 text-center mt-8">
+        <p>作者：郭瑞东</p>
+        <p>
+            <a href="https://twitter.com/yourusername" target="_blank" class="text-blue-500 hover:underline">Twitter/X</a>
+        </p>
+        <p>© 2023 版权所有</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 深色/浅色模式切换
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+        if (initialTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+            themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // 淡入动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                }, index * 200);
+            });
+        });
+    </script>
