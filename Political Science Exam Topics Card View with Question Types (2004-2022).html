@@ -1,0 +1,442 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政治学综合考试题目卡片整理（2004-2022）</title>
+    <!-- TailwindCSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Preline UI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 自定义样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-hover:hover {
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        .highlight {
+            background-color: #fef3c7 !important; /* 高亮颜色 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- 头部 -->
+    <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center fixed w-full top-0 z-10">
+        <h1 class="text-2xl font-bold">政治学综合考试题目卡片整理（2004-2022）</h1>
+        <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 focus:outline-none btn-hover">
+            <i class="fas fa-sun"></i>
+        </button>
+    </header>
+
+    <!-- 主体 -->
+    <main class="container mx-auto p-4 space-y-8 mt-20">
+        <!-- 简介 -->
+        <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md fade-in">
+            <h2 class="text-xl font-semibold mb-4">简介</h2>
+            <p>本页面整理了2004年至2022年同等学力人员申请硕士学位学科综合水平全国统一考试政治学试卷中的所有题目，按类别以卡片形式呈现。</p>
+        </section>
+
+        <!-- 政治学基础概念 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">政治学基础概念</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治权力</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 强制性、合法性、资源分配</p>
+                    <p><strong>出现次数</strong>: 5次 (2004, 2008, 2014, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治文化</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 价值观、信仰、行为规范</p>
+                    <p><strong>出现次数</strong>: 5次 (2004, 2009, 2012, 2013, 2016)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治发展</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>答案关键字</strong>: 制度化、现代化、民主化</p>
+                    <p><strong>出现次数</strong>: 3次 (2011, 2012, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治管理</h3>
+                    <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
+                    <p><strong>答案关键字</strong>: 协调、控制、资源配置</p>
+                    <p><strong>出现次数</strong>: 5次 (2006, 2009, 2011, 2013, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">政治决策</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 理性、程序、权威</p>
+                    <p><strong>出现次数</strong>: 2次 (2013, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治参与</h3>
+                    <p><strong>题型</strong>: 简述题、填空题、论述题</p>
+                    <p><strong>答案关键字</strong>: 选举、游行、结社</p>
+                    <p><strong>出现次数</strong>: 4次 (2004, 2005, 2006, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国家结构形式</h3>
+                    <p><strong>题型</strong>: 填空题</p>
+                    <p><strong>答案关键字</strong>: 单一制、联邦制</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2013, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">政治民主</h3>
+                    <p><strong>题型</strong>: 论述题、简述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 经济基础、平等、自治</p>
+                    <p><strong>出现次数</strong>: 3次 (2005, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">政治权利</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 选举权、表达权、监督权</p>
+                    <p><strong>出现次数</strong>: 1次 (2005)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">社会契约说</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 霍布斯、契约、权力来源</p>
+                    <p><strong>出现次数</strong>: 1次 (2008)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">精英统治论</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 精英、权力集中、决策</p>
+                    <p><strong>出现次数</strong>: 1次 (2009)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 社会主义理论与实践 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">社会主义理论与实践</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">科学社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 马克思主义、阶级斗争、共产主义</p>
+                    <p><strong>出现次数</strong>: 8次 (2004, 2008, 2009, 2010, 2011, 2013, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">苏联模式</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 集中制、计划经济、弊病</p>
+                    <p><strong>出现次数</strong>: 7次 (2005, 2007, 2009, 2010, 2012, 2014, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">中国特色社会主义</h3>
+                    <p><strong>题型</strong>: 论述题、填空题、名词解释</p>
+                    <p><strong>答案关键字</strong>: 改革开放、理论体系、实践意义</p>
+                    <p><strong>出现次数</strong>: 7次 (2004, 2005, 2011, 2013, 2014, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">新经济政策</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>答案关键字</strong>: 列宁、市场经济、过渡</p>
+                    <p><strong>出现次数</strong>: 4次 (2004, 2008, 2009, 2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">空想社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>答案关键字</strong>: 莫尔、理想社会、局限性</p>
+                    <p><strong>出现次数</strong>: 3次 (2004, 2007, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">自治社会主义</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 自治、民主、社会主义</p>
+                    <p><strong>出现次数</strong>: 1次 (2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">布拉格之春</h3>
+                    <p><strong>题型</strong>: 名词解释、填空题</p>
+                    <p><strong>答案关键字</strong>: 改革、捷克斯洛伐克、镇压</p>
+                    <p><strong>出现次数</strong>: 2次 (2007, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">三步走发展战略</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 现代化、阶段、目标</p>
+                    <p><strong>出现次数</strong>: 2次 (2005, 2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">科学发展观</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>答案关键字</strong>: 以人为本、全面协调、可持续</p>
+                    <p><strong>出现次数</strong>: 2次 (2012, 2013)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 中国近现代史 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">中国近现代史</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">新文化运动</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 民主、科学、思想启蒙</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">五四运动</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>答案关键字</strong>: 爱国、反帝、思想解放</p>
+                    <p><strong>出现次数</strong>: 3次 (2004, 2009, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">抗日战争</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>答案关键字</strong>: 民族团结、胜利意义</p>
+                    <p><strong>出现次数</strong>: 2次 (2005, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">十一届三中全会</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>答案关键字</strong>: 改革开放、历史转折</p>
+                    <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">遵义会议</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 毛泽东、转折点</p>
+                    <p><strong>出现次数</strong>: 1次 (2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">中共一大</h3>
+                    <p><strong>题型</strong>: 论述题</p>
+                    <p><strong>答案关键字</strong>: 建党、意义</p>
+                    <p><strong>出现次数</strong>: 1次 (2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">八七会议</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 纠正错误、武装斗争</p>
+                    <p><strong>出现次数</strong>: 1次 (2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新三民主义</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 孙中山、民主、联合</p>
+                    <p><strong>出现次数</strong>: 1次 (2007)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">延安整风运动</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 思想统一、作风改进</p>
+                    <p><strong>出现次数</strong>: 1次 (2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">过渡时期总路线</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>答案关键字</strong>: 社会主义改造、工业化</p>
+                    <p><strong>出现次数</strong>: 2次 (2008, 2017)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 国际政治 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">国际政治</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际组织</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 联合国、协调、合作</p>
+                    <p><strong>出现次数</strong>: 7次 (2004, 2005, 2007, 2010, 2013, 2017, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际体系</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 结构、行为主体、变化</p>
+                    <p><strong>出现次数</strong>: 4次 (2008, 2013, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国家主权</h3>
+                    <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
+                    <p><strong>答案关键字</strong>: 独立性、至高性、挑战</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2007, 2008)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">国际合作</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 互利、协调、机制</p>
+                    <p><strong>出现次数</strong>: 3次 (2009, 2013, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                    <h3 class="font-bold">相互依存</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>答案关键字</strong>: 全球化、合作、冲突</p>
+                    <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">国际政治行为主体</h3>
+                    <p><strong>题型</strong>: 简述题、论述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 国家、非国家、条件</p>
+                    <p><strong>出现次数</strong>: 3次 (2006, 2008, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">国际政治格局</h3>
+                    <p><strong>题型</strong>: 名词解释、论述题</p>
+                    <p><strong>答案关键字</strong>: 多极化、平衡、特征</p>
+                    <p><strong>出现次数</strong>: 2次 (2010, 2014)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">国际冲突</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 利益、矛盾、战争</p>
+                    <p><strong>出现次数</strong>: 1次 (2010)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">非零和对策</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 合作、共赢、博弈</p>
+                    <p><strong>出现次数</strong>: 1次 (2005)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">零和博弈</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 竞争、损益平衡</p>
+                    <p><strong>出现次数</strong>: 1次 (2022)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 其他理论与学派 -->
+        <section class="fade-in">
+            <h2 class="text-xl font-semibold mb-4">其他理论与学派</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">现实主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>答案关键字</strong>: 国家利益、权力斗争</p>
+                    <p><strong>出现次数</strong>: 2次 (2007, 2012)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新现实主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 体系结构、权力分配</p>
+                    <p><strong>出现次数</strong>: 2次 (2004, 2011)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">新自由制度主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 制度、合作、规则</p>
+                    <p><strong>出现次数</strong>: 2次 (2013, 2017)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">理想主义学派</h3>
+                    <p><strong>题型</strong>: 名词解释</p>
+                    <p><strong>答案关键字</strong>: 和平、合作、国际法</p>
+                    <p><strong>出现次数</strong>: 2次 (2008, 2013)</p>
+                </div>
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <h3 class="font-bold">行为主义学派</h3>
+                    <p><strong>题型</strong>: 简述题、填空题</p>
+                    <p><strong>答案关键字</strong>: 科学方法、数据分析</p>
+                    <p><strong>出现次数</strong>: 2次 (2004, 2013)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="bg-white dark:bg-gray-800 p-4 text-center mt-8">
+        <p>作者：郭瑞东</p>
+        <p>
+            <a href="https://twitter.com/routera" target="_blank" class="text-blue-500 hover:underline">Twitter/X</a>
+        </p>
+        <p>© 2025 版权所有</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 深色/浅色模式切换
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+        if (initialTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+            themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+
+        // 淡入动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                }, index * 200);
+            });
+        });
+    </script>
