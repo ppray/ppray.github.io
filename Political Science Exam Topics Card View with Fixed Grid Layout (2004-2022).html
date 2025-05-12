@@ -43,14 +43,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>政治学综合考试题目卡片整理（2004-2022）</title>
-    <!-- TailwindCSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Preline UI CDN -->
     <link href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" rel="stylesheet">
-    <!-- Font Awesome CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* 自定义样式 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             scroll-behavior: smooth;
@@ -72,28 +68,51 @@
             transition: all 0.3s ease;
         }
         .highlight {
-            background-color: #fef3c7 !important; /* 高亮颜色 */
+            background-color: #a8d5ba !important;
         }
-        /* 确保网格布局一致 */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 1rem;
+        .key-highlight {
+            background-color: #a8d5ba;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
-        @media (min-width: 768px) {
-            .grid-container {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
         }
-        @media (min-width: 1024px) {
-            .grid-container {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
+        #modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+        .dark .modal-content {
+            background: #1f2937;
+            color: #e5e7eb;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <!-- 头部 -->
     <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center fixed w-full top-0 z-10">
         <h1 class="text-2xl font-bold">政治学综合考试题目卡片整理（2004-2022）</h1>
         <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 focus:outline-none btn-hover">
@@ -101,79 +120,87 @@
         </button>
     </header>
 
-    <!-- 主体 -->
+    <div id="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
+            <p id="modal-question-type" class="mb-2"><strong>题型</strong>: </p>
+            <p id="modal-key-statement" class="mb-2"><strong>关键语句</strong>: </p>
+            <p id="modal-occurrence" class="mb-4"><strong>出现次数</strong>: </p>
+            <div id="modal-answer" class="mb-4"><strong>完整答案</strong>: </div>
+        </div>
+    </div>
+
     <main class="container mx-auto p-4 space-y-8 mt-20">
-        <!-- 简介 -->
         <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md fade-in">
             <h2 class="text-xl font-semibold mb-4">简介</h2>
-            <p>本页面整理了2004年至2022年同等学力人员申请硕士学位学科综合水平全国统一考试政治学试卷中的所有题目，按类别以卡片形式呈现。重点题目（出现3次及以上）以黄色高亮，每张卡片包含题目、题型、关键语句和出现次数统计。关键语句已扩展为详细内容，方便复习记忆。</p>
+            <p>本页面整理了2004年至2022年同等学力人员申请硕士学位学科综合水平全国统一考试政治学试卷中的所有题目，按类别以卡片形式呈现。重点题目（出现3次及以上）以黄色高亮，每张卡片包含题目、题型、关键语句和出现次数统计。关键语句已扩展为详细内容，方便复习记忆。点击卡片可查看完整答案与高亮关键信息，适合快速记忆。</p>
         </section>
 
-        <!-- 政治学基础概念 -->
         <section class="fade-in">
             <h2 class="text-xl font-semibold mb-4">政治学基础概念</h2>
-            <div class="grid-container">
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治权力" data-question-type="名词解释、简述题、填空题" data-key-statement="政治权力是强制性与合法性的结合，基于资源分配的能力，体现为统治阶级对社会的控制与管理。" data-occurrence="5次 (2004, 2008, 2014, 2016, 2022)" data-answer="政治权力是政治学中的核心概念，指特定主体通过<span class='key-highlight'>强制性</span>手段和<span class='key-highlight'>合法性</span>基础，对社会资源、行为及秩序进行分配和管理的权力。强制性表现为通过法律、军队等手段确保服从，合法性则源于社会认可，如传统、意识形态或民主程序。政治权力通常由<span class='key-highlight'>统治阶级</span>行使，体现为对社会资源的分配（如税收、福利）和对社会行为的控制（如立法、执法），最终实现对社会的有效管理与秩序维护。">
                     <h3 class="font-bold">政治权力</h3>
                     <p><strong>题型</strong>: 名词解释、简述题、填空题</p>
                     <p><strong>关键语句</strong>: 政治权力是强制性与合法性的结合，基于资源分配的能力，体现为统治阶级对社会的控制与管理。</p>
                     <p><strong>出现次数</strong>: 5次 (2004, 2008, 2014, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治文化" data-question-type="简述题、论述题、填空题" data-key-statement="政治文化是社会成员对政治体系的价值观、信仰和行为规范的总和，影响政治行为的稳定性与方向。" data-occurrence="5次 (2004, 2009, 2012, 2013, 2016)" data-answer="政治文化指社会成员在长期历史发展中形成的对政治体系的<span class='key-highlight'>价值观、信仰和行为规范</span>的总和。它包括对政治权威的看法、对政府角色的期望以及对政治参与的态度等。政治文化通过社会化过程（如教育、家庭、媒体）传承，深刻影响政治行为的<span class='key-highlight'>稳定性与方向</span>。例如，民主政治文化强调公民参与和权力制衡，而专制政治文化可能强调服从与忠诚。政治文化的变迁通常与社会经济、文化变迁密切相关。">
                     <h3 class="font-bold">政治文化</h3>
                     <p><strong>题型</strong>: 简述题、论述题、填空题</p>
                     <p><strong>关键语句</strong>: 政治文化是社会成员对政治体系的价值观、信仰和行为规范的总和，影响政治行为的稳定性与方向。</p>
                     <p><strong>出现次数</strong>: 5次 (2004, 2009, 2012, 2013, 2016)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治发展" data-question-type="论述题、简述题" data-key-statement="政治发展是国家政治体系向制度化、现代化和民主化方向演进的过程，涉及权力分配与社会参与的扩展。" data-occurrence="3次 (2011, 2012, 2017)" data-answer="政治发展是指国家政治体系在历史进程中向<span class='key-highlight'>制度化、现代化和民主化</span>方向演进的过程。它包括政治机构的完善（如建立稳定的法律与行政体系）、政治过程的规范化（如选举与决策程序）以及公民<span class='key-highlight'>社会参与的扩展</span>（如通过选举、结社等形式）。政治发展通常伴随着经济现代化和社会分化，涉及<span class='key-highlight'>权力分配</span>的调整，如从集权到分权、从精英统治到大众参与。政治发展的路径因国家历史、文化和经济条件而异。">
                     <h3 class="font-bold">政治发展</h3>
-                    <p><strong>题型</strong>: 名词解释、简述题</p>
+                    <p><strong>题型</strong>: 论述题、简述题</p>
                     <p><strong>关键语句</strong>: 政治发展是国家政治体系向制度化、现代化和民主化方向演进的过程，涉及权力分配与社会参与的扩展。</p>
                     <p><strong>出现次数</strong>: 3次 (2011, 2012, 2017)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治管理" data-question-type="论述题、名词解释、简述题" data-key-statement="政治管理是通过协调、控制和资源配置实现社会秩序与公共利益的活动，核心在于有效治理与合法性维护。" data-occurrence="5次 (2006, 2009, 2011, 2013, 2017)" data-answer="政治管理是指政府或其他政治主体通过<span class='key-highlight'>协调、控制和资源配置</span>等手段，维护社会秩序、实现公共利益的活动。它包括制定和执行公共政策、调节社会冲突、提供公共服务等，旨在实现<span class='key-highlight'>有效治理</span>。政治管理的核心在于确保治理的<span class='key-highlight'>合法性</span>，通过法律、意识形态或公民同意获得社会认可。有效的政治管理需平衡效率与公平，回应社会需求，同时应对全球化、多元化等挑战。">
                     <h3 class="font-bold">政治管理</h3>
                     <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
                     <p><strong>关键语句</strong>: 政治管理是通过协调、控制和资源配置实现社会秩序与公共利益的活动，核心在于有效治理与合法性维护。</p>
                     <p><strong>出现次数</strong>: 5次 (2006, 2009, 2011, 2013, 2017)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="政治决策" data-question-type="名词解释" data-key-statement="政治决策是基于理性分析与程序规范，权威机构为解决公共问题做出的选择，影响资源分配与社会发展。" data-occurrence="2次 (2013, 2022)" data-answer="政治决策是指权威机构（如政府、议会）在面对公共问题时，基于<span class='key-highlight'>理性分析与程序规范</span>，做出的具有约束力的选择。它涉及问题识别、方案设计、评估与选择等步骤，通常遵循法律或制度程序。政治决策直接<span class='key-highlight'>影响资源分配</span>（如预算、政策优先级）和<span class='key-highlight'>社会发展</span>方向（如经济发展、环境保护）。决策质量受信息完备性、利益博弈及制度约束的影响，可能因非理性因素（如政治压力）偏离最优解。">
                     <h3 class="font-bold">政治决策</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 政治决策是基于理性分析与程序规范，权威机构为解决公共问题做出的选择，影响资源分配与社会发展。</p>
                     <p><strong>出现次数</strong>: 2次 (2013, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治参与" data-question-type="简述题、填空题、论述题" data-key-statement="政治参与是公民通过选举、游行、结社等方式影响政治过程的行为，受教育、资源和制度约束。" data-occurrence="4次 (2004, 2005, 2006, 2013)" data-answer="政治参与指公民通过<span class='key-highlight'>选举、游行、结社</span>等方式，主动介入政治过程、表达诉求或影响政策制定的行为。它是民主政治的重要体现，包括投票、竞选、请愿、示威等多种形式。政治参与的程度和效果受<span class='key-highlight'>教育、资源和制度</span>的约束，如教育水平影响政治意识，经济资源决定参与能力，制度设计（如选举制度）决定参与渠道的畅通。政治参与促进公民赋权，但也可能因资源不均导致参与不平等。">
                     <h3 class="font-bold">政治参与</h3>
                     <p><strong>题型</strong>: 简述题、填空题、论述题</p>
                     <p><strong>关键语句</strong>: 政治参与是公民通过选举、游行、结社等方式影响政治过程的行为，受教育、资源和制度约束。</p>
                     <p><strong>出现次数</strong>: 4次 (2004, 2005, 2006, 2013)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国家结构形式" data-question-type="填空题" data-key-statement="国家结构形式分为单一制与联邦制，反映中央与地方权力关系，影响治理效率与地方自治程度。" data-occurrence="3次 (2006, 2013, 2014)" data-answer="国家结构形式指国家内部中央与地方权力关系的制度安排，主要分为<span class='key-highlight'>单一制与联邦制</span>。单一制（如中国、法国）中央拥有最高权力，地方服从中央指令，强调统一性与效率；联邦制（如美国、德国）中央与地方通过宪法划分权力，地方有较大自治权。国家结构形式<span class='key-highlight'>反映中央与地方权力关系</span>，直接<span class='key-highlight'>影响治理效率与地方自治程度</span>。单一制利于政策统一但可能忽视地方需求，联邦制促进地方活力但可能导致协调困难。">
                     <h3 class="font-bold">国家结构形式</h3>
                     <p><strong>题型</strong>: 填空题</p>
                     <p><strong>关键语句</strong>: 国家结构形式分为单一制与联邦制，反映中央与地方权力关系，影响治理效率与地方自治程度。</p>
                     <p><strong>出现次数</strong>: 3次 (2006, 2013, 2014)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="政治民主" data-question-type="论述题、简述题、填空题" data-key-statement="政治民主以经济基础和社会平等为依托，通过公民参与和自治实现权力监督与公平决策。" data-occurrence="3次 (2005, 2016, 2022)" data-answer="政治民主是一种以<span class='key-highlight'>公民参与和自治</span>为核心的政治制度，旨在通过选举、协商和监督实现<span class='key-highlight'>权力监督与公平决策</span>。它以<span class='key-highlight'>经济基础和社会平等</span>为依托，经济发展提供物质支持，社会平等确保参与的公平性。政治民主包括代议制民主（如议会选举）与直接民主（如公民投票），强调法治、权利保障和权力分立。民主的实现需平衡多数统治与少数权利，克服经济不平等、参与冷漠等挑战。">
                     <h3 class="font-bold">政治民主</h3>
                     <p><strong>题型</strong>: 论述题、简述题、填空题</p>
                     <p><strong>关键语句</strong>: 政治民主以经济基础和社会平等为依托，通过公民参与和自治实现权力监督与公平决策。</p>
                     <p><strong>出现次数</strong>: 3次 (2005, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="政治权利" data-question-type="名词解释" data-key-statement="政治权利包括选举权、表达权和监督权，是公民参与政治生活、影响决策的法律保障。" data-occurrence="1次 (2005)" data-answer="政治权利是公民依法享有的参与政治生活、影响公共决策的权利，是民主政治的基石。主要包括<span class='key-highlight'>选举权</span>（投票与被选举）、<span class='key-highlight'>表达权</span>（言论、出版、集会自由）以及<span class='key-highlight'>监督权</span>（监督政府与官员）。这些权利通过宪法和法律保障，确保公民能够通过合法渠道表达诉求、参与决策。政治权利的实现需制度支持（如公平选举制度）与社会条件（如教育、资源）的配合。">
                     <h3 class="font-bold">政治权利</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 政治权利包括选举权、表达权和监督权，是公民参与政治生活、影响决策的法律保障。</p>
                     <p><strong>出现次数</strong>: 1次 (2005)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="社会契约说" data-question-type="名词解释" data-key-statement="社会契约说认为国家权力源于人民同意，霍布斯等主张通过契约建立政府以维护秩序与安全。" data-occurrence="1次 (2008)" data-answer="社会契约说是西方政治思想的重要理论，认为国家与政府的权力源于<span class='key-highlight'>人民同意</span>。霍布斯、洛克、卢梭等思想家提出，个体为摆脱自然状态的混乱与不安全，通过<span class='key-highlight'>契约</span>将部分权利让渡给政府，以换取<span class='key-highlight'>秩序与安全</span>。霍布斯强调绝对主权以维护稳定，洛克主张有限政府保障个人权利，卢梭强调公意。社会契约说为现代民主与法治提供了理论基础，强调政府合法性源于人民授权。">
                     <h3 class="font-bold">社会契约说</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 社会契约说认为国家权力源于人民同意，霍布斯等主张通过契约建立政府以维护秩序与安全。</p>
                     <p><strong>出现次数</strong>: 1次 (2008)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="精英统治论" data-question-type="名词解释" data-key-statement="精英统治论认为权力集中于少数精英手中，他们通过专业知识与组织能力主导政治决策。" data-occurrence="1次 (2009)" data-answer="精英统治论认为，在任何社会中，权力始终集中于少数<span class='key-highlight'>精英</span>手中，这些精英凭借<span class='key-highlight'>专业知识与组织能力</span>在政治、经济、文化等领域占据主导地位。帕累托、莫斯卡等学者提出，精英通过教育、财富或社会网络获得优势，控制决策过程。精英统治论强调社会分层的必然性，认为大众通常被动接受精英领导。该理论解释了权力集中的普遍性，但也因忽视大众作用而受到批评。">
                     <h3 class="font-bold">精英统治论</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 精英统治论认为权力集中于少数精英手中，他们通过专业知识与组织能力主导政治决策。</p>
@@ -182,59 +209,58 @@
             </div>
         </section>
 
-        <!-- 社会主义理论与实践 -->
         <section class="fade-in">
             <h2 class="text-xl font-semibold mb-4">社会主义理论与实践</h2>
-            <div class="grid-container">
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="科学社会主义" data-question-type="名词解释、论述题、填空题" data-key-statement="科学社会主义由马克思、恩格斯创立，以阶级斗争理论为核心，旨在通过革命实现共产主义社会。" data-occurrence="8次 (2004, 2008, 2009, 2010, 2011, 2013, 2017, 2022)" data-answer="科学社会主义是<span class='key-highlight'>马克思、恩格斯</span>创立的理论体系，以<span class='key-highlight'>阶级斗争理论</span>为核心，揭示资本主义社会矛盾，主张通过无产阶级革命推翻资产阶级统治，建立无阶级的<span class='key-highlight'>共产主义社会</span>。它基于历史唯物主义，分析生产力与生产关系的矛盾，认为社会主义是资本主义向共产主义过渡的阶段。科学社会主义强调革命的科学性与实践性，指导了苏联、中国等国的社会主义实践，对全球社会主义运动产生深远影响。">
                     <h3 class="font-bold">科学社会主义</h3>
                     <p><strong>题型</strong>: 名词解释、论述题、填空题</p>
                     <p><strong>关键语句</strong>: 科学社会主义由马克思、恩格斯创立，以阶级斗争理论为核心，旨在通过革命实现共产主义社会。</p>
                     <p><strong>出现次数</strong>: 8次 (2004, 2008, 2009, 2010, 2011, 2013, 2017, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="苏联模式" data-question-type="简述题、填空题" data-key-statement="苏联模式以高度集中制和计划经济为特征，其弊病包括僵化管理与创新不足，最终导致体制崩溃。" data-occurrence="7次 (2005, 2007, 2009, 2010, 2012, 2014, 2022)" data-answer="苏联模式是苏联在社会主义建设中形成的以<span class='key-highlight'>高度集中制和计划经济</span>为特征的政治经济体制。政治上实行一党制，权力集中于中央；经济上通过国家计划控制生产与分配，消灭私有制。然而，该模式存在<span class='key-highlight'>僵化管理与创新不足</span>的弊病，如官僚主义、效率低下、忽视市场需求等，导致经济发展停滞，社会活力丧失。20世纪80年代末至90年代初，苏联模式的内在矛盾与外部压力共同导致其<span class='key-highlight'>体制崩溃</span>。">
                     <h3 class="font-bold">苏联模式</h3>
                     <p><strong>题型</strong>: 简述题、填空题</p>
                     <p><strong>关键语句</strong>: 苏联模式以高度集中制和计划经济为特征，其弊病包括僵化管理与创新不足，最终导致体制崩溃。</p>
                     <p><strong>出现次数</strong>: 7次 (2005, 2007, 2009, 2010, 2012, 2014, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="中国特色社会主义" data-question-type="论述题、填空题、名词解释" data-key-statement="中国特色社会主义结合改革开放与社会主义原则，形成以经济建设为中心的理论体系，强调实践意义。" data-occurrence="7次 (2004, 2005, 2011, 2013, 2014, 2017, 2022)" data-answer="中国特色社会主义是中国共产党在<span class='key-highlight'>改革开放</span>实践中形成的理论与制度体系，将<span class='key-highlight'>社会主义原则</span>与市场经济、现代化建设相结合。它以<span class='key-highlight'>经济建设为中心</span>，坚持公有制为主体、多种所有制经济共同发展，通过改革释放生产力，同时坚持党的领导与社会主义方向。中国特色社会主义强调<span class='key-highlight'>实践意义</span>，根据国情灵活调整政策，成功推动了中国经济高速增长与社会进步，成为社会主义发展的重要模式。">
                     <h3 class="font-bold">中国特色社会主义</h3>
                     <p><strong>题型</strong>: 论述题、填空题、名词解释</p>
                     <p><strong>关键语句</strong>: 中国特色社会主义结合改革开放与社会主义原则，形成以经济建设为中心的理论体系，强调实践意义。</p>
                     <p><strong>出现次数</strong>: 7次 (2004, 2005, 2011, 2013, 2014, 2017, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="新经济政策" data-question-type="名词解释、填空题" data-key-statement="新经济政策由列宁提出，通过引入市场机制恢复经济，为社会主义建设过渡提供灵活性与实践经验。" data-occurrence="4次 (2004, 2008, 2009, 2012)" data-answer="新经济政策（NEP）是<span class='key-highlight'>列宁</span>在1921年提出的经济恢复与过渡策略，针对苏联战后经济崩溃，通过<span class='key-highlight'>市场机制</span>刺激生产。NEP允许部分私有经济、自由贸易和农业市场化，同时保留国家对重工业等关键领域的控制。该政策有效恢复了经济，改善了粮食供应与工业生产，为社会主义建设提供了<span class='key-highlight'>灵活性与实践经验</span>。然而，NEP也引发党内关于市场与计划经济关系的争论，最终被斯大林的全面计划经济取代。">
                     <h3 class="font-bold">新经济政策</h3>
                     <p><strong>题型</strong>: 名词解释、填空题</p>
                     <p><strong>关键语句</strong>: 新经济政策由列宁提出，通过引入市场机制恢复经济，为社会主义建设过渡提供灵活性与实践经验。</p>
                     <p><strong>出现次数</strong>: 4次 (2004, 2008, 2009, 2012)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="空想社会主义" data-question-type="名词解释、填空题" data-key-statement="空想社会主义以莫尔为代表，设想理想社会但缺乏科学依据，其局限性在于忽视阶级斗争与历史条件。" data-occurrence="3次 (2004, 2007, 2011)" data-answer="空想社会主义是16至19世纪以托马斯·<span class='key-highlight'>莫尔</span>、圣西门、傅立叶等为代表的社会主义思想，设想没有剥削与不平等的<span class='key-highlight'>理想社会</span>。他们提出公有制、计划生产等设想，但缺乏对社会发展规律的科学分析，依靠道德感召或精英设计实现变革。空想社会主义的<span class='key-highlight'>局限性</span>在于忽视<span class='key-highlight'>阶级斗争与历史条件</span>，无法提出切实可行的革命路径。尽管如此，它对科学社会主义的形成具有启发作用，反映了人类对平等社会的追求。">
                     <h3 class="font-bold">空想社会主义</h3>
                     <p><strong>题型</strong>: 名词解释、填空题</p>
                     <p><strong>关键语句</strong>: 空想社会主义以莫尔为代表，设想理想社会但缺乏科学依据，其局限性在于忽视阶级斗争与历史条件。</p>
                     <p><strong>出现次数</strong>: 3次 (2004, 2007, 2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="自治社会主义" data-question-type="名词解释" data-key-statement="自治社会主义强调基层民主与自治管理，旨在通过社区参与实现社会主义的平等与效率。" data-occurrence="1次 (2010)" data-answer="自治社会主义是一种强调<span class='key-highlight'>基层民主与自治管理</span>的社会主义模式，主张通过社区、合作社或地方组织实现资源分配与决策的平等参与。它旨在通过<span class='key-highlight'>社区参与</span>克服集中制可能带来的官僚化与异化，促进社会成员的主动性与创造力，从而实现<span class='key-highlight'>平等与效率</span>的统一。自治社会主义在南斯拉夫的工人自治实践中有一定体现，但因协调难度与资源约束，其大规模实施面临挑战。">
                     <h3 class="font-bold">自治社会主义</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 自治社会主义强调基层民主与自治管理，旨在通过社区参与实现社会主义的平等与效率。</p>
                     <p><strong>出现次数</strong>: 1次 (2010)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="布拉格之春" data-question-type="名词解释、填空题" data-key-statement="布拉格之春是1968年捷克斯洛伐克的改革运动，试图推行民主社会主义，最终被苏联镇压。" data-occurrence="2次 (2007, 2011)" data-answer="布拉格之春是1968年捷克斯洛伐克在杜布切克领导下发起的<span class='key-highlight'>改革运动</span>，旨在推行<span class='key-highlight'>民主社会主义</span>，通过扩大言论自由、放松政治控制、促进经济灵活性，建设“有人性面貌的社会主义”。改革包括新闻自由、旅行自由和多党竞争的尝试，引发苏联及华约国家的警惕。最终，苏联于1968年8月出兵<span class='key-highlight'>镇压</span>，终止改革，恢复集中控制，凸显了冷战时期社会主义阵营内部的矛盾与局限。">
                     <h3 class="font-bold">布拉格之春</h3>
                     <p><strong>题型</strong>: 名词解释、填空题</p>
                     <p><strong>关键语句</strong>: 布拉格之春是1968年捷克斯洛伐克的改革运动，试图推行民主社会主义，最终被苏联镇压。</p>
                     <p><strong>出现次数</strong>: 2次 (2007, 2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="三步走发展战略" data-question-type="名词解释" data-key-statement="三步走发展战略是中国现代化的分阶段目标，逐步实现温饱、小康和全面现代化社会的建设。" data-occurrence="2次 (2005, 2010)" data-answer="三步走发展战略是中国为实现现代化提出的分阶段目标，由邓小平在改革开放初期提出。第一步，到20世纪80年代末解决<span class='key-highlight'>温饱</span>问题，实现人民基本生活保障；第二步，到20世纪末达到<span class='key-highlight'>小康</span>水平，人均收入显著提高；第三步，到21世纪中叶基本实现<span class='key-highlight'>全面现代化</span>，建成富强、民主、文明的社会主义国家。该战略指导了中国经济与社会发展的长期规划，体现了循序渐进的实践逻辑。">
                     <h3 class="font-bold">三步走发展战略</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 三步走发展战略是中国现代化的分阶段目标，逐步实现温饱、小康和全面现代化社会的建设。</p>
                     <p><strong>出现次数</strong>: 2次 (2005, 2010)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="科学发展观" data-question-type="名词解释、论述题" data-key-statement="科学发展观以人为本，强调全面、协调、可持续发展，指导中国经济与社会的均衡进步。" data-occurrence="2次 (2012, 2013)" data-answer="科学发展观是中国共产党提出的发展理念，以<span class='key-highlight'>以人为本</span>为核心，强调经济、社会、环境的<span class='key-highlight'>全面、协调、可持续发展</span>。它主张经济发展须与人口资源环境相适应，促进城乡、区域、经济社会均衡发展，注重社会公平与生态保护。科学发展观是对传统唯GDP论的反思，旨在实现质量与效益并重，指导中国在21世纪初应对快速增长带来的不平衡问题，推动了绿色发展与社会和谐的政策实践。">
                     <h3 class="font-bold">科学发展观</h3>
                     <p><strong>题型</strong>: 名词解释、论述题</p>
                     <p><strong>关键语句</strong>: 科学发展观以人为本，强调全面、协调、可持续发展，指导中国经济与社会的均衡进步。</p>
@@ -243,65 +269,64 @@
             </div>
         </section>
 
-        <!-- 中国近现代史 -->
         <section class="fade-in">
             <h2 class="text-xl font-semibold mb-4">中国近现代史</h2>
-            <div class="grid-container">
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="新文化运动" data-question-type="名词解释" data-key-statement="新文化运动提倡民主与科学，推动思想启蒙，为五四运动和中国现代化奠定了思想基础。" data-occurrence="3次 (2006, 2016, 2022)" data-answer="新文化运动是1915年前后以陈独秀、胡适等为代表发起的<span class='key-highlight'>思想启蒙</span>运动，提倡<span class='key-highlight'>民主与科学</span>，批判封建礼教与儒家传统，倡导新文学、白话文与个性解放。运动通过《新青年》等刊物传播新思想，激发了知识分子的觉醒，为<span class='key-highlight'>五四运动</span>的爱国热潮提供了思想准备。新文化运动打破了思想禁锢，促进了现代教育、女性解放等进步，为<span class='key-highlight'>中国现代化</span>奠定了思想基础，是中国近代思想史的转折点。">
                     <h3 class="font-bold">新文化运动</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 新文化运动提倡民主与科学，推动思想启蒙，为五四运动和中国现代化奠定了思想基础。</p>
                     <p><strong>出现次数</strong>: 3次 (2006, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="五四运动" data-question-type="名词解释、简述题" data-key-statement="五四运动是1919年的爱国运动，反对帝国主义，促进思想解放，标志中国新民主主义革命的开端。" data-occurrence="3次 (2004, 2009, 2014)" data-answer="五四运动是1919年5月4日由北京学生发起的<span class='key-highlight'>爱国运动</span>，因反对巴黎和会将山东权益转让日本而爆发。运动从学生示威扩展为全国性的罢工、罢市，反对<span class='key-highlight'>帝国主义</span>与封建势力。受新文化运动影响，五四运动进一步<span class='key-highlight'>促进思想解放</span>，传播马克思主义与新民主主义思想，工人阶级开始登上历史舞台。运动标志着<span class='key-highlight'>中国新民主主义革命的开端</span>，对中国政治与文化产生了深远影响。">
                     <h3 class="font-bold">五四运动</h3>
                     <p><strong>题型</strong>: 名词解释、简述题</p>
                     <p><strong>关键语句</strong>: 五四运动是1919年的爱国运动，反对帝国主义，促进思想解放，标志中国新民主主义革命的开端。</p>
                     <p><strong>出现次数</strong>: 3次 (2004, 2009, 2014)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="抗日战争" data-question-type="论述题" data-key-statement="抗日战争促进民族团结，取得反法西斯胜利，增强了中国的国际地位与民族自信心。" data-occurrence="2次 (2005, 2011)" data-answer="抗日战争（1931-1945）是中国人民反抗日本侵略的民族解放战争，以国共合作与全民抗战为基础，最终取得<span class='key-highlight'>反法西斯胜利</span>。战争促进了<span class='key-highlight'>民族团结</span>，各阶层、各党派在抗日民族统一战线中共同御敌，展现了中华民族的凝聚力。胜利结束了百年屈辱历史，废除了不平等条约，<span class='key-highlight'>增强了中国的国际地位</span>（如成为联合国安理会常任理事国）与<span class='key-highlight'>民族自信心</span>，为新中国建立奠定了基础。">
                     <h3 class="font-bold">抗日战争</h3>
                     <p><strong>题型</strong>: 论述题</p>
                     <p><strong>关键语句</strong>: 抗日战争促进民族团结，取得反法西斯胜利，增强了中国的国际地位与民族自信心。</p>
                     <p><strong>出现次数</strong>: 2次 (2005, 2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="十一届三中全会" data-question-type="论述题" data-key-statement="十一届三中全会开启改革开放，确立以经济建设为中心的历史转折，推动中国现代化进程。" data-occurrence="3次 (2007, 2016, 2022)" data-answer="中共十一届三中全会（1978年12月）是中国现代史的重大转折点，标志着<span class='key-highlight'>改革开放</span>的起点。会议批判了“文化大革命”的错误，重新确立<span class='key-highlight'>以经济建设为中心</span>的路线，提出改革农村联产承包制、发展市场经济、对外开放等政策。改革开放解放了生产力，推动了经济高速增长、社会进步与国际地位提升，显著<span class='key-highlight'>推动了中国现代化进程</span>。十一届三中全会是中国从计划经济向市场经济、从封闭到开放的历史分水岭。">
                     <h3 class="font-bold">十一届三中全会</h3>
                     <p><strong>题型</strong>: 论述题</p>
                     <p><strong>关键语句</strong>: 十一届三中全会开启改革开放，确立以经济建设为中心的历史转折，推动中国现代化进程。</p>
                     <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="遵义会议" data-question-type="名词解释" data-key-statement="遵义会议确立毛泽东的领导地位，纠正军事错误，是中共历史上的关键转折点。" data-occurrence="1次 (2017)" data-answer="遵义会议（1935年1月）是中共长征途中召开的关键会议，<span class='key-highlight'>确立毛泽东的领导地位</span>，结束了“左”倾教条主义在党内的统治。会议批评了博古、李德的军事指挥错误，总结了第五次反“围剿”失败的教训，决定由毛泽东、周恩来等负责军事指挥。遵义会议<span class='key-highlight'>纠正军事错误</span>，挽救了红军与革命，是中共从幼稚走向成熟的标志，被视为中共历史上的<span class='key-highlight'>关键转折点</span>。">
                     <h3 class="font-bold">遵义会议</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 遵义会议确立毛泽东的领导地位，纠正军事错误，是中共历史上的关键转折点。</p>
                     <p><strong>出现次数</strong>: 1次 (2017)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="中共一大" data-question-type="论述题" data-key-statement="中共一大标志中国共产党的成立，为中国革命提供了组织领导，开启新民主主义革命。" data-occurrence="1次 (2011)" data-answer="中共一大（1921年7月）在上海召开，标志<span class='key-highlight'>中国共产党的成立</span>，13位代表确立了党的纲领与奋斗目标。会议确定以推翻资产阶级政权、实现共产主义为目标，通过了党的章程，选举了中央领导机构。中共的成立为中国革命提供了<span class='key-highlight'>组织领导</span>，结束了革命运动的涣散状态，传播马克思主义，领导工人运动与农民运动，<span class='key-highlight'>开启新民主主义革命</span>。中共一大是中国近现代史的里程碑，奠定了革命胜利的组织基础。">
                     <h3 class="font-bold">中共一大</h3>
                     <p><strong>题型</strong>: 论述题</p>
                     <p><strong>关键语句</strong>: 中共一大标志中国共产党的成立，为中国革命提供了组织领导，开启新民主主义革命。</p>
                     <p><strong>出现次数</strong>: 1次 (2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="八七会议" data-question-type="名词解释" data-key-statement="八七会议纠正陈独秀右倾错误，确定武装斗争方针，为中共革命道路指明方向。" data-occurrence="1次 (2011)" data-answer="八七会议（1927年8月7日）在汉口召开，是中共在第一次国共合作破裂后的紧急会议。会议批判了陈独秀的<span class='key-highlight'>右倾错误</span>，即对国民党妥协、放弃武装斗争的做法，导致革命失败。会议确定了<span class='key-highlight'>武装斗争方针</span>与土地革命的总方针，强调建立农村革命根据地，走农村包围城市的道路。八七会议为中共<span class='key-highlight'>革命道路指明方向</span>，标志着党在战略上的重大调整，为秋收起义等武装斗争奠定了基础。">
                     <h3 class="font-bold">八七会议</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 八七会议纠正陈独秀右倾错误，确定武装斗争方针，为中共革命道路指明方向。</p>
                     <p><strong>出现次数</strong>: 1次 (2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="新三民主义" data-question-type="名词解释" data-key-statement="新三民主义由孙中山提出，强调联合工农与反帝，适应新民主主义革命的需要。" data-occurrence="1次 (2007)" data-answer="新三民主义是孙中山在1924年国共合作背景下提出的革命纲领，改进了旧三民主义（民族、民权、民生），更适应<span class='key-highlight'>新民主主义革命</span>的需要。新三民主义强调<span class='key-highlight'>联合工农与反帝</span>，提出“联俄、联共、扶助农工”的政策，主张民族独立、民主政治与土地改革。它将反帝反封建与工农利益结合，促进了国共合作与北伐战争的开展，为中国革命注入了新的动力，是孙中山晚期思想的集中体现。">
                     <h3 class="font-bold">新三民主义</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 新三民主义由孙中山提出，强调联合工农与反帝，适应新民主主义革命的需要。</p>
                     <p><strong>出现次数</strong>: 1次 (2007)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="延安整风运动" data-question-type="名词解释" data-key-statement="延安整风运动统一中共思想，改进作风，为抗日战争胜利和新中国建立奠定基础。" data-occurrence="1次 (2012)" data-answer="延安整风运动（1942-1945）是中共在延安开展的<span class='key-highlight'>思想与作风整顿</span>运动，旨在<span class='key-highlight'>统一中共思想</span>，克服主观主义、宗派主义与党八股。运动通过学习马克思主义、批评与自我批评，确立了毛泽东思想的指导地位，增强了党的凝聚力与战斗力。整风<span class='key-highlight'>改进作风</span>，密切了党群关系，为<span class='key-highlight'>抗日战争胜利和新中国建立</span>奠定了思想与组织基础，是中共从革命党向执政党转变的重要步骤。">
                     <h3 class="font-bold">延安整风运动</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 延安整风运动统一中共思想，改进作风，为抗日战争胜利和新中国建立奠定基础。</p>
                     <p><strong>出现次数</strong>: 1次 (2012)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="过渡时期总路线" data-question-type="名词解释、论述题" data-key-statement="过渡时期总路线提出社会主义改造与工业化并重，为新中国向社会主义过渡提供了战略指导。" data-occurrence="2次 (2008, 2017)" data-answer="过渡时期总路线是新中国成立初期（1953年）提出的战略方针，内容是实现<span class='key-highlight'>社会主义工业化</span>，对农业、手工业、资本主义工商业进行<span class='key-highlight'>社会主义改造</span>。路线强调<span class='key-highlight'>工业化与改造并重</span>，通过发展重工业奠定经济基础，同时通过合作化、公私合营等完成生产资料公有制改造。该路线为新中国从新民主主义向社会主义的<span class='key-highlight'>过渡提供了战略指导</span>，在短时间内建立了社会主义经济制度，但也因步伐过快引发了一些经济与社会问题。">
                     <h3 class="font-bold">过渡时期总路线</h3>
                     <p><strong>题型</strong>: 名词解释、论述题</p>
                     <p><strong>关键语句</strong>: 过渡时期总路线提出社会主义改造与工业化并重，为新中国向社会主义过渡提供了战略指导。</p>
@@ -310,65 +335,64 @@
             </div>
         </section>
 
-        <!-- 国际政治 -->
         <section class="fade-in">
             <h2 class="text-xl font-semibold mb-4">国际政治</h2>
-            <div class="grid-container">
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国际组织" data-question-type="简述题、填空题" data-key-statement="国际组织如联合国通过协调与合作，促进全球和平、发展与安全，分为政府间与非政府组织。" data-occurrence="7次 (2004, 2005, 2007, 2010, 2013, 2017, 2022)" data-answer="国际组织是国家或非国家实体为共同目标建立的合作机构，通过<span class='key-highlight'>协调与合作</span>处理全球性问题。主要分为<span class='key-highlight'>政府间组织</span>（如<span class='key-highlight'>联合国</span>、世贸组织）与<span class='key-highlight'>非政府组织</span>（如国际红十字会）。国际组织促进<span class='key-highlight'>全球和平、发展与安全</span>，如联合国通过维和行动维护和平，世贸组织规范贸易规则。它们提供协商平台、制定国际规范，但在执行力与主权冲突中面临挑战。">
                     <h3 class="font-bold">国际组织</h3>
                     <p><strong>题型</strong>: 简述题、填空题</p>
                     <p><strong>关键语句</strong>: 国际组织如联合国通过协调与合作，促进全球和平、发展与安全，分为政府间与非政府组织。</p>
                     <p><strong>出现次数</strong>: 7次 (2004, 2005, 2007, 2010, 2013, 2017, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国际体系" data-question-type="简述题、论述题、填空题" data-key-statement="国际体系由国家等行为主体构成，受权力结构与规则影响，21世纪呈现多极化与动态变化趋势。" data-occurrence="4次 (2008, 2013, 2016, 2022)" data-answer="国际体系是由<span class='key-highlight'>国家等行为主体</span>（如国际组织、跨国公司）及其相互作用构成的整体，受<span class='key-highlight'>权力结构与规则</span>的制约。权力结构包括单极、两极或多极，规则包括国际法与规范。冷战后，国际体系从两极对抗转向<span class='key-highlight'>多极化</span>，新兴国家崛起（如中国、印度），区域合作加强，呈现<span class='key-highlight'>动态变化趋势</span>。全球化加深相互依存，但权力竞争与地区冲突使体系稳定性面临挑战。">
                     <h3 class="font-bold">国际体系</h3>
                     <p><strong>题型</strong>: 简述题、论述题、填空题</p>
                     <p><strong>关键语句</strong>: 国际体系由国家等行为主体构成，受权力结构与规则影响，21世纪呈现多极化与动态变化趋势。</p>
                     <p><strong>出现次数</strong>: 4次 (2008, 2013, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国家主权" data-question-type="论述题、名词解释、简述题" data-key-statement="国家主权体现国家对内至高性与对外独立性，全球化时代面临跨国问题与国际干预的挑战。" data-occurrence="3次 (2006, 2007, 2008)" data-answer="国家主权是指国家在其领土范围内拥有<span class='key-highlight'>对内至高性</span>（对内政、法律的最高权威）与<span class='key-highlight'>对外独立性</span>（不受外部干涉的自主权）。主权是现代国际关系的基础，体现在领土完整、政治独立与平等地位。然而，在<span class='key-highlight'>全球化时代</span>，跨国问题（如气候变化、恐怖主义）与国际干预（如人权保护、维和行动）对主权构成挑战。主权需在国家自主与国际合作间寻求平衡，适应全球治理的需要。">
                     <h3 class="font-bold">国家主权</h3>
                     <p><strong>题型</strong>: 论述题、名词解释、简述题</p>
                     <p><strong>关键语句</strong>: 国家主权体现国家对内至高性与对外独立性，全球化时代面临跨国问题与国际干预的挑战。</p>
                     <p><strong>出现次数</strong>: 3次 (2006, 2007, 2008)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国际合作" data-question-type="名词解释" data-key-statement="国际合作基于互利原则，通过机制与协商解决全球问题，促进和平与共同发展。" data-occurrence="3次 (2009, 2013, 2014)" data-answer="国际合作指国家、国际组织等行为主体基于<span class='key-highlight'>互利原则</span>，通过外交、条约、国际机制等形式，共同应对全球性问题（如气候变化、传染病）。合作通过<span class='key-highlight'>机制与协商</span>降低冲突、减少交易成本，促进信息共享与集体行动。国际合作的目标是<span class='key-highlight'>促进和平与共同发展</span>，如通过联合国框架协调维和行动，或通过区域组织推动经济一体化。合作需克服国家利益分歧与信任不足的障碍。">
                     <h3 class="font-bold">国际合作</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 国际合作基于互利原则，通过机制与协商解决全球问题，促进和平与共同发展。</p>
                     <p><strong>出现次数</strong>: 3次 (2009, 2013, 2014)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="相互依存" data-question-type="名词解释、论述题" data-key-statement="相互依存在全球化背景下加深国家间经济与政治联系，促进合作但也可能引发冲突。" data-occurrence="3次 (2007, 2016, 2022)" data-answer="相互依存指在<span class='key-highlight'>全球化背景</span>下，国家间在经济、政治、文化等领域形成紧密联系，一方的行动会显著影响他方。经济上表现为贸易、投资、供应链的相互依赖；政治上表现为共同安全或外交协调。相互依存<span class='key-highlight'>促进合作</span>，如通过多边贸易协定降低成本，但也可能<span class='key-highlight'>引发冲突</span>，如资源竞争或经济制裁带来的连锁反应。相互依存使国家在追求自主性的同时需重视国际协调。">
                     <h3 class="font-bold">相互依存</h3>
                     <p><strong>题型</strong>: 名词解释、论述题</p>
                     <p><strong>关键语句</strong>: 相互依存在全球化背景下加深国家间经济与政治联系，促进合作但也可能引发冲突。</p>
                     <p><strong>出现次数</strong>: 3次 (2007, 2016, 2022)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg highlight cursor-pointer" data-title="国际政治行为主体" data-question-type="简述题、论述题、填空题" data-key-statement="国际政治行为主体包括国家与非国家实体（如跨国公司），需具备领土、人口与自主性等条件。" data-occurrence="3次 (2006, 2008, 2013)" data-answer="国际政治行为主体是参与国际政治活动、影响国际关系的实体，主要包括<span class='key-highlight'>国家</span>与<span class='key-highlight'>非国家实体</span>（如跨国公司、国际组织、恐怖组织）。国家作为主要主体，需具备<span class='key-highlight'>领土、人口与自主性</span>等条件，拥有主权与外交能力。非国家实体通过经济、文化或暴力手段影响国际事务，如跨国公司通过投资左右经济政策。行为主体的多样化使国际政治更加复杂，需综合分析其动机与能力。">
                     <h3 class="font-bold">国际政治行为主体</h3>
                     <p><strong>题型</strong>: 简述题、论述题、填空题</p>
                     <p><strong>关键语句</strong>: 国际政治行为主体包括国家与非国家实体（如跨国公司），需具备领土、人口与自主性等条件。</p>
                     <p><strong>出现次数</strong>: 3次 (2006, 2008, 2013)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="国际政治格局" data-question-type="名词解释、论述题" data-key-statement="国际政治格局反映全球权力分布，冷战后趋向多极化，呈现动态平衡与区域合作的特征。" data-occurrence="2次 (2010, 2014)" data-answer="国际政治格局指全球范围内国家间<span class='key-highlight'>权力分布</span>的状态与趋势，体现主要大国的地位与影响力。冷战期间呈美苏两极对抗格局，<span class='key-highlight'>冷战后趋向多极化</span>，美国保持霸权，但中国、欧盟、俄罗斯等力量崛起，形成<span class='key-highlight'>动态平衡</span>。同时，<span class='key-highlight'>区域合作</span>加强，如东盟、欧盟等促进区域一体化。国际政治格局的变化受经济、技术、军事等因素驱动，需通过外交与合作应对不确定性。">
                     <h3 class="font-bold">国际政治格局</h3>
                     <p><strong>题型</strong>: 名词解释、论述题</p>
                     <p><strong>关键语句</strong>: 国际政治格局反映全球权力分布，冷战后趋向多极化，呈现动态平衡与区域合作的特征。</p>
                     <p><strong>出现次数</strong>: 2次 (2010, 2014)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="国际冲突" data-question-type="名词解释" data-key-statement="国际冲突因利益与意识形态矛盾引发，可能表现为战争或外交争端，需通过协商化解。" data-occurrence="1次 (2010)" data-answer="国际冲突指国家或非国家行为主体因<span class='key-highlight'>利益与意识形态矛盾</span>引发的对抗，可能表现为<span class='key-highlight'>战争</span>（如领土争端引发的军事冲突）或<span class='key-highlight'>外交争端</span>（如贸易摩擦）。冲突的根源包括资源竞争、民族矛盾、宗教分歧或大国博弈。化解冲突需通过<span class='key-highlight'>协商</span>，如外交谈判、国际调解或多边机制（如联合国），以降低对抗成本，促进和平。国际冲突的复杂性要求综合运用军事、外交与经济手段。">
                     <h3 class="font-bold">国际冲突</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 国际冲突因利益与意识形态矛盾引发，可能表现为战争或外交争端，需通过协商化解。</p>
                     <p><strong>出现次数</strong>: 1次 (2010)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="非零和对策" data-question-type="名词解释" data-key-statement="非零和对策强调合作共赢，国家通过协商实现共同利益，区别于零和博弈的竞争性。" data-occurrence="1次 (2005)" data-answer="非零和对策是博弈论中的一种模式，指各方通过合作可实现<span class='key-highlight'>共同利益</span>，总收益不固定，区别于零和博弈的“你输我赢”。在国际关系中，非零和对策<span class='key-highlight'>强调合作共赢</span>，如通过贸易协定实现经济互利，或通过气候协议共同应对环境问题。国家通过<span class='key-highlight'>协商</span>与妥协，扩大共同利益，减少对抗成本。非零和对策反映了全球化时代相互依存的现实，适用于分析国际合作的可能性。">
                     <h3 class="font-bold">非零和对策</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 非零和对策强调合作共赢，国家通过协商实现共同利益，区别于零和博弈的竞争性。</p>
                     <p><strong>出现次数</strong>: 1次 (2005)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="零和博弈" data-question-type="名词解释" data-key-statement="零和博弈指一方收益等于另一方损失的竞争模式，常用于分析国际关系中的对抗性行为。" data-occurrence="1次 (2022)" data-answer="零和博弈是博弈论中的一种模式，指各方收益与损失总和为零，即<span class='key-highlight'>一方收益等于另一方损失</span>。在国际关系中，零和博弈常用于分析<span class='key-highlight'>对抗性行为</span>，如军备竞赛、贸易战或领土争夺，其中一方获利意味着另一方受损。零和博弈反映了<span class='key-highlight'>竞争模式</span>，可能导致资源浪费与冲突升级。国际关系中的零和思维可能阻碍合作，需通过协商与信任建设转向非零和模式。">
                     <h3 class="font-bold">零和博弈</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 零和博弈指一方收益等于另一方损失的竞争模式，常用于分析国际关系中的对抗性行为。</p>
@@ -377,35 +401,34 @@
             </div>
         </section>
 
-        <!-- 其他理论与学派 -->
         <section class="fade-in">
             <h2 class="text-xl font-semibold mb-4">其他理论与学派</h2>
-            <div class="grid-container">
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="现实主义学派" data-question-type="名词解释、简述题" data-key-statement="现实主义学派强调国家利益与权力斗争，认为国际关系以无政府状态下的竞争为核心。" data-occurrence="2次 (2007, 2012)" data-answer="现实主义学派是国际关系理论的主要流派，强调<span class='key-highlight'>国家利益与权力斗争</span>是国际政治的核心动力。它认为国际体系处于<span class='key-highlight'>无政府状态</span>，缺乏中央权威，国家为生存与安全追求权力最大化，导致竞争与冲突不可避免。现实主义者（如摩根索）主张国家行为基于自身利益，外交与军事力量是维护安全的工具。现实主义解释了战争、联盟等现象，但因忽视合作与非国家行为体而受到批评。">
                     <h3 class="font-bold">现实主义学派</h3>
                     <p><strong>题型</strong>: 名词解释、简述题</p>
                     <p><strong>关键语句</strong>: 现实主义学派强调国家利益与权力斗争，认为国际关系以无政府状态下的竞争为核心。</p>
                     <p><strong>出现次数</strong>: 2次 (2007, 2012)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="新现实主义学派" data-question-type="名词解释" data-key-statement="新现实主义学派关注国际体系结构，强调权力分配与体系稳定性对国家行为的决定性影响。" data-occurrence="2次 (2004, 2011)" data-answer="新现实主义学派由沃尔兹提出，是现实主义的现代发展，强调<span class='key-highlight'>国际体系结构</span>对国家行为的决定性影响。体系结构由<span class='key-highlight'>权力分配</span>（单极、两极、多极）决定，影响国家的安全策略与互动模式。新现实主义认为，国家在无政府状态下追求相对收益，体系的<span class='key-highlight'>稳定性</span>取决于大国间的权力平衡。新现实主义解释了冷战两极格局的稳定性，但对非国家行为体与国内因素的忽视受到质疑。">
                     <h3 class="font-bold">新现实主义学派</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 新现实主义学派关注国际体系结构，强调权力分配与体系稳定性对国家行为的决定性影响。</p>
                     <p><strong>出现次数</strong>: 2次 (2004, 2011)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="新自由制度主义学派" data-question-type="名词解释" data-key-statement="新自由制度主义学派主张国际制度与规则促进合作，降低交易成本，增强国家间的互信。" data-occurrence="2次 (2013, 2017)" data-answer="新自由制度主义学派由基欧汉等提出，主张<span class='key-highlight'>国际制度与规则</span>（如国际组织、条约）通过提供信息、<span class='key-highlight'>降低交易成本</span>与监督履约，克服无政府状态的障碍，促进国家间<span class='key-highlight'>合作</span>。它认为国家追求绝对收益，愿意在互利基础上遵守规则，如世贸组织规范贸易行为。该学派解释了全球化中的合作机制，但对权力政治与制度执行力的复杂性估计不足。">
                     <h3 class="font-bold">新自由制度主义学派</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 新自由制度主义学派主张国际制度与规则促进合作，降低交易成本，增强国家间的互信。</p>
                     <p><strong>出现次数</strong>: 2次 (2013, 2017)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="理想主义学派" data-question-type="名词解释" data-key-statement="理想主义学派倡导通过国际法与合作实现和平，强调道德与集体安全的重要性。" data-occurrence="2次 (2008, 2013)" data-answer="理想主义学派（或自由主义学派）认为国际关系可通过<span class='key-highlight'>国际法与合作</span>实现持久和平，强调<span class='key-highlight'>道德与集体安全</span>的重要性。它主张通过国际组织（如国际联盟、联合国）、民主国家间的和平倾向与经济相互依存，减少冲突。理想主义者（如威尔逊）相信人类理性与进步，提倡裁军、外交公开等措施。理想主义解释了战后国际合作的兴起，但因忽视权力斗争而被现实主义批评为过于乐观。">
                     <h3 class="font-bold">理想主义学派</h3>
                     <p><strong>题型</strong>: 名词解释</p>
                     <p><strong>关键语句</strong>: 理想主义学派倡导通过国际法与合作实现和平，强调道德与集体安全的重要性。</p>
                     <p><strong>出现次数</strong>: 2次 (2008, 2013)</p>
                 </div>
-                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="card-hover p-4 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer" data-title="行为主义学派" data-question-type="简述题、填空题" data-key-statement="行为主义学派运用科学方法与数据分析研究政治行为，强调实证研究与理论的可验证性。" data-occurrence="2次 (2004, 2013)" data-answer="行为主义学派是20世纪中叶兴起的政治学研究方法，主张运用<span class='key-highlight'>科学方法与数据分析</span>来研究政治现象，强调<span class='key-highlight'>实证研究</span>和<span class='key-highlight'>理论的可验证性</span>。它反对传统政治学的规范性与思辨性，提倡通过观察、实验、统计等方法收集数据，构建可检验的政治理论。行为主义者关注个体与群体的政治行为，如投票、决策、参与等，力图发现政治行为的规律与模式。代表人物包括大卫·伊斯顿、罗伯特·达尔等，他们的系统理论与多元主义理论对现代政治学产生了深远影响。行为主义学派推动了政治学的科学化与定量化，但也因忽视历史、文化与制度因素而受到批评。">
                     <h3 class="font-bold">行为主义学派</h3>
                     <p><strong>题型</strong>: 简述题、填空题</p>
                     <p><strong>关键语句</strong>: 行为主义学派运用科学方法与数据分析研究政治行为，强调实证研究与理论的可验证性。</p>
@@ -415,18 +438,14 @@
         </section>
     </main>
 
-    <!-- 底部 -->
     <footer class="bg-white dark:bg-gray-800 p-4 text-center mt-8">
         <p>作者：郭瑞东</p>
-        <p>
-            <a href="https://twitter.com/yourusername" target="_blank" class="text-blue-500 hover:underline">Twitter/X</a>
-        </p>
+        <p><a href="https://twitter.com/yourusername" target="_blank" class="text-blue-500 hover:underline">Twitter/X</a></p>
         <p>© 2023 版权所有</p>
     </footer>
 
-    <!-- JavaScript -->
     <script>
-        // 深色/浅色模式切换
+        // Theme toggle
         const themeToggle = document.getElementById('theme-toggle');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const savedTheme = localStorage.getItem('theme');
@@ -446,7 +465,7 @@
             themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
         });
 
-        // 淡入动画
+        // Fade-in animation and modal functionality
         document.addEventListener('DOMContentLoaded', () => {
             const elements = document.querySelectorAll('.fade-in');
             elements.forEach((el, index) => {
@@ -454,5 +473,36 @@
                     el.style.opacity = '1';
                 }, index * 200);
             });
+
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalQuestionType = document.getElementById('modal-question-type');
+            const modalKeyStatement = document.getElementById('modal-key-statement');
+            const modalOccurrence = document.getElementById('modal-occurrence');
+            const modalAnswer = document.getElementById('modal-answer');
+            const closeBtn = document.querySelector('.close-btn');
+
+            document.querySelectorAll('.card-hover').forEach(card => {
+                card.addEventListener('click', () => {
+                    modalTitle.textContent = card.dataset.title;
+                    modalQuestionType.innerHTML = `<strong>题型</strong>: ${card.dataset.questionType}`;
+                    modalKeyStatement.innerHTML = `<strong>关键语句</strong>: ${card.dataset.keyStatement}`;
+                    modalOccurrence.innerHTML = `<strong>出现次数</strong>: ${card.dataset.occurrence}`;
+                    modalAnswer.innerHTML = `<strong>完整答案</strong>: ${card.dataset.answer}`;
+                    modal.classList.add('show');
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
         });
     </script>
+</body>
+</html>
