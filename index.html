@@ -1,448 +1,497 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>现当代国际关系史时间线</title>
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Preline UI CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/preline@1.0.0/dist/preline.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/preline@1.0.0/dist/preline.min.js"></script>
-    <!-- Font Awesome CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- 自定义样式 -->
+    <title>考试复习资源索引 | Exam Review Index</title>
+    <meta name="description" content="个人考试复习资料库 - 政治学、国际关系、政治经济学与自然辩证法">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --color-primary: #2563eb;
-            --color-secondary: #1e40af;
-            --color-bg: #f3f4f6;
-            --color-bg-dark: #1f2937;
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #3b82f6;
+            --bg-blur: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
-        html {
-            scroll-behavior: smooth;
+
+        [data-theme="dark"] {
+            --bg-blur: rgba(15, 23, 42, 0.4);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
-        .fade-in {
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            background: url('assets/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Blur */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+            z-index: -1;
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Search Section */
+        .search-container {
+            margin: 0 auto 40px;
+            max-width: 600px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 25px 15px 50px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        /* Categories */
+        .category-section {
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .category-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: 'VIEW ↗';
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--primary);
             opacity: 0;
-            animation: fadeIn 0.5s ease-in forwards;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
         }
-        @keyframes fadeIn {
+
+        .card:hover {
+            transform: scale(1.03) translateY(-5px);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="dark"] .card:hover {
+            background: rgba(30, 41, 59, 0.85);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
-        .highlight {
-            color: #dc2626 !important; /* 红色，强制覆盖 */
-            font-weight: bold;
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .highlight-card {
-            background-color: #fef3c7; /* 浅黄色背景 */
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+            }
         }
-        .dark .highlight-card {
-            background-color: #92400e; /* 深色模式下的背景色 */
+
+        footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* Theme Toggle placeholder if needed */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            color: var(--text-main);
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <!-- 导航栏 -->
-    <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-10">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">现当代国际关系史时间线</h1>
-            <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-transform duration-200 hover:scale-110">
-                <i class="fas fa-moon"></i>
-            </button>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Academic Hub</h1>
+            <p class="subtitle">Exam Review Resources & Knowledge Base</p>
+        </header>
+
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="搜索资源文件名或关键词...">
         </div>
-    </nav>
 
-    <!-- 内容区 -->
-    <main class="container mx-auto px-4 py-8">
-        <section id="timeline" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 时间线条目将在这里动态生成 -->
-        </section>
-    </main>
-
-    <!-- 作者信息 -->
-    <footer class="bg-white dark:bg-gray-800 py-6 mt-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-700 dark:text-gray-300">作者: 郭瑞东</p>
-            <p class="mt-2">
-                <a href="https://twitter.com/routera" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Twitter/X</a>
-            </p>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">© 2025 郭瑞东. 版权所有。</p>
+        <!-- 政治学与国际关系 -->
+        <div class="category-section">
+            <h2 class="category-title">政治学与国际关系</h2>
+            <div class="grid">
+                <a href="Political Science Exam Topics Card View with Fixed Grid Layout (2004-2022).html"
+                    class="card resource">
+                    <div class="card-icon">📊</div>
+                    <div>
+                        <div class="card-title">政治学题库 - 固定网格视图 (2004-2022)</div>
+                        <div class="card-desc">按年份与分值排列的考题全览。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="Political Science Exam Topics Card View with Question Types (2004-2022).html"
+                    class="card resource">
+                    <div class="card-icon">📂</div>
+                    <div>
+                        <div class="card-title">政治学题库 - 题型分类视图 (2004-2022)</div>
+                        <div class="card-desc">按简答、论述等题型分类的复习资料。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="国际关系史.html" class="card resource">
+                    <div class="card-icon">📜</div>
+                    <div>
+                        <div class="card-title">国际关系史</div>
+                        <div class="card-desc">重点历史事件与理论节点梳理。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="《国际关系的制度分析方法》_复习题答案.html" class="card resource">
+                    <div class="card-icon">🏛️</div>
+                    <div>
+                        <div class="card-title">国际关系的制度分析方法 (答案)</div>
+                        <div class="card-desc">全面涵盖制度分析核心知识点与习题解答。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="《国际关系的制度分析方法》复习指南_gemini.html" class="card resource">
+                    <div class="card-icon">✨</div>
+                    <div>
+                        <div class="card-title">国际关系的制度分析方法 (Gemini 指南)</div>
+                        <div class="card-desc">AI 辅助生成的重点精要与知识点提炼。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+            </div>
         </div>
-    </footer>
 
-    <!-- JavaScript -->
+        <!-- 政治经济学与环境 -->
+        <div class="category-section">
+            <h2 class="category-title">政治经济学与环境</h2>
+            <div class="grid">
+                <a href="《产业发展的政治经济学》复习题.html" class="card resource">
+                    <div class="card-icon">🏭</div>
+                    <div>
+                        <div class="card-title">产业发展的政治经济学</div>
+                        <div class="card-desc">产业政策、国家竞争优势及相关考点。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="《全球周期分析》复习资料.html" class="card resource">
+                    <div class="card-icon">🔄</div>
+                    <div>
+                        <div class="card-title">全球周期分析</div>
+                        <div class="card-desc">长波理论、经济周期与全球格局演变。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="《国际与经济学文献导读》复习指南.html" class="card resource">
+                    <div class="card-icon">📖</div>
+                    <div>
+                        <div class="card-title">国际与经济学文献导读</div>
+                        <div class="card-desc">经典文献脉络梳理与核心思想总结。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="《能源与环境政治经济学研究》复习指南.html" class="card resource">
+                    <div class="card-icon">🌱</div>
+                    <div>
+                        <div class="card-title">能源与环境政治经济学</div>
+                        <div class="card-desc">双碳目标、能源安全与环境政治前沿。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 哲学与通识 -->
+        <div class="category-section">
+            <h2 class="category-title">哲学与通识</h2>
+            <div class="grid">
+                <a href="《自然辩证法》期末复习全攻略.html" class="card resource">
+                    <div class="card-icon">🧠</div>
+                    <div>
+                        <div class="card-title">自然辩证法 - 期末复习全攻略</div>
+                        <div class="card-desc">科学技术观、方法论与辩证思维要点。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+                <a href="自然辩证法复习题答案.html" class="card resource">
+                    <div class="card-icon">💡</div>
+                    <div>
+                        <div class="card-title">自然辩证法 - 复习题答案库</div>
+                        <div class="card-desc">详尽的习题解答，助力快速掌握核心内容。</div>
+                    </div>
+                    <span class="card-tag">HTML</span>
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <div style="font-weight: 600; color: var(--text-main); margin-bottom: 10px;">STUDY SMARTER, NOT HARDER</div>
+            &copy; 2025 | 考试复习资源管理面板<br>
+            Powered by Premium Design Framework
+        </footer>
+    </div>
+
+    <!-- Search Script -->
     <script>
-        // 时间线数据
-        const timelineData = [
-            {
-                time: "1648年",
-                event: "威斯特伐利亚和约",
-                type: "简答题",
-                question: "简述威斯特伐利亚和约的历史意义",
-                answer: [
-                    "<ul><li>确立国家主权原则</li><li>结束宗教战争</li><li>标志现代国际关系体系开端</li></ul>"
-                ]
-            },
-            {
-                time: "1701-1714年",
-                event: "西班牙王位继承战争",
-                type: "名词解释",
-                question: "西班牙王位继承战争",
-                answer: [
-                    "1701-1714年欧洲列强争夺西班牙王位继承权的战争",
-                    "确立波旁王朝在西班牙的统治"
-                ]
-            },
-            {
-                time: "1713年",
-                event: "乌得勒支和约",
-                type: "名词解释",
-                question: "乌得勒支和约",
-                answer: [
-                    "1713年结束西班牙王位继承战争的和约",
-                    "确立欧洲列强势力平衡"
-                ]
-            },
-            {
-                time: "1756-1763年",
-                event: "七年战争",
-                type: "名词解释、简答题",
-                question: "名词解释：七年战争<br>简述七年战争中欧洲国际关系的大改组",
-                answer: [
-                    "<strong>名词解释</strong>：1756-1763年欧洲列强争夺殖民地和霸权的战争，英国获胜成为世界霸主",
-                    "<strong>简答</strong>：<ol><li>英国崛起为世界霸主</li><li>法国衰落</li><li>普鲁士崛起，欧洲力量平衡改变</li></ol>"
-                ]
-            },
-            {
-                time: "1775-1783年",
-                event: "美国独立战争",
-                type: "名词解释、论述题",
-                question: "名词解释：美国独立战争<br>试析美国独立战争胜利的原因及重要影响",
-                answer: [
-                    "<strong>名词解释</strong>：1775-1783年北美十三州反抗英国殖民统治的战争，美国独立",
-                    "<strong>论述</strong>：<ol><li>原因：美国人民斗争、国际援助</li><li>影响：美国独立、促进资产阶级革命</li></ol>"
-                ]
-            },
-            {
-                time: "1792-1815年",
-                event: "拿破仑战争",
-                type: "名词解释、简答题",
-                question: "名词解释：拿破仑战争<br>简述拿破仑战争的进程与拿破仑帝国失败的原因",
-                answer: [
-                    "<strong>名词解释</strong>：1792-1815年拿破仑领导的法国扩张战争",
-                    "<strong>简答</strong>：<ol><li>进程：法国大革命战争、反法同盟战争</li><li>失败原因：军事失误、经济困难、民族主义兴起</li></ol>"
-                ]
-            },
-            {
-                time: "1806-1812年",
-                event: "大陆封锁政策",
-                type: "名词解释",
-                question: "大陆封锁政策",
-                answer: [
-                    "1806-1812年拿破仑为削弱英国经济，禁止欧洲大陆与英国贸易的政策"
-                ]
-            },
-            {
-                time: "1814-1815年",
-                event: "维也纳会议",
-                type: "名词解释、简答题",
-                question: "名词解释：维也纳会议<br>简述维也纳会议的影响",
-                answer: [
-                    "<strong>名词解释</strong>：1814-1815年欧洲列强重建欧洲秩序的会议，确立维也纳体系",
-                    "<strong>简答</strong>：<ol><li>确立维也纳体系</li><li>维护欧洲和平</li><li>促进列强合作</li></ol>"
-                ]
-            },
-            {
-                time: "1815年",
-                event: "神圣同盟",
-                type: "名词解释、简答题",
-                question: "名词解释：神圣同盟<br>简述神圣同盟的历史作用",
-                answer: [
-                    "<strong>名词解释</strong>：1815年俄、奥、普为维护君主制和欧洲秩序的同盟",
-                    "<strong>简答</strong>：<ol><li>维护君主制</li><li>镇压革命</li><li>阻碍民族解放运动</li></ol>"
-                ]
-            },
-            {
-                time: "1815年",
-                event: "四国同盟",
-                type: "名词解释",
-                question: "四国同盟",
-                answer: [
-                    "1815年英、俄、奥、普为维护欧洲和平的同盟"
-                ]
-            },
-            {
-                time: "1823年",
-                event: "门罗宣言",
-                type: "名词解释、简答题",
-                question: "名词解释：门罗宣言<br>简述门罗宣言的基本内容",
-                answer: [
-                    "<strong>名词解释</strong>：1823年美国总统门罗发表，反对欧洲干涉美洲事务，确立美国在美洲霸权",
-                    "<strong>简答</strong>：<ol><li>美洲事务由美洲国家处理</li><li>美国不干涉欧洲事务</li></ol>"
-                ]
-            },
-            {
-                time: "1853-1856年",
-                event: "克里木战争",
-                type: "名词解释、简答题、论述题",
-                question: "名词解释：克里木战争<br>简述克里木战争的起因及影响<br>试分析克里米亚战争中相关大国的矛盾、意图和政策",
-                answer: [
-                    "<strong>名词解释</strong>：1853-1856年俄与英、法、奥斯曼争夺巴尔干控制权的战争，俄失败",
-                    "<strong>简答</strong>：<ol><li>起因：俄与奥斯曼争夺巴尔干</li><li>影响：俄失败，欧洲力量平衡变化</li></ol>",
-                    "<strong>论述</strong>：<ol><li>矛盾：俄与奥斯曼、英法利益冲突</li><li>意图：俄扩张，英法维护利益</li><li>政策：英法支持奥斯曼，俄孤立</li></ol>"
-                ]
-            },
-            {
-                time: "1870-1871年",
-                event: "普法战争",
-                type: "名词解释、论述题",
-                question: "名词解释：普法战争<br>试析普法战争的起因及结果",
-                answer: [
-                    "<strong>名词解释</strong>：1870-1871年普鲁士与法国争夺欧洲霸权的战争，普鲁士获胜，德国统一",
-                    "<strong>论述</strong>：<ol><li>起因：普法矛盾、霍亨索伦王位继承</li><li>结果：德国统一、法国衰落</li></ol>"
-                ]
-            },
-            {
-                time: "1871年",
-                event: "德国统一",
-                type: "简答题",
-                question: "简析德国统一对国际关系的影响",
-                answer: [
-                    "<ol><li>德国成为欧洲强国</li><li>改变欧洲力量平衡</li><li>引发列强矛盾</li></ol>"
-                ]
-            },
-            {
-                time: "1878年",
-                event: "柏林会议",
-                type: "简答题",
-                question: "简述1878年柏林会议的内容和影响",
-                answer: [
-                    "<ol><li>内容：解决巴尔干问题</li><li>影响：确立巴尔干新秩序，埋下未来冲突种子</li></ol>"
-                ]
-            },
-            {
-                time: "1882年",
-                event: "德奥意三国同盟",
-                type: "简答题",
-                question: "简述德奥意三国同盟建立的原因",
-                answer: [
-                    "<ol><li>对抗法国威胁</li><li>对抗俄国威胁</li><li>维护德、奥、意利益</li></ol>"
-                ]
-            },
-            {
-                time: "1914-1918年",
-                event: "第一次世界大战",
-                type: "名词解释、论述题",
-                question: "名词解释：第一次世界大战<br>试评第一次世界大战后巴黎和会的主要内容及其影响",
-                answer: [
-                    "<strong>名词解释</strong>：1914-1918年欧洲列强争夺殖民地和霸权的战争，同盟国失败",
-                    "<strong>论述</strong>：<ol><li>内容：签订凡尔赛和约</li><li>影响：确立凡尔赛体系，埋下未来冲突</li></ol>"
-                ]
-            },
-            {
-                time: "1919年",
-                event: "凡尔赛和约",
-                type: "名词解释、论述题",
-                question: "名词解释：凡尔赛和约<br>论述凡尔赛体系的形成及其矛盾",
-                answer: [
-                    "<strong>名词解释</strong>：1919年战胜国与德国签订的和约，确立凡尔赛体系",
-                    "<strong>论述</strong>：<ol><li>形成：巴黎和会签订凡尔赛和约</li><li>矛盾：战胜国与战败国、帝国主义国家间矛盾</li></ol>"
-                ]
-            },
-            {
-                time: "1920年",
-                event: "国际联盟",
-                type: "名词解释、简答题",
-                question: "名词解释：国际联盟<br>简述国际联盟成立的目的和作用",
-                answer: [
-                    "<strong>名词解释</strong>：1920年根据凡尔赛和约成立，旨在维护世界和平的国际组织",
-                    "<strong>简答</strong>：<ol><li>目的：维护和平</li><li>作用：促进国际合作，未能阻止二战</li></ol>"
-                ]
-            },
-            {
-                time: "1921-1922年",
-                event: "华盛顿会议",
-                type: "名词解释、简答题",
-                question: "名词解释：华盛顿会议<br>简述华盛顿会议“五国海军条约”的主要内容及实质",
-                answer: [
-                    "<strong>名词解释</strong>：1921-1922年美国主持，确立华盛顿体系的会议",
-                    "<strong>简答</strong>：<ol><li>内容：限制海军军备</li><li>实质：维护美国在太平洋霸权</li></ol>"
-                ]
-            },
-            {
-                time: "1922年",
-                event: "拉巴洛条约",
-                type: "名词解释、简答题",
-                question: "名词解释：拉巴洛条约<br>简述《拉巴洛条约》的内容及意义",
-                answer: [
-                    "<strong>名词解释</strong>：1922年苏联与德国签订，结束两国敌对状态",
-                    "<strong>简答</strong>：<ol><li>内容：建立外交关系</li><li>意义：苏联外交突破，德国摆脱孤立</li></ol>"
-                ]
-            },
-            {
-                time: "1925年",
-                event: "洛迦诺公约",
-                type: "名词解释、简答题",
-                question: "名词解释：洛迦诺公约<br>简述“洛迦诺公约”的主要内容",
-                answer: [
-                    "<strong>名词解释</strong>：1925年欧洲列强为维护和平签订的公约",
-                    "<strong>简答</strong>：<ol><li>边界保证</li><li>仲裁条约</li></ol>"
-                ]
-            },
-            {
-                time: "1928年",
-                event: "非战公约",
-                type: "简答题",
-                question: "简述“非战公约”的缺陷及意义",
-                answer: [
-                    "<ol><li>缺陷：缺乏强制执行机制</li><li>意义：促进国际和平理念</li></ol>"
-                ]
-            },
-            {
-                time: "1929-1933年",
-                event: "世界经济危机",
-                type: "简答题",
-                question: "简述1929年世界经济危机发生后帝国主义国家之间的经济战及影响",
-                answer: [
-                    "<ol><li>经济战：关税战、货币战</li><li>影响：加剧国际矛盾，导致二战爆发</li></ol>"
-                ]
-            },
-            {
-                time: "1939年",
-                event: "苏德互不侵犯条约",
-                type: "名词解释、简答题",
-                question: "名词解释：苏德互不侵犯条约<br>简评苏德互不侵犯条约",
-                answer: [
-                    "<strong>名词解释</strong>：1939年苏联与德国签订，为德国入侵波兰创造条件",
-                    "<strong>简答</strong>：<ol><li>苏联避免两线作战</li><li>为德国侵略提供便利</li></ol>"
-                ]
-            },
-            {
-                time: "1941年",
-                event: "租借法案",
-                type: "名词解释、简答题",
-                question: "名词解释：租借法案<br>简述租借法案的意义",
-                answer: [
-                    "<strong>名词解释</strong>：1941年美国为支持反法西斯国家实行的政策",
-                    "<strong>简答</strong>：<ol><li>为盟国提供物资援助</li><li>加强反法西斯力量</li></ol>"
-                ]
-            },
-            {
-                time: "1945年",
-                event: "雅尔塔会议",
-                type: "论述题",
-                question: "评析雅尔塔会议的内容及意义",
-                answer: [
-                    "<ol><li>内容：确立战后世界秩序</li><li>意义：奠定冷战格局基础</li></ol>"
-                ]
-            }
-        ];
+        const searchInput = document.getElementById('searchInput');
+        const resourceCards = document.querySelectorAll('.resource');
 
-        // 重点事件
-        const highlights = [
-            "七年战争", "美国独立战争", "维也纳会议", "神圣同盟", "门罗宣言", "克里木战争", "普法战争", "德国统一",
-            "凡尔赛和约", "国际联盟", "华盛顿会议", "拉巴洛条约", "非战公约", "世界经济危机", "苏德互不侵犯条约", "租借法案", "雅尔塔会议"
-        ];
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            resourceCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+                if (title.includes(term) || desc.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
 
-        // 生成时间线条目
-        const timelineSection = document.getElementById('timeline');
-        timelineData.forEach((item, index) => {
-            const isHighlight = highlights.includes(item.event);
-            const highlightClass = isHighlight ? 'highlight' : '';
-            const cardClass = isHighlight ? 'highlight-card' : '';
-            const card = document.createElement('div');
-            card.className = `bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 fade-in ${cardClass}`;
-            card.innerHTML = `
-                <h2 class="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2 ${highlightClass}">${item.time} - ${item.event}</h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">考题类型：${item.type}</p>
-                <p class="text-gray-700 dark:text-gray-300">${item.question}</p>
-                <div class="mt-2 text-gray-600 dark:text-gray-400">
-                    ${item.answer.join('<br>')}
-                </div>
-            `;
-            timelineSection.appendChild(card);
-        });
-
-        // 主题切换
-        const toggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        const icon = toggle.querySelector('i');
-
-        function updateThemeIcon(isDark) {
-            icon.classList.toggle('fa-moon', !isDark);
-            icon.classList.toggle('fa-sun', isDark);
-        }
-
-        toggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcon(isDark);
-        });
-
-        // 默认主题
-        const savedTheme = localStorage.getItem('theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-            html.classList.add('dark');
-            updateThemeIcon(true);
-        } else {
-            updateThemeIcon(false);
-        }
-
-        // 淡入动画
-        document.querySelectorAll('.fade-in').forEach((el, index) => {
-            el.style.animationDelay = `${index * 0.1}s`;
-        });
-
-        // 平滑滚动（可选）
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            // Hide empty categories
+            document.querySelectorAll('.category-section').forEach(section => {
+                const visibleCards = section.querySelectorAll('.resource[style="display: flex;"]').length;
+                const totalCards = section.querySelectorAll('.resource').length;
+                // If input is empty, show all
+                if (term === "") {
+                    section.style.display = 'block';
+                    section.querySelectorAll('.resource').forEach(c => c.style.display = 'flex');
+                } else if (visibleCards === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
             });
         });
+
+        // Dark mode preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
     </script>
 </body>
+
 </html>
