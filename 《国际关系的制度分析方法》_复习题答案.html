@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《国际关系的制度分析方法》复习题答案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "SimSun", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title .icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5em;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .question-container:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-3px);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .answer-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .answer-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .answer-content {
+            color: #444;
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .answer-content p {
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box strong {
+            color: #2980b9;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .difficulty-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .chart-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .chart-title {
+            font-size: 1.2em;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .comparison-table tr:hover {
+            background: #e8f4f8;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .recommendation-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .recommendation-item {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-item:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(10px);
+        }
+
+        .recommendation-item h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .recommendation-item p {
+            opacity: 0.95;
+            line-height: 1.7;
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .key-point {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px 18px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-point strong {
+            color: #155724;
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.4em;
+            }
+
+            .question-text {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>《国际关系的制度分析方法》复习题答案</h1>
+            <p>全面整理 · 详细解析 · 考试必备</p>
+        </header>
+
+        <div class="content">
+            <!-- 简答题部分 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">📝</span>
+                    一、简答题
+                </h2>
+
+                <!-- 第一题 -->
+                <div class="question-container">
+                    <span class="question-number">第1题</span>
+                    <p class="question-text">简要说明国际制度的类型划分。</p>
+                    <span class="difficulty-badge difficulty-medium">中等难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>国际制度是国际关系中规范国家行为、促进国际合作的重要工具。根据不同的分类标准，国际制度可以分为以下几种主要类型：</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">国际制度类型划分图</h4>
+                                <svg viewBox="0 0 800 350" style="width:100%;height:auto;">
+                                    <!-- 中心节点 -->
+                                    <circle cx="400" cy="175" r="60" fill="#667eea" />
+                                    <text x="400" y="170" text-anchor="middle" fill="white" font-size="14" font-weight="bold">国际制度</text>
+                                    <text x="400" y="190" text-anchor="middle" fill="white" font-size="12">类型划分</text>
+
+                                    <!-- 第一分支：正式程度 -->
+                                    <line x1="340" y1="175" x2="180" y2="100" stroke="#764ba2" stroke-width="3"/>
+                                    <rect x="100" y="60" width="160" height="80" rx="10" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="180" y="90" text-anchor="middle" fill="#764ba2" font-size="13" font-weight="bold">按正式程度</text>
+                                    <text x="180" y="115" text-anchor="middle" fill="#333" font-size="11">正式国际制度</text>
+                                    <text x="180" y="135" text-anchor="middle" fill="#333" font-size="11">非正式国际制度</text>
+
+                                    <!-- 第二分支：功能 -->
+                                    <line x1="340" y1="175" x2="180" y2="250" stroke="#764ba2" stroke-width="3"/>
+                                    <rect x="100" y="210" width="160" height="80" rx="10" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="180" y="240" text-anchor="middle" fill="#764ba2" font-size="13" font-weight="bold">按功能类型</text>
+                                    <text x="180" y="265" text-anchor="middle" fill="#333" font-size="11">安全制度</text>
+                                    <text x="180" y="285" text-anchor="middle" fill="#333" font-size="11">经济制度</text>
+
+                                    <!-- 第三分支：成员范围 -->
+                                    <line x1="460" y1="175" x2="620" y2="100" stroke="#764ba2" stroke-width="3"/>
+                                    <rect x="540" y="60" width="160" height="80" rx="10" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="620" y="90" text-anchor="middle" fill="#764ba2" font-size="13" font-weight="bold">按成员范围</text>
+                                    <text x="620" y="115" text-anchor="middle" fill="#333" font-size="11">全球性制度</text>
+                                    <text x="620" y="135" text-anchor="middle" fill="#333" font-size="11">区域性制度</text>
+
+                                    <!-- 第四分支：约束力 -->
+                                    <line x1="460" y1="175" x2="620" y2="250" stroke="#764ba2" stroke-width="3"/>
+                                    <rect x="540" y="210" width="160" height="80" rx="10" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="620" y="240" text-anchor="middle" fill="#764ba2" font-size="13" font-weight="bold">按约束力</text>
+                                    <text x="620" y="265" text-anchor="middle" fill="#333" font-size="11">硬法</text>
+                                    <text x="620" y="285" text-anchor="middle" fill="#333" font-size="11">软法</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>1. 按正式程度划分</strong></p>
+                            <p><strong>正式国际制度</strong>：具有明确的章程、规则和组织机构，具有法律约束力。典型代表包括联合国（UN）、世界贸易组织（WTO）、国际货币基金组织（IMF）等。这类制度通常需要成员国批准或加入，具有明确的成员资格要求和程序规则。</p>
+                            <p><strong>非正式国际制度</strong>：没有正式的组织结构或法律约束力，但具有规范性的期望和惯例。典型代表包括八国集团（G8，现G7）、二十国集团（G20）等。这类制度虽然缺乏正式的法律地位，但在国际事务中发挥着重要的协调作用。</p>
+
+                            <p><strong>2. 按功能类型划分</strong></p>
+                            <p><strong>安全制度</strong>：主要关注国家间军事安全与和平问题，如北约（NATO）、集体安全条约组织（CSTO）等。这类制度通过军事联盟、军备控制协议等方式维护国际安全秩序。</p>
+                            <p><strong>经济制度</strong>：主要管理国际经济交往与合作，如世界贸易组织（WTO）、国际清算银行（BIS）等。这类制度通过制定贸易规则、金融监管标准等方式促进国际经济合作。</p>
+                            <p><strong>环境制度</strong>：关注全球环境问题治理，如《巴黎协定》、《蒙特利尔议定书》等。这类制度通过设定减排目标、环保标准等方式应对全球环境挑战。</p>
+                            <p><strong>人权制度</strong>：保护和发展国际人权标准，如联合国人权理事会、国际刑事法院等。</p>
+
+                            <p><strong>3. 按成员范围划分</strong></p>
+                            <p><strong>全球性国际制度</strong>：对所有国家开放，成员具有普遍性，如联合国、世界卫生组织（WHO）等。</p>
+                            <p><strong>区域性国际制度</strong>：成员限于特定地理区域的国家，如欧盟（EU）、东盟（ASEAN）、非洲联盟（AU）等。</p>
+
+                            <p><strong>4. 按法律约束力划分</strong></p>
+                            <p><strong>硬法（Hard Law）</strong>：具有法律约束力，国际法明确规定成员国的权利义务，如国际条约、协定等。</p>
+                            <p><strong>软法（Soft Law）</strong>：不具有严格的法律约束力，但具有道德和政治约束力，如宣言、决议、指南、政治承诺等。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>理解国际制度的多维分类有助于分析不同制度在国际合作中的功能差异与互补关系，为后续学习国际制度的形成、演变与作用机制奠定基础。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二题 -->
+                <div class="question-container">
+                    <span class="question-number">第2题</span>
+                    <p class="question-text">简述协作型博弈与协调型博弈的区别。</p>
+                    <span class="difficulty-badge difficulty-easy">较为基础</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>协作型博弈与协调型博弈是国际关系理论中分析国家间互动的两种基本博弈模型，二者在参与者收益结构、均衡特征以及制度需求方面存在显著差异。</p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>比较维度</th>
+                                        <th>协作型博弈</th>
+                                        <th>协调型博弈</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>收益结构</strong></td>
+                                        <td>存在帕累托排序，多个纳什均衡中有明确的优劣之分</td>
+                                        <td>无帕累托排序，多个纳什均衡之间无法比较优劣</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>均衡特征</strong></td>
+                                        <td>存在共同最优解（帕累托最优），但个体激励可能导致次优结果</td>
+                                        <td>存在多个对称均衡，选择哪个均衡取决于预期和协调</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>核心问题</strong></td>
+                                        <td>囚徒困境问题：个体理性导致集体非理性</td>
+                                        <td>多重均衡选择问题：需要解决预期协调</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>制度功能</strong></td>
+                                        <td>提供信息交换平台，建立监督机制，实施惩罚</td>
+                                        <td>提供焦点预期，建立协调规范，降低交易成本</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>典型案例</strong></td>
+                                        <td>军备竞赛、贸易保护主义、环境污染</td>
+                                        <td>通讯标准、货币体系、国际贸易规则</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>1. 协作型博弈（Coordination Game）的特点</strong></p>
+                            <p>协作型博弈的核心特征是存在多个纳什均衡，但这些均衡之间存在帕累托排序的差异。在这类博弈中，参与者面临"囚徒困境"式的困境：个体理性选择导致集体非理性的结果。博弈参与者在追求自身利益最大化的过程中，可能陷入对各方都不利的均衡状态。</p>
+                            <p><strong>经典案例——囚徒困境</strong>：</p>
+                            <div class="example-box">
+                                <strong>收益矩阵示例：</strong>
+                                <table style="width:100%;margin-top:10px;text-align:center;border-collapse:collapse;">
+                                    <tr>
+                                        <td rowspan="2" style="border:1px solid #333;padding:10px;">国家B<br>国家A</td>
+                                        <td colspan="2" style="border:1px solid #333;padding:10px;">合作</td>
+                                        <td colspan="2" style="border:1px solid #333;padding:10px;">背叛</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #333;padding:10px;">(3,3)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(0,5)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(5,0)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(1,1)</td>
+                                    </tr>
+                                </table>
+                                <p style="margin-top:10px;">分析：尽管双方合作可以取得(3,3)的最佳结果，但由于担心对方背叛，理性选择导致双方都选择背叛，最终陷入(1,1)的次优均衡。</p>
+                            </div>
+
+                            <p><strong>2. 协调型博弈（ stag-hunt Game）的特点</strong></p>
+                            <p>协调型博弈的核心特征是存在多个纳什均衡，但这些均衡之间不存在帕累托排序的差异。在这类博弈中，参与者面临的是如何选择和协调预期的问题，没有明确的"最优"选择，关键在于参与者能否形成共同的预期。</p>
+                            <p><strong>经典案例——猎鹿问题</strong>：</p>
+                            <div class="example-box">
+                                <strong>收益矩阵示例：</strong>
+                                <table style="width:100%;margin-top:10px;text-align:center;border-collapse:collapse;">
+                                    <tr>
+                                        <td rowspan="2" style="border:1px solid #333;padding:10px;">国家B<br>国家A</td>
+                                        <td colspan="2" style="border:1px solid #333;padding:10px;">猎鹿</td>
+                                        <td colspan="2" style="border:1px solid #333;padding:10px;">猎兔</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border:1px solid #333;padding:10px;">(4,4)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(0,2)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(2,0)</td>
+                                        <td style="border:1px solid #333;padding:10px;">(2,2)</td>
+                                    </tr>
+                                </table>
+                                <p style="margin-top:10px;">分析：猎鹿(4,4)与猎兔(2,2)都是纳什均衡，但两者各有优劣。选择猎鹿收益更高但风险更大（需要双方合作）；选择猎兔收益较低但风险较小。关键在于双方能否协调预期，选择同一行动方案。</p>
+                            </div>
+
+                            <p><strong>3. 对国际制度设计的启示</strong></p>
+                            <p>理解两种博弈类型的区别对于国际制度设计具有重要意义。对于协作型博弈，国际制度需要提供激励相容的机制，通过惩罚机制和重复博弈来促进合作。对于协调型博弈，国际制度需要提供"焦点预期"（Focal Point），帮助参与者协调预期，降低不确定性。</p>
+
+                            <div class="key-point">
+                                <strong>核心区别总结：</strong>协作型博弈的核心问题是"激励问题"（如何让各方有动力合作），而协调型博弈的核心问题是"预期问题"（如何让各方选择同一行动方案）。国际制度在两类博弈中分别扮演"激励提供者"和"预期协调者"的角色。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三题 -->
+                <div class="question-container">
+                    <span class="question-number">第3题</span>
+                    <p class="question-text">简述并举例说明相对收益对国际合作的影响。</p>
+                    <span class="difficulty-badge difficulty-medium">中等难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>相对收益（Relative Gains）是国际关系现实主义理论中的核心概念，指的是国家在互动过程中不仅关注绝对收益，更关注相对于其他国家的收益差距。相对收益考量对国际合作产生深远影响。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">相对收益与国际合作的关系模型</h4>
+                                <svg viewBox="0 0 800 400" style="width:100%;height:auto;">
+                                    <!-- 坐标系 -->
+                                    <line x1="100" y1="350" x2="700" y2="350" stroke="#333" stroke-width="2"/>
+                                    <line x1="100" y1="350" x2="100" y2="50" stroke="#333" stroke-width="2"/>
+                                    <text x="400" y="390" text-anchor="middle" fill="#333" font-size="14">相对收益关注程度</text>
+                                    <text x="50" y="200" text-anchor="middle" fill="#333" font-size="14" transform="rotate(-90,50,200)">合作可能性</text>
+
+                                    <!-- 曲线 -->
+                                    <path d="M100,350 Q250,340 400,250 T700,100" fill="none" stroke="#667eea" stroke-width="3"/>
+                                    <path d="M100,350 Q250,340 400,250 T700,100" fill="none" stroke="#764ba2" stroke-width="3" stroke-dasharray="10,5"/>
+
+                                    <!-- 标签 -->
+                                    <circle cx="150" cy="340" r="8" fill="#28a745"/>
+                                    <text x="150" y="330" text-anchor="middle" fill="#28a745" font-size="11">高合作意愿区</text>
+
+                                    <circle cx="400" cy="250" r="8" fill="#ffc107"/>
+                                    <text x="400" y="230" text-anchor="middle" fill="#ffc107" font-size="11">不确定区</text>
+
+                                    <circle cx="650" cy="120" r="8" fill="#dc3545"/>
+                                    <text x="650" y="100" text-anchor="middle" fill="#dc3545" font-size="11">低合作意愿区</text>
+
+                                    <!-- 区域标注 -->
+                                    <rect x="100" y="250" width="200" height="100" fill="rgba(40,167,69,0.1)" stroke="none"/>
+                                    <text x="200" y="300" text-anchor="middle" fill="#28a745" font-size="12">经济合作领域</text>
+
+                                    <rect x="500" y="50" width="200" height="200" fill="rgba(220,53,69,0.1)" stroke="none"/>
+                                    <text x="600" y="150" text-anchor="middle" fill="#dc3545" font-size="12">安全合作领域</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>1. 相对收益影响国际合作的基本机制</strong></p>
+                            <p><strong>机制一：安全困境效应</strong>——当国家担心相对收益差距可能转化为军事优势时，会抑制合作意愿。在无政府状态的国际体系中，国家间的相对收益差距直接影响权力格局，因此国家对相对收益格外敏感。</p>
+                            <p><strong>机制二：谈判僵局</strong>——双方都试图最大化相对收益，导致谈判难以达成协议。任何可能使对方获得更大收益的条款都会遭到拒绝，即使该条款对双方都有利。</p>
+                            <p><strong>机制三：搭便车诱惑</strong>——当国家预期合作收益分配不均时，可能选择不合作或少投入，以期从他人投入中获益。</p>
+
+                            <p><strong>2. 相对收益在不同领域的差异化影响</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>领域</th>
+                                        <th>相对收益敏感度</th>
+                                        <th>影响程度</th>
+                                        <th>典型案例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>军事安全</strong></td>
+                                        <td>极高</td>
+                                        <td>严重阻碍</td>
+                                        <td>军备控制协议谈判困难</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>政治合作</strong></td>
+                                        <td>高</td>
+                                        <td>显著影响</td>
+                                        <td>联盟内部权力分配</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>经济贸易</strong></td>
+                                        <td>中</td>
+                                        <td>适度影响</td>
+                                        <td>贸易协定中的利益平衡</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>全球治理</strong></td>
+                                        <td>低</td>
+                                        <td>较小影响</td>
+                                        <td>气候变化、公共卫生</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>3. 典型案例分析</strong></p>
+
+                            <div class="example-box">
+                                <strong>案例一：美苏军备竞赛</strong>
+                                <p>冷战期间，美苏两国在军备控制领域进行了长达数十年的博弈。尽管核裁军对双方都有利（避免军备竞赛的经济负担和核战争风险），但双方都非常关注相对收益：美国希望保持对苏联的核优势，苏联则努力追赶美国。这种对相对收益的执着追求导致《反弹道导弹条约》谈判旷日持久，且双方都试图在协议中保留更多优势。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>案例二：关贸总协定（GATT）回合谈判</strong>
+                                <p>在关贸总协定的多轮谈判中发达国家之间也存在相对收益的博弈。美国、欧盟、日本等都希望在开放市场的同时保护本国敏感产业，同时获取更大的国际市场准入。这种相对收益的考量使得谈判过程漫长而艰难，但最终各方通过"扩大谈判框架"和"补偿机制"等方式实现了妥协。这说明在存在共同利益的领域，即使相对收益敏感，通过适当的制度设计仍然可以促进合作。</p>
+                            </div>
+
+                            <p><strong>4. 克服相对收益障碍的制度途径</strong></p>
+                            <p><strong>途径一：扩大参与者范围</strong>——当合作涉及更多国家时，单个国家的相对收益份额相对减小，绝对收益考量相对增强。</p>
+                            <p><strong>途径二：议题联结</strong>——将敏感议题与收益分配较为平衡的议题挂钩，平衡各方利益。</p>
+                            <p><strong>途径三：建立互惠机制</strong>——通过长期互动建立互惠关系，将单次博弈转化为重复博弈，降低相对收益的短期重要性。</p>
+                            <p><strong>途径四：引入第三方机制</strong>——通过国际制度提供信息交换和争议解决平台，降低不确定性。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>相对收益是理解国际合作困难的重要概念，它解释了为什么在某些领域即使存在共同利益，国家仍然难以达成合作。克服相对收益障碍需要巧妙的制度设计，将"零和思维"转化为"正和博弈"的激励结构。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第四题 -->
+                <div class="question-container">
+                    <span class="question-number">第4题</span>
+                    <p class="question-text">简述全球公共物品的供给方式。</p>
+                    <span class="difficulty-badge difficulty-easy">较为基础</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>全球公共物品（Global Public Goods）是指那些惠及所有国家、所有人，且具有非排他性和非竞争性特征的国际公共资源。全球公共物品的供给面临严重的"搭便车"问题，需要创新性的制度安排来解决。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">全球公共物品供给方式框架</h4>
+                                <svg viewBox="0 0 800 450" style="width:100%;height:auto;">
+                                    <!-- 中心圆 -->
+                                    <circle cx="400" cy="225" r="70" fill="#667eea"/>
+                                    <text x="400" y="210" text-anchor="middle" fill="white" font-size="14" font-weight="bold">全球公共物品</text>
+                                    <text x="400" y="235" text-anchor="middle" fill="white" font-size="12">供给方式</text>
+
+                                    <!-- 四个主要方式 -->
+                                    <circle cx="400" cy="80" r="55" fill="#28a745"/>
+                                    <text x="400" y="75" text-anchor="middle" fill="white" font-size="12" font-weight="bold">主导国供给</text>
+                                    <text x="400" y="95" text-anchor="middle" fill="white" font-size="10">(霸权合作)</text>
+
+                                    <circle cx="620" cy="225" r="55" fill="#17a2b8"/>
+                                    <text x="620" y="220" text-anchor="middle" fill="white" font-size="12" font-weight="bold">集体行动</text>
+                                    <text x="620" y="240" text-anchor="middle" fill="white" font-size="10">(国际制度)</text>
+
+                                    <circle cx="400" cy="370" r="55" fill="#ffc107"/>
+                                    <text x="400" y="365" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">公私伙伴关系</text>
+                                    <text x="400" y="385" text-anchor="middle" fill="#333" font-size="10">(PPP模式)</text>
+
+                                    <circle cx="180" cy="225" r="55" fill="#dc3545"/>
+                                    <text x="180" y="220" text-anchor="middle" fill="white" font-size="12" font-weight="bold">技术转让</text>
+                                    <text x="180" y="240" text-anchor="middle" fill="white" font-size="10">(知识溢出)</text>
+
+                                    <!-- 连接线 -->
+                                    <line x1="400" y1="155" x2="400" y2="135" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+                                    <line x1="555" y1="225" x2="535" y2="225" stroke="#666" stroke-width="2"/>
+                                    <line x1="400" y1="315" x2="400" y2="295" stroke="#666" stroke-width="2"/>
+                                    <line x1="245" y1="225" x2="265" y2="225" stroke="#666" stroke-width="2"/>
+
+                                    <!-- 外部标注 -->
+                                    <rect x="480" y="50" width="120" height="40" rx="5" fill="#f8f9fa" stroke="#28a745" stroke-width="1"/>
+                                    <text x="540" y="75" text-anchor="middle" fill="#333" font-size="10">美国主导的</text>
+
+                                    <rect x="630" y="160" width="120" height="40" rx="5" fill="#f8f9fa" stroke="#17a2b8" stroke-width="1"/>
+                                    <text x="690" y="185" text-anchor="middle" fill="#333" font-size="10">《蒙特利尔议定书》</text>
+
+                                    <rect x="480" y="340" width="120" height="40" rx="5" fill="#f8f9fa" stroke="#ffc107" stroke-width="1"/>
+                                    <text x="540" y="365" text-anchor="middle" fill="#333" font-size="10">全球疫苗联盟</text>
+
+                                    <rect x="50" y="160" width="120" height="40" rx="5" fill="#f8f9fa" stroke="#dc3545" stroke-width="1"/>
+                                    <text x="110" y="185" text-anchor="middle" fill="#333" font-size="10">开源软件运动</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>1. 主导国供给模式（霸权稳定论）</strong></p>
+                            <p>该模式认为在无政府状态的国际体系中，需要一个霸权国家来提供公共物品。霸权国家通过承担不成比例的成本，为国际社会提供安全保障、贸易规则、货币体系等公共物品。作为回报，霸权国家获得一定的声望和影响力。</p>
+                            <div class="example-box">
+                                <strong>典型案例：二战后美国主导的国际秩序</strong>
+                                <p>二战后，美国主导建立了布雷顿森林体系（IMF、世界银行）、关贸总协定（GATT）等国际经济制度，并为盟友提供安全保障。这一模式虽然有效地提供了公共物品，但也面临"霸权衰退"问题——当霸权国实力下降或意愿减弱时，公共物品供给可能不足。</p>
+                            </div>
+
+                            <p><strong>2. 集体行动与国际制度模式</strong></p>
+                            <p>该模式通过建立国际制度来协调各国的供给行为，通过规则约束和监督机制减少搭便车行为。国际制度可以通过以下机制促进公共物品供给：</p>
+                            <p><strong>机制一：规则制定</strong>——明确各国的权利义务和贡献标准。</p>
+                            <p><strong>机制二：信息共享</strong>——建立透明度机制，减少信息不对称。</p>
+                            <p><strong>机制三：监督执行</strong>——通过核查和制裁确保承诺履行。</p>
+                            <p><strong>机制四：争端解决</strong>——为利益冲突提供解决渠道。</p>
+                            <div class="example-box">
+                                <strong>典型案例：《蒙特利尔议定书》</strong>
+                                <p>1987年签署的《蒙特利尔议定书》是全球环境治理的成功范例。该议定书通过明确各国的减排义务、建立多边基金帮助发展中国家、设立履约审查机制等方式，成功促进了消耗臭氧层物质淘汰的全球合作。这一案例表明，即使在没有主导国的情况下，通过有效的国际制度设计也可以解决集体行动问题。</p>
+                            </div>
+
+                            <p><strong>3. 公私伙伴关系模式（PPP模式）</strong></p>
+                            <p>该模式通过动员私营部门、非政府组织、慈善基金会等非国家行为体参与全球公共物品供给，发挥多元行为体的比较优势。</p>
+                            <div class="example-box">
+                                <strong>典型案例：全球疫苗联盟（Gavi）</strong>
+                                <p>全球疫苗联盟通过整合发达国家政府资金、国际组织资源、制药企业技术和非政府组织网络，创新了疫苗供给模式。该联盟已帮助超过10亿儿童接种疫苗，有效促进了全球公共卫生这一公共物品的供给。</p>
+                            </div>
+
+                            <p><strong>4. 技术转让与知识溢出模式</strong></p>
+                            <p>该模式通过促进技术和知识的国际传播，降低公共物品供给的边际成本，使更多国家能够参与供给。</p>
+                            <div class="example-box">
+                                <strong>典型案例：开源软件运动</strong>
+                                <p>开源软件通过知识共享和协作开发模式，有效解决了软件这类准公共物品的供给问题。这种模式也被应用于科学研究领域，如人类基因组计划通过数据共享加速了基因技术的发展。</p>
+                            </div>
+
+                            <p><strong>5. 混合模式与创新</strong></p>
+                            <p>在实际操作中，全球公共物品的供给往往需要多种模式的组合运用。成功的全球公共物品供给体系通常具有以下特征：</p>
+                            <p><strong>特征一：多元参与</strong>——整合国家、国际组织、私营部门、公民社会的力量。</p>
+                            <p><strong>特征二：激励相容</strong>——设计使个体利益与集体利益一致的机制。</p>
+                            <p><strong>特征三：渐进路径</strong>——从容易达成的领域开始，逐步扩展合作范围。</p>
+                            <p><strong>特征四：适应性强</strong>——能够根据环境变化调整供给策略。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>全球公共物品的供给是一个复杂的集体行动问题，需要创新性的制度安排。单一模式往往难以独立解决供给问题，实践中通常需要多种模式的组合运用。成功的全球公共物品供给体系需要在效率、公平和可持续性之间取得平衡。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第五题 -->
+                <div class="question-container">
+                    <span class="question-number">第5题</span>
+                    <p class="question-text">简述行为主义方法论在国际关系研究中的价值。</p>
+                    <span class="difficulty-badge difficulty-medium">中等难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>行为主义方法论（Behavioralism）是20世纪中叶在社会科学领域兴起的重要方法论流派，其核心主张是用科学、实证的方法研究人类行为。在国际关系领域，行为主义方法论的引入带来了深刻的方法论革命。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">行为主义方法论的核心要素</h4>
+                                <svg viewBox="0 0 800 400" style="width:100%;height:auto;">
+                                    <!-- 中心 -->
+                                    <circle cx="400" cy="200" r="60" fill="#667eea"/>
+                                    <text x="400" y="190" text-anchor="middle" fill="white" font-size="13" font-weight="bold">行为主义</text>
+                                    <text x="400" y="215" text-anchor="middle" fill="white" font-size="12">方法论</text>
+
+                                    <!-- 四个核心要素 -->
+                                    <circle cx="200" cy="100" r="50" fill="#28a745"/>
+                                    <text x="200" y="95" text-anchor="middle" fill="white" font-size="11" font-weight="bold">科学性</text>
+                                    <text x="200" y="115" text-anchor="middle" fill="white" font-size="10">Systematic</text>
+
+                                    <circle cx="600" cy="100" r="50" fill="#17a2b8"/>
+                                    <text x="600" y="95" text-anchor="middle" fill="white" font-size="11" font-weight="bold">实证性</text>
+                                    <text x="600" y="115" text-anchor="middle" fill="white" font-size="10">Empirical</text>
+
+                                    <circle cx="200" cy="300" r="50" fill="#ffc107"/>
+                                    <text x="200" y="295" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">可量化</text>
+                                    <text x="200" y="315" text-anchor="middle" fill="#333" font-size="10">Quantifiable</text>
+
+                                    <circle cx="600" cy="300" r="50" fill="#dc3545"/>
+                                    <text x="600" y="295" text-anchor="middle" fill="white" font-size="11" font-weight="bold">可验证</text>
+                                    <text x="600" y="315" text-anchor="middle" fill="white" font-size="10">Falsifiable</text>
+
+                                    <!-- 连接线 -->
+                                    <line x1="250" y1="120" x2="340" y2="160" stroke="#666" stroke-width="2"/>
+                                    <line x1="550" y1="120" x2="460" y2="160" stroke="#666" stroke-width="2"/>
+                                    <line x1="250" y1="280" x2="340" y2="240" stroke="#666" stroke-width="2"/>
+                                    <line x1="550" y1="280" x2="460" y2="240" stroke="#666" stroke-width="2"/>
+                                </svg>
+                            </div>
+
+                            <p><strong>1. 行为主义方法论的基本主张</strong></p>
+                            <p><strong>主张一：价值中立</strong>——研究应尽量避免价值判断，专注于描述和解释客观现象。</p>
+                            <p><strong>主张二：经验实证</strong>——理论命题必须能够通过经验观察进行验证。</p>
+                            <p><strong>主张三：系统分析</strong>——将国际关系视为一个系统，研究其中的规律性关系。</p>
+                            <p><strong>主张四：量化研究</strong>——用数学模型和统计方法分析国际关系现象。</p>
+
+                            <p><strong>2. 行为主义方法论对国际关系研究的贡献</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>贡献领域</th>
+                                        <th>具体内容</th>
+                                        <th>代表学者/研究</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>方法论革新</strong></td>
+                                        <td>推动国际关系研究从传统定性分析向科学实证方法转型</td>
+                                        <td>卡普兰、辛格</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>理论建构</strong></td>
+                                        <td>发展出系统论、博弈论、决策理论等分析框架</td>
+                                        <td>沃尔兹、斯科尔斯基</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>数据积累</strong></td>
+                                        <td>建立大规模国际关系数据库，为实证研究奠定基础</td>
+                                        <td>Correlates of War项目</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>因果分析</strong></td>
+                                        <td>引入统计方法和实验设计，提高因果推断的严谨性</td>
+                                        <td>定量国际关系研究</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>3. 行为主义方法论在国际关系研究中的具体应用</strong></p>
+
+                            <div class="example-box">
+                                <strong>应用一：战争预测研究</strong>
+                                <p>20世纪60年代，西方学者运用行为主义方法研究战争的起因和预测方法。定量战争研究（Quantitative Peace Science）试图通过统计分析找出与战争爆发相关的变量（如经济实力差距、联盟关系、领土争端等），建立战争预测模型。尽管这一尝试并未成功实现可靠预测，但推动了国际关系数据的系统化收集和因果分析方法的应用。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>应用二：国际冲突数据库建设</strong>
+                                <p>以"战争相关因素项目"（Correlates of War, COW）为代表的大型数据库建设项目，系统收集了1815年以来国家间战争、联盟、贸易、领土等数据，为国际关系的定量研究提供了重要的经验基础。这些数据库至今仍是国际关系实证研究的重要资源。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>应用三：贸易和平论的经验检验</strong>
+                                <p>行为主义方法论的重要应用之一是对"贸易和平论"（Democratic Peace Theory）的系统检验。研究人员通过统计分析发现，自由民主国家之间很少发生战争，而贸易相互依赖程度高的国家之间爆发冲突的可能性更低。这些发现对国际关系理论的发展产生了深远影响。</p>
+                            </div>
+
+                            <p><strong>4. 行为主义方法论的价值与局限</strong></p>
+                            <p><strong>核心价值：</strong></p>
+                            <p><strong>价值一：科学化</strong>——推动国际关系研究向更加科学、系统的方向发展，提高了研究的严谨性和可验证性。</p>
+                            <p><strong>价值二：经验基础</strong>——强调经验实证，使理论研究建立在可靠的经验基础之上。</p>
+                            <p><strong>价值三：方法创新</strong>——发展出博弈论、统计模型、系统动力学等新的分析工具。</p>
+                            <p><strong>价值四：知识积累</strong>——通过数据库建设和标准化研究方法，促进知识的系统积累和检验。</p>
+
+                            <p><strong>主要局限：</strong></p>
+                            <p><strong>局限一：过度简化</strong>——量化分析可能忽略重要的历史背景和情境因素。</p>
+                            <p><strong>局限二：数据局限</strong>——历史数据的质量和可及性存在限制。</p>
+                            <p><strong>局限三：因果推断</strong>——统计相关性不等于因果关系，控制变量困难。</p>
+                            <p><strong>局限四：解释力有限</strong>——难以解释重大历史转折和突发事件。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>行为主义方法论为国际关系研究带来了科学化的革命，它强调实证研究、系统分析和量化方法，极大地丰富了国际关系的研究工具库。然而，行为主义并不能完全取代传统的诠释性研究，两种方法论应当互补运用。在当代国际关系研究中，方法多元主义已成为主流趋势。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第六题 -->
+                <div class="question-container">
+                    <span class="question-number">第6题</span>
+                    <p class="question-text">简述资产专用性对国际合作的意义。</p>
+                    <span class="difficulty-badge difficulty-medium">中等难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>资产专用性（Asset Specificity）是新制度经济学中的核心概念，指的是为支持某类特定交易而进行的投资一旦形成便难以转移到其他用途的特性。资产专用性对国际合作的形成、稳定性和治理结构具有重要影响。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">资产专用性的类型与特征</h4>
+                                <svg viewBox="0 0 800 420" style="width:100%;height:auto;">
+                                    <!-- 中心 -->
+                                    <circle cx="400" cy="210" r="65" fill="#667eea"/>
+                                    <text x="400" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="bold">资产专用性</text>
+                                    <text x="400" y="225" text-anchor="middle" fill="white" font-size="12">Asset Specificity</text>
+
+                                    <!-- 六种类型 -->
+                                    <circle cx="180" cy="80" r="45" fill="#28a745"/>
+                                    <text x="180" y="75" text-anchor="middle" fill="white" font-size="10" font-weight="bold">地点专用性</text>
+                                    <text x="180" y="95" text-anchor="middle" fill="white" font-size="9">Location</text>
+
+                                    <circle cx="400" cy="60" r="45" fill="#17a2b8"/>
+                                    <text x="400" y="55" text-anchor="middle" fill="white" font-size="10" font-weight="bold">实物专用性</text>
+                                    <text x="400" y="75" text-anchor="middle" fill="white" font-size="9">Physical</text>
+
+                                    <circle cx="620" cy="80" r="45" fill="#ffc107"/>
+                                    <text x="620" y="75" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">人力专用性</text>
+                                    <text x="620" y="95" text-anchor="middle" fill="#333" font-size="9">Human</text>
+
+                                    <circle cx="180" cy="340" r="45" fill="#dc3545"/>
+                                    <text x="180" y="335" text-anchor="middle" fill="white" font-size="10" font-weight="bold">品牌专用性</text>
+                                    <text x="180" y="355" text-anchor="middle" fill="white" font-size="9">Brand</text>
+
+                                    <circle cx="400" cy="360" r="45" fill="#6c757d"/>
+                                    <text x="400" y="355" text-anchor="middle" fill="white" font-size="10" font-weight="bold">时间专用性</text>
+                                    <text x="400" y="375" text-anchor="middle" fill="white" font-size="9">Temporal</text>
+
+                                    <circle cx="620" cy="340" r="45" fill="#e83e8c"/>
+                                    <text x="620" y="335" text-anchor="middle" fill="white" font-size="10" font-weight="bold">专项专用性</text>
+                                    <text x="620" y="355" text-anchor="middle" fill="white" font-size="9">Idiosyncratic</text>
+
+                                    <!-- 底部标注 -->
+                                    <rect x="100" y="400" width="600" height="15" rx="5" fill="#f8f9fa" stroke="#667eea"/>
+                                    <text x="400" y="410" text-anchor="middle" fill="#333" font-size="10">专用性越高 → 交易成本越高 → 合作治理需求越强</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>1. 资产专用性的类型</strong></p>
+                            <p><strong>地点专用性</strong>——为靠近特定交易伙伴而进行的投资，如在对方国家建立生产基地。</p>
+                            <p><strong>实物专用性</strong>——为特定交易设计的专用设备和机器，如定制化的生产线。</p>
+                            <p><strong>人力专用性</strong>——通过培训和实践积累的针对特定交易的技能和知识。</p>
+                            <p><strong>品牌专用性</strong>——为特定市场或客户群体建立的品牌声誉和营销网络。</p>
+                            <p><strong>时间专用性</strong>——需要在特定时间完成的交易投资，如时效性强的项目。</p>
+                            <p><strong>专项专用性</strong>——为特定交易伙伴量身定制的技术或解决方案。</p>
+
+                            <p><strong>2. 资产专用性对国际合作的影响机制</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>影响维度</th>
+                                        <th>低专用性</th>
+                                        <th>高专用性</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>交易成本</strong></td>
+                                        <td>低，容易找到替代交易对象</td>
+                                        <td>高，投资难以转移，存在"套牢"风险</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>合作风险</strong></td>
+                                        <td>低，退出成本小</td>
+                                        <td>高，担心被合作伙伴"敲竹杠"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>合作意愿</strong></td>
+                                        <td>低，一次性交易为主</td>
+                                        <td>高，长期合作动机强</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>治理需求</strong></td>
+                                        <td>弱，市场机制足以协调</td>
+                                        <td>强，需要正式制度保障</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>关系稳定性</strong></td>
+                                        <td>不稳定，易受市场波动影响</td>
+                                        <td>稳定，但需要持续的制度保障</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>3. 资产专用性与国际合作的复杂关系</strong></p>
+
+                            <div class="example-box">
+                                <strong>案例一：跨国公司的全球化生产网络</strong>
+                                <p>跨国公司在全球范围内建立供应链体系时，往往需要进行大量专用性投资。例如，为苹果公司生产iPhone的代工厂需要投资专用设备、培训专门的技术人员、建立符合苹果标准的质量管理体系。这些专用性投资使得代工厂与苹果公司之间形成了高度相互依赖的关系：一方面，代工厂的利润高度依赖苹果的订单；另一方面，苹果公司也需要代工厂的专用产能。这种专用性关系需要通过长期合同、股权合作、信息共享等机制来治理，以防止机会主义行为。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>案例二：国际能源合作的管道建设</strong>
+                                <p>跨国天然气管道是资产专用性的典型案例。管道建设需要巨额投资，且一旦建成便难以改变用途。能源出口国和进口国之间的管道合作面临着"套牢"问题：出口国担心进口国在管道建成后压低价格，进口国担心出口国在管道建成后中断供应。解决这一问题需要建立长期合同、价格调整机制、相互投资、国际仲裁等制度安排。例如，中俄天然气管道项目经过长达20年的谈判，最终通过"照付不议"（Take-or-Pay）合同条款和相互股权参与来保障双方利益。</p>
+                            </div>
+
+                            <p><strong>4. 资产专用性对国际制度设计的启示</strong></p>
+                            <p><strong>启示一：制度保障需求</strong>——资产专用性越高，对正式制度保障的需求越强。高专用性投资面临的机会主义风险需要通过国际制度来化解。</p>
+                            <p><strong>启示二：合同设计</strong>——需要设计激励相容的长期合同，平衡合作双方的风险和收益。</p>
+                            <p><strong>启示三：关系治理</strong>——除了正式合同，还需要建立信任关系和信息共享机制，降低不确定性。</p>
+                            <p><strong>启示四：退出机制</strong>——需要设计合理的退出机制和投资补偿条款，降低专用性投资的"沉没成本"效应。</p>
+
+                            <p><strong>5. 资产专用性理论的贡献与局限</strong></p>
+                            <p><strong>理论贡献：</strong>资产专用性理论为理解国际合作的形成和治理提供了微观基础，解释了为什么某些领域需要更正式的国际制度安排。它揭示了交易成本如何影响国际合作的制度选择。</p>
+                            <p><strong>理论局限：</strong>资产专用性概念最初源于企业理论，在应用于国际关系时需要注意以下问题：国家行为体与企业行为的差异、国际体系的无政府状态特征、测量专用性程度的困难等。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>资产专用性是理解国际合作制度安排的重要维度。高专用性投资会增加交易成本和机会主义风险，从而增加对正式制度保障的需求。在国际合作实践中，需要根据专用性程度选择适当的治理结构，包括市场机制、长期合同、合资企业、国际制度等多种形式。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 论述题部分 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">📊</span>
+                    二、论述题
+                </h2>
+
+                <!-- 第一题 -->
+                <div class="question-container">
+                    <span class="question-number">第1题</span>
+                    <p class="question-text">论述国家间交易成本对国际制度形式选择的影响。</p>
+                    <span class="difficulty-badge difficulty-hard">较高难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>交易成本理论是新制度经济学的核心理论框架，将交易成本概念引入国际关系研究，有助于解释为什么国家会选择不同形式的国际制度。本题需要从交易成本的定义、分类出发，系统分析其对国际制度形式选择的影响机制。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">交易成本与国际制度选择的理论框架</h4>
+                                <svg viewBox="0 0 850 500" style="width:100%;height:auto;">
+                                    <!-- 标题 -->
+                                    <text x="425" y="30" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">交易成本 → 国际制度形式</text>
+
+                                    <!-- 第一层：交易成本类型 -->
+                                    <rect x="50" y="50" width="750" height="60" rx="10" fill="#f8f9fa" stroke="#667eea" stroke-width="2"/>
+                                    <text x="425" y="75" text-anchor="middle" fill="#667eea" font-size="13" font-weight="bold">一、交易成本的基本类型</text>
+                                    <text x="425" y="95" text-anchor="middle" fill="#333" font-size="11">信息成本 · 谈判成本 · 监督成本 · 执行成本</text>
+
+                                    <!-- 箭头1 -->
+                                    <line x1="425" y1="110" x2="425" y2="130" stroke="#333" stroke-width="2"/>
+
+                                    <!-- 第二层：影响维度 -->
+                                    <rect x="50" y="140" width="750" height="80" rx="10" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="425" y="165" text-anchor="middle" fill="#764ba2" font-size="13" font-weight="bold">二、交易成本的影响维度</text>
+                                    <text x="425" y="190" text-anchor="middle" fill="#333" font-size="11">不确定性 · 交易频率 · 资产专用性 · 竞争程度</text>
+
+                                    <!-- 箭头2 -->
+                                    <line x1="425" y1="220" x2="425" y2="240" stroke="#333" stroke-width="2"/>
+
+                                    <!-- 第三层：制度选择 -->
+                                    <rect x="50" y="250" width="750" height="100" rx="10" fill="#f8f9fa" stroke="#28a745" stroke-width="2"/>
+                                    <text x="425" y="275" text-anchor="middle" fill="#28a745" font-size="13" font-weight="bold">三、国际制度形式选择</text>
+                                    <line x1="100" y1="290" x2="750" y2="290" stroke="#ddd"/>
+                                    <text x="150" y="315" text-anchor="middle" fill="#333" font-size="10">市场机制</text>
+                                    <text x="150" y="335" text-anchor="middle" fill="#666" font-size="9">低交易成本领域</text>
+                                    <text x="350" y="315" text-anchor="middle" fill="#333" font-size="10">双边协议</text>
+                                    <text x="350" y="335" text-anchor="middle" fill="#666" font-size="9">中等交易成本</text>
+                                    <text x="550" y="315" text-anchor="middle" fill="#333" font-size="10">多边制度</text>
+                                    <text x="550" y="335" text-anchor="middle" fill="#666" font-size="9">高交易成本</text>
+                                    <text x="700" y="315" text-anchor="middle" fill="#333" font-size="10">等级制/霸权</text>
+                                    <text x="700" y="335" text-anchor="middle" fill="#666" font-size="9">最高交易成本</text>
+
+                                    <!-- 底部箭头 -->
+                                    <line x1="425" y1="350" x2="425" y2="370" stroke="#333" stroke-width="2"/>
+                                    <polygon points="425,380 415,370 435,670" fill="#333"/>
+
+                                    <!-- 第四层：结果 -->
+                                    <rect x="200" y="390" width="450" height="80" rx="10" fill="#e8f4f8" stroke="#17a2b8" stroke-width="2"/>
+                                    <text x="425" y="415" text-anchor="middle" fill="#17a2b8" font-size="13" font-weight="bold">四、预期结果</text>
+                                    <text x="425" y="440" text-anchor="middle" fill="#333" font-size="11">降低交易成本 · 促进国际合作 · 提高资源配置效率</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>一、交易成本的基本概念与类型</strong></p>
+                            <p><strong>1. 交易成本的定义</strong></p>
+                            <p>交易成本（Transaction Costs）是指在市场经济中，为完成一笔交易所需要付出的所有非生产成本。它包括获取信息的成本、谈判成本、监督执行成本等。威廉姆森（Oliver Williamson）将交易成本比喻为"经济世界的摩擦力"。</p>
+                            <p><strong>2. 交易成本的主要类型</strong></p>
+                            <p><strong>信息成本</strong>——获取和处理交易相关信息所需的成本，包括搜寻交易对象、了解对方资信、评估交易条件等。</p>
+                            <p><strong>谈判成本</strong>——双方就交易条款进行协商所需的成本，包括时间、精力、法律咨询等资源投入。</p>
+                            <p><strong>监督成本</strong>——确保交易双方遵守协议条款所需的成本，包括检查、审计、监测等。</p>
+                            <p><strong>执行成本</strong>——当一方违约时另一方为维护自身权益所需的成本，包括诉讼、仲裁、强制执行等。</p>
+
+                            <p><strong>二、影响交易成本的关键维度</strong></p>
+                            <p><strong>1. 不确定性</strong></p>
+                            <p>不确定性是影响交易成本的首要因素。不确定性包括环境不确定性（外部环境的变化）和行为不确定性（交易对手的行为难以预测）。在国际关系中，国家面临的不确定性尤为突出：国际体系的无政府状态意味着不存在超越国家之上的强制执行机构；国际环境的复杂性使得国家难以准确评估他国意图和行为。</p>
+                            <p><strong>2. 交易频率</strong></p>
+                            <p>交易频率越高，建立专门治理结构的边际成本越低。对于频繁发生的交易，投资于专用治理机制是值得的；而对于一次性交易，市场机制通常更为经济。在国际关系中，国家间某些领域的互动是高频的（如贸易、投资），另一些则是低频的（如领土争端、军事冲突）。</p>
+                            <p><strong>3. 资产专用性</strong></p>
+                            <p>资产专用性越高，交易双方越容易被"套牢"，机会主义风险越大，交易成本越高。高专用性投资包括为特定交易设计的设备、培养的专用技能、建立的关系网络等。在国际合作中，资产专用性投资越深的国家越倾向于建立正式的制度保障。</p>
+                            <p><strong>4. 竞争程度</strong></p>
+                            <p>市场竞争程度影响交易成本。在竞争激烈的市场中，交易双方都有更多替代选择，降低了被"敲竹杠"的风险；在垄断或寡头市场中，交易成本相对较高。</p>
+
+                            <p><strong>三、交易成本对国际制度形式选择的影响</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>交易成本水平</th>
+                                        <th>适用制度形式</th>
+                                        <th>制度特征</th>
+                                        <th>典型案例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>低交易成本</strong></td>
+                                        <td>市场机制/临时安排</td>
+                                        <td>非正式、灵活、低约束力</td>
+                                        <td>一次性商品贸易</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>中等交易成本</strong></td>
+                                        <td>双边协议</td>
+                                        <td>正式合同、明确条款</td>
+                                        <td>双边投资协定</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>较高交易成本</strong></td>
+                                        <td>多边国际制度</td>
+                                        <td>规则导向、争端解决机制</td>
+                                        <td>WTO、RCEP</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>极高交易成本</strong></td>
+                                        <td>等级制/霸权秩序</td>
+                                        <td>权威协调、强制执行能力</td>
+                                        <td>IMF监督机制</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>1. 低交易成本领域：偏好非正式安排</strong></p>
+                            <p>当交易成本较低时，国家倾向于选择灵活的、非正式的制度形式。这类制度形式的特点是：进入和退出成本低、规则较为模糊、不要求正式的承诺。低交易成本通常出现在以下情况：交易内容简单明确、信息对称程度高、替代选择多、资产专用性低。</p>
+                            <div class="example-box">
+                                <strong>案例分析：非正式论坛与合作</strong>
+                                <p>二十国集团（G20）最初是一个非正式的论坛，缺乏常设机构和强制执行能力。在全球经济治理领域，G20能够在低交易成本的情况下有效协调成员国立场，应对金融危机等突发挑战。这种非正式安排的优势在于灵活性强、决策效率高，适合处理需要快速响应的问题。</p>
+                            </div>
+
+                            <p><strong>2. 中等交易成本领域：依赖双边协议</strong></p>
+                            <p>当交易成本处于中等水平时，国家通常选择双边协议形式。双边协议的特点是：针对性强、条款明确、执行机制相对简单。双边协议能够较好地平衡灵活性与确定性，是国际合作的基础形式。</p>
+                            <div class="example-box">
+                                <strong>案例分析：双边投资协定（BIT）网络</strong>
+                                <p>全球范围内存在数千个双边投资协定，这些协定明确了投资者与东道国之间的权利义务，建立了投资争端解决机制。双边投资协定的发展反映了国际投资领域交易成本的上升：随着国际投资规模扩大和形式复杂化，需要更正式的制度安排来保护投资者权益、约束东道国行为。</p>
+                            </div>
+
+                            <p><strong>3. 较高交易成本领域：需要多边制度</strong></p>
+                            <p>当交易成本较高时，特别是涉及多个国家、复杂议题和长期合作时，多边国际制度成为必要选择。多边制度通过以下机制降低交易成本：</p>
+                            <p><strong>机制一：规则标准化</strong>——建立统一的规则框架，减少谈判成本。</p>
+                            <p><strong>机制二：透明度要求</strong>——强制信息披露，降低信息不对称。</p>
+                            <p><strong>机制三：争端解决机制</strong>——提供制度化的争议解决渠道，降低执行成本。</p>
+                            <p><strong>机制四：规模经济</strong>——通过多边框架实现规则制定和执行的规模经济。</p>
+                            <div class="example-box">
+                                <strong>案例分析：世界贸易组织（WTO）</strong>
+                                <p>WTO是多边贸易制度的核心，其争端解决机制是降低交易成本的关键制度创新。在WTO框架下，成员国之间的贸易争端可以通过制度化的程序解决，避免了双边谈判的不确定性。WTO的规则体系也为新成员国的贸易政策调整提供了明确的参照标准，降低了信息成本和谈判成本。</p>
+                            </div>
+
+                            <p><strong>4. 极高交易成本领域：霸权或等级制安排</strong></p>
+                            <p>当交易成本极高时，特别是需要协调大量异质性行为体、面临严重的搭便车问题时，可能需要更强有力的制度安排，包括霸权秩序或等级制结构。这类安排的特点是存在主导行为体或中心权威，能够提供公共物品、协调利益冲突、强制执行规则。</p>
+                            <div class="example-box">
+                                <strong>案例分析：国际货币基金组织（IMF）的监督机制</strong>
+                                <p>IMF对成员国的经济监督体现了等级制安排的某些特征。IMF通过定期评估成员国的经济政策、提供政策建议，在一定程度上约束成员国的政策选择。这种监督机制虽然不具有强制执行力，但通过声誉机制和市场压力发挥影响力，有效降低了国际货币合作中的交易成本。</p>
+                            </div>
+
+                            <p><strong>四、交易成本视角下国际制度演变的趋势</strong></p>
+                            <p><strong>趋势一：从非正式到正式</strong>——随着国际相互依赖深化和议题复杂化，许多领域的交易成本呈上升趋势，推动国际制度从非正式安排向正式制度转型。</p>
+                            <p><strong>趋势二：从双边到多边</strong>——全球化时代许多问题具有跨国性质，单一国家难以独立应对，推动了多边制度的发展。</p>
+                            <p><strong>趋势三：从宽松到严格</strong>——为应对搭便车和执行困难问题，国际制度的约束力和执行机制趋于加强。</p>
+                            <p><strong>趋势四：从单一到复合</strong>——随着议题互联，复合制度网络（Regime Complex）成为普遍现象，不同制度之间既相互补充也可能产生冲突。</p>
+
+                            <p><strong>五、理论贡献与局限</strong></p>
+                            <p><strong>理论贡献：</strong>交易成本理论为理解国际制度的形式选择提供了统一的分析框架，将制度选择与效率考量联系起来，有助于解释制度的演进逻辑。</p>
+                            <p><strong>理论局限：</strong>首先，交易成本难以精确测量；其次，交易成本理论主要从效率角度解释制度选择，可能忽视权力因素和观念因素的作用；再次，国家行为体与企业行为存在差异，直接套用企业理论需要谨慎。</p>
+
+                            <div class="key-point">
+                                <strong>结论：</strong>国家间交易成本是影响国际制度形式选择的关键因素。低交易成本领域倾向于灵活的非正式安排；中等交易成本领域适合双边协议；较高交易成本领域需要多边制度；极高交易成本领域可能需要等级制安排。理解这一逻辑有助于解释国际制度的形成、演变和改革方向。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二题 -->
+                <div class="question-container">
+                    <span class="question-number">第2题</span>
+                    <p class="question-text">简述并举例说明理性主义方法论在国际关系研究中的价值。</p>
+                    <span class="difficulty-badge difficulty-medium">中等难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>理性主义方法论（Rationalism）是国际关系研究中的主流范式之一，其核心假设是国家是追求自身利益最大化的理性行为体。理性主义方法论为理解和解释国际关系现象提供了有力的分析工具。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">理性主义方法论的理论体系</h4>
+                                <svg viewBox="0 0 800 450" style="width:100%;height:auto;">
+                                    <!-- 中心 -->
+                                    <circle cx="400" cy="225" r="60" fill="#667eea"/>
+                                    <text x="400" y="215" text-anchor="middle" fill="white" font-size="13" font-weight="bold">理性主义</text>
+                                    <text x="400" y="240" text-anchor="middle" fill="white" font-size="11">Rationalism</text>
+
+                                    <!-- 核心假设 -->
+                                    <circle cx="150" cy="100" r="55" fill="#28a745"/>
+                                    <text x="150" y="95" text-anchor="middle" fill="white" font-size="11" font-weight="bold">理性假设</text>
+                                    <text x="150" y="115" text-anchor="middle" fill="white" font-size="9">利益最大化</text>
+
+                                    <circle cx="650" cy="100" r="55" fill="#17a2b8"/>
+                                    <text x="650" y="95" text-anchor="middle" fill="white" font-size="11" font-weight="bold">方法论</strong>
+                                    <text x="650" y="115" text-anchor="middle" fill="white" font-size="9">形式化分析</text>
+
+                                    <circle cx="150" cy="350" r="55" fill="#ffc107"/>
+                                    <text x="150" y="345" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">理论流派</text>
+                                    <text x="150" y="365" text-anchor="middle" fill="#333" font-size="9">现实主义/自由主义</text>
+
+                                    <circle cx="650" cy="350" r="55" fill="#dc3545"/>
+                                    <text x="650" y="345" text-anchor="middle" fill="white" font-size="11" font-weight="bold">分析工具</text>
+                                    <text x="650" y="365" text-anchor="middle" fill="white" font-size="9">博弈论/理性选择</text>
+
+                                    <!-- 连接线 -->
+                                    <line x1="200" y1="120" x2="330" y2="180" stroke="#666" stroke-width="2"/>
+                                    <line x1="600" y1="120" x2="470" y2="180" stroke="#666" stroke-width="2"/>
+                                    <line x1="200" y1="330" x2="330" y2="270" stroke="#666" stroke-width="2"/>
+                                    <line x1="600" y1="330" x2="470" y2="270" stroke="#666" stroke-width="2"/>
+
+                                    <!-- 底部应用领域 -->
+                                    <rect x="200" y="420" width="400" height="25" rx="5" fill="#f8f9fa" stroke="#667eea"/>
+                                    <text x="400" y="437" text-anchor="middle" fill="#333" font-size="11">国际合作 · 制度建设 · 政策选择 · 冲突管理</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>一、理性主义方法论的基本假设</strong></p>
+                            <p><strong>1. 核心假设：理性选择</strong></p>
+                            <p>理性主义方法论假设国家是追求自身利益最大化的理性行为体。这意味着国家能够：明确界定自身利益、对各种行动方案进行比较权衡、选择能够最大化利益的行动策略。</p>
+                            <p><strong>2. 偏好的外生性</strong></p>
+                            <p>理性主义通常假设国家的偏好（利益）是给定的、稳定的，而不是理论解释的对象。理论的任务是解释在给定偏好的条件下，国家如何选择行动策略。</p>
+                            <p><strong>3. 策略性互动</strong></p>
+                            <p>理性主义强调国家间互动是策略性的，即每个国家的行动选择都依赖于对其他国家行动的预期。</p>
+
+                            <p><strong>二、理性主义方法论的理论流派</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>流派</th>
+                                        <th>核心假设</th>
+                                        <th>理论代表</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>新现实主义</strong></td>
+                                        <td>国家追求权力和安全，体系结构决定行为</td>
+                                        <td>肯尼斯·沃尔兹《国际政治理论》</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>新自由主义</strong></td>
+                                        <td>国家追求绝对收益，国际制度促进合作</td>
+                                        <td>罗伯特·基欧汉《霸权之后》</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>理性选择理论</strong></td>
+                                        <td>用数学模型分析国家策略选择</td>
+                                        <td>詹姆斯·费伦等</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>三、理性主义方法论的分析工具</strong></p>
+                            <p><strong>1. 博弈论</strong></p>
+                            <p>博弈论是理性主义方法论的核心分析工具，它用数学模型描述策略性互动。博弈论帮助研究者分析：</p>
+                            <p>——在什么条件下国家会选择合作</p>
+                            <p>——均衡结果如何产生</p>
+                            <p>——制度设计如何改变博弈结果</p>
+
+                            <p><strong>2. 理性选择模型</strong></p>
+                            <p>理性选择模型假设行为体在给定约束条件下最大化效用，通过分析约束条件和偏好来预测行为。</p>
+
+                            <p><strong>3. 成本-收益分析</strong></p>
+                            <p>成本-收益分析是理性决策的基本方法，通过比较不同行动方案的成本和收益来做出选择。</p>
+
+                            <p><strong>四、理性主义方法论的价值</strong></p>
+
+                            <div class="example-box">
+                                <strong>案例一：国际制度形成的经济学解释</strong>
+                                <p>基欧汉的《霸权之后》是理性主义方法论的经典之作。该书用博弈论分析国际制度如何解决集体行动问题：即使没有霸权国家，国际制度仍然可以通过降低交易成本、提供信息、设置惩罚机制等方式促进合作。基欧汉指出，国际制度不是权力分配的简单反映，而是各国理性选择的产物。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>案例二：贸易协定的政治经济学分析</strong>
+                                <p>理性主义方法论为分析贸易政策选择提供了有力工具。研究者用理性选择模型分析：国内政治力量如何影响贸易政策选择？政府为何选择自由贸易或保护主义？贸易协定的条款如何反映国内利益集团的博弈？这些分析揭示了国际经济政策的国内政治根源。</p>
+                            </div>
+
+                            <div class="example-box">
+                                <strong>案例三：战争与和平的理性解释</strong>
+                                <p>理性主义对战争原因的解释强调：在信息不对称的情况下，双方可能因为无法传递和平意图而陷入冲突（"理性战争"理论）。这一解释与传统的"非理性"或"误判"解释形成对比，强调即使双方都希望和平，也可能因为策略性考量而走向战争。相应地，理性主义提出通过信号传递、承诺机制、第三方调解等方式来避免战争。</p>
+                            </div>
+
+                            <p><strong>五、理性主义方法论的核心价值</strong></p>
+                            <p><strong>价值一：理论简约性</strong>——通过少数基本假设推导出丰富的理论命题，具有较强的解释力和预测力。</p>
+                            <p><strong>价值二：分析精确性</strong>——形式化的分析工具使理论命题更加精确，便于检验和修正。</p>
+                            <p><strong>价值三：跨领域适用性</strong>——理性主义方法论可应用于国际关系各个领域，包括安全、经济、环境等。</p>
+                            <p><strong>价值四：政策相关性</strong>——理性主义分析有助于政策制定者理解国际互动的逻辑，设计有效的外交策略。</p>
+
+                            <p><strong>六、理性主义方法论的局限与批评</strong></p>
+                            <p><strong>批评一：过度简化</strong>——"理性国家"假设忽略了国家内部的复杂性和决策过程的非理性因素。</p>
+                            <p><strong>批评二：偏好来源</strong>——理性主义假设偏好外生，未能解释偏好是如何形成和改变的。</p>
+                            <p><strong>批评三：认知局限</strong>——现实中的决策者受到认知偏差、信息不完全等因素影响，不完全符合理性假设。</p>
+                            <p><strong>批评四：文化观念</strong>——理性主义未能充分考虑观念、认同、规范等非物质因素的作用。</p>
+
+                            <div class="key-point">
+                                <strong>核心要点：</strong>理性主义方法论是国际关系研究的重要范式，它通过"理性国家"假设和形式化分析工具，为理解国家行为和国际互动提供了系统的理论框架。尽管存在批评，理性主义方法论仍然具有重要的学术价值和应用价值，当代国际关系研究越来越强调理性主义与其他方法论的综合运用。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三题 -->
+                <div class="question-container">
+                    <span class="question-number">第3题</span>
+                    <p class="question-text">论述国际制度对国内政治行为体博弈的影响。</p>
+                    <span class="difficulty-badge difficulty-hard">较高难度</span>
+                    <div class="answer-section">
+                        <div class="answer-title">📌 参考答案</div>
+                        <div class="answer-content">
+                            <p>国际制度对国内政治的影响是国际关系研究的重要议题。传统观点认为国际制度主要影响国家间关系，但越来越多的研究表明，国际制度通过多种机制深刻影响着国内政治行为体的博弈格局。本题需要系统分析国际制度如何改变国内政治行为体的激励结构、信息条件和互动模式。</p>
+
+                            <div class="chart-container">
+                                <h4 class="chart-title">国际制度对国内政治的影响机制</h4>
+                                <svg viewBox="0 0 850 480" style="width:100%;height:auto;">
+                                    <!-- 标题 -->
+                                    <text x="425" y="25" text-anchor="middle" fill="#333" font-size="15" font-weight="bold">国际制度 → 国内政治行为体博弈</text>
+
+                                    <!-- 国际制度层 -->
+                                    <rect x="250" y="45" width="350" height="45" rx="8" fill="#667eea"/>
+                                    <text x="425" y="72" text-anchor="middle" fill="white" font-size="12" font-weight="bold">国际制度（规则、信息、监督、合法性）</text>
+
+                                    <!-- 箭头 -->
+                                    <line x1="425" y1="90" x2="425" y2="115" stroke="#333" stroke-width="2"/>
+
+                                    <!-- 影响机制层 -->
+                                    <rect x="100" y="125" width="650" height="90" rx="8" fill="#f8f9fa" stroke="#764ba2" stroke-width="2"/>
+                                    <text x="425" y="145" text-anchor="middle" fill="#764ba2" font-size="12" font-weight="bold">影响机制</text>
+                                    <line x1="100" y1="160" x2="750" y2="160" stroke="#ddd"/>
+                                    <text x="175" y="180" text-anchor="middle" fill="#333" font-size="10">约束条件变化</text>
+                                    <text x="425" y="180" text-anchor="middle" fill="#333" font-size="10">信息条件改变</text>
+                                    <text x="675" y="180" text-anchor="middle" fill="#333" font-size="10">合法性资源重配</text>
+                                    <text x="175" y="200" text-anchor="middle" fill="#666" font-size="9">规则限制政策选择</text>
+                                    <text x="425" y="200" text-anchor="middle" fill="#666" font-size="9">透明度降低不确定性</text>
+                                    <text x="675" y="200" text-anchor="middle" fill="#666" font-size="9">塑造偏好和认同</text>
+
+                                    <!-- 箭头 -->
+                                    <line x1="425" y1="215" x2="425" y2="240" stroke="#333" stroke-width="2"/>
+
+                                    <!-- 国内博弈变化层 -->
+                                    <rect x="50" y="250" width="750" height="70" rx="8" fill="#e8f4f8" stroke="#28a745" stroke-width="2"/>
+                                    <text x="425" y="270" text-anchor="middle" fill="#28a745" font-size="12" font-weight="bold">国内政治博弈的变化</text>
+                                    <text x="200" y="295" text-anchor="middle" fill="#333" font-size="10">行为体策略调整</text>
+                                    <text x="425" y="295" text-anchor="middle" fill="#333" font-size="10">利益格局重组</text>
+                                    <text x="650" y="295" text-anchor="middle" fill="#333" font-size="10">制度均衡转换</text>
+
+                                    <!-- 箭头 -->
+                                    <line x1="425" y1="320" x2="425" y2="345" stroke="#333" stroke-width="2"/>
+
+                                    <!-- 结果层 -->
+                                    <rect x="200" y="355" width="450" height="50" rx="8" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                                    <text x="425" y="380" text-anchor="middle" fill="#856404" font-size="12" font-weight="bold">国内政策变革 · 行为体地位变化 · 国际制度内化</text>
+
+                                    <!-- 案例标注 -->
+                                    <rect x="50" y="420" width="750" height="50" rx="8" fill="#f8f9fa" border="#ddd"/>
+                                    <text x="100" y="445" text-anchor="middle" fill="#333" font-size="10">典型案例</text>
+                                    <text x="250" y="445" text-anchor="middle" fill="#666" font-size="9">WTO与贸易政策</text>
+                                    <text x="425" y="445" text-anchor="middle" fill="#666" font-size="9">国际人权制度与国内改革</text>
+                                    <text x="600" y="445" text-anchor="middle" fill="#666" font-size="9">国际环保制度与产业政策</text>
+                                </svg>
+                            </div>
+
+                            <p><strong>一、理论背景与分析框架</strong></p>
+                            <p><strong>1. 传统观点：国际与国内二分</strong></p>
+                            <p>传统国际关系理论将国际体系与国内政治视为两个独立的分析层次，国际制度主要被视为国家间互动的产物，对国内政治的影响有限。</p>
+                            <p><strong>2. 理论发展：国际制度的国内政治效应</strong></p>
+                            <p>自20世纪80年代以来，国际关系学界日益关注国际制度的国内政治效应。"双层博弈"理论（Two-Level Games）指出：政府在谈判国际协议时，必须同时考虑国内和国际两个棋盘上的利益。这种分析视角揭示了国际与国内政治之间的深刻联系。</p>
+                            <p><strong>3. 分析框架：制度影响国内博弈的机制</strong></p>
+                            <p>国际制度通过以下三个维度影响国内政治行为体的博弈：改变约束条件、改变信息条件、重新配置合法性资源。</p>
+
+                            <p><strong>二、国际制度影响国内政治博弈的具体机制</strong></p>
+
+                            <p><strong>机制一：约束条件效应</strong></p>
+                            <p>国际制度通过规则约束改变国内行为体的选择空间。当国家加入国际制度后，其政策选择受到国际规则的限制。这种限制既可能约束政府行为，也可能被国内行为体用来推动或阻止某些政策。</p>
+                            <div class="example-box">
+                                <strong>案例分析：WTO规则对成员贸易政策的影响</strong>
+                                <p>WTO成员国的贸易政策受到多边规则的严格约束。例如，"关税约束"条款要求成员国将关税税率控制在承诺水平之内，不得随意提高。这种约束改变了国内利益集团与政府博弈的条件：过去，国内产业可以通过游说政府提高关税来获得保护；在WTO框架下，这种选择的空间大大缩小。反过来，消费者和进口竞争产业的竞争对手可以利用WTO规则来反对保护主义政策。</p>
+                            </div>
+
+                            <p><strong>机制二：信息效应</strong></p>
+                            <p>国际制度通过透明度要求改变国内行为体的信息条件。国际制度通常要求成员国披露相关信息，这降低了国内行为体获取和处理信息的成本，也可能暴露政府行为的不合理之处。</p>
+                            <div class="example-box">
+                                <strong>案例分析：国际反腐败制度与国内监督</strong>
+                                <p>《联合国反腐败公约》等国际制度要求成员国建立透明的财产申报、政府采购等制度。这些透明度要求为国内公民社会、媒体和反对派提供了获取政府官员行为信息的渠道，增强了国内监督的能力。例如，公职人员财产公开制度使得公众可以监督官员的财富变化，识别潜在的腐败行为。</p>
+                            </div>
+
+                            <p><strong>机制三：合法性效应</strong></p>
+                            <p>国际制度通过提供合法性资源或剥夺合法性来影响国内行为体的地位。国际制度的认可可以增强某些行为体或政策的合法性，反之，国际制度的批评可能削弱其合法性。</p>
+                            <div class="example-box">
+                                <strong>案例分析：国际人权制度与国内改革力量</strong>
+                                <p>国际人权制度（如《公民权利和政治权利国际公约》、联合国人权理事会）为国内人权组织和活动家提供了重要的合法性资源。这些国内行为体可以援引国际人权标准来批评政府政策、动员社会支持、推动国内改革。例如，国际人权审查期间，国内人权组织会提交"影子报告"，向国际社会揭示政府的人权问题，借助国际压力推动国内变革。</p>
+                            </div>
+
+                            <p><strong>三、国际制度对不同类型国内行为体的影响</strong></p>
+
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>行为体类型</th>
+                                        <th>国际制度的可能影响</th>
+                                        <th>策略调整</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>政府/行政机构</strong></td>
+                                        <td>政策选择空间受限，但也可能借助国际制度增强谈判地位</td>
+                                        <td>调整政策取向，强化国际谈判能力</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>立法机构</strong></td>
+                                        <td>国际规则可能改变国内立法的必要性和范围</td>
+                                        <td>调整立法议程，参与国际制度监督</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>利益集团</strong></td>
+                                        <td>获得新的盟友（国际行为体）和政策工具</td>
+                                        <td>跨国家动员，利用国际规则推动诉求</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>公民社会组织</strong></td>
+                                        <td>获得合法性资源和国际网络支持</td>
+                                        <td>援引国际标准，参与国际监督</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>国内企业</strong></td>
+                                        <td>面临更激烈的国际竞争，但也有更多国际市场机会</td>
+                                        <td>调整经营策略，参与国际标准制定</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p><strong>四、国际制度影响国内政治博弈的典型案例</strong></p>
+
+                            <p><strong>案例一：欧洲一体化与成员国国内政治</strong></p>
+                            <p>欧洲一体化是国际制度影响国内政治的典型案例。欧盟的规则体系深刻影响了成员国的国内政策：</p>
+                            <p>——欧盟竞争政策限制了成员国政府对国有企业的补贴能力。</p>
+                            <p>——欧盟环境标准要求成员国调整国内环境法规。</p>
+                            <p>——欧盟内部市场规则要求成员国相互承认产品标准。</p>
+                            <p>这些规则约束改变了成员国内部利益集团与政府博弈的条件。例如，欧盟竞争政策削弱了欧洲大型国有企业在母国市场的垄断地位，同时也为其他成员国的企业进入这些市场创造了机会。</p>
+
+                            <p><strong>案例二：国际劳工标准与全球供应链治理</strong></p>
+                            <p>国际劳工标准（如国际劳工组织公约）对跨国公司和发展中国家的劳工政策产生了重要影响。跨国公司为应对消费者运动和企业社会责任压力，开始在全球供应链中实施劳工标准。这种"私人治理"机制改变了发展中国家劳工的处境：</p>
+                            <p>——国际认证为遵守劳工标准的企业提供了市场优势。</p>
+                            <p>——非政府组织的监督增加了跨国公司改善劳工条件的压力。</p>
+                            <p>——出口加工区的劳工开始援引国际标准来争取权益。</p>
+
+                            <p><strong>五、国际制度国内政治效应的理论意义</strong></p>
+                            <p><strong>意义一：层次分析整合</strong></p>
+                            <p>国际制度的国内政治效应研究促进了国际关系理论中"层次分析"的整合。研究表明，国际与国内不是两个独立的世界，而是相互渗透、彼此塑造的。</p>
+                            <p><strong>意义二：行为体视角扩展</strong></p>
+                            <p>这一研究视角将非国家行为体纳入分析，揭示了国际制度如何为国内行为体提供新的行动机会和资源。</p>
+                            <p><strong>意义三：制度变迁动力</strong></p>
+                            <p>国际制度的国内政治效应揭示了制度变迁的重要动力：外部制度压力可以成为推动国内改革的重要力量。</p>
+
+                            <p><strong>六、国际制度国内政治效应的限度</strong></p>
+                            <p><strong>限度一：执行能力差异</strong></p>
+                            <p>国际制度的影响很大程度上取决于国内执行能力。制度约束可能只在有执行能力的国家才能发挥作用。</p>
+                            <p><strong>限度二：国内结构过滤</strong></p>
+                            <p>国际制度的影响受到国内政治结构的过滤。民主国家与威权国家对国际制度的反应可能截然不同。</p>
+                            <p><strong>限度三：行为体策略转化</strong></p>
+                            <p>国际制度的影响取决于国内行为体如何理解和利用这些制度。同一国际制度在不同国家可能产生截然不同的效果。</p>
+
+                            <div class="key-point">
+                                <strong>结论：</strong>国际制度通过约束条件效应、信息效应和合法性效应深刻影响着国内政治行为体的博弈格局。这种影响改变了国内行为体的策略选择、利益重组和制度均衡。理解国际制度的国内政治效应对于分析国际关系的演变和国内政治变革具有重要意义。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 考试准备建议 -->
+            <div class="recommendation-box">
+                <h3>📚 考试准备建议</h3>
+
+                <div class="recommendation-item">
+                    <h4>🏆 推荐的最易简答题</h4>
+                    <p><strong>第2题：简述协作型博弈与协调型博弈的区别</strong></p>
+                    <p style="margin-top:8px;">推荐理由：本题涉及博弈论基础概念，框架清晰，答案结构化程度高。主要掌握两类博弈的收益结构、均衡特征和核心问题即可。推荐指数：★★★★★</p>
+                    <p style="margin-top:8px;"><strong>第4题：简述全球公共物品的供给方式</strong></p>
+                    <p style="margin-top:8px;">推荐理由：本题围绕四种主要供给模式展开，每种模式有明确的定义、机制和案例。答案组织相对直接，便于记忆。推荐指数：★★★★★</p>
+                </div>
+
+                <div class="recommendation-item">
+                    <h4>🎯 推荐的最易论述题</h4>
+                    <p><strong>第2题：简述并举例说明理性主义方法论在国际关系研究中的价值</strong></p>
+                    <p style="margin-top:8px;">推荐理由：本题虽然是论述题，但结构清晰，可以按照"基本假设—理论流派—分析工具—核心价值—典型案例"的框架展开。每部分内容相对独立，便于组织答案。推荐指数：★★★★☆</p>
+                </div>
+
+                <div class="recommendation-item">
+                    <h4>💡 备考策略建议</h4>
+                    <p><strong>策略一：抓住核心概念</strong>——每道题目都有2-3个核心概念，先确保准确理解这些概念的定义和内涵。</p>
+                    <p><strong>策略二：建立分析框架</strong>——论述题需要建立清晰的分析框架，如"定义—类型—机制—案例—结论"的结构。</p>
+                    <p><strong>策略三：结合案例</strong>——适当运用具体案例可以增强答案的说服力和丰富度。</p>
+                    <p><strong>策略四：关注联系</strong>——注意不同题目之间的理论联系，如交易成本、资产专用性、博弈论之间的内在关联。</p>
+                </div>
+            </div>
+
+            <!-- 难度评估总表 -->
+            <div class="section" style="margin-top:40px;">
+                <h2 class="section-title">
+                    <span class="icon">📊</span>
+                    三、题目难度评估总表
+                </h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>题号</th>
+                            <th>题目内容</th>
+                            <th>题型</th>
+                            <th>难度评级</th>
+                            <th>推荐指数</th>
+                            <th>核心考点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>简答1</td>
+                            <td>国际制度的类型划分</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-medium">中等难度</span></td>
+                            <td>★★★☆☆</td>
+                            <td>分类标准、四种类型</td>
+                        </tr>
+                        <tr>
+                            <td>简答2</td>
+                            <td>协作型博弈与协调型博弈的区别</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-easy">较为基础</span></td>
+                            <td>★★★★★</td>
+                            <td>博弈类型、收益结构、案例</td>
+                        </tr>
+                        <tr>
+                            <td>简答3</td>
+                            <td>相对收益对国际合作的影响</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-medium">中等难度</span></td>
+                            <td>★★★☆☆</td>
+                            <td>相对收益概念、影响机制、案例</td>
+                        </tr>
+                        <tr>
+                            <td>简答4</td>
+                            <td>全球公共物品的供给方式</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-easy">较为基础</span></td>
+                            <td>★★★★★</td>
+                            <td>四种供给模式、典型案例</td>
+                        </tr>
+                        <tr>
+                            <td>简答5</td>
+                            <td>行为主义方法论的价值</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-medium">中等难度</span></td>
+                            <td>★★★☆☆</td>
+                            <td>行为主义主张、贡献、局限</td>
+                        </tr>
+                        <tr>
+                            <td>简答6</td>
+                            <td>资产专用性对国际合作的意义</td>
+                            <td>简答题</td>
+                            <td><span class="difficulty-badge difficulty-medium">中等难度</span></td>
+                            <td>★★★☆☆</td>
+                            <td>资产专用性类型、影响机制</td>
+                        </tr>
+                        <tr>
+                            <td>论述1</td>
+                            <td>交易成本对国际制度形式选择的影响</td>
+                            <td>论述题</td>
+                            <td><span class="difficulty-badge difficulty-hard">较高难度</span></td>
+                            <td>★★☆☆☆</td>
+                            <td>交易成本类型、制度选择逻辑</td>
+                        </tr>
+                        <tr>
+                            <td>论述2</td>
+                            <td>理性主义方法论的价值</td>
+                            <td>论述题</td>
+                            <td><span class="difficulty-badge difficulty-medium">中等难度</span></td>
+                            <td>★★★★☆</td>
+                            <td>理性主义假设、理论流派、工具</td>
+                        </tr>
+                        <tr>
+                            <td>论述3</td>
+                            <td>国际制度对国内政治行为体博弈的影响</td>
+                            <td>论述题</td>
+                            <td><span class="difficulty-badge difficulty-hard">较高难度</span></td>
+                            <td>★★☆☆☆</td>
+                            <td>影响机制、案例分析</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 知识框架图 -->
+            <div class="section" style="margin-top:40px;">
+                <h2 class="section-title">
+                    <span class="icon">🗺️</span>
+                    四、核心知识框架图
+                </h2>
+
+                <div class="chart-container">
+                    <h4 class="chart-title">《国际关系的制度分析方法》核心概念关系图</h4>
+                    <svg viewBox="0 0 800 500" style="width:100%;height:auto;">
+                        <!-- 中心节点 -->
+                        <circle cx="400" cy="250" r="50" fill="#667eea"/>
+                        <text x="400" y="245" text-anchor="middle" fill="white" font-size="12" font-weight="bold">国际制度</text>
+                        <text x="400" y="265" text-anchor="middle" fill="white" font-size="10">Institutional</text>
+
+                        <!-- 第一层：理论基础 -->
+                        <circle cx="150" cy="100" r="40" fill="#28a745"/>
+                        <text x="150" y="95" text-anchor="middle" fill="white" font-size="10" font-weight="bold">理性主义</text>
+                        <text x="150" y="115" text-anchor="middle" fill="white" font-size="9">Rationalism</text>
+
+                        <circle cx="400" cy="80" r="40" fill="#17a2b8"/>
+                        <text x="400" y="75" text-anchor="middle" fill="white" font-size="10" font-weight="bold">行为主义</text>
+                        <text x="400" y="95" text-anchor="middle" fill="white" font-size="9">Behavioral</text>
+
+                        <circle cx="650" cy="100" r="40" fill="#ffc107"/>
+                        <text x="650" y="95" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">新制度主义</text>
+                        <text x="650" y="115" text-anchor="middle" fill="#333" font-size="9">New Inst.</text>
+
+                        <!-- 第二层：核心概念 -->
+                        <circle cx="100" cy="250" r="38" fill="#dc3545"/>
+                        <text x="100" y="245" text-anchor="middle" fill="white" font-size="9" font-weight="bold">交易成本</text>
+                        <text x="100" y="262" text-anchor="middle" fill="white" font-size="8">Trans. Cost</text>
+
+                        <circle cx="200" cy="400" r="38" fill="#6c757d"/>
+                        <text x="200" y="395" text-anchor="middle" fill="white" font-size="9" font-weight="bold">资产专用性</text>
+                        <text x="200" y="412" text-anchor="middle" fill="white" font-size="8">Asset Spec.</text>
+
+                        <circle cx="400" cy="420" r="38" fill="#e83e8c"/>
+                        <text x="400" y="415" text-anchor="middle" fill="white" font-size="9" font-weight="bold">博弈论</text>
+                        <text x="400" y="432" text-anchor="middle" fill="white" font-size="8">Game Theory</text>
+
+                        <circle cx="600" cy="400" r="38" fill="#20c997"/>
+                        <text x="600" y="395" text-anchor="middle" fill="white" font-size="9" font-weight="bold">相对收益</text>
+                        <text x="600" y="412" text-anchor="middle" fill="white" font-size="8">Rel. Gains</text>
+
+                        <circle cx="700" cy="250" r="38" fill="#fd7e14"/>
+                        <text x="700" y="245" text-anchor="middle" fill="white" font-size="9" font-weight="bold">公共物品</text>
+                        <text x="700" y="262" text-anchor="middle" fill="white" font-size="8">Public Goods</text>
+
+                        <!-- 第三层：应用领域 -->
+                        <circle cx="280" cy="180" r="32" fill="#6610f2"/>
+                        <text x="280" y="175" text-anchor="middle" fill="white" font-size="9" font-weight="bold">国际合作</text>
+                            <text x="280" y="192" text-anchor="middle" fill="white" font-size="8">Cooperation</text>
+
+                        <circle cx="520" cy="180" r="32" fill="#0dcaf0"/>
+                        <text x="520" y="175" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">制度建设</text>
+                        <text x="520" y="192" text-anchor="middle" fill="#333" font-size="8">Institution</text>
+
+                        <circle cx="150" cy="320" r="30" fill="#198754"/>
+                        <text x="150" y="315" text-anchor="middle" fill="white" font-size="9" font-weight="bold">国内政治</text>
+                        <text x="150" y="332" text-anchor="middle" fill="white" font-size="8">Dom. Politics</text>
+
+                        <circle cx="650" cy="320" r="30" fill="#d63384"/>
+                        <text x="650" y="315" text-anchor="middle" fill="white" font-size="9" font-weight="bold">全球治理</text>
+                        <text x="650" y="332" text-anchor="middle" fill="white" font-size="8">Global Gov.</text>
+
+                        <!-- 连接线 -->
+                        <line x1="190" y1="120" x2="240" y2="200" stroke="#666" stroke-width="1.5"/>
+                        <line x1="360" y1="100" x2="340" y2="200" stroke="#666" stroke-width="1.5"/>
+                        <line x1="610" y1="120" x2="560" y2="200" stroke="#666" stroke-width="1.5"/>
+
+                        <line x1="160" y1="150" x2="140" y2="210" stroke="#666" stroke-width="1.5"/>
+                        <line x1="400" y1="120" x2="400" y2="180" stroke="#666" stroke-width="1.5"/>
+                        <line x1="640" y1="150" x2="660" y2="210" stroke="#666" stroke-width="1.5"/>
+
+                        <line x1="400" y1="300" x2="400" y2="382" stroke="#666" stroke-width="1.5"/>
+                        <line x1="200" y1="250" x2="280" y2="280" stroke="#666" stroke-width="1.5"/>
+                        <line x1="600" y1="250" x2="520" y2="280" stroke="#666" stroke-width="1.5"/>
+
+                        <line x1="138" y1="250" x2="168" y2="280" stroke="#666" stroke-width="1.5"/>
+                        <line x1="662" y1="250" x2="632" y2="280" stroke="#666" stroke-width="1.5"/>
+
+                        <line x1="240" y1="350" x2="320" y2="290" stroke="#666" stroke-width="1.5"/>
+                        <line x1="560" y1="350" x2="480" y2="290" stroke="#666" stroke-width="1.5"/>
+                    </svg>
+                </div>
+
+                <div class="tip-box">
+                    <h4>📖 学习建议</h4>
+                    <p><strong>1. 把握理论脉络</strong>——从新现实主义、新自由主义到新制度主义，理解国际关系理论的发展主线。</p>
+                    <p><strong>2. 理解核心概念</strong>——交易成本、资产专用性、相对收益等概念是分析国际制度的基础工具。</p>
+                    <p><strong>3. 结合案例学习</strong>——将理论与具体案例（如WTO、欧盟、国际气候制度）相结合，加深理解。</p>
+                    <p><strong>4. 关注前沿发展</strong>——制度复杂性、跨国倡议网络、非正式国际治理等是当前研究的热点领域。</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>《国际关系的制度分析方法》复习题答案 | 整理完成</p>
+            <p style="margin-top:10px;font-size:0.9em;">建议结合教材和课堂笔记进行系统复习，祝考试顺利！</p>
+        </footer>
+    </div>
+</body>
+</html>
