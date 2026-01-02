@@ -105,6 +105,13 @@
             z-index: 999;
             transition: opacity 0.5s;
         }
+
+        .top-right-controls {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+        }
     </style>
 </head>
 
@@ -130,6 +137,18 @@
                 <p id="mode-indicator" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">模式：深度背诵 ·
                     关键词记忆</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Top Right Controls -->
+    <div class="top-right-controls">
+        <div class="btn" onclick="toggleFullScreen()" id="fullscreenBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+            </svg>
+            <span class="btn-label" style="right: auto; left: 50px;">全屏模式</span>
         </div>
     </div>
 
@@ -645,6 +664,18 @@
             document.getElementById('mode-indicator').innerText = isTestMode ? "模式：自测挑战 · 隐藏答案" : "模式：深度背诵 · 关键词记忆";
             document.getElementById('mode-indicator').classList.toggle('text-blue-500');
             render();
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.getElementById('fullscreenBtn').classList.add('active');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.getElementById('fullscreenBtn').classList.remove('active');
+                }
+            }
         }
 
         function toggleLayout() {
