@@ -178,19 +178,19 @@
                                 { name: "• {k|核心}：政治(权力)与经济(财富)互动" },
                                 {
                                     name: "• {k|议题1}：国家与市场权力博弈",
-                                    children: [{ name: "例：{k|半导体禁令} (政治干预分配)" }]
+                                    example: "例：{k|半导体禁令} (政治干预分配)"
                                 },
                                 {
                                     name: "• {k|议题2}：全球经济治理机制",
-                                    children: [{ name: "例：{k|WTO规则} (国际秩序的维护)" }]
+                                    example: "例：{k|WTO规则} (国际秩序的维护)"
                                 },
                                 {
                                     name: "• {k|议题3}：全球化结构性不平等",
-                                    children: [{ name: "例：{k|中心-边缘} (南北贫富差距)" }]
+                                    example: "例：{k|中心-边缘} (南北贫富差距)"
                                 },
                                 {
                                     name: "• {k|议题4}：安全与经济交织",
-                                    children: [{ name: "例：{k|能源断供} (地缘冲突决定经济行为)" }]
+                                    example: "例：{k|能源断供} (地缘冲突决定经济行为)"
                                 }
                             ]
                         },
@@ -372,11 +372,28 @@
             const option = {
                 backgroundColor: 'transparent',
                 tooltip: {
-                    show: !isTestMode,
+                    show: true,
                     trigger: 'item',
                     backgroundColor: 'rgba(15, 23, 42, 0.95)',
                     borderColor: '#3b82f6',
-                    textStyle: { color: '#fff' }
+                    padding: [10, 14],
+                    textStyle: { color: '#fff', fontSize: 13 },
+                    formatter: (params) => {
+                        if (isTestMode) return null;
+                        let name = params.name.replace(/\{k\|/g, '').replace(/\}/g, '');
+                        if (params.data.example) {
+                            let ex = params.data.example.replace(/\{k\|/g, '').replace(/\}/g, '');
+                            return `
+                                <div style="margin-bottom:4px;color:#94a3b8;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1px">Knowledge Detail</div>
+                                <div style="font-weight:bold;margin-bottom:10px;font-size:15px;color:#fff">${name}</div>
+                                <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px">
+                                    <span style="color:#38bdf8;font-weight:bold">💡 记忆案例：</span><br/>
+                                    <span style="color:#e2e8f0;line-height:1.6">${ex}</span>
+                                </div>
+                            `;
+                        }
+                        return `<div style="font-weight:bold">${name}</div>`;
+                    }
                 },
                 series: [
                     {
