@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>核心课程复习 H5 PPT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0f172a;
+            color: #fff;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .slide-enter {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .slide-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Animations */
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .highlight-item {
+            animation: pulse-slow 2s infinite;
+        }
+
+        /* Perspective for 3D effects if needed */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .point-item {
+            transition: all 0.3s ease;
+        }
+
+        .point-item.hidden-point {
+            opacity: 0;
+            transform: translateX(-10px);
+            pointer-events: none;
+        }
+
+        .point-item.visible-point {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Data Structure
+        const DATA = [
+            {
+                course: "一、产业发展的政治经济学",
+                items: [
+                    {
+                        id: "c1_q1",
+                        type: "简答",
+                        question: "IPE的定义及主要研究的核心议题",
+                        points: [
+                            "📚 定义：研究国际体系中'政治（权力）'与'经济（财富）'互动关系的学科",
+                            "⚔️ 核心议题1：国家与市场的权力博弈",
+                            "🌐 核心议题2：全球经济治理机制",
+                            "⚖️ 核心议题3：全球化结构性不平等",
+                            "🛡️ 核心议题4：安全与经济交织"
+                        ],
+                        visualType: "ipe_venn"
+                    },
+                    {
+                        id: "c1_q2",
+                        type: "简答",
+                        question: "'双创'政策及其升级版内容",
+                        points: [
+                            "🌱 环境优化：深化'放管服'改革、知识产权保护",
+                            "💰 财税支持：研发费用加计扣除、降低小微企业融资成本",
+                            "🚀 平台能力：建设专业化孵化器、工业互联网平台"
+                        ],
+                        visualType: "shuang_chuang"
+                    },
+                    {
+                        id: "c1_e1",
+                        type: "论述 ★",
+                        question: "IPE的三大学术意识形态",
+                        points: [
+                            "🦁 现实主义：零和博弈、财富是权力基础、政治主导经济",
+                            "🕊️ 自由主义：绝对获益、市场自调节可实现共赢、经济相对独立",
+                            "☭ 马克思主义：阶级剥削、结构性权力导致贫富分化、经济基础决定上层建筑"
+                        ],
+                        visualType: "three_ideologies"
+                    }
+                ]
+            },
+            {
+                course: "二、全球周期分析",
+                items: [
+                    {
+                        id: "c2_q1",
+                        type: "简答",
+                        question: "经济周期的三分法和四分法及持续时间",
+                        points: [
+                            "📊 三分法：",
+                            "- 基钦周期（3-5年，库存）",
+                            "- 朱格拉周期（8-10年，设备投资）",
+                            "- 康德拉季耶夫周期（45-60年，技术革命）",
+                            "📅 四分法：复苏、繁荣、衰退、萧条"
+                        ],
+                        visualType: "cycles_timeline"
+                    },
+                    {
+                        id: "c2_q2",
+                        type: "简答",
+                        question: "美林投资时钟模型各阶段表现最好的资产",
+                        points: [
+                            "📈 复苏期：股票 (GDP↑ 通胀↓)",
+                            "🔥 过热期：商品 (GDP↑ 通胀↑)",
+                            "💵 滞胀期：现金 (GDP↓ 通胀↑)",
+                            "📉 衰退期：债券 (GDP↓ 通胀↓)"
+                        ],
+                        visualType: "merrill_clock"
+                    },
+                    {
+                        id: "c2_e1",
+                        type: "论述 ★",
+                        question: "库存周期的四个阶段及特征",
+                        points: [
+                            "📉 主动去库存：价格跌、盈利滑、现金紧",
+                            "🛑 被动去库存：价格稳、盈利善、现金好",
+                            "📈 主动补库存：价格涨、盈利升、现金更充裕",
+                            "📦 被动补库存：价格落、盈利缓、现金紧",
+                            "🔑 核心机制：预期差 + 时滞"
+                        ],
+                        visualType: "inventory_wave"
+                    }
+                ]
+            },
+            {
+                course: "三、国际政治经济学专业文献导读",
+                items: [
+                    {
+                        id: "c3_q1",
+                        type: "简答",
+                        question: "解释全球化现象的三个主要流派",
+                        points: [
+                            "1️⃣ 超全球主义派：全球化不可阻挡、国家消失",
+                            "2️⃣ 怀疑论派：并非史无前例、国家仍主导",
+                            "3️⃣ 变革论派：深刻历史转型、国家职能重构"
+                        ],
+                        visualType: "three_arrows"
+                    },
+                    {
+                        id: "c3_q2",
+                        type: "简答",
+                        question: "结构性权力 vs 联系性权力",
+                        points: [
+                            "👉 联系性权力：A迫使B做某事（直接、具体、可见）",
+                            "🏗️ 结构性权力：塑造规则和环境（间接、广泛、隐蔽）",
+                            "🧩 结构性四维度：安全、生产、金融、知识"
+                        ],
+                        visualType: "power_iceberg"
+                    },
+                    {
+                        id: "c3_e1",
+                        type: "论述 ★",
+                        question: "霸权稳定论及批评",
+                        points: [
+                            "🏛️ 理论：开放稳定的体系需霸权国提供公共产品（金德尔伯格/吉尔平）",
+                            "🗣️ 批评1（基欧汉）：霸权衰落后，国际制度仍可维持合作",
+                            "🗣️ 批评2（格雷科）：国家关注相对收益，依然互不信任"
+                        ],
+                        visualType: "hegemony_pillar"
+                    }
+                ]
+            },
+            {
+                course: "四、国际关系的制度分析方法",
+                items: [
+                    {
+                        id: "c4_q1",
+                        type: "简答",
+                        question: "协作型博弈 vs 协调型博弈",
+                        points: [
+                            "🔒 协作型（囚徒困境）：",
+                            "- 有帕累托排序",
+                            "- 个体理性导致集体非理性",
+                            "- 核心：激励问题",
+                            "🦌 协调型（猎鹿问题）：",
+                            "- 无帕累托排序",
+                            "- 多重均衡",
+                            "- 核心：预期协调问题"
+                        ],
+                        visualType: "game_matrix"
+                    },
+                    {
+                        id: "c4_q2",
+                        type: "简答",
+                        question: "全球公共物品的供给方式",
+                        points: [
+                            "👑 主导国供给模式（霸权稳定）",
+                            "🤝 集体行动与制度模式（蒙特利尔议定书）",
+                            "🏢 公私伙伴关系PPP（Gavi全球疫苗）",
+                            "🔓 技术转让与知识溢出（开源软件）"
+                        ],
+                        visualType: "supply_grid"
+                    },
+                    {
+                        id: "c4_e1",
+                        type: "论述 ★",
+                        question: "理性主义方法论的价值",
+                        points: [
+                            "🧠 假设：国家追求利益最大化",
+                            "📚 流派：新现实、新自由、理性选择理论",
+                            "🛠️ 工具：博弈论、成本收益分析",
+                            "💎 价值：理论简约、分析精确、跨领域适用"
+                        ],
+                        visualType: "brain_gear"
+                    }
+                ]
+            },
+            {
+                course: "五、自然辩证法概论",
+                items: [
+                    {
+                        id: "c5_q1",
+                        type: "简答",
+                        question: "可持续发展的定义与原则",
+                        points: [
+                            "📖 定义：满足当代需求 且 不损后代能力",
+                            "⚖️ 公平性（代内代际）",
+                            "🔄 持续性（不超承载力）",
+                            "🌍 共同性（全球合作）",
+                            "🔗 系统性（经/社/环协调）"
+                        ],
+                        visualType: "sustainable_venn"
+                    },
+                    {
+                        id: "c5_q2",
+                        type: "简答",
+                        question: "科学精神的内涵与重要性",
+                        points: [
+                            "🔍 求实：客观事实（屠呦呦）",
+                            "🤔 批判：不迷信权威",
+                            "💡 创新：突破常规（潘建伟）",
+                            "🤝 协作：知识共享（疫苗合作）"
+                        ],
+                        visualType: "science_nodes"
+                    },
+                    {
+                        id: "c5_e1",
+                        type: "论述 ★",
+                        question: "科学技术的社会功能",
+                        points: [
+                            "💰 经济功能：第一生产力",
+                            "🏛️ 政治功能：变革制度、提升治理",
+                            "🧠 文化功能：认知革命、破除迷信",
+                            "🌲 生态功能：绿色技术、资源回收"
+                        ],
+                        visualType: "tech_function_hub"
+                    }
+                ]
+            },
+            {
+                course: "六、能源与环境政治经济学研究",
+                items: [
+                    {
+                        id: "c6_q1",
+                        type: "简答",
+                        question: "油价形成的影响因素",
+                        points: [
+                            "⚖️ 供需基本面（OPEC产量 vs 经济增长）",
+                            "🌍 地缘政治（战争、制裁）",
+                            "💵 金融因素（美元汇率、投机）",
+                            "🔧 技术进步（页岩油、新能源）"
+                        ],
+                        visualType: "oil_scale"
+                    },
+                    {
+                        id: "c6_q2",
+                        type: "简答",
+                        question: "世界石油运输六大战略水道",
+                        points: [
+                            "1. 霍尔木兹海峡（最繁忙）",
+                            "2. 马六甲海峡（东亚生命线）",
+                            "3. 苏伊士运河/苏麦德管道",
+                            "4. 曼德海峡",
+                            "5. 土耳其海峡",
+                            "6. 巴拿马运河"
+                        ],
+                        visualType: "waterways_map"
+                    },
+                    {
+                        id: "c6_e1",
+                        type: "论述 ★",
+                        question: "'一带一路'能源外交",
+                        points: [
+                            "🛡️ 保障安全：建设陆上通道（中俄/中缅/中亚）",
+                            "🏗️ 互联互通：投资电网炼厂",
+                            "🍃 绿色输出：光伏风能技术优势",
+                            "🤝 伙伴关系：产业链深度捆绑"
+                        ],
+                        visualType: "belt_road_net"
+                    }
+                ]
+            }
+        ];
+
+        // --- Visual Components (SVGs) ---
+
+        const VisualPlaceholder = ({ type }) => {
+            switch (type) {
+                case "ipe_venn":
+                    return (
+                        <svg viewBox="0 0 240 140" className="w-full h-full">
+                            {/* Background glow */}
+                            <defs>
+                                <radialGradient id="blueGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+                                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                                </radialGradient>
+                                <radialGradient id="redGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stopColor="#ef4444" stopOpacity="0.4" />
+                                    <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+                                </radialGradient>
+                            </defs>
+                            {/* Politics Circle */}
+                            <circle cx="85" cy="70" r="55" fill="url(#blueGlow)" />
+                            <circle cx="85" cy="70" r="55" fill="none" stroke="#3b82f6" strokeWidth="3" />
+                            <text x="55" y="50" fontSize="14" fill="#93c5fd" fontWeight="bold">政治</text>
+                            <text x="45" y="68" fontSize="11" fill="#60a5fa">追求权力</text>
+                            <text x="45" y="82" fontSize="11" fill="#60a5fa">维护秩序</text>
+                            {/* Economics Circle */}
+                            <circle cx="155" cy="70" r="55" fill="url(#redGlow)" />
+                            <circle cx="155" cy="70" r="55" fill="none" stroke="#ef4444" strokeWidth="3" />
+                            <text x="165" y="50" fontSize="14" fill="#fca5a5" fontWeight="bold">经济</text>
+                            <text x="165" y="68" fontSize="11" fill="#f87171">追求财富</text>
+                            <text x="165" y="82" fontSize="11" fill="#f87171">提升效率</text>
+                            {/* Central IPE */}
+                            <rect x="100" y="55" width="40" height="30" rx="6" fill="#0f172a" stroke="#fbbf24" strokeWidth="2" />
+                            <text x="120" y="75" fontSize="14" fill="#fbbf24" fontWeight="black" textAnchor="middle">IPE</text>
+                            {/* Arrows */}
+                            <path d="M85,25 C100,10 140,10 155,25" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4" />
+                            <path d="M85,115 C100,130 140,130 155,115" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4" />
+                        </svg>
+                    );
+                case "shuang_chuang":
+                    return (
+                        <div className="relative w-full h-full overflow-hidden rounded-xl">
+                            <img src="assets/innovation_bg.png" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4">
+                                <svg viewBox="0 0 200 150" className="w-full h-full drop-shadow-lg">
+                                    <rect x="20" y="110" width="50" height="30" fill="rgba(96, 165, 250, 0.4)" stroke="white" strokeWidth="0.5" />
+                                    <rect x="75" y="80" width="50" height="60" fill="rgba(96, 165, 250, 0.6)" stroke="white" strokeWidth="0.5" />
+                                    <rect x="130" y="50" width="50" height="90" fill="rgba(96, 165, 250, 0.8)" stroke="white" strokeWidth="0.5" />
+                                    <path d="M20 110 L180 30" fill="none" stroke="#fbbf24" strokeWidth="3" markerEnd="url(#arrow)" />
+                                    <text x="45" y="130" fill="white" fontSize="8" textAnchor="middle">环境优化</text>
+                                    <text x="100" y="110" fill="white" fontSize="8" textAnchor="middle">财税支持</text>
+                                    <text x="155" y="90" fill="white" fontSize="8" textAnchor="middle">平台升级</text>
+                                    <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24" /></marker></defs>
+                                </svg>
+                            </div>
+                        </div>
+                    );
+                case "three_ideologies":
+                    return (
+                        <div className="flex flex-col gap-3 h-full justify-center p-4">
+                            <div className="bg-gradient-to-r from-red-500/30 to-red-500/10 border-l-4 border-red-500 p-4 rounded-lg shadow-lg">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-3xl">🦁</span>
+                                    <div>
+                                        <div className="text-red-400 font-bold text-base">现实主义</div>
+                                        <div className="text-gray-300 text-sm">核心:国家 · 目标:权力/安全 · 逻辑:零和博弈</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-gradient-to-r from-blue-500/30 to-blue-500/10 border-l-4 border-blue-500 p-4 rounded-lg shadow-lg">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-3xl">🕊️</span>
+                                    <div>
+                                        <div className="text-blue-400 font-bold text-base">自由主义</div>
+                                        <div className="text-gray-300 text-sm">核心:个体/企业 · 目标:财富/双赢 · 逻辑:绝对获益</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-gradient-to-r from-yellow-500/30 to-yellow-500/10 border-l-4 border-yellow-500 p-4 rounded-lg shadow-lg">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-3xl">☭</span>
+                                    <div>
+                                        <div className="text-yellow-400 font-bold text-base">马克思主义</div>
+                                        <div className="text-gray-300 text-sm">核心:阶级 · 目标:公平/解放 · 逻辑:结构剥削</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                case "cycles_timeline":
+                    return (
+                        <svg viewBox="0 0 260 180" className="w-full h-full">
+                            {/* Axis */}
+                            <line x1="30" y1="150" x2="240" y2="150" stroke="white" strokeWidth="2" />
+                            <polygon points="240,145 250,150 240,155" fill="white" />
+                            <text x="245" y="168" fill="gray" fontSize="10">时间</text>
+                            {/* Kitchin */}
+                            <rect x="40" y="115" width="50" height="20" fill="#60a5fa" rx="4" />
+                            <text x="65" y="130" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">基钦</text>
+                            <text x="65" y="105" fill="#93c5fd" fontSize="12" textAnchor="middle">3-4年</text>
+                            <text x="65" y="92" fill="#60a5fa" fontSize="9" textAnchor="middle">库存周期</text>
+                            {/* Juglar */}
+                            <rect x="100" y="75" width="60" height="20" fill="#818cf8" rx="4" />
+                            <text x="130" y="90" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">朱格拉</text>
+                            <text x="130" y="65" fill="#a5b4fc" fontSize="12" textAnchor="middle">8-10年</text>
+                            <text x="130" y="52" fill="#818cf8" fontSize="9" textAnchor="middle">设备投资</text>
+                            {/* Kondratieff */}
+                            <rect x="170" y="35" width="60" height="20" fill="#c084fc" rx="4" />
+                            <text x="200" y="50" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">康波</text>
+                            <text x="200" y="25" fill="#d8b4fe" fontSize="12" textAnchor="middle">50-60年</text>
+                            <text x="200" y="12" fill="#c084fc" fontSize="9" textAnchor="middle">技术革命</text>
+                            {/* Connecting line */}
+                            <path d="M65,115 L130,75 L200,35" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="5" />
+                        </svg>
+                    );
+                case "merrill_clock":
+                    return (
+                        <svg viewBox="0 0 220 220" className="w-full h-full">
+                            {/* Outer ring */}
+                            <circle cx="110" cy="110" r="95" fill="none" stroke="white" strokeWidth="3" />
+                            {/* Quadrant dividers */}
+                            <line x1="110" y1="15" x2="110" y2="205" stroke="white" strokeWidth="1" strokeDasharray="6" opacity="0.5" />
+                            <line x1="15" y1="110" x2="205" y2="110" stroke="white" strokeWidth="1" strokeDasharray="6" opacity="0.5" />
+                            {/* Quadrant backgrounds */}
+                            <path d="M110,110 L110,20 A90,90 0 0,1 200,110 Z" fill="#fbbf24" opacity="0.15" />
+                            <path d="M110,110 L200,110 A90,90 0 0,1 110,200 Z" fill="#ef4444" opacity="0.15" />
+                            <path d="M110,110 L110,200 A90,90 0 0,1 20,110 Z" fill="#10b981" opacity="0.15" />
+                            <path d="M110,110 L20,110 A90,90 0 0,1 110,20 Z" fill="#3b82f6" opacity="0.15" />
+                            {/* Labels */}
+                            <g transform="translate(155,60)">
+                                <text fill="#fbbf24" fontSize="14" fontWeight="bold">复苏</text>
+                                <text y="16" fill="#fde047" fontSize="11">→ 股票</text>
+                            </g>
+                            <g transform="translate(155,150)">
+                                <text fill="#ef4444" fontSize="14" fontWeight="bold">过热</text>
+                                <text y="16" fill="#fca5a5" fontSize="11">→ 商品</text>
+                            </g>
+                            <g transform="translate(35,150)">
+                                <text fill="#10b981" fontSize="14" fontWeight="bold">滞胀</text>
+                                <text y="16" fill="#86efac" fontSize="11">→ 现金</text>
+                            </g>
+                            <g transform="translate(35,60)">
+                                <text fill="#3b82f6" fontSize="14" fontWeight="bold">衰退</text>
+                                <text y="16" fill="#93c5fd" fontSize="11">→ 债券</text>
+                            </g>
+                            {/* Center */}
+                            <circle cx="110" cy="110" r="20" fill="#1e293b" stroke="white" strokeWidth="2" />
+                            <text x="110" y="114" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold">经济</text>
+                        </svg>
+                    );
+                case "inventory_wave":
+                    return (
+                        <svg viewBox="0 0 240 220" className="w-full h-full">
+                            {/* Axis */}
+                            <line x1="40" y1="190" x2="220" y2="190" stroke="white" strokeWidth="2" />
+                            <polygon points="220,185 230,190 220,195" fill="white" />
+                            <line x1="40" y1="30" x2="40" y2="190" stroke="white" strokeWidth="2" />
+                            <polygon points="35,30 40,20 45,30" fill="white" />
+                            <text x="220" y="210" fill="#94a3b8" fontSize="11" textAnchor="end">需求 ↑</text>
+                            <text x="25" y="35" fill="#94a3b8" fontSize="11">库存 ↑</text>
+                            {/* Cycle Box */}
+                            <rect x="70" y="60" width="120" height="100" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2" rx="8" />
+                            {/* Stage 1: Bottom - Passive Destock */}
+                            <g>
+                                <path d="M70,160 L140,160" stroke="#86efac" strokeWidth="4" markerEnd="url(#arr-g2)" />
+                                <rect x="75" y="170" width="80" height="18" rx="4" fill="#86efac" opacity="0.2" />
+                                <text x="115" y="183" fill="#86efac" fontSize="11" textAnchor="middle" fontWeight="bold">1.被动去库</text>
+                            </g>
+                            {/* Stage 2: Right - Active Restock */}
+                            <g>
+                                <path d="M190,160 L190,90" stroke="#fde047" strokeWidth="4" markerEnd="url(#arr-y2)" />
+                                <text x="205" y="130" fill="#fde047" fontSize="11" fontWeight="bold">2.主动补库</text>
+                            </g>
+                            {/* Stage 3: Top - Passive Restock */}
+                            <g>
+                                <path d="M190,60 L110,60" stroke="#fca5a5" strokeWidth="4" markerEnd="url(#arr-r2)" />
+                                <rect x="105" y="42" width="80" height="18" rx="4" fill="#fca5a5" opacity="0.2" />
+                                <text x="145" y="55" fill="#fca5a5" fontSize="11" textAnchor="middle" fontWeight="bold">3.被动补库</text>
+                            </g>
+                            {/* Stage 4: Left - Active Destock */}
+                            <g>
+                                <path d="M70,60 L70,130" stroke="#93c5fd" strokeWidth="4" markerEnd="url(#arr-b2)" />
+                                <text x="55" y="95" fill="#93c5fd" fontSize="11" fontWeight="bold" transform="rotate(-90 55 95)">4.主动去库</text>
+                            </g>
+                            <defs>
+                                <marker id="arr-g2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#86efac" /></marker>
+                                <marker id="arr-y2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fde047" /></marker>
+                                <marker id="arr-r2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fca5a5" /></marker>
+                                <marker id="arr-b2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#93c5fd" /></marker>
+                            </defs>
+                        </svg>
+                    );
+                case "three_arrows":
+                    return (
+                        <div className="flex flex-col gap-4 h-full justify-center p-4">
+                            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-500/20 to-transparent rounded-lg border-l-4 border-blue-500">
+                                <div className="text-3xl">🌐</div>
+                                <div>
+                                    <div className="text-blue-400 font-bold text-base">超全球主义</div>
+                                    <div className="text-gray-400 text-sm">国家正在消失，全球治理全面崛起</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-500/20 to-transparent rounded-lg border-l-4 border-purple-500">
+                                <div className="text-3xl">🏳️</div>
+                                <div>
+                                    <div className="text-purple-400 font-bold text-base">怀疑论</div>
+                                    <div className="text-gray-400 text-sm">国家仍是核心，全球化被夸大</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-cyan-500/20 to-transparent rounded-lg border-l-4 border-cyan-500">
+                                <div className="text-3xl">🔄</div>
+                                <div>
+                                    <div className="text-cyan-400 font-bold text-base">变革论</div>
+                                    <div className="text-gray-400 text-sm">国家功能重构，不是削弱而是转型</div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                case "power_iceberg":
+                    return (
+                        <div className="flex flex-col h-full gap-5 justify-center p-4 select-none">
+                            {/* 1. Relational Power */}
+                            <div className="border border-blue-500/30 bg-blue-900/10 rounded-2xl p-4 flex flex-col items-center shadow-lg">
+                                <div className="text-sm text-blue-300 font-bold mb-3 w-full text-left uppercase tracking-wider">1. 联系性权力 (Relational)</div>
+                                <div className="flex items-center gap-6">
+                                    <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold shadow-xl z-10">A</div>
+                                    <div className="relative h-12 w-28 flex items-center justify-center">
+                                        <div className="absolute top-1/2 left-0 w-full h-1.5 bg-yellow-400 rounded"></div>
+                                        <div className="absolute top-1/2 right-0 w-4 h-4 border-t-4 border-r-4 border-yellow-400 rotate-45 -translate-y-2 translate-x-[2px]"></div>
+                                        <span className="text-xs text-yellow-400 -mt-8 font-black uppercase">强制/迫使</span>
+                                    </div>
+                                    <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-base opacity-90 shadow-lg">B</div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-3 font-medium">"A 利用资源直接让 B 做某事"</div>
+                            </div>
+
+                            {/* 2. Structural Power */}
+                            <div className="border border-purple-500/30 bg-purple-900/10 rounded-2xl p-4 flex flex-col items-center flex-1 shadow-lg">
+                                <div className="text-sm text-purple-300 font-bold mb-3 w-full text-left uppercase tracking-wider">2. 结构性权力 (Structural)</div>
+                                <div className="relative w-full h-full flex items-center justify-center min-h-[140px]">
+                                    {/* The Frame */}
+                                    <div className="absolute inset-2 border-2 border-dashed border-purple-400/50 rounded-2xl flex items-center justify-center bg-purple-500/5">
+                                        {/* The labels on the frame */}
+                                        <div className="absolute -top-3 bg-slate-900 px-3 border border-purple-500/50 rounded-full text-[10px] font-bold text-purple-300">生产 (Production)</div>
+                                        <div className="absolute -bottom-3 bg-slate-900 px-3 border border-purple-500/50 rounded-full text-[10px] font-bold text-purple-300">金融 (Finance)</div>
+                                        <div className="absolute left-0 -translate-x-1/2 bg-slate-900 px-2 border border-purple-500/50 rounded-full text-[10px] font-bold text-purple-300 rotate-90">安全</div>
+                                        <div className="absolute right-0 translate-x-1/2 bg-slate-900 px-2 border border-purple-500/50 rounded-full text-[10px] font-bold text-purple-300 rotate-90">知识</div>
+
+                                        {/* B inside the frame */}
+                                        <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-base font-bold shadow-lg">B</div>
+                                        <div className="absolute mt-16 text-[10px] text-gray-400 font-bold opacity-80 uppercase tracking-tighter">被限定在框架内</div>
+                                    </div>
+
+                                    {/* A outside/holding the frame */}
+                                    <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-full bg-blue-600 border-2 border-purple-400 text-white text-sm flex items-center justify-center font-black shadow-2xl z-20">
+                                        A
+                                    </div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-4 font-medium text-center leading-tight">"A 不直接接触 B，但设定了 B 生存的规则/环境"</div>
+                            </div>
+                        </div>
+                    );
+                case "hegemony_pillar":
+                    return (
+                        <div className="flex flex-col h-full gap-5 justify-center p-4 select-none">
+                            {/* 1. Hegemonic Stability Theory */}
+                            <div className="border border-yellow-500/30 bg-yellow-900/10 rounded-2xl p-4 flex flex-col items-center shadow-lg">
+                                <div className="text-sm text-yellow-300 font-bold mb-3 w-full text-left uppercase tracking-wider">1. 霸权稳定论 (HST)</div>
+                                <div className="relative w-full h-[100px] flex flex-col items-center justify-end">
+                                    {/* The Roof: World Order */}
+                                    <div className="w-[160px] h-6 bg-yellow-500/80 rounded-t-lg flex items-center justify-center text-xs text-black font-black border border-white/20">
+                                        世界体系 / 公共产品
+                                    </div>
+                                    {/* The Pillar: Hegemon */}
+                                    <div className="w-14 h-14 bg-blue-600 border-x-2 border-white flex items-center justify-center text-xs font-black shadow-xl">
+                                        霸权国
+                                    </div>
+                                    <div className="w-full h-1.5 bg-white/20 rounded-full"></div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-3 text-center italic font-medium">"只有一个强大的领导者才能维持系统稳定"</div>
+                            </div>
+
+                            {/* 2. Institutional Criticism (Keohane) */}
+                            <div className="border border-green-500/30 bg-green-900/10 rounded-2xl p-4 flex flex-col items-center flex-1 shadow-lg">
+                                <div className="text-sm text-green-300 font-bold mb-3 w-full text-left uppercase tracking-wider">2. 制度分析/后霸权合作</div>
+                                <div className="relative w-full h-full flex flex-col items-center justify-end min-h-[110px]">
+                                    {/* The Roof: World Order */}
+                                    <div className="w-[160px] h-6 bg-green-500/80 rounded-t-lg flex items-center justify-center text-xs text-black font-black border border-white/20">
+                                        稳定与合作
+                                    </div>
+                                    {/* Multiple small pillars: Institutions */}
+                                    <div className="flex gap-4 items-end">
+                                        <div className="w-6 h-12 bg-green-700/60 border-x-2 border-white/30 flex items-center justify-center text-[10px] font-bold rotate-1">IMF</div>
+                                        <div className="w-6 h-12 bg-green-700/60 border-x-2 border-white/30 flex items-center justify-center text-[10px] font-bold -rotate-1">WTO</div>
+                                        <div className="w-6 h-12 bg-green-700/60 border-x-2 border-white/30 flex items-center justify-center text-[10px] font-bold">UN</div>
+                                        <div className="w-6 h-12 bg-green-700/60 border-x-2 border-white/30 flex items-center justify-center text-[10px] font-bold rotate-2">G20</div>
+                                    </div>
+                                    {/* Broken Hegemon pillar in background or side */}
+                                    <div className="absolute left-6 bottom-4 opacity-10 transform scale-90 blur-[0.5px]">
+                                        <div className="w-12 h-10 bg-red-900/40 border-2 border-white/10 text-[10px] flex items-center justify-center font-bold">霸权衰落</div>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-white/20 rounded-full"></div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-3 text-center italic font-medium">"霸权衰落后，国际制度仍能降低交易成本，延续合作"</div>
+                            </div>
+                        </div>
+                    );
+                case "game_matrix":
+                    return (
+                        <div className="flex flex-col h-full gap-5 justify-center p-4 select-none">
+                            {/* 1. Collaboration Game (Incentive Problem) */}
+                            <div className="border border-red-500/30 bg-red-900/10 rounded-2xl p-4 flex flex-col items-center shadow-lg">
+                                <div className="text-sm text-red-300 font-bold mb-3 w-full text-left uppercase tracking-wider">1. 协作型博弈 (如：囚徒困境)</div>
+                                <div className="relative w-full flex items-center justify-around py-3">
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="w-12 h-12 bg-green-500/20 border-2 border-green-500 rounded-full flex items-center justify-center text-2xl shadow-inner">🤝</div>
+                                        <span className="text-xs text-green-300 font-black">集体获益</span>
+                                    </div>
+                                    <div className="flex flex-col items-center">
+                                        <div className="text-red-500 text-2xl animate-pulse">➔</div>
+                                        <span className="text-[10px] text-red-400 font-bold uppercase">背叛诱惑</span>
+                                    </div>
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="w-12 h-12 bg-red-500/20 border-2 border-red-500 rounded-full flex items-center justify-center text-2xl shadow-inner">🏃‍♂️</div>
+                                        <span className="text-xs text-red-300 font-black">个人背离</span>
+                                    </div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-3 text-center font-medium">核心：存在<b>帕累托排序</b>，但个体有<b>动机</b>去背叛</div>
+                            </div>
+
+                            {/* 2. Coordination Game (Assurance Problem) */}
+                            <div className="border border-blue-500/30 bg-blue-900/10 rounded-2xl p-4 flex flex-col items-center flex-1 shadow-lg">
+                                <div className="text-sm text-blue-300 font-bold mb-3 w-full text-left uppercase tracking-wider">2. 协调型博弈 (如：猎鹿问题)</div>
+                                <div className="relative w-full h-full flex flex-col items-center justify-center gap-4">
+                                    <div className="flex items-center gap-6 w-full">
+                                        <div className="flex-1 border-2 border-white/10 p-3 rounded-2xl bg-green-500/10 flex flex-col items-center shadow-lg">
+                                            <span className="text-4xl mb-1">🦌</span>
+                                            <span className="text-[11px] text-green-300 font-black uppercase">均衡A: 猎鹿(双赢)</span>
+                                        </div>
+                                        <div className="text-lg font-black text-gray-500 italic">VS</div>
+                                        <div className="flex-1 border-2 border-white/10 p-3 rounded-2xl bg-white/5 opacity-50 flex flex-col items-center grayscale shadow-lg">
+                                            <span className="text-4xl mb-1">🐇</span>
+                                            <span className="text-[11px] text-gray-300 font-black uppercase">均衡B: 抓兔(平庸)</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-xs text-yellow-500 mt-2 font-bold uppercase tracking-wide">
+                                        <span className="text-gray-400">重点：</span>
+                                        <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/50 rounded-full shadow-lg">预期管理</span>
+                                        <span>+</span>
+                                        <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/50 rounded-full shadow-lg">信息沟通</span>
+                                    </div>
+                                </div>
+                                <div className="text-xs text-gray-300 mt-4 text-center font-medium">核心：<b>无帕累托排序</b>，关键在于达成<b>共同预期</b></div>
+                            </div>
+                        </div>
+                    );
+                case "supply_grid":
+                    return (
+                        <div className="grid grid-cols-2 grid-rows-2 h-full gap-5 p-4 select-none">
+                            {/* 1. Hegemony (Top-Down) */}
+                            <div className="border border-blue-500/30 bg-blue-500/5 rounded-2xl p-4 flex flex-col items-center justify-between shadow-lg">
+                                <div className="text-[11px] text-blue-400 font-black uppercase tracking-widest self-start mb-2">1. 霸权供给模式</div>
+                                <svg viewBox="0 0 100 60" className="w-full h-16 drop-shadow-xl">
+                                    <circle cx="50" cy="20" r="12" fill="#3b82f6" fillOpacity="0.8" className="animate-pulse" />
+                                    <g stroke="#3b82f6" strokeWidth="2" strokeDasharray="3">
+                                        <line x1="50" y1="32" x2="20" y2="52" />
+                                        <line x1="50" y1="32" x2="50" y2="57" />
+                                        <line x1="50" y1="32" x2="80" y2="52" />
+                                    </g>
+                                    <circle cx="20" cy="52" r="4" fill="#94a3b8" />
+                                    <circle cx="50" cy="57" r="4" fill="#94a3b8" />
+                                    <circle cx="80" cy="52" r="4" fill="#94a3b8" />
+                                </svg>
+                                <div className="text-[10px] text-gray-300 text-center font-bold mt-2">单一核心承担成本并主导</div>
+                            </div>
+
+                            {/* 2. Collective Action (Network) */}
+                            <div className="border border-green-500/30 bg-green-500/5 rounded-2xl p-4 flex flex-col items-center justify-between shadow-lg">
+                                <div className="text-[11px] text-green-400 font-black uppercase tracking-widest self-start mb-2">2. 集体行动模式</div>
+                                <svg viewBox="0 0 100 60" className="w-full h-16 drop-shadow-xl">
+                                    <g fill="none" stroke="#10b981" strokeWidth="2">
+                                        <path d="M50,10 Q80,10 80,30 T50,50 T20,30 T50,10" strokeDasharray="5" />
+                                        <circle cx="50" cy="10" r="5" fill="#059669" stroke="white" strokeWidth="1.5" />
+                                        <circle cx="80" cy="30" r="5" fill="#059669" stroke="white" strokeWidth="1.5" />
+                                        <circle cx="50" cy="50" r="5" fill="#059669" stroke="white" strokeWidth="1.5" />
+                                        <circle cx="20" cy="30" r="5" fill="#059669" stroke="white" strokeWidth="1.5" />
+                                    </g>
+                                </svg>
+                                <div className="text-[10px] text-gray-300 text-center font-bold mt-2">多方协商、规则约束、共担</div>
+                            </div>
+
+                            {/* 3. PPP (Synergy) */}
+                            <div className="border border-purple-500/30 bg-purple-500/5 rounded-2xl p-4 flex flex-col items-center justify-between shadow-lg">
+                                <div className="text-[11px] text-purple-400 font-black uppercase tracking-widest self-start mb-2">3. 公私伙伴 (PPP)</div>
+                                <div className="flex items-center gap-4 h-16 w-full justify-center">
+                                    <div className="w-14 h-14 border-2 border-purple-400 rounded-full flex items-center justify-center text-3xl bg-purple-900/40 shadow-xl">🏛️</div>
+                                    <div className="text-yellow-400 text-2xl font-black">✚</div>
+                                    <div className="w-14 h-14 border-2 border-purple-400 rounded-full flex items-center justify-center text-3xl bg-white/5 shadow-xl">🏢</div>
+                                </div>
+                                <div className="text-[10px] text-gray-300 text-center font-bold mt-2">政府授权 + 市场效率</div>
+                            </div>
+
+                            {/* 4. Knowledge Spillover (Decentralized) */}
+                            <div className="border border-yellow-500/30 bg-yellow-500/5 rounded-2xl p-4 flex flex-col items-center justify-between shadow-lg">
+                                <div className="text-[11px] text-yellow-400 font-black uppercase tracking-widest self-start mb-2">4. 知识溢出模式</div>
+                                <svg viewBox="0 0 100 60" className="w-full h-16 drop-shadow-xl">
+                                    <circle cx="50" cy="30" r="7" fill="#f59e0b" stroke="white" strokeWidth="1.5" />
+                                    <circle cx="50" cy="30" r="15" stroke="#f59e0b" fill="none" strokeWidth="1" className="animate-ping opacity-40" />
+                                    <circle cx="50" cy="30" r="28" stroke="#f59e0b" fill="none" strokeWidth="1" className="animate-ping opacity-20" />
+                                    <text x="50" y="34" textAnchor="middle" fill="white" fontSize="8" fontWeight="black">OPEN</text>
+                                </svg>
+                                <div className="text-[10px] text-gray-300 text-center font-bold mt-2">开源机制、非排他、自然扩散</div>
+                            </div>
+                        </div>
+                    );
+                case "brain_gear":
+                    return (
+                        <div className="flex flex-col h-full gap-4 justify-center p-4 items-center select-none">
+                            {/* Processor Flow */}
+                            <div className="flex items-center gap-4 w-full">
+                                <div className="flex-1 bg-white/5 border border-white/20 p-4 rounded-2xl text-center shadow-xl backdrop-blur-sm">
+                                    <div className="text-xs text-blue-300 font-black mb-2 uppercase tracking-tighter">1. 偏好输入</div>
+                                    <div className="text-3xl mb-2">💰 🛡️</div>
+                                    <div className="text-[10px] text-gray-400 font-bold">国家利益/生存</div>
+                                </div>
+
+                                <div className="text-blue-500/40 animate-pulse">
+                                    <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M13 17h-2v-4H7v-2h4V7h2v4h4v2h-4v4z" /></svg>
+                                </div>
+
+                                <div className="flex-1 bg-blue-500/10 border border-blue-400/30 p-4 rounded-2xl text-center relative overflow-hidden shadow-inner">
+                                    <div className="text-xs text-purple-300 font-black mb-2 uppercase tracking-tighter">2. 理性核算</div>
+                                    <div className="relative h-12 flex items-center justify-center">
+                                        <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                                            <svg className="w-10 h-10 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                                        </div>
+                                        <span className="text-sm font-black font-mono text-purple-400">B &gt; C?</span>
+                                    </div>
+                                    <div className="text-[10px] text-gray-400 font-bold">成本收益分析</div>
+                                </div>
+
+                                <div className="text-purple-500/40 animate-pulse">
+                                    <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M13 17h-2v-4H7v-2h4V7h2v4h4v2h-4v4z" /></svg>
+                                </div>
+
+                                <div className="flex-1 bg-green-500/10 border border-green-400/30 p-4 rounded-2xl text-center shadow-xl">
+                                    <div className="text-xs text-green-300 font-black mb-2 uppercase tracking-tighter">3. 决断输出</div>
+                                    <div className="text-3xl mb-2">🎯</div>
+                                    <div className="text-[10px] text-gray-400 font-bold">效用最大化</div>
+                                </div>
+                            </div>
+
+
+                            {/* Methodological Values */}
+                            <div className="mt-4 w-full bg-gradient-to-r from-white/5 to-white/10 rounded-xl p-4 border border-white/20 grid grid-cols-3 gap-2">
+                                <div className="text-center p-2 bg-blue-500/10 rounded-lg">
+                                    <div className="text-blue-400 text-sm font-bold">理论简约</div>
+                                    <div className="text-xs text-gray-400 mt-1">Parsimony</div>
+                                    <div className="text-[10px] text-gray-500">剥离干扰因素</div>
+                                </div>
+                                <div className="text-center p-2 bg-purple-500/10 rounded-lg border-x border-white/10">
+                                    <div className="text-purple-400 text-sm font-bold">逻辑精确</div>
+                                    <div className="text-xs text-gray-400 mt-1">Precision</div>
+                                    <div className="text-[10px] text-gray-500">严密数学推导</div>
+                                </div>
+                                <div className="text-center p-2 bg-green-500/10 rounded-lg">
+                                    <div className="text-green-400 text-sm font-bold">跨界普适</div>
+                                    <div className="text-xs text-gray-400 mt-1">Universality</div>
+                                    <div className="text-[10px] text-gray-500">适用多领域</div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                case "sustainable_venn":
+                    return (
+                        <div className="relative h-full w-full flex items-center justify-center p-2">
+                            <svg viewBox="0 0 240 240" className="w-full h-full">
+                                {/* The Triangle Base */}
+                                <path d="M120,30 L210,180 L30,180 Z" fill="none" stroke="white" strokeWidth="2" strokeDasharray="6" opacity="0.2" />
+                                {/* Three Pillars */}
+                                <g transform="translate(120,45)">
+                                    <circle r="40" fill="rgba(59, 130, 246, 0.3)" stroke="#3b82f6" strokeWidth="3" />
+                                    <text dy="-5" textAnchor="middle" fill="#93c5fd" fontSize="14" fontWeight="bold">社会</text>
+                                    <text dy="12" textAnchor="middle" fill="#60a5fa" fontSize="10">Social</text>
+                                </g>
+                                <g transform="translate(200,170)">
+                                    <circle r="40" fill="rgba(245, 158, 11, 0.3)" stroke="#f59e0b" strokeWidth="3" />
+                                    <text dy="-5" textAnchor="middle" fill="#fcd34d" fontSize="14" fontWeight="bold">经济</text>
+                                    <text dy="12" textAnchor="middle" fill="#fbbf24" fontSize="10">Economic</text>
+                                </g>
+                                <g transform="translate(40,170)">
+                                    <circle r="40" fill="rgba(16, 185, 129, 0.3)" stroke="#10b981" strokeWidth="3" />
+                                    <text dy="-5" textAnchor="middle" fill="#6ee7b7" fontSize="14" fontWeight="bold">环境</text>
+                                    <text dy="12" textAnchor="middle" fill="#34d399" fontSize="10">Environ</text>
+                                </g>
+                                {/* Center */}
+                                <circle cx="120" cy="130" r="28" fill="white" className="animate-pulse" opacity="0.9" />
+                                <text x="120" y="127" textAnchor="middle" fill="#0f172a" fontSize="12" fontWeight="black">可持续</text>
+                                <text x="120" y="140" textAnchor="middle" fill="#334155" fontSize="9">Sustainable</text>
+                                {/* Labels */}
+                                <text x="160" y="95" fill="#93c5fd" fontSize="10" textAnchor="middle" transform="rotate(55 160 95)">公平性</text>
+                                <text x="80" y="95" fill="#6ee7b7" fontSize="10" textAnchor="middle" transform="rotate(-55 80 95)">持续性</text>
+                                <text x="120" y="200" fill="#fcd34d" fontSize="10" textAnchor="middle">共同性</text>
+                            </svg>
+                        </div>
+                    );
+                case "science_nodes":
+                    return (
+                        <div className="relative h-full w-full flex items-center justify-center select-none">
+                            <svg viewBox="0 0 240 240" className="w-full h-full">
+                                {/* Outer Ring */}
+                                <circle cx="120" cy="120" r="100" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="12 6" />
+                                {/* Compass Needle */}
+                                <g>
+                                    <path d="M120,45 L140,120 L120,195 L100,120 Z" fill="rgba(251, 191, 36, 0.5)" stroke="#fbbf24" strokeWidth="2" />
+                                    <circle cx="120" cy="120" r="12" fill="#fbbf24" stroke="white" strokeWidth="3" />
+                                    <text x="120" y="124" textAnchor="middle" fill="#0f172a" fontSize="8" fontWeight="bold">精神</text>
+                                </g>
+                                {/* Points of Scientific Spirit */}
+                                <g transform="translate(120,30)">
+                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#3b82f6" stroke="white" strokeWidth="2" />
+                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🔍 求实</text>
+                                </g>
+                                <g transform="translate(210,120)">
+                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#ef4444" stroke="white" strokeWidth="2" />
+                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🤔 批判</text>
+                                </g>
+                                <g transform="translate(120,210)">
+                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#10b981" stroke="white" strokeWidth="2" />
+                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">💡 创新</text>
+                                </g>
+                                <g transform="translate(30,120)">
+                                    <rect x="-25" y="-12" width="50" height="24" rx="12" fill="#818cf8" stroke="white" strokeWidth="2" />
+                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🤝 协作</text>
+                                </g>
+                            </svg>
+                        </div>
+                    );
+                case "tech_function_hub":
+                    return (
+                        <div className="relative h-full w-full flex items-center justify-center p-2">
+                            <svg viewBox="0 0 240 240" className="w-full h-full">
+                                {/* Central Engine */}
+                                <g transform="translate(120,120)">
+                                    <circle r="40" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="3" strokeDasharray="6" />
+                                    <text dy="-5" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">科学技术</text>
+                                    <text dy="12" textAnchor="middle" fill="#fbbf24" fontSize="10">第一生产力</text>
+                                </g>
+                                {/* Spreading Impact */}
+                                <g transform="translate(120,40)">
+                                    <circle r="30" fill="#3b82f6" />
+                                    <text dy="-3" textAnchor="middle" fill="white" fontSize="14">💰</text>
+                                    <text dy="12" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">经济</text>
+                                </g>
+                                <g transform="translate(200,120)">
+                                    <circle r="30" fill="#ef4444" />
+                                    <text dy="-3" textAnchor="middle" fill="white" fontSize="14">⚖️</text>
+                                    <text dy="12" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">政治</text>
+                                </g>
+                                <g transform="translate(120,200)">
+                                    <circle r="30" fill="#8b5cf6" />
+                                    <text dy="-3" textAnchor="middle" fill="white" fontSize="14">🧠</text>
+                                    <text dy="12" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">文化</text>
+                                </g>
+                                <g transform="translate(40,120)">
+                                    <circle r="30" fill="#10b981" />
+                                    <text dy="-3" textAnchor="middle" fill="white" fontSize="14">🌿</text>
+                                    <text dy="12" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">生态</text>
+                                </g>
+                                {/* Connecting Lines */}
+                                <line x1="120" y1="80" x2="120" y2="70" stroke="white" strokeWidth="2" />
+                                <line x1="160" y1="120" x2="170" y2="120" stroke="white" strokeWidth="2" />
+                                <line x1="120" y1="160" x2="120" y2="170" stroke="white" strokeWidth="2" />
+                                <line x1="80" y1="120" x2="70" y2="120" stroke="white" strokeWidth="2" />
+                            </svg>
+                        </div>
+                    );
+                case "oil_scale":
+                    return (
+                        <svg viewBox="0 0 260 180" className="w-full h-full">
+                            {/* Balance beam */}
+                            <line x1="50" y1="100" x2="210" y2="100" stroke="white" strokeWidth="4" />
+                            {/* Fulcrum */}
+                            <polygon points="130,100 115,140 145,140" fill="#64748b" stroke="white" strokeWidth="2" />
+                            <text x="130" y="160" fill="#94a3b8" fontSize="12" textAnchor="middle" fontWeight="bold">油价形成</text>
+                            {/* Left pan: Supply/Demand */}
+                            <g transform="translate(70,60)">
+                                <rect x="-35" y="0" width="70" height="40" rx="6" fill="#ef4444" stroke="white" strokeWidth="2" />
+                                <text y="18" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">供需基本面</text>
+                                <text y="32" textAnchor="middle" fill="#fca5a5" fontSize="9">OPEC产量·经济增长</text>
+                            </g>
+                            <line x1="70" y1="100" x2="70" y2="60" stroke="white" strokeWidth="2" />
+                            {/* Right pan: Geopolitics/Finance */}
+                            <g transform="translate(190,30)">
+                                <rect x="-35" y="0" width="70" height="60" rx="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
+                                <text y="18" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">地缘+金融</text>
+                                <text y="34" textAnchor="middle" fill="#93c5fd" fontSize="9">战争·制裁</text>
+                                <text y="48" textAnchor="middle" fill="#93c5fd" fontSize="9">美元·投机</text>
+                            </g>
+                            <line x1="190" y1="100" x2="190" y2="30" stroke="white" strokeWidth="2" />
+                            {/* Tilt indicator */}
+                            <path d="M130,95 L130,75" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4" />
+                            <circle cx="130" cy="72" r="4" fill="#fbbf24" />
+                        </svg>
+                    );
+                case "waterways_map":
+                    return (
+                        <div className="relative w-full h-full rounded-xl overflow-hidden border border-white/10">
+                            <img src="assets/world_map.png" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                            {/* Dots overlay approx positions based on standard world map */}
+                            {/* Hormuz (ME) */}
+                            <div className="absolute top-[48%] left-[62%] w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                            <div className="absolute top-[48%] left-[62%] w-3 h-3 bg-red-500 rounded-full border border-white flex items-center justify-center group cursor-pointer">
+                                <span className="hidden group-hover:block absolute -top-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">1.霍尔木兹</span>
+                            </div>
+
+                            {/* Malacca (SE Asia) */}
+                            <div className="absolute top-[58%] left-[78%] w-3 h-3 bg-red-500 rounded-full animate-ping delay-100"></div>
+                            <div className="absolute top-[58%] left-[78%] w-3 h-3 bg-red-500 rounded-full border border-white group">
+                                <span className="hidden group-hover:block absolute -top-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">2.马六甲</span>
+                            </div>
+
+                            {/* Suez (Egypt) */}
+                            <div className="absolute top-[45%] left-[55%] w-3 h-3 bg-red-500 rounded-full animate-ping delay-200"></div>
+                            <div className="absolute top-[45%] left-[55%] w-3 h-3 bg-red-500 rounded-full border border-white group">
+                                <span className="hidden group-hover:block absolute -top-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">3.苏伊士</span>
+                            </div>
+
+                            {/* Bab el-Mandeb (Yemen/Djibouti) */}
+                            <div className="absolute top-[53%] left-[57%] w-3 h-3 bg-red-500 rounded-full animate-ping delay-300"></div>
+                            <div className="absolute top-[53%] left-[57%] w-3 h-3 bg-red-500 rounded-full border border-white group">
+                                <span className="hidden group-hover:block absolute -bottom-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">4.曼德海峡</span>
+                            </div>
+
+                            {/* Turkish Straits */}
+                            <div className="absolute top-[38%] left-[55%] w-3 h-3 bg-red-500 rounded-full animate-ping delay-400"></div>
+                            <div className="absolute top-[38%] left-[55%] w-3 h-3 bg-red-500 rounded-full border border-white group">
+                                <span className="hidden group-hover:block absolute -top-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">5.土耳其海峡</span>
+                            </div>
+
+                            {/* Panama */}
+                            <div className="absolute top-[55%] left-[23%] w-3 h-3 bg-red-500 rounded-full animate-ping delay-500"></div>
+                            <div className="absolute top-[55%] left-[23%] w-3 h-3 bg-red-500 rounded-full border border-white group">
+                                <span className="hidden group-hover:block absolute -top-8 bg-black/80 px-2 py-1 rounded text-[10px] whitespace-nowrap">6.巴拿马</span>
+                            </div>
+                        </div>
+                    );
+                case "belt_road_net":
+                    return (
+                        <div className="relative w-full h-full rounded-xl overflow-hidden">
+                            <img src="assets/world_map.png" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay" />
+                            <svg viewBox="0 0 200 150" className="relative z-10 w-full h-full">
+                                {/* China node approx */}
+                                <circle cx="160" cy="50" r="3" fill="#10b981" />
+                                {/* Central Asia */}
+                                <circle cx="120" cy="45" r="2" fill="#10b981" />
+                                {/* Europe */}
+                                <circle cx="100" cy="35" r="2" fill="#10b981" />
+                                {/* Sea Route nodes */}
+                                <circle cx="150" cy="80" r="2" fill="#10b981" />
+                                <circle cx="110" cy="90" r="2" fill="#10b981" />
+
+                                {/* Lines */}
+                                <path d="M160,50 Q130,40 100,35" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="2" />
+                                <path d="M160,50 Q150,90 110,90 T80,60" fill="none" stroke="#34d399" strokeWidth="1.5" strokeDasharray="3" />
+
+                                <text x="160" y="45" fill="#10b981" fontSize="6" textAnchor="middle">中国</text>
+                                <text x="100" y="30" fill="#10b981" fontSize="6" textAnchor="middle">欧洲</text>
+                                <text x="130" y="120" fill="white" fontSize="8" textAnchor="middle">能源外交网络</text>
+                            </svg>
+                        </div>
+                    );
+                default:
+                    return (
+                        <svg viewBox="0 0 100 100" className="w-full h-full opacity-20">
+                            <rect width="100" height="100" fill="rgba(255,255,255,0.1)" />
+                            <text x="50" y="55" fill="white" fontSize="10" textAnchor="middle">CONCEPT</text>
+                        </svg>
+                    );
+            }
+        };
+
+
+        // --- Main App Component ---
+
+        const App = () => {
+            const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+            const [revealStep, setRevealStep] = useState(0); // For line-by-line reveal
+            // Flatten data for linear navigation
+            // [ {type:'cover'}, {type:'course', title:'...'}, {type:'question', data:...} ]
+
+            const [slides, setSlides] = useState([]);
+
+            // Build slides on mount
+            useEffect(() => {
+                let generatedSlides = [{ type: 'cover' }];
+                DATA.forEach(course => {
+                    generatedSlides.push({ type: 'course_intro', title: course.course });
+                    course.items.forEach(item => {
+                        generatedSlides.push({ type: 'question', data: item, courseTitle: course.course });
+                    });
+                });
+                setSlides(generatedSlides);
+            }, []);
+
+            const currentSlide = slides[currentSlideIndex];
+
+            // Navigation Logic
+            const next = () => {
+                if (!currentSlide) return;
+
+                if (currentSlide.type === 'question') {
+                    // Check if we need to reveal more points
+                    const totalPoints = currentSlide.data.points.length;
+                    if (revealStep < totalPoints) {
+                        setRevealStep(prev => prev + 1);
+                        return;
+                    }
+                }
+
+                // Go to next slide
+                if (currentSlideIndex < slides.length - 1) {
+                    setCurrentSlideIndex(prev => prev + 1);
+                    setRevealStep(0); // Reset reveal for next slide
+                }
+            };
+
+            const prev = () => {
+                if (currentSlideIndex > 0) {
+                    setCurrentSlideIndex(prev => prev - 1);
+                    setRevealStep(0);
+                }
+            };
+
+            const jumpToSlide = (pageNum) => {
+                const targetIdx = parseInt(pageNum) - 1;
+                if (!isNaN(targetIdx) && targetIdx >= 0 && targetIdx < slides.length) {
+                    setCurrentSlideIndex(targetIdx);
+                    setRevealStep(0);
+                }
+            };
+
+            // Keyboard/Click handlers
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                        next();
+                    } else if (e.key === 'ArrowLeft') {
+                        prev();
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [currentSlideIndex, revealStep, slides]); // Dependencies crucial for state
+
+            if (!currentSlide) return <div className="h-screen flex items-center justify-center text-white">Loading...</div>;
+
+            // --- Render Logic ---
+
+            return (
+                <div
+                    className="h-screen w-screen relative overflow-hidden flex flex-col items-center justify-center bg-slate-950"
+                    onClick={() => next()} // Tap to advance
+                >
+                    {/* Background Animation */}
+                    <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"></div>
+                    <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+
+                    {/* Top Controls: Fullscreen */}
+                    <div className="absolute top-6 right-8 flex items-center gap-4 z-50">
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (!document.fullscreenElement) {
+                                    document.documentElement.requestFullscreen();
+                                } else {
+                                    if (document.exitFullscreen) {
+                                        document.exitFullscreen();
+                                    }
+                                }
+                            }}
+                            className="p-3 rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 transition-all group relative"
+                            title="全屏模式"
+                        >
+                            <svg className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="absolute top-0 left-0 h-1 bg-green-400 z-50 transition-all duration-300"
+                        style={{ width: `${((currentSlideIndex + 1) / slides.length) * 100}%` }}></div>
+
+                    {/* Slide Content */}
+                    {/* Slide Content */}
+                    <main className="w-full max-w-[1600px] px-6 flex flex-col items-center justify-center h-full min-h-[85vh]">
+
+                        {/* COVER SLIDE */}
+                        {currentSlide.type === 'cover' && (
+                            <div className="text-center slide-enter-active space-y-8">
+                                <div className="inline-block p-4 rounded-full bg-white/10 mb-6 backdrop-blur">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-300"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
+                                </div>
+                                <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tight">
+                                    <span className="gradient-text">核心复习题汇总</span>
+                                </h1>
+                                <p className="text-xl text-gray-300 font-light">六门课程 · 核心考点 · 极简背诵</p>
+                                <div className="mt-12 text-sm text-gray-400 animate-pulse">点击屏幕或按空格键开始</div>
+                            </div>
+                        )}
+
+                        {/* COURSE INTRO SLIDE */}
+                        {currentSlide.type === 'course_intro' && (
+                            <div className="text-center slide-enter-active">
+                                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 border-b-2 border-blue-500 pb-4 inline-block">
+                                    {currentSlide.title}
+                                </h2>
+                                <p className="text-gray-400 text-lg">本章包含 2 个简答题 + 1 个论述题</p>
+                            </div>
+                        )}
+
+                        {/* QUESTION SLIDE */}
+                        {currentSlide.type === 'question' && (
+                            <div className="w-full flex flex-col md:flex-row gap-6 items-stretch h-[80vh] py-8">
+                                {/* Left: Visual Aid - Now the "Big Box" */}
+                                <div className={`flex-1 glass-panel rounded-3xl p-6 flex flex-col items-center justify-center transition-all duration-700 ${revealStep > 0 ? 'opacity-100 scale-100' : 'opacity-20 scale-95'}`}>
+                                    <div className="w-full h-full relative p-4 flex items-center justify-center">
+                                        <div className="w-full h-full max-h-[65vh]">
+                                            <VisualPlaceholder type={currentSlide.data.visualType} />
+                                        </div>
+                                    </div>
+                                    <div className="text-sm font-medium text-gray-400 mt-4 px-6 py-2 bg-white/5 rounded-full backdrop-blur-sm border border-white/10 uppercase tracking-widest">
+                                        Visual Logic • 图解辅助
+                                    </div>
+                                </div>
+
+                                {/* Right: Content - Now the "Small Box" */}
+                                <div className="w-full md:w-[450px] flex flex-col glass-panel rounded-3xl p-6 md:p-8 overflow-hidden shadow-2xl border border-white/10">
+                                    {/* Header */}
+                                    <div className="mb-6 border-b border-white/10 pb-4">
+                                        <div className="text-xs font-mono text-blue-300 mb-2 uppercase tracking-wider flex justify-between items-center">
+                                            <span>{currentSlide.courseTitle.split('、')[1]}</span>
+                                            <span className="px-2 py-0.5 bg-blue-500/20 rounded-md border border-blue-500/30 text-[10px]">{currentSlide.data.type}</span>
+                                        </div>
+                                        <h3 className="text-xl md:text-2xl font-bold leading-tight text-white drop-shadow-sm">
+                                            {currentSlide.data.question}
+                                        </h3>
+                                    </div>
+
+                                    {/* Points List */}
+                                    <div className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+                                        {currentSlide.data.points.map((point, idx) => (
+                                            <div
+                                                key={idx}
+                                                className={`point-item p-4 rounded-xl border-l-4 transition-all duration-500 transform ${idx < revealStep ? 'visible-point border-blue-500 bg-white/5 translate-x-0' : 'hidden-point border-transparent translate-x-4'
+                                                    }`}
+                                            >
+                                                <div className="text-base md:text-lg leading-relaxed text-gray-100 font-normal">{point}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Hint */}
+                                    <div className="mt-6 pt-4 border-t border-white/10">
+                                        <div className={`text-center py-2 rounded-lg text-xs font-medium transition-colors ${revealStep < currentSlide.data.points.length ? "text-blue-400 bg-blue-400/10" : "text-green-400 bg-green-400/10"}`}>
+                                            {revealStep < currentSlide.data.points.length ? "↓↓ 点击屏幕显示下一知识点 ↓↓" : "🏁 本题已完成，点击下一题"}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </main>
+
+                    {/* Progress Dots with Page Jumper */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-6 z-50 px-4 py-2 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+                        <div className="flex gap-1.5 item-center">
+                            {slides.map((_, i) => (
+                                <div
+                                    key={i}
+                                    onClick={(e) => { e.stopPropagation(); jumpToSlide(i + 1); }}
+                                    className={`h-1.5 cursor-pointer transition-all duration-300 rounded-full ${i === currentSlideIndex ? 'w-6 bg-blue-400' : 'w-1.5 bg-white/20 hover:bg-white/40'}`}
+                                />
+                            ))}
+                        </div>
+                        <div className="h-4 w-px bg-white/10"></div>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                className="w-10 bg-white/10 border border-white/20 rounded-md text-[10px] py-0.5 text-center text-white font-black focus:outline-none focus:border-blue-500 transition-colors"
+                                defaultValue={currentSlideIndex + 1}
+                                key={currentSlideIndex} // Re-render when slide changes
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        jumpToSlide(e.target.value);
+                                        e.target.blur();
+                                    }
+                                    e.stopPropagation();
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                            <span className="text-[10px] font-black text-white/40 tracking-widest">/ {slides.length}</span>
+                        </div>
+                    </div>
+
+                    {/* Navigation Hints */}
+                    <div className="absolute bottom-6 right-8 flex items-center gap-4 text-white/20 text-[10px] font-bold uppercase tracking-widest pointer-events-none">
+                        <span>L/R Arrows</span>
+                        <div className="flex gap-1">
+                            <div className="px-1.5 py-0.5 border border-white/10 rounded">←</div>
+                            <div className="px-1.5 py-0.5 border border-white/10 rounded">→</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
