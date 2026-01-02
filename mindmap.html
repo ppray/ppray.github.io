@@ -382,25 +382,26 @@
                     {
                         type: 'tree',
                         data: [rawData],
-                        top: '10%',
-                        left: isRadial ? '10%' : '18%',
-                        bottom: '10%',
-                        right: isRadial ? '10%' : '25%',
-                        symbolSize: 12,
+                        top: '12%',
+                        left: isRadial ? '10%' : '12%',
+                        bottom: '12%',
+                        right: isRadial ? '10%' : '20%',
+                        symbolSize: 8,
                         layout: isRadial ? 'radial' : 'orthogonal',
                         initialTreeDepth: 1,
                         label: {
-                            position: 'left',
+                            position: 'right',
                             verticalAlign: 'middle',
-                            align: 'right',
-                            fontSize: 15,
+                            align: 'left',
+                            fontSize: 14,
+                            offset: [10, 0],
                             color: '#f8fafc',
                             fontWeight: '700',
                             rich: {
                                 k: {
                                     color: '#38bdf8',
                                     fontWeight: '900',
-                                    fontSize: 16
+                                    fontSize: 15
                                 }
                             }
                         },
@@ -410,6 +411,7 @@
                                 verticalAlign: 'middle',
                                 align: 'left',
                                 fontSize: 13,
+                                offset: [10, 0],
                                 // In test mode, text color matches background to 'hide' it
                                 color: isTestMode ? 'transparent' : '#94a3b8',
                                 rich: {
