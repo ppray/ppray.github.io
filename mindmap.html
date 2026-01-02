@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>复习脑图 3.0 - 核心关键词高亮版</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #020617;
+            /* Darker slate-950 */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #main-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-panel {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .btn {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-label {
+            position: absolute;
+            right: 50px;
+            background: #1e293b;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s;
+        }
+
+        .btn:hover .btn-label {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .header-title {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .loading-mask {
+            position: absolute;
+            inset: 0;
+            background: #020617;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading" class="loading-mask">
+        <div class="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
+        <div class="text-blue-400 font-black mt-4 tracking-widest uppercase text-xs">Generating Key Anchors...</div>
+    </div>
+
+    <!-- Header -->
+    <div class="header-title">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">核心考点脑图 <span
+                        class="text-blue-500 text-sm italic font-medium ml-1">v3.0</span></h1>
+                <p id="mode-indicator" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">模式：深度背诵 ·
+                    关键词记忆</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div id="main-container"></div>
+
+    <!-- Controls -->
+    <div class="control-panel">
+        <div class="btn" onclick="toggleTestMode()" id="testModeBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <span class="btn-label">开启自测模式</span>
+        </div>
+        <div class="btn" onclick="toggleLayout()" id="layoutBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                    d="M3 12h3m12 0h3M12 3v3m0 12v3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6l2.1-2.1" />
+            </svg>
+            <span class="btn-label">切换径向布局</span>
+        </div>
+        <div class="btn" onclick="resetView()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12" />
+            </svg>
+            <span class="btn-label">重置界面</span>
+        </div>
+    </div>
+
+    <script>
+        // High-value content mapping with Keywords {k|...}
+        const rawData = {
+            name: "🔥 复习核心",
+            children: [
+                {
+                    name: "Ⅰ. 产业发展 ⚖️",
+                    itemStyle: { color: '#3b82f6' },
+                    children: [
+                        {
+                            name: "❓ IPE定义与议题",
+                            children: [
+                                { name: "• IPE：{k|政治(权力)} 与 {k|经济(财富)} 互动" },
+                                { name: "• 议题：{k|权力博弈} / 治理机制 / {k|结构性不平等}" }
+                            ]
+                        },
+                        {
+                            name: "❓ 双创政策升级版",
+                            children: [
+                                { name: "• 优化：{k|放管服} + 知产保护" },
+                                { name: "• 支持：{k|研发扣除} + 融资降本" },
+                                { name: "• 平台：{k|孵化器} + {k|工业互联网}" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 三大意识形态",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• {k|现实主义}：零和博弈、政治主导" },
+                                { name: "• {k|自由主义}：绝对获益、市场共赢" },
+                                { name: "• {k|马克思主义}：阶级剥削、结构性权力" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "Ⅱ. 全球周期 ⏰",
+                    itemStyle: { color: '#8b5cf6' },
+                    children: [
+                        {
+                            name: "❓ 周期分类 (时长)",
+                            children: [
+                                { name: "• 基钦({k|库存}) / 朱格拉({k|设备}) / 康波({k|技术})" },
+                                { name: "• 四分：{k|复苏} → 繁荣 → 衰退 → {k|萧萧}" }
+                            ]
+                        },
+                        {
+                            name: "❓ 美林时钟锚点",
+                            children: [
+                                { name: "• 复苏期：{k|股票} (GDP↑ 通胀↓)" },
+                                { name: "• 过热期：{k|商品} (GDP↑ 通胀↑)" },
+                                { name: "• 滞胀期：{k|现金} (GDP↓ 通胀↑)" },
+                                { name: "• 衰退期：{k|债券} (GDP↓ 通胀↓)" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 库存周期四阶段",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• 核心：{k|预期差} + {k|生产时滞}" },
+                                { name: "• 阶段：主动去 → 被动去 → {k|主动补} → 被动补" },
+                                { name: "• 重点：主动补库({k|盈利回升}) / 主动去库({k|盈利滑坡})" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "Ⅲ. 文献导读 📖",
+                    itemStyle: { color: '#10b981' },
+                    children: [
+                        {
+                            name: "❓ 全球化三流派",
+                            children: [
+                                { name: "• {k|超全球派}：国家消失" },
+                                { name: "• {k|怀疑论派}：国家主导" },
+                                { name: "• {k|变革论派}：国家重构" }
+                            ]
+                        },
+                        {
+                            name: "❓ 权力维度对比",
+                            children: [
+                                { name: "• 联系性：{k|直接资源强制}" },
+                                { name: "• 结构性：{k|规则环境塑造}" },
+                                { name: "• 四维：{k|安全} / {k|生产} / {k|金融} / {k|知识}" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 霸权稳定论",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• 核心：霸权国提供 {k|公共产品}" },
+                                { name: "• 批评：[基欧汉]{k|制度长存} / 关注相对增量" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "Ⅳ. 制度分析 🧩",
+                    itemStyle: { color: '#ec4899' },
+                    children: [
+                        {
+                            name: "❓ 博弈模型区别",
+                            children: [
+                                { name: "• 协作(囚徒)：{k|帕累托排序}，缺激励" },
+                                { name: "• 协调(猎鹿)：无帕累托，{k|需预期协调}" }
+                            ]
+                        },
+                        {
+                            name: "❓ 公共物品供给",
+                            children: [
+                                { name: "• 模式：霸权 / 集体行动 / {k|PPP伙伴} / 技术溢出" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 理性主义方法论",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• 假设：国家追求 {k|利益最大化}" },
+                                { name: "• 工具：{k|博弈论} + 成本收益分析" },
+                                { name: "• 价值：理论{k|简约}、分析{k|精确}" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "Ⅴ. 自然辩证法 🧪",
+                    itemStyle: { color: '#06b6d4' },
+                    children: [
+                        {
+                            name: "❓ 可持续发展原则",
+                            children: [
+                                { name: "• 原则：{k|公平}、{k|持续}、{k|共同}、{k|系统}" }
+                            ]
+                        },
+                        {
+                            name: "❓ 科学精神四要素",
+                            children: [
+                                { name: "• 核心：{k|求实}、{k|批判}、{k|创新}、{k|协作}" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 科技社会功能",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• 功能：{k|产业重组} / 社会变革 / {k|认知革命}" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: "Ⅵ. 能源环境 🛢️",
+                    itemStyle: { color: '#f43f5e' },
+                    children: [
+                        {
+                            name: "❓ 油价定价逻辑",
+                            children: [
+                                { name: "• 影响：{k|供需基本面} / 地缘冲突 / 金融投机" }
+                            ]
+                        },
+                        {
+                            name: "❓ 六大战略水道",
+                            children: [
+                                { name: "• {k|霍尔木兹}、{k|马六甲}、苏伊士、曼德、巴拿马" }
+                            ]
+                        },
+                        {
+                            name: "⭐ 一带一路能源外交",
+                            itemStyle: { color: '#f59e0b' },
+                            children: [
+                                { name: "• 核心：{k|多维通道} + 技术输出 + {k|伙伴关系}" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let myChart = null;
+        let isTestMode = false;
+        let isRadial = false;
+
+        function initChart() {
+            const chartDom = document.getElementById('main-container');
+            myChart = echarts.init(chartDom);
+            render();
+
+            document.getElementById('loading').style.opacity = 0;
+            setTimeout(() => document.getElementById('loading').style.display = 'none', 500);
+        }
+
+        function render() {
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    show: !isTestMode,
+                    trigger: 'item',
+                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                    borderColor: '#3b82f6',
+                    textStyle: { color: '#fff' }
+                },
+                series: [
+                    {
+                        type: 'tree',
+                        data: [rawData],
+                        top: '10%',
+                        left: isRadial ? '10%' : '18%',
+                        bottom: '10%',
+                        right: isRadial ? '10%' : '25%',
+                        symbolSize: 12,
+                        layout: isRadial ? 'radial' : 'orthogonal',
+                        initialTreeDepth: 1,
+                        label: {
+                            position: 'left',
+                            verticalAlign: 'middle',
+                            align: 'right',
+                            fontSize: 15,
+                            color: '#f8fafc',
+                            fontWeight: '700',
+                            rich: {
+                                k: {
+                                    color: '#38bdf8',
+                                    fontWeight: '900',
+                                    fontSize: 16
+                                }
+                            }
+                        },
+                        leaves: {
+                            label: {
+                                position: 'right',
+                                verticalAlign: 'middle',
+                                align: 'left',
+                                fontSize: 13,
+                                // In test mode, text color matches background to 'hide' it
+                                color: isTestMode ? 'transparent' : '#94a3b8',
+                                rich: {
+                                    k: {
+                                        color: isTestMode ? 'transparent' : '#38bdf8',
+                                        fontWeight: '900',
+                                        fontSize: 14,
+                                        backgroundColor: isTestMode ? 'transparent' : 'rgba(56, 189, 248, 0.15)',
+                                        borderRadius: 4,
+                                        padding: [2, 4, 2, 4]
+                                    }
+                                }
+                            }
+                        },
+                        emphasis: {
+                            focus: 'descendant',
+                            label: {
+                                color: '#3b82f6', // Bright blue on hover
+                                fontSize: 16,
+                                rich: {
+                                    k: {
+                                        color: '#3b82f6',
+                                        fontWeight: '900',
+                                        fontSize: 16,
+                                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                        borderRadius: 4,
+                                        padding: [2, 4, 2, 4]
+                                    }
+                                }
+                            }
+                        },
+                        expandAndCollapse: true,
+                        animationDuration: 600,
+                        lineStyle: {
+                            color: '#334155',
+                            width: 2.5,
+                            curveness: 0.5
+                        },
+                        itemStyle: {
+                            borderColor: '#3b82f6',
+                            borderWidth: 2
+                        }
+                    }
+                ]
+            };
+
+            if (window.innerWidth < 768) {
+                option.series[0].label.fontSize = 11;
+                option.series[0].leaves.label.fontSize = 10;
+                option.series[0].left = '5%';
+                option.series[0].right = '40%';
+            }
+
+            myChart.setOption(option, true);
+        }
+
+        function toggleTestMode() {
+            isTestMode = !isTestMode;
+            document.getElementById('testModeBtn').classList.toggle('active');
+            document.getElementById('mode-indicator').innerText = isTestMode ? "模式：自测挑战 · 隐藏答案" : "模式：深度背诵 · 关键词记忆";
+            document.getElementById('mode-indicator').classList.toggle('text-blue-500');
+            render();
+        }
+
+        function toggleLayout() {
+            isRadial = !isRadial;
+            document.getElementById('layoutBtn').classList.toggle('active');
+            render();
+        }
+
+        function resetView() {
+            isTestMode = false;
+            isRadial = false;
+            document.getElementById('testModeBtn').classList.remove('active');
+            document.getElementById('layoutBtn').classList.remove('active');
+            document.getElementById('mode-indicator').innerText = "模式：深度背诵 · 关键词记忆";
+            document.getElementById('mode-indicator').classList.remove('text-blue-500');
+            myChart.dispatchAction({ type: 'restore' });
+            render();
+        }
+
+        window.addEventListener('resize', () => myChart && myChart.resize());
+        setTimeout(initChart, 200);
+
+    </script>
+</body>
+
+</html>
