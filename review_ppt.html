@@ -130,6 +130,22 @@
             animation: blob 7s infinite;
         }
 
+        @keyframes dash {
+            from {
+                stroke-dasharray: 0, 1000;
+                opacity: 0;
+            }
+
+            to {
+                stroke-dasharray: 1000, 1000;
+                opacity: 1;
+            }
+        }
+
+        .animate-dash {
+            animation: dash 2s ease-in-out forwards;
+        }
+
         .animation-delay-2000 {
             animation-delay: 2s;
         }
@@ -149,184 +165,18 @@
         // Data Structure
         const DATA = [
             {
-                course: "一、产业发展的政治经济学",
-                items: [
-                    {
-                        id: "c1_q1",
-                        type: "简答",
-                        question: "IPE的定义及主要研究的核心议题",
-                        points: [
-                            "📚 定义：研究国际体系中'政治（权力）'与'经济（财富）'互动关系的学科",
-                            "⚔️ 核心议题1：国家与市场的权力博弈",
-                            "🌐 核心议题2：全球经济治理机制",
-                            "⚖️ 核心议题3：全球化结构性不平等",
-                            "🛡️ 核心议题4：安全与经济交织"
-                        ],
-                        visualType: "ipe_venn"
-                    },
-                    {
-                        id: "c1_q2",
-                        type: "简答",
-                        question: "'双创'政策及其升级版内容",
-                        points: [
-                            "🌱 环境优化：深化'放管服'改革、知识产权保护",
-                            "💰 财税支持：研发费用加计扣除、降低小微企业融资成本",
-                            "🚀 平台能力：建设专业化孵化器、工业互联网平台"
-                        ],
-                        visualType: "shuang_chuang"
-                    },
-                    {
-                        id: "c1_e1",
-                        type: "论述 ★",
-                        question: "IPE的三大学术意识形态",
-                        points: [
-                            "🦁 现实主义：零和博弈、财富是权力基础、政治主导经济",
-                            "🕊️ 自由主义：绝对获益、市场自调节可实现共赢、经济相对独立",
-                            "☭ 马克思主义：阶级剥削、结构性权力导致贫富分化、经济基础决定上层建筑"
-                        ],
-                        visualType: "three_ideologies"
-                    }
-                ]
-            },
-            {
-                course: "二、全球周期分析",
-                items: [
-                    {
-                        id: "c2_q1",
-                        type: "简答",
-                        question: "经济周期的三分法和四分法及持续时间",
-                        points: [
-                            "📊 三分法：",
-                            "- 基钦周期（3-5年，库存）",
-                            "- 朱格拉周期（8-10年，设备投资）",
-                            "- 康德拉季耶夫周期（45-60年，技术革命）",
-                            "📅 四分法：复苏、繁荣、衰退、萧条"
-                        ],
-                        visualType: "cycles_timeline"
-                    },
-                    {
-                        id: "c2_q2",
-                        type: "简答",
-                        question: "美林投资时钟模型各阶段表现最好的资产",
-                        points: [
-                            "📈 复苏期：股票 (GDP↑ 通胀↓)",
-                            "🔥 过热期：商品 (GDP↑ 通胀↑)",
-                            "💵 滞胀期：现金 (GDP↓ 通胀↑)",
-                            "📉 衰退期：债券 (GDP↓ 通胀↓)"
-                        ],
-                        visualType: "merrill_clock"
-                    },
-                    {
-                        id: "c2_e1",
-                        type: "论述 ★",
-                        question: "库存周期的四个阶段及特征",
-                        points: [
-                            "📉 主动去库存：价格跌、盈利滑、现金紧",
-                            "🛑 被动去库存：价格稳、盈利善、现金好",
-                            "📈 主动补库存：价格涨、盈利升、现金更充裕",
-                            "📦 被动补库存：价格落、盈利缓、现金紧",
-                            "🔑 核心机制：预期差 + 时滞"
-                        ],
-                        visualType: "inventory_wave"
-                    }
-                ]
-            },
-            {
-                course: "三、国际政治经济学专业文献导读",
-                items: [
-                    {
-                        id: "c3_q1",
-                        type: "简答",
-                        question: "解释全球化现象的三个主要流派",
-                        points: [
-                            "1️⃣ 超全球主义派：全球化不可阻挡、国家消失",
-                            "2️⃣ 怀疑论派：并非史无前例、国家仍主导",
-                            "3️⃣ 变革论派：深刻历史转型、国家职能重构"
-                        ],
-                        visualType: "three_arrows"
-                    },
-                    {
-                        id: "c3_q2",
-                        type: "简答",
-                        question: "结构性权力 vs 联系性权力",
-                        points: [
-                            "👉 联系性权力：A迫使B做某事（直接、具体、可见）",
-                            "🏗️ 结构性权力：塑造规则和环境（间接、广泛、隐蔽）",
-                            "🧩 结构性四维度：安全、生产、金融、知识"
-                        ],
-                        visualType: "power_iceberg"
-                    },
-                    {
-                        id: "c3_e1",
-                        type: "论述 ★",
-                        question: "霸权稳定论及批评",
-                        points: [
-                            "🏛️ 理论：开放稳定的体系需霸权国提供公共产品（金德尔伯格/吉尔平）",
-                            "🗣️ 批评1（基欧汉）：霸权衰落后，国际制度仍可维持合作",
-                            "🗣️ 批评2（格雷科）：国家关注相对收益，依然互不信任"
-                        ],
-                        visualType: "hegemony_pillar"
-                    }
-                ]
-            },
-            {
-                course: "四、国际关系的制度分析方法",
-                items: [
-                    {
-                        id: "c4_q1",
-                        type: "简答",
-                        question: "协作型博弈 vs 协调型博弈",
-                        points: [
-                            "🔒 协作型（囚徒困境）：",
-                            "- 有帕累托排序",
-                            "- 个体理性导致集体非理性",
-                            "- 核心：激励问题",
-                            "🦌 协调型（猎鹿问题）：",
-                            "- 无帕累托排序",
-                            "- 多重均衡",
-                            "- 核心：预期协调问题"
-                        ],
-                        visualType: "game_matrix"
-                    },
-                    {
-                        id: "c4_q2",
-                        type: "简答",
-                        question: "全球公共物品的供给方式",
-                        points: [
-                            "👑 主导国供给模式（霸权稳定）",
-                            "🤝 集体行动与制度模式（蒙特利尔议定书）",
-                            "🏢 公私伙伴关系PPP（Gavi全球疫苗）",
-                            "🔓 技术转让与知识溢出（开源软件）"
-                        ],
-                        visualType: "supply_grid"
-                    },
-                    {
-                        id: "c4_e1",
-                        type: "论述 ★",
-                        question: "理性主义方法论的价值",
-                        points: [
-                            "🧠 假设：国家追求利益最大化",
-                            "📚 流派：新现实、新自由、理性选择理论",
-                            "🛠️ 工具：博弈论、成本收益分析",
-                            "💎 价值：理论简约、分析精确、跨领域适用"
-                        ],
-                        visualType: "brain_gear"
-                    }
-                ]
-            },
-            {
-                course: "五、自然辩证法概论",
+                course: "一、自然辩证法概论",
                 items: [
                     {
                         id: "c5_q1",
                         type: "简答",
                         question: "可持续发展的定义与原则",
                         points: [
-                            "📖 定义：满足当代需求 且 不损后代能力",
+                            "� 定义：满足当代需求 且 不损后代能力",
                             "⚖️ 公平性（代内代际）",
                             "🔄 持续性（不超承载力）",
                             "🌍 共同性（全球合作）",
-                            "🔗 系统性（经/社/环协调）"
+                            "� 系统性（经/社/环协调）"
                         ],
                         visualType: "sustainable_venn"
                     },
@@ -357,7 +207,52 @@
                 ]
             },
             {
-                course: "六、能源与环境政治经济学研究",
+                course: "二、国际关系的制度分析方法",
+                items: [
+                    {
+                        id: "c4_q1",
+                        type: "简答",
+                        question: "协作型博弈 vs 协调型博弈",
+                        points: [
+                            "� 协作型（囚徒困境）：",
+                            "- 有帕累托排序",
+                            "- 个体理性导致集体非理性",
+                            "- 核心：激励问题",
+                            "🦌 协调型（猎鹿问题）：",
+                            "- 无帕累托排序",
+                            "- 多重均衡",
+                            "- 核心：预期协调问题"
+                        ],
+                        visualType: "game_matrix"
+                    },
+                    {
+                        id: "c4_q2",
+                        type: "简答",
+                        question: "全球公共物品的供给方式",
+                        points: [
+                            "� 主导国供给模式（霸权稳定）",
+                            "🤝 集体行动与制度模式（蒙特利尔议定书）",
+                            "🏢 公私伙伴关系PPP（Gavi全球疫苗）",
+                            "� 技术转让与知识溢出（开源软件）"
+                        ],
+                        visualType: "supply_grid"
+                    },
+                    {
+                        id: "c4_e1",
+                        type: "论述 ★",
+                        question: "理性主义方法论的价值",
+                        points: [
+                            "🧠 假设：国家追求利益最大化",
+                            "� 流派：新现实、新自由、理性选择理论",
+                            "�️ 工具：博弈论、成本收益分析",
+                            "� 价值：理论简约、分析精确、跨领域适用"
+                        ],
+                        visualType: "brain_gear"
+                    }
+                ]
+            },
+            {
+                course: "三、能源与环境政治经济学研究",
                 items: [
                     {
                         id: "c6_q1",
@@ -390,7 +285,7 @@
                         type: "论述 ★",
                         question: "特朗普退《巴黎协定》动因",
                         points: [
-                            "🇺🇸 美国优先：损害传统化石能源利益，导致失业",
+                            "🇺� 美国优先：损害传统化石能源利益，导致失业",
                             "👑 主权回归：反对国际组织约束，单边主义",
                             "⚖️ 利益博弈：认为对中印限制太少，美国吃亏",
                             "🤔 气候怀疑论：质疑人为气候变化，视为阴谋"
@@ -398,12 +293,138 @@
                         visualType: "trump_paris_exit"
                     }
                 ]
+            },
+            {
+                course: "四、产业发展的政治经济学",
+                items: [
+                    {
+                        id: "c1_q1",
+                        type: "简答",
+                        question: "IPE的定义及主要研究的核心议题",
+                        points: [
+                            "� 定义：研究国际体系中'政治（权力）'与'经济（财富）'互动关系的学科",
+                            "🧗 记忆钩子：爬楼梯“国全构安”",
+                            "- 国：国家与市场的权力博弈（谁控制谁？）",
+                            "- 全：全球经济治理机制（国际规则如WTO）",
+                            "- 构：全球化中的结构性不平等（富国富/穷国穷）",
+                            "- 安：安全与经济交织（地缘政治与贸易金融）",
+                            "💡 想象：从国家起步，全球顶端，结构中间绊脚，安全顶层守护。"
+                        ],
+                        visualType: "ipe_venn"
+                    },
+                    {
+                        id: "c1_q2",
+                        type: "简答",
+                        question: "'双创'政策及其升级版内容",
+                        points: [
+                            "🧗 记忆钩子：三级台阶“环→财→平”",
+                            "1. 环境优化(地基)：深化'放管服'、知产保护",
+                            "2. 财税支持(油站)：加计扣除、降低融资成本",
+                            "3. 平台升级(登顶)：孵化器、工业互联网",
+                            "� 口诀：环境财税平台高，优化放管改革深，支持加计扣除少，能力孵化器互联。"
+                        ],
+                        visualType: "shuang_chuang"
+                    },
+                    {
+                        id: "c1_e1",
+                        type: "论述 ★",
+                        question: "IPE的三大意识形态",
+                        points: [
+                            "🏛️ 现实主义：国家主体，追求权力安全，强调零和博弈与政治支配经济。",
+                            "🤝 自由主义：个体/企业主体，追求财富双赢，主张市场自调节与绝对获益。",
+                            "⚖️ 马克思主义：阶级主体，追求公平解放，批判不平等与经济基础决定论。",
+                            "� 总结：三者互为补充又相互批判，从不同视角解释国际经济现象。"
+                        ],
+                        visualType: "three_ideologies"
+                    }
+                ]
+            },
+            {
+                course: "五、全球周期分析",
+                items: [
+                    {
+                        id: "c2_q1",
+                        type: "简答",
+                        question: "经济周期的三分法 and 四分法及持续时间",
+                        points: [
+                            "� 三分法：",
+                            "- 基钦周期（3-5年，库存）",
+                            "- 朱格拉周期（8-10年，设备投资）",
+                            "- 康德拉季耶夫周期（45-60年，技术革命）",
+                            "💡 四分法：复苏(1-2y)、繁荣(2-4y)、衰退(1-2y)、萧条(1-3y)"
+                        ],
+                        visualType: "cycles_timeline"
+                    },
+                    {
+                        id: "c2_q2",
+                        type: "简答",
+                        question: "美林投资时钟模型各阶段表现最好的资产",
+                        points: [
+                            "� 复苏期：股票 (GDP↑ 通胀↓)",
+                            "🔥 过热期：商品 (GDP↑ 通胀↑)",
+                            "� 滞胀期：现金 (GDP↓ 通胀↑)",
+                            "📉 衰退期：债券 (GDP↓ 通胀↓)"
+                        ],
+                        visualType: "merrill_clock"
+                    },
+                    {
+                        id: "c2_e1",
+                        type: "论述 ★",
+                        question: "库存周期的四个阶段及特征",
+                        points: [
+                            "🧗 被动去库存：需求快升/产出慢 -> 库存降、价格升、利润高、现金紧",
+                            "🚀 主动补库存：需求旺/看好后市 -> 库存升、价格升、利润大、现金丰",
+                            "📦 被动补库存：需求慢/高估需求 -> 库存积、价格缓、利润慢、现金紧",
+                            "📉 主动去库存：需求弱/减产去库 -> 库存低、价格跌、利润减、现金压",
+                            "🔑 核心：预期差与时滞 (持续3-5年，对标基钦周期)"
+                        ],
+                        visualType: "inventory_wave"
+                    }
+                ]
+            },
+            {
+                course: "六、国际政治经济学专业文献导读",
+                items: [
+                    {
+                        id: "c3_q1",
+                        type: "简答",
+                        question: "解释全球化现象的三个主要流派",
+                        points: [
+                            "1️⃣ 超全球主义派：全球化不可阻挡、国家消失",
+                            "2️⃣ 怀疑论派：并非史无前例、国家仍主导",
+                            "3️⃣ 变革论派：深刻历史转型、国家职能重构"
+                        ],
+                        visualType: "three_arrows"
+                    },
+                    {
+                        id: "c3_q2",
+                        type: "简答",
+                        question: "结构性权力 vs 联系性权力",
+                        points: [
+                            "👉 联系性权力：A迫使B做某事（直接、具体、可见）",
+                            "🏗️ 结构性权力：塑造规则和环境（间接、广泛、隐蔽）",
+                            "🧩 结构性四维度：安全、生产、金融、知识"
+                        ],
+                        visualType: "power_iceberg"
+                    },
+                    {
+                        id: "c3_e1",
+                        type: "论述 ★",
+                        question: "霸权稳定论及批评",
+                        points: [
+                            "�️ 理论：开放稳定的体系需霸权国提供公共产品（金德尔伯格/吉尔平）",
+                            "�️ 批评1（基欧汉）：霸权衰落后，国际制度仍可维持合作",
+                            "🗣️ 批评2（格雷科）：国家关注相对收益，依然互不信任"
+                        ],
+                        visualType: "hegemony_pillar"
+                    }
+                ]
             }
         ];
 
         // --- Visual Components (SVGs) ---
 
-        const VisualPlaceholder = ({ type }) => {
+        const VisualPlaceholder = ({ type, revealStep }) => {
             switch (type) {
                 case "ipe_venn":
                     return (
@@ -441,79 +462,182 @@
                     );
                 case "shuang_chuang":
                     return (
-                        <div className="relative w-full h-full overflow-hidden rounded-xl">
-                            <img src="assets/innovation_bg.png" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-                            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-4">
-                                <svg viewBox="0 0 200 150" className="w-full h-full drop-shadow-lg">
-                                    <rect x="20" y="110" width="50" height="30" fill="rgba(96, 165, 250, 0.4)" stroke="white" strokeWidth="0.5" />
-                                    <rect x="75" y="80" width="50" height="60" fill="rgba(96, 165, 250, 0.6)" stroke="white" strokeWidth="0.5" />
-                                    <rect x="130" y="50" width="50" height="90" fill="rgba(96, 165, 250, 0.8)" stroke="white" strokeWidth="0.5" />
-                                    <path d="M20 110 L180 30" fill="none" stroke="#fbbf24" strokeWidth="3" markerEnd="url(#arrow)" />
-                                    <text x="45" y="130" fill="white" fontSize="8" textAnchor="middle">环境优化</text>
-                                    <text x="100" y="110" fill="white" fontSize="8" textAnchor="middle">财税支持</text>
-                                    <text x="155" y="90" fill="white" fontSize="8" textAnchor="middle">平台升级</text>
-                                    <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24" /></marker></defs>
-                                </svg>
+                        <div className="w-full h-full flex flex-col justify-center gap-6 p-6 select-none relative">
+                            {/* Step 3: Summit */}
+                            <div className="flex items-center gap-4 self-end w-full max-w-[90%] group transition-all duration-300">
+                                <div className="flex-1 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col items-end relative overflow-hidden group-hover:bg-white/15">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 blur-3xl -mr-12 -mt-12"></div>
+                                    <span className="text-[10px] text-purple-400 font-black uppercase tracking-[0.2em] mb-1">Phase 03. 平台升级</span>
+                                    <div className="text-lg font-black text-white tracking-tight">登顶：能力爆棚</div>
+                                    <div className="text-[10px] text-slate-400 font-medium">孵化器 • 工业互联网平台</div>
+                                </div>
+                                <div className="w-16 h-16 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-2xl flex items-center justify-center text-3xl border border-white/30 shadow-[0_10px_30px_rgba(139,92,246,0.3)] group-hover:scale-110 transition-transform">🚀</div>
+                            </div>
+
+                            {/* Step 2: Middle */}
+                            <div className="flex items-center gap-4 self-center w-full max-w-[90%] group transition-all duration-300">
+                                <div className="w-16 h-16 bg-gradient-to-tr from-rose-500 to-orange-500 rounded-2xl flex items-center justify-center text-3xl border border-white/30 shadow-[0_10px_30px_rgba(244,63,94,0.3)] group-hover:scale-110 transition-transform">⛽</div>
+                                <div className="flex-1 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden group-hover:bg-white/15">
+                                    <div className="absolute top-0 left-0 w-24 h-24 bg-rose-500/10 blur-3xl -ml-12 -mt-12"></div>
+                                    <span className="text-[10px] text-rose-400 font-black uppercase tracking-[0.2em] mb-1">Phase 02. 财税支持</span>
+                                    <div className="text-lg font-black text-white tracking-tight">油站：给钱给税</div>
+                                    <div className="text-[10px] text-slate-400 font-medium">加计扣除 • 降低融资成本</div>
+                                </div>
+                            </div>
+
+                            {/* Step 1: Base */}
+                            <div className="flex items-center gap-4 self-start w-full max-w-[90%] group transition-all duration-300">
+                                <div className="flex-1 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden group-hover:bg-white/15">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-3xl -mr-12 -mt-12"></div>
+                                    <span className="text-[10px] text-emerald-400 font-black uppercase tracking-[0.2em] mb-1">Phase 01. 环境优化</span>
+                                    <div className="text-lg font-black text-white tracking-tight">地基：松绑先行</div>
+                                    <div className="text-[10px] text-slate-400 font-medium">深化“放管服” • 知产保护</div>
+                                </div>
+                                <div className="w-16 h-16 bg-gradient-to-tr from-emerald-600 to-teal-500 rounded-2xl flex items-center justify-center text-3xl border border-white/30 shadow-[0_10px_30px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform">🌿</div>
                             </div>
                         </div>
                     );
                 case "three_ideologies":
                     return (
-                        <div className="flex flex-col gap-3 h-full justify-center p-4">
-                            <div className="bg-gradient-to-r from-red-500/30 to-red-500/10 border-l-4 border-red-500 p-4 rounded-lg shadow-lg">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-3xl">🦁</span>
-                                    <div>
-                                        <div className="text-red-400 font-bold text-base">现实主义</div>
-                                        <div className="text-gray-300 text-sm">核心:国家 · 目标:权力/安全 · 逻辑:零和博弈</div>
+                        <div className="w-full h-full flex flex-col justify-center gap-4 p-4 select-none">
+                            {/* Realism */}
+                            <div className="group bg-white/5 backdrop-blur-lg border border-red-500/20 p-4 rounded-2xl shadow-xl hover:bg-red-500/5 transition-all">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center text-2xl border border-red-500/30 group-hover:scale-110 transition-transform">🦁</div>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-red-400 font-black text-sm tracking-widest uppercase">Realism</span>
+                                            <span className="text-[10px] text-red-500/60 font-bold px-2 py-0.5 border border-red-500/30 rounded-full">核心：国家</span>
+                                        </div>
+                                        <div className="text-base font-black text-white mb-1">现实主义：权力与博弈</div>
+                                        <div className="text-[10px] text-slate-400 leading-relaxed">追求权力/安全，强调零和博弈，认定政治支配经济。</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gradient-to-r from-blue-500/30 to-blue-500/10 border-l-4 border-blue-500 p-4 rounded-lg shadow-lg">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-3xl">🕊️</span>
-                                    <div>
-                                        <div className="text-blue-400 font-bold text-base">自由主义</div>
-                                        <div className="text-gray-300 text-sm">核心:个体/企业 · 目标:财富/双赢 · 逻辑:绝对获益</div>
+
+                            {/* Liberalism */}
+                            <div className="group bg-white/5 backdrop-blur-lg border border-blue-500/20 p-4 rounded-2xl shadow-xl hover:bg-blue-500/5 transition-all">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center text-2xl border border-blue-500/30 group-hover:scale-110 transition-transform">🕊️</div>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-blue-400 font-black text-sm tracking-widest uppercase">Liberalism</span>
+                                            <span className="text-[10px] text-blue-500/60 font-bold px-2 py-0.5 border border-blue-500/30 rounded-full">核心：个体/企业</span>
+                                        </div>
+                                        <div className="text-base font-black text-white mb-1">自由主义：财富与双赢</div>
+                                        <div className="text-[10px] text-slate-400 leading-relaxed">追求财富双赢，主张市场化自调节，关注绝对获益。</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gradient-to-r from-yellow-500/30 to-yellow-500/10 border-l-4 border-yellow-500 p-4 rounded-lg shadow-lg">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-3xl">☭</span>
-                                    <div>
-                                        <div className="text-yellow-400 font-bold text-base">马克思主义</div>
-                                        <div className="text-gray-300 text-sm">核心:阶级 · 目标:公平/解放 · 逻辑:结构剥削</div>
+
+                            {/* Marxism */}
+                            <div className="group bg-white/5 backdrop-blur-lg border border-amber-500/20 p-4 rounded-2xl shadow-xl hover:bg-amber-500/5 transition-all">
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-amber-600/20 rounded-xl flex items-center justify-center text-2xl border border-amber-500/30 group-hover:scale-110 transition-transform">☭</div>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-amber-400 font-black text-sm tracking-widest uppercase">Marxism</span>
+                                            <span className="text-[10px] text-amber-500/60 font-bold px-2 py-0.5 border border-amber-500/30 rounded-full">核心：阶级</span>
+                                        </div>
+                                        <div className="text-base font-black text-white mb-1">马克思主义：公平与批判</div>
+                                        <div className="text-[10px] text-slate-400 leading-relaxed">追求公平解放，批判不平等结构，认定经济基础决定权。</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     );
                 case "cycles_timeline":
+                    if (revealStep >= 5) {
+                        return (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-4">
+                                <div className="text-blue-400 font-black text-xs uppercase tracking-widest mb-4">四分法：经济波动折线图</div>
+                                <svg viewBox="0 0 300 200" className="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stopColor="#60a5fa" />
+                                            <stop offset="33%" stopColor="#fbbf24" />
+                                            <stop offset="66%" stopColor="#ef4444" />
+                                            <stop offset="100%" stopColor="#10b981" />
+                                        </linearGradient>
+                                    </defs>
+                                    {/* Grid Lines */}
+                                    <line x1="40" y1="40" x2="260" y2="40" stroke="white" strokeOpacity="0.1" strokeDasharray="4" />
+                                    <line x1="40" y1="100" x2="260" y2="100" stroke="white" strokeOpacity="0.2" />
+                                    <line x1="40" y1="160" x2="260" y2="160" stroke="white" strokeOpacity="0.1" strokeDasharray="4" />
+
+                                    {/* Cycle Path (Straight Line Segments as requested) */}
+                                    <path
+                                        d="M40,160 L100,135 L140,40 L180,130 L260,165"
+                                        fill="none"
+                                        stroke="url(#waveGradient)"
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="animate-dash"
+                                    />
+
+                                    {/* Phase Arrows / Markers / Durations */}
+                                    {/* Recovery: Gentle ascent */}
+                                    <g transform="translate(70,147)">
+                                        <circle r="3" fill="#60a5fa" />
+                                        <text y="15" textAnchor="middle" fill="#60a5fa" fontSize="9" fontWeight="bold">复苏</text>
+                                        <text y="28" textAnchor="middle" fill="#93c5fd" fontSize="8">1-2年</text>
+                                    </g>
+                                    {/* Prosperity: Sudden pull up */}
+                                    <g transform="translate(120,87)">
+                                        <circle r="3" fill="#fbbf24" />
+                                        <text x="5" y="5" textAnchor="start" fill="#fbbf24" fontSize="9" fontWeight="bold">繁荣</text>
+                                        <text x="5" y="18" textAnchor="start" fill="#fde047" fontSize="8">2-4年</text>
+                                    </g>
+                                    {/* Recession: Sudden drop */}
+                                    <g transform="translate(160,85)">
+                                        <circle r="3" fill="#ef4444" />
+                                        <text x="5" y="5" textAnchor="start" fill="#ef4444" fontSize="9" fontWeight="bold">衰退</text>
+                                        <text x="5" y="18" textAnchor="start" fill="#fca5a5" fontSize="8">1-2年</text>
+                                    </g>
+                                    {/* Depression: Gentle drop */}
+                                    <g transform="translate(220,147)">
+                                        <circle r="3" fill="#10b981" />
+                                        <text y="15" textAnchor="middle" fill="#10b981" fontSize="9" fontWeight="bold">萧条</text>
+                                        <text y="28" textAnchor="middle" fill="#86efac" fontSize="8">1-3年</text>
+                                    </g>
+
+                                    {/* Axis */}
+                                    <line x1="40" y1="180" x2="270" y2="180" stroke="white" strokeWidth="2" />
+                                    <text x="270" y="195" fill="gray" fontSize="8" textAnchor="end">时间</text>
+                                    <line x1="40" y1="20" x2="40" y2="180" stroke="white" strokeWidth="2" />
+                                    <text x="35" y="25" fill="gray" fontSize="8" textAnchor="end" transform="rotate(-90 35,25)">产出/GDP</text>
+                                </svg>
+                            </div>
+                        );
+                    }
                     return (
-                        <svg viewBox="0 0 260 180" className="w-full h-full">
-                            {/* Axis */}
-                            <line x1="30" y1="150" x2="240" y2="150" stroke="white" strokeWidth="2" />
-                            <polygon points="240,145 250,150 240,155" fill="white" />
-                            <text x="245" y="168" fill="gray" fontSize="10">时间</text>
-                            {/* Kitchin */}
-                            <rect x="40" y="115" width="50" height="20" fill="#60a5fa" rx="4" />
-                            <text x="65" y="130" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">基钦</text>
-                            <text x="65" y="105" fill="#93c5fd" fontSize="12" textAnchor="middle">3-4年</text>
-                            <text x="65" y="92" fill="#60a5fa" fontSize="9" textAnchor="middle">库存周期</text>
-                            {/* Juglar */}
-                            <rect x="100" y="75" width="60" height="20" fill="#818cf8" rx="4" />
-                            <text x="130" y="90" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">朱格拉</text>
-                            <text x="130" y="65" fill="#a5b4fc" fontSize="12" textAnchor="middle">8-10年</text>
-                            <text x="130" y="52" fill="#818cf8" fontSize="9" textAnchor="middle">设备投资</text>
-                            {/* Kondratieff */}
-                            <rect x="170" y="35" width="60" height="20" fill="#c084fc" rx="4" />
-                            <text x="200" y="50" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">康波</text>
-                            <text x="200" y="25" fill="#d8b4fe" fontSize="12" textAnchor="middle">50-60年</text>
-                            <text x="200" y="12" fill="#c084fc" fontSize="9" textAnchor="middle">技术革命</text>
-                            {/* Connecting line */}
-                            <path d="M65,115 L130,75 L200,35" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="5" />
-                        </svg>
+                        <div className="w-full h-full flex flex-col items-center justify-center p-4">
+                            <div className="text-blue-400 font-black text-xs uppercase tracking-widest mb-4">三分法：三层周期时长对比</div>
+                            <svg viewBox="0 0 260 180" className="w-full h-full">
+                                {/* Axis */}
+                                <line x1="30" y1="150" x2="240" y2="150" stroke="white" strokeWidth="2" />
+                                <polygon points="240,145 250,150 240,155" fill="white" />
+                                <text x="245" y="168" fill="gray" fontSize="10">时间</text>
+                                {/* Kitchin */}
+                                <rect x="40" y="115" width="50" height="20" fill="#60a5fa" rx="4" />
+                                <text x="65" y="130" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">基钦</text>
+                                <text x="65" y="105" fill="#93c5fd" fontSize="12" textAnchor="middle">3-4年</text>
+                                <text x="65" y="92" fill="#60a5fa" fontSize="9" textAnchor="middle">库存周期</text>
+                                {/* Juglar */}
+                                <rect x="100" y="75" width="60" height="20" fill="#818cf8" rx="4" />
+                                <text x="130" y="90" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">朱格拉</text>
+                                <text x="130" y="65" fill="#a5b4fc" fontSize="12" textAnchor="middle">8-10年</text>
+                                <text x="130" y="52" fill="#818cf8" fontSize="9" textAnchor="middle">设备投资</text>
+                                {/* Kondratieff */}
+                                <rect x="170" y="35" width="60" height="20" fill="#c084fc" rx="4" />
+                                <text x="200" y="50" fill="white" fontSize="10" textAnchor="middle" fontWeight="bold">康波</text>
+                                <text x="200" y="25" fill="#d8b4fe" fontSize="12" textAnchor="middle">50-60年</text>
+                                <text x="200" y="12" fill="#c084fc" fontSize="9" textAnchor="middle">技术革命</text>
+                                {/* Connecting line */}
+                                <path d="M65,115 L130,75 L200,35" fill="none" stroke="#fbbf24" strokeWidth="2" strokeDasharray="5" />
+                            </svg>
+                        </div>
                     );
                 case "merrill_clock":
                     return (
@@ -1241,7 +1365,7 @@
                                 <div className={`flex-[0.8] md:flex-1 glass-panel rounded-2xl md:rounded-3xl p-3 md:p-6 flex flex-col items-center justify-center transition-all duration-700 ${revealStep > 0 ? 'opacity-100 scale-100' : 'opacity-20 scale-95'}`}>
                                     <div className="w-full h-full relative p-2 md:p-4 flex items-center justify-center overflow-hidden">
                                         <div className="w-full h-full max-h-[40vh] md:max-h-[65vh]">
-                                            <VisualPlaceholder type={currentSlide.data.visualType} />
+                                            <VisualPlaceholder type={currentSlide.data.visualType} revealStep={revealStep} />
                                         </div>
                                     </div>
                                     <div className="hidden md:block text-sm font-medium text-gray-400 mt-4 px-6 py-2 bg-white/5 rounded-full backdrop-blur-sm border border-white/10 uppercase tracking-widest">
