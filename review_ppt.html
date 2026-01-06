@@ -394,7 +394,8 @@
                         points: [
                             "1️⃣ 超全球主义派：全球化不可阻挡、国家消失",
                             "2️⃣ 怀疑论派：并非史无前例、国家仍主导",
-                            "3️⃣ 变革论派：深刻历史转型、国家职能重构"
+                            "3️⃣ 变革论派：深刻历史转型、国家职能重构",
+                            "💡 核心分歧：全球化对国家主权的冲击程度（消亡 vs 主导 vs 转型）"
                         ],
                         visualType: "three_arrows"
                     },
@@ -1040,7 +1041,7 @@
                                 <g transform="translate(120,120)">
                                     <path d="M-95,0 A95,95 0 1,1 95,0 A95,95 0 1,1 -95,0" fill="none" stroke="#818cf8" strokeWidth="2" strokeDasharray="8 4" className="animate-[spin_15s_linear_infinite]" />
                                     <circle r="95" fill="none" stroke="rgba(129, 140, 248, 0.1)" strokeWidth="12" />
-                                    
+
                                     {/* Guarantee Badge - Refined and repositioned to top-right corner */}
                                     <g transform="translate(65, -85)">
                                         <rect x="-65" y="-12" width="130" height="24" rx="12" fill="rgba(15, 23, 42, 0.9)" stroke="#818cf8" strokeWidth="1.5" />
@@ -1131,31 +1132,115 @@
                     );
                 case "oil_scale":
                     return (
-                        <svg viewBox="0 0 260 180" className="w-full h-full">
-                            {/* Balance beam */}
-                            <line x1="50" y1="100" x2="210" y2="100" stroke="white" strokeWidth="4" />
-                            {/* Fulcrum */}
-                            <polygon points="130,100 115,140 145,140" fill="#64748b" stroke="white" strokeWidth="2" />
-                            <text x="130" y="160" fill="#94a3b8" fontSize="12" textAnchor="middle" fontWeight="bold">油价形成</text>
-                            {/* Left pan: Supply/Demand */}
-                            <g transform="translate(70,60)">
-                                <rect x="-35" y="0" width="70" height="40" rx="6" fill="#ef4444" stroke="white" strokeWidth="2" />
-                                <text y="18" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">供需基本面</text>
-                                <text y="32" textAnchor="middle" fill="#fca5a5" fontSize="9">OPEC产量·经济增长</text>
-                            </g>
-                            <line x1="70" y1="100" x2="70" y2="60" stroke="white" strokeWidth="2" />
-                            {/* Right pan: Geopolitics/Finance */}
-                            <g transform="translate(190,30)">
-                                <rect x="-35" y="0" width="70" height="60" rx="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
-                                <text y="18" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">地缘+金融</text>
-                                <text y="34" textAnchor="middle" fill="#93c5fd" fontSize="9">战争·制裁</text>
-                                <text y="48" textAnchor="middle" fill="#93c5fd" fontSize="9">美元·投机</text>
-                            </g>
-                            <line x1="190" y1="100" x2="190" y2="30" stroke="white" strokeWidth="2" />
-                            {/* Tilt indicator */}
-                            <path d="M130,95 L130,75" stroke="#fbbf24" strokeWidth="2" strokeDasharray="4" />
-                            <circle cx="130" cy="72" r="4" fill="#fbbf24" />
-                        </svg>
+                        <div className="w-full h-full flex flex-col items-center justify-center p-3 select-none">
+                            {/* Title */}
+                            <div className="text-amber-400 font-black text-xs uppercase tracking-widest mb-3">油价形成四大影响因素</div>
+
+                            <div className="relative w-full flex-1 flex items-center justify-center">
+                                {/* Center: Oil Barrel */}
+                                <div className="relative z-20">
+                                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.4)] border-2 border-amber-300/50">
+                                        <div className="text-3xl">🛢️</div>
+                                    </div>
+                                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-amber-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded-full border border-amber-500/30">
+                                        国际油价
+                                    </div>
+                                </div>
+
+                                {/* Factor 1: Supply-Demand (Top-Left) */}
+                                <div className="absolute top-[22%] left-[22%] group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-red-500/30 rounded-2xl blur-xl group-hover:bg-red-500/50 transition-all"></div>
+                                        <div className="relative bg-gradient-to-br from-red-600/90 to-red-800/90 backdrop-blur border border-red-400/30 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-all">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-xl">⚖️</span>
+                                                <span className="text-red-200 font-black text-sm">供需基本面</span>
+                                            </div>
+                                            <div className="text-[9px] text-red-300/80 leading-relaxed">
+                                                <div>• OPEC产量决策</div>
+                                                <div>• 全球经济增长</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Connector line */}
+                                    <svg className="absolute bottom-[-12px] right-[-16px] w-8 h-5 overflow-visible" style={{ zIndex: -1 }}>
+                                        <path d="M0,0 Q10,6 20,12" fill="none" stroke="#ef4444" strokeWidth="2" strokeDasharray="4" opacity="0.6" />
+                                        <circle cx="20" cy="12" r="2.5" fill="#ef4444" className="animate-pulse" />
+                                    </svg>
+                                </div>
+
+                                {/* Factor 2: Geopolitics (Top-Right) */}
+                                <div className="absolute top-[22%] right-[22%] group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-blue-500/30 rounded-2xl blur-xl group-hover:bg-blue-500/50 transition-all"></div>
+                                        <div className="relative bg-gradient-to-br from-blue-600/90 to-blue-800/90 backdrop-blur border border-blue-400/30 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-all">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-xl">🌍</span>
+                                                <span className="text-blue-200 font-black text-sm">地缘政治</span>
+                                            </div>
+                                            <div className="text-[9px] text-blue-300/80 leading-relaxed">
+                                                <div>• 战争与冲突</div>
+                                                <div>• 经济制裁</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Connector line */}
+                                    <svg className="absolute bottom-[-12px] left-[-16px] w-8 h-5 overflow-visible" style={{ zIndex: -1 }}>
+                                        <path d="M20,0 Q10,6 0,12" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4" opacity="0.6" />
+                                        <circle cx="0" cy="12" r="2.5" fill="#3b82f6" className="animate-pulse" />
+                                    </svg>
+                                </div>
+
+                                {/* Factor 3: Financial (Bottom-Left) */}
+                                <div className="absolute bottom-[22%] left-[22%] group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-emerald-500/30 rounded-2xl blur-xl group-hover:bg-emerald-500/50 transition-all"></div>
+                                        <div className="relative bg-gradient-to-br from-emerald-600/90 to-emerald-800/90 backdrop-blur border border-emerald-400/30 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-all">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-xl">💵</span>
+                                                <span className="text-emerald-200 font-black text-sm">金融因素</span>
+                                            </div>
+                                            <div className="text-[9px] text-emerald-300/80 leading-relaxed">
+                                                <div>• 美元汇率波动</div>
+                                                <div>• 期货市场投机</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Connector line */}
+                                    <svg className="absolute top-[-12px] right-[-16px] w-8 h-5 overflow-visible" style={{ zIndex: -1 }}>
+                                        <path d="M0,12 Q10,6 20,0" fill="none" stroke="#10b981" strokeWidth="2" strokeDasharray="4" opacity="0.6" />
+                                        <circle cx="20" cy="0" r="2.5" fill="#10b981" className="animate-pulse" />
+                                    </svg>
+                                </div>
+
+                                {/* Factor 4: Technology (Bottom-Right) - NEW! */}
+                                <div className="absolute bottom-[22%] right-[22%] group">
+                                    <div className="relative">
+                                        <div className="absolute inset-0 bg-purple-500/30 rounded-2xl blur-xl group-hover:bg-purple-500/50 transition-all"></div>
+                                        <div className="relative bg-gradient-to-br from-purple-600/90 to-purple-800/90 backdrop-blur border border-purple-400/30 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-all">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-xl">🔧</span>
+                                                <span className="text-purple-200 font-black text-sm">技术进步</span>
+                                            </div>
+                                            <div className="text-[9px] text-purple-300/80 leading-relaxed">
+                                                <div>• 页岩油革命</div>
+                                                <div>• 新能源替代</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Connector line */}
+                                    <svg className="absolute top-[-12px] left-[-16px] w-8 h-5 overflow-visible" style={{ zIndex: -1 }}>
+                                        <path d="M20,12 Q10,6 0,0" fill="none" stroke="#a855f7" strokeWidth="2" strokeDasharray="4" opacity="0.6" />
+                                        <circle cx="0" cy="0" r="2.5" fill="#a855f7" className="animate-pulse" />
+                                    </svg>
+                                </div>
+
+                                {/* Decorative rotating ring */}
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <div className="w-32 h-32 rounded-full border border-dashed border-white/10 animate-[spin_20s_linear_infinite]"></div>
+                                </div>
+                            </div>
+                        </div>
                     );
                 case "waterways_map":
                     return (
