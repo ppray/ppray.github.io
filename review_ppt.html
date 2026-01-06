@@ -185,10 +185,12 @@
                         type: "简答",
                         question: "科学精神的内涵与重要性",
                         points: [
-                            "🔍 求实：客观事实（屠呦呦）",
-                            "🤔 批判：不迷信权威",
-                            "💡 创新：突破常规（潘建伟）",
-                            "🤝 协作：知识共享（疫苗合作）"
+                            "🏛️ 求实：从客观事实出发，反对主观臆断（基础）",
+                            "⚙️ 批判：敢于质疑权威，永不盲从（动力）",
+                            "💡 创新：提出新假设新方法，突破传统（灵魂）",
+                            "🛡️ 协作：集体事业，需要开放共享合作（保障）",
+                            "🧠 联想：无求实则伪，无批判则停，无创新则滞，无协作则重",
+                            "🎯 重要性：①动力：推动科发技创；②武器：抵制伪科学；③整合：协作攻克难题；④意义：理性思维与强国建设"
                         ],
                         visualType: "science_nodes"
                     },
@@ -1034,30 +1036,56 @@
                     return (
                         <div className="relative h-full w-full flex items-center justify-center select-none">
                             <svg viewBox="0 0 240 240" className="w-full h-full">
-                                {/* Outer Ring */}
-                                <circle cx="120" cy="120" r="100" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="12 6" />
-                                {/* Compass Needle */}
-                                <g>
-                                    <path d="M120,45 L140,120 L120,195 L100,120 Z" fill="rgba(251, 191, 36, 0.5)" stroke="#fbbf24" strokeWidth="2" />
-                                    <circle cx="120" cy="120" r="12" fill="#fbbf24" stroke="white" strokeWidth="3" />
-                                    <text x="120" y="124" textAnchor="middle" fill="#0f172a" fontSize="8" fontWeight="bold">精神</text>
+                                {/* 4. Guarantee: Encompassing Ring (协作) */}
+                                <g transform="translate(120,120)">
+                                    <path d="M-95,0 A95,95 0 1,1 95,0 A95,95 0 1,1 -95,0" fill="none" stroke="#818cf8" strokeWidth="2" strokeDasharray="8 4" className="animate-[spin_15s_linear_infinite]" />
+                                    <circle r="95" fill="none" stroke="rgba(129, 140, 248, 0.1)" strokeWidth="12" />
+                                    
+                                    {/* Guarantee Badge - Refined and repositioned to top-right corner */}
+                                    <g transform="translate(65, -85)">
+                                        <rect x="-65" y="-12" width="130" height="24" rx="12" fill="rgba(15, 23, 42, 0.9)" stroke="#818cf8" strokeWidth="1.5" />
+                                        <text textAnchor="middle" y="4" fill="white" style={{ fontSize: '9px', fontWeight: 'bold' }}>
+                                            🛡️ 保障 <tspan style={{ fontSize: '7px', fontWeight: 'normal', fill: 'rgba(255,255,255,0.8)' }} dx="2">(协作：开放共享)</tspan>
+                                        </text>
+                                    </g>
                                 </g>
-                                {/* Points of Scientific Spirit */}
-                                <g transform="translate(120,30)">
-                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#3b82f6" stroke="white" strokeWidth="2" />
-                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🔍 求实</text>
+
+                                {/* 1. Base: Pedestal (求实) */}
+                                <g transform="translate(120,215)">
+                                    <path d="M-60,0 L60,0 L75,20 L-75,20 Z" fill="#3b82f6" stroke="white" strokeWidth="2" />
+                                    <rect x="-30" y="4" width="60" height="12" rx="4" fill="rgba(255,255,255,0.2)" />
+                                    <text y="14" textAnchor="middle" fill="white" style={{ fontSize: '11px', fontWeight: 'bold' }}>🏛️ 求实 (基础)</text>
                                 </g>
-                                <g transform="translate(210,120)">
-                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#ef4444" stroke="white" strokeWidth="2" />
-                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🤔 批判</text>
+
+                                {/* 2. Power: Gear Engine (批判) */}
+                                <g transform="translate(120,145)">
+                                    <g className="animate-[spin_8s_linear_infinite]">
+                                        <circle r="35" fill="none" stroke="#ef4444" strokeWidth="4" strokeDasharray="10 6" />
+                                        <circle r="25" fill="#ef4444" fillOpacity="0.2" stroke="#ef4444" strokeWidth="2" />
+                                        {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
+                                            <rect key={deg} x="-5" y="-42" width="10" height="12" fill="#ef4444" transform={`rotate(${deg})`} />
+                                        ))}
+                                    </g>
+                                    <circle r="18" fill="#0f172a" stroke="#ef4444" strokeWidth="2" />
+                                    <text y="2" textAnchor="middle" fill="#fca5a5" style={{ fontSize: '10px', fontWeight: 'bold' }}>⚙️ 批判</text>
+                                    <text y="12" textAnchor="middle" fill="#fca5a5" style={{ fontSize: '8px' }}>(动力)</text>
                                 </g>
-                                <g transform="translate(120,210)">
-                                    <rect x="-35" y="-12" width="70" height="24" rx="12" fill="#10b981" stroke="white" strokeWidth="2" />
-                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">💡 创新</text>
-                                </g>
-                                <g transform="translate(30,120)">
-                                    <rect x="-25" y="-12" width="50" height="24" rx="12" fill="#818cf8" stroke="white" strokeWidth="2" />
-                                    <text dy="5" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">🤝 协作</text>
+
+                                {/* 3. Soul: Lightbulb (创新) */}
+                                <g transform="translate(120,70)">
+                                    <circle r="30" fill="url(#bulbGlow)" opacity="0.6" className="animate-pulse" />
+                                    <defs>
+                                        <radialGradient id="bulbGlow" cx="50%" cy="50%" r="50%">
+                                            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.8" />
+                                            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+                                        </radialGradient>
+                                    </defs>
+                                    <path d="M-15,0 C-15,-20 15,-20 15,0 C15,10 8,15 8,25 L-8,25 C-8,15 -15,10 -15,0 Z" fill="#fbbf24" stroke="white" strokeWidth="2" />
+                                    <path d="M-5,5 L0,0 L5,5" fill="none" stroke="#b45309" strokeWidth="2" />
+                                    <rect x="-8" y="25" width="16" height="6" fill="#9ca3af" />
+                                    <rect x="-8" y="31" width="16" height="6" fill="#9ca3af" />
+                                    <text x="35" y="10" fill="#fbbf24" style={{ fontSize: '11px', fontWeight: 'bold' }}>💡 创新</text>
+                                    <text x="35" y="22" fill="#fde047" style={{ fontSize: '9px' }}>(灵魂)</text>
                                 </g>
                             </svg>
                         </div>
