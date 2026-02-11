@@ -11,6 +11,14 @@ ai_2025/
 .DS_Store
 .claude/
 
+# ONNX 模型文件（可下载的预训练模型，约230MB）
+*.onnx
+
+# Python 缓存文件
+__pycache__/
+*.pyc
+*.pyc
+
 # 其他临时文件
 *.tmp
 *.log
