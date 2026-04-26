@@ -313,6 +313,18 @@
             color: var(--ink);
         }
 
+        .short-tip-box {
+            background: var(--blue-bg);
+            border-left: 3px solid var(--blue);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: var(--blue);
+            font-weight: 600;
+        }
+
         .memo-box {
             background: var(--green-bg);
             border-radius: 8px;
@@ -738,13 +750,21 @@
         function renderCard() {
             const q = currentQuestion;
             const isEssay = q.category === '论述题';
+            const isShort = q.category === '简答题';
             const templateHTML = isEssay ? buildTemplateHTML(extractTemplates(q.answer)) : '';
+            const shortTipHTML = isShort ? '<div class="short-tip-box">答题技巧：分点作答（①②③④），先写关键词再展开</div>' : '';
             // 清理 answer 中的模板推荐标记，避免显示在正文中
             let cleanAnswer = q.answer.replace(/【推荐模板[^】]*】\n?/g, '');
             // 格式化：\n → <br>，独占一行的中文数字标题加粗
             cleanAnswer = cleanAnswer
                 .replace(/\n/g, '<br>')
                 .replace(/<br>(一、|二、|三、|四、|五、)/g, (match, title) => `<br><b>${title}</b>`);
+            // 简答题格式化：①②③④前换行，关键词加粗
+            if (isShort) {
+                cleanAnswer = cleanAnswer
+                    .replace(/([①②③④⑤⑥⑦⑧⑨⑩])([^：]*?)(：)/g, '<br><b>$1$2</b>$3');
+                if (cleanAnswer.startsWith('<br>')) cleanAnswer = cleanAnswer.substring(4);
+            }
             document.getElementById('card-area').innerHTML = `
                 <div class="card">
                     <div class="card-tag">${q.category}</div>
@@ -753,6 +773,7 @@
                         <div class="answer-divider"></div>
                         <div class="answer-label">参考答案</div>
                         <div class="answer-text">${cleanAnswer}</div>
+                        ${shortTipHTML}
                         ${templateHTML}
                         <div class="explain-box">${q.explanation}</div>
                         <div class="memo-box">${q.memorization}</div>
