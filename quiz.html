@@ -300,6 +300,48 @@
             font-weight: 600;
         }
 
+        .template-box {
+            background: var(--gold-bg, #f5f0e0);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            line-height: 1.75;
+            color: var(--ink);
+            border-left: 3px solid var(--gold);
+        }
+
+        .template-box summary {
+            font-weight: 700;
+            color: var(--gold);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .template-box summary::-webkit-details-marker { display: none; }
+
+        .template-box .template-content {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+            white-space: pre-line;
+        }
+
+        .template-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--gold);
+            background: var(--gold-bg, #f5f0e0);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
         /* ── 按钮区 ── */
         .actions {
             display: flex;
@@ -432,6 +474,34 @@
         const WRONG_KEY = 'quiz_wrong_ids';
         const STATS_KEY = 'quiz_stats';
 
+        // 论述题答题模板
+        const essayTemplates = {
+            1: `[模板1：原因/条件类]\n总起：×××是多种因素共同作用的结果。\n分点：①经济基础……②阶级力量……③时代背景……④主观条件……⑤外部环境……\n总结：因此，×××具有历史必然性。`,
+            2: `[模板2：意义/作用类]\n总起：×××具有重大而深远的意义。\n分点：①政治上……②经济上……③思想上……④国际上……⑤对未来的启示……\n总结：综上所述，×××是……的重要里程碑。`,
+            3: `[模板3：特征/表现类]\n总起：×××主要表现为以下几个方面。\n分点：①……性/化 ②……性/化 ③……性/化 ④……性/化\n总结：这些特征相互联系，共同构成了×××的总体面貌。`,
+            4: `[模板4：经验/教训类]\n总起：×××给我们提供了深刻的经验/教训。\n分点：①必须坚持……②必须防止……③必须处理好……与……的关系 ④必须与时俱进……\n总结：只有……才能……`,
+            5: `[模板5：关系/联系类]\n总起：A与B是辩证统一、相互影响的关系。\n分点：①A决定B……②B反作用于A……③在……条件下，两者相互转化……\n总结：正确认识和处理A与B的关系，对于……具有重要意义。`
+        };
+
+        function extractTemplates(answer) {
+            const nums = [];
+            for (let i = 1; i <= 5; i++) {
+                if (answer.includes('模板' + i)) nums.push(i);
+            }
+            return nums;
+        }
+
+        function buildTemplateHTML(nums) {
+            if (!nums.length) return '';
+            const items = nums.map(n => `<div class="template-content">${essayTemplates[n]}</div>`).join('');
+            return `
+                <details class="template-box">
+                    <summary>📋 查看推荐答题模板（${nums.map(n => '模板' + n).join(' + ')}）</summary>
+                    ${items}
+                </details>
+            `;
+        }
+
         let currentBank = 'source';
         let currentCategory = 'all';
         let currentQuestion = null;
@@ -530,6 +600,10 @@
 
         function renderCard() {
             const q = currentQuestion;
+            const isEssay = q.category === '论述题';
+            const templateHTML = isEssay ? buildTemplateHTML(extractTemplates(q.answer)) : '';
+            // 清理 answer 中的模板推荐标记，避免显示在正文中
+            const cleanAnswer = q.answer.replace(/【推荐模板[^】]*】\n?/g, '');
             document.getElementById('card-area').innerHTML = `
                 <div class="card">
                     <div class="card-tag">${q.category}</div>
@@ -537,7 +611,8 @@
                     <div class="answer-area" id="answer-area">
                         <div class="answer-divider"></div>
                         <div class="answer-label">参考答案</div>
-                        <div class="answer-text">${q.answer}</div>
+                        <div class="answer-text">${cleanAnswer}</div>
+                        ${templateHTML}
                         <div class="explain-box">${q.explanation}</div>
                         <div class="memo-box">${q.memorization}</div>
                     </div>
