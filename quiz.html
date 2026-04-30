@@ -325,6 +325,21 @@
             font-weight: 600;
         }
 
+        .answer-point {
+            margin-bottom: 14px;
+            line-height: 1.9;
+        }
+
+        .answer-point:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
         .memo-box {
             background: var(--green-bg);
             border-radius: 8px;
@@ -747,23 +762,51 @@
             renderCard();
         }
 
+        function formatShortAnswer(text) {
+            // Split on ①-⑩ markers and format each point
+            const parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
+            return parts.filter(p => p.trim()).map(part => {
+                const m = part.match(/^([①②③④⑤⑥⑦⑧⑨⑩])(.*?)(：)(.*)/s);
+                if (m) {
+                    const [, num, keyword, colon, detail] = m;
+                    const kw = keyword.trim();
+                    const dt = detail.trim();
+                    if (kw) {
+                        return `<div class="answer-point"><b>${num}${kw}</b>${colon}${dt}</div>`;
+                    } else {
+                        return `<div class="answer-point"><b>${num}</b>${colon}${dt}</div>`;
+                    }
+                }
+                return `<div class="answer-point">${part.trim()}</div>`;
+            }).join('');
+        }
+
+        function formatEssayAnswer(text) {
+            let s = text.replace(/\n/g, '<br>');
+            // Bold standalone section headers like "一、", "二、", etc.
+            s = s.replace(/(<br>|^)((?:一|二|三|四|五|六|七|八|九|十)、[^<]*)/g, (m, sep, title) => `${sep}<span class="section-title">${title}</span>`);
+            // Bold numbered points at start of line: ①②③④ etc
+            s = s.replace(/(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩)(.*?)(：)/g, '<b>$1$2</b>$3');
+            return s;
+        }
+
         function renderCard() {
             const q = currentQuestion;
             const isEssay = q.category === '论述题';
             const isShort = q.category === '简答题';
+            const isTerm = q.category === '名词解释';
             const templateHTML = isEssay ? buildTemplateHTML(extractTemplates(q.answer)) : '';
             const shortTipHTML = isShort ? '<div class="short-tip-box">答题技巧：分点作答（①②③④），先写关键词再展开</div>' : '';
             // 清理 answer 中的模板推荐标记，避免显示在正文中
             let cleanAnswer = q.answer.replace(/【推荐模板[^】]*】\n?/g, '');
-            // 格式化：\n → <br>，独占一行的中文数字标题加粗
-            cleanAnswer = cleanAnswer
-                .replace(/\n/g, '<br>')
-                .replace(/<br>(一、|二、|三、|四、|五、)/g, (match, title) => `<br><b>${title}</b>`);
-            // 简答题格式化：①②③④前换行，关键词加粗
+            // 格式化
             if (isShort) {
-                cleanAnswer = cleanAnswer
-                    .replace(/([①②③④⑤⑥⑦⑧⑨⑩])([^：]*?)(：)/g, '<br><b>$1$2</b>$3');
-                if (cleanAnswer.startsWith('<br>')) cleanAnswer = cleanAnswer.substring(4);
+                cleanAnswer = formatShortAnswer(cleanAnswer);
+            } else if (isEssay) {
+                cleanAnswer = formatEssayAnswer(cleanAnswer);
+            } else {
+                // 填空题/名词解释：简单换行
+                cleanAnswer = cleanAnswer.replace(/\n/g, '<br>');
             }
             document.getElementById('card-area').innerHTML = `
                 <div class="card">
