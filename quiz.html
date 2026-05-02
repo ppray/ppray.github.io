@@ -334,6 +334,25 @@
             margin-bottom: 0;
         }
 
+        .point-label {
+            font-weight: 700;
+            color: var(--blue);
+            background: var(--blue-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+
+        .summary-text {
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 16px !important;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border);
+        }
+
         .section-title {
             font-weight: 700;
             font-size: 0.95rem;
@@ -765,19 +784,20 @@
         function formatShortAnswer(text) {
             // Split on ①-⑩ markers and format each point
             const parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
-            return parts.filter(p => p.trim()).map(part => {
+            const filtered = parts.filter(p => p.trim());
+            return filtered.map((part, idx) => {
                 const m = part.match(/^([①②③④⑤⑥⑦⑧⑨⑩])(.*?)(：)(.*)/s);
                 if (m) {
                     const [, num, keyword, colon, detail] = m;
                     const kw = keyword.trim();
                     const dt = detail.trim();
                     if (kw) {
-                        return `<div class="answer-point"><b>${num}${kw}</b>${colon}${dt}</div>`;
+                        return `<div class="answer-point"><span class="point-label">${num}${kw}</span>${colon}${dt}</div>`;
                     } else {
-                        return `<div class="answer-point"><b>${num}</b>${colon}${dt}</div>`;
+                        return `<div class="answer-point"><span class="point-label">${num}</span>${colon}${dt}</div>`;
                     }
                 }
-                return `<div class="answer-point">${part.trim()}</div>`;
+                return `<div class="answer-point summary-text">${part.trim()}</div>`;
             }).join('');
         }
 
