@@ -1,0 +1,10 @@
+.vercel
+
+# macOS 系统文件
+.DS_Store
+
+# 缓存文件
+.glm_usage_cache
+
+# Playwright MCP 测试产物
+.playwright-mcp/

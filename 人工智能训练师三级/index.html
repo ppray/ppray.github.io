@@ -1,513 +1,952 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI训练师三级 · 30天学习计划</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#4f46e5;--primary-light:#818cf8;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--text:#1e293b;--text-light:#64748b;--success:#22c55e;--warning:#f59e0b;--danger:#ef4444;--s-color:#ef4444;--a-color:#f59e0b;--b-color:#3b82f6;--c-color:#94a3b8}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;padding:20px 0;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;transition:transform .3s}
-.sidebar h1{font-size:16px;padding:0 20px 16px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:12px}
-.sidebar h1 span{display:block;font-size:12px;color:rgba(255,255,255,.6);font-weight:400;margin-top:4px}
-.nav-group{margin-bottom:8px}
-.nav-group-title{font-size:11px;text-transform:uppercase;color:rgba(255,255,255,.4);padding:8px 20px 4px;letter-spacing:1px}
-.nav-item{display:flex;align-items:center;padding:8px 20px;font-size:13px;color:rgba(255,255,255,.75);cursor:pointer;transition:all .15s;text-decoration:none;gap:8px}
-.nav-item:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-item.active{background:rgba(255,255,255,.15);color:#fff;border-right:3px solid var(--primary-light)}
-.nav-item .badge{margin-left:auto;background:rgba(255,255,255,.2);padding:1px 8px;border-radius:10px;font-size:11px}
-.main{margin-left:260px;padding:32px 40px;max-width:960px;flex:1}
-.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.top-bar h2{font-size:24px;font-weight:700}
-.progress-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
-.progress-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid var(--border)}
-.progress-card .label{font-size:12px;color:var(--text-light);margin-bottom:4px}
-.progress-card .value{font-size:28px;font-weight:700;color:var(--primary)}
-.progress-card .bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden}
-.progress-card .bar-fill{height:100%;border-radius:3px;transition:width .4s ease}
-.section{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);border:1px solid var(--border);display:none}
-.section.visible{display:block}
-.section-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.section-title .icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0}
-.phase-tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;color:#fff}
-.phase-tag.s{background:var(--s-color)}.phase-tag.a{background:var(--a-color)}.phase-tag.b{background:var(--b-color)}.phase-tag.c{background:var(--c-color)}
-.day-block{margin-bottom:16px;padding:16px;border-radius:10px;background:#f8fafc;border:1px solid var(--border)}
-.day-block h4{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--primary)}
-.checklist{list-style:none}
-.checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13.5px;line-height:1.5}
-.checklist li+li{border-top:1px solid #f1f5f9}
-.checklist input[type=checkbox]{margin-top:4px;width:16px;height:16px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
-.checklist li.checked>span{color:var(--text-light);text-decoration:line-through}
-.checkpoint{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #bbf7d0;border-radius:10px;padding:14px 18px;margin-top:16px}
-.checkpoint h4{font-size:13px;color:#166534;margin-bottom:8px}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
-table th{background:#f1f5f9;font-weight:600;text-align:left;padding:8px 12px;border-bottom:2px solid var(--border)}
-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
-table tr:hover td{background:#f8fafc}
-code{background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:12.5px;font-family:"Fira Code",monospace}
-pre{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:12px 0}
-pre code{background:transparent;padding:0;color:inherit}
-.comment{color:#94a3b8}
-.warn{color:var(--warning);font-weight:600;font-size:12px}
-.btn-reset{background:none;border:1px solid var(--danger);color:var(--danger);padding:6px 16px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .15s}
-.btn-reset:hover{background:var(--danger);color:#fff}
-.skill-rating{display:flex;gap:4px;align-items:center}
-.skill-rating .star{width:20px;height:20px;cursor:pointer;border-radius:4px;border:1px solid #cbd5e1;background:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.skill-rating .star.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.note-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;resize:none;font-family:inherit}
-.score-input{width:60px;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:12px;text-align:center}
-@media(max-width:768px){
-.sidebar{transform:translateX(-100%)}
-.sidebar.open{transform:translateX(0)}
-.main{margin-left:0;padding:16px}
-.menu-toggle{display:block!important}
-}
-.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--primary);color:#fff;border:none;width:40px;height:40px;border-radius:10px;font-size:20px;cursor:pointer}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
-.overlay.open{display:block}
-</style>
-</head>
-<body>
-<button class="menu-toggle" onclick="toggleSidebar()">&#9776;</button>
-<div class="overlay" onclick="toggleSidebar()"></div>
 
-<div class="layout">
-<nav class="sidebar" id="sidebar">
-  <h1>AI训练师三级<span>30天学习计划 Checklist</span></h1>
-  <div class="nav-group">
-    <div class="nav-group-title">总览</div>
-    <a class="nav-item active" data-section="overview" onclick="showSection('overview')">
-      <span>&#128200;</span> 进度总览
-    </a>
-    <a class="nav-item" data-section="strategy" onclick="showSection('strategy')">
-      <span>&#127919;</span> 得分策略
-    </a>
-  </div>
-  <div class="nav-group">
-    <div class="nav-group-title">阶段一 · Day 1-12</div>
-    <a class="nav-item" data-section="p1-111" onclick="showSection('p1-111')">
-      <span>&#128308;</span> 1.1.1 医疗数据 <span class="badge">25分</span>
-    </a>
-    <a class="nav-item" data-section="p1-221" onclick="showSection('p1-221')">
-      <span>&#128992;</span> 2.2.1 信用评分 <span class="badge">20分</span>
-    </a>
-    <a class="nav-item" data-section="p1-321" onclick="showSection('p1-321')">
-      <span>&#128992;</span> 3.2.1 图像识别 <span class="badge">20分</span>
-    </a>
-    <a class="nav-item" data-section="p1-mock" onclick="showSection('p1-mock')">
-      <span>&#9201;</span> Day12 限时模拟
-    </a>
-  </div>
-  <div class="nav-group">
-    <div class="nav-group-title">阶段二 · Day 13-20</div>
-    <a class="nav-item" data-section="p2-211" onclick="showSection('p2-211')">
-      <span>&#128309;</span> 2.1.1 数据清洗 <span class="badge">15分</span>
-    </a>
-    <a class="nav-item" data-section="p2-311" onclick="showSection('p2-311')">
-      <span>&#128309;</span> 3.1.1 音箱分析 <span class="badge">15分</span>
-    </a>
-    <a class="nav-item" data-section="p2-421" onclick="showSection('p2-421')">
-      <span>&#11093;</span> 4.2.1 零售采集 <span class="badge">5分</span>
-    </a>
-    <a class="nav-item" data-section="p2-theory" onclick="showSection('p2-theory')">
-      <span>&#128214;</span> 理论第一轮
-    </a>
-  </div>
-  <div class="nav-group">
-    <div class="nav-group-title">阶段三 · Day 21-27</div>
-    <a class="nav-item" data-section="p3" onclick="showSection('p3')">
-      <span>&#128293;</span> 全真模拟 &amp; 变体
-    </a>
-  </div>
-  <div class="nav-group">
-    <div class="nav-group-title">阶段四 · Day 28-30</div>
-    <a class="nav-item" data-section="p4" onclick="showSection('p4')">
-      <span>&#127937;</span> 考前冲刺
-    </a>
-  </div>
-  <div class="nav-group">
-    <div class="nav-group-title">参考</div>
-    <a class="nav-item" data-section="code" onclick="showSection('code')">
-      <span>&#128187;</span> 代码速查
-    </a>
-    <a class="nav-item" data-section="exam" onclick="showSection('exam')">
-      <span>&#128203;</span> 考试注意事项
-    </a>
-    <a class="nav-item" data-section="skills" onclick="showSection('skills')">
-      <span>&#11088;</span> 技能自评
-    </a>
-  </div>
-</nav>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>AI训练师三级 · 30天学习计划</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box
+			}
 
-<main class="main" id="mainContent">
+			:root {
+				--primary: #4f46e5;
+				--primary-light: #818cf8;
+				--bg: #f8fafc;
+				--card: #fff;
+				--border: #e2e8f0;
+				--text: #1e293b;
+				--text-light: #64748b;
+				--success: #22c55e;
+				--warning: #f59e0b;
+				--danger: #ef4444;
+				--s-color: #ef4444;
+				--a-color: #f59e0b;
+				--b-color: #3b82f6;
+				--c-color: #94a3b8
+			}
 
-<!-- ========== OVERVIEW ========== -->
-<div class="section visible" id="sec-overview">
-  <div class="top-bar">
-    <h2>&#128200; 30天学习进度总览</h2>
-    <button class="btn-reset" onclick="resetAll()">&#128260; 重置全部进度</button>
-  </div>
-  <div class="progress-overview">
-    <div class="progress-card">
-      <div class="label">总体完成</div>
-      <div class="value" id="stat-total">0%</div>
-      <div class="bar"><div class="bar-fill" id="bar-total" style="width:0%;background:var(--primary)"></div></div>
-    </div>
-    <div class="progress-card">
-      <div class="label">阶段一 · S+A级 (Day 1-12)</div>
-      <div class="value" id="stat-p1">0%</div>
-      <div class="bar"><div class="bar-fill" id="bar-p1" style="width:0%;background:var(--s-color)"></div></div>
-    </div>
-    <div class="progress-card">
-      <div class="label">阶段二 · B+C+理论 (Day 13-20)</div>
-      <div class="value" id="stat-p2">0%</div>
-      <div class="bar"><div class="bar-fill" id="bar-p2" style="width:0%;background:var(--a-color)"></div></div>
-    </div>
-    <div class="progress-card">
-      <div class="label">阶段三 · 模拟训练 (Day 21-27)</div>
-      <div class="value" id="stat-p3">0%</div>
-      <div class="bar"><div class="bar-fill" id="bar-p3" style="width:0%;background:var(--b-color)"></div></div>
-    </div>
-    <div class="progress-card">
-      <div class="label">阶段四 · 考前冲刺 (Day 28-30)</div>
-      <div class="value" id="stat-p4">0%</div>
-      <div class="bar"><div class="bar-fill" id="bar-p4" style="width:0%;background:var(--success)"></div></div>
-    </div>
-  </div>
-  <!-- Daily tracker -->
-  <div class="section-title"><span class="icon" style="background:var(--primary)">&#128197;</span> 30天每日打卡</div>
-  <table>
-    <thead><tr><th style="width:36px">&#10004;</th><th style="width:70px">天数</th><th>学习内容</th><th style="width:80px">得分/备注</th></tr></thead>
-    <tbody id="daily-tracker"></tbody>
-  </table>
-</div>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.6
+			}
 
-<!-- ========== STRATEGY ========== -->
-<div class="section" id="sec-strategy">
-  <div class="section-title"><span class="icon" style="background:var(--primary)">&#127919;</span> 考试全景与得分策略</div>
-  <p style="margin-bottom:16px;color:var(--text-light);font-size:14px">操作技能考试 120分钟 / 100分 · 理论知识考试另计</p>
-  <table>
-    <thead><tr><th>优先级</th><th>题目</th><th>名称</th><th>时间</th><th>分值</th><th>题型</th></tr></thead>
-    <tbody>
-      <tr><td><span class="phase-tag s">S</span></td><td>1.1.1</td><td>智能医疗数据处理</td><td>30min</td><td><b>25分</b></td><td>纯代码</td></tr>
-      <tr><td><span class="phase-tag a">A</span></td><td>2.2.1</td><td>Logistic回归信用评分</td><td>20min</td><td><b>20分</b></td><td>代码+文档</td></tr>
-      <tr><td><span class="phase-tag a">A</span></td><td>3.2.1</td><td>图像识别ONNX推理</td><td>20min</td><td><b>20分</b></td><td>代码+文档</td></tr>
-      <tr><td><span class="phase-tag b">B</span></td><td>2.1.1</td><td>燃油效率数据清洗</td><td>20min</td><td><b>15分</b></td><td>代码+文档</td></tr>
-      <tr><td><span class="phase-tag b">B</span></td><td>3.1.1</td><td>智能音箱分析优化</td><td>20min</td><td><b>15分</b></td><td>纯文档</td></tr>
-      <tr><td><span class="phase-tag c">C</span></td><td>4.2.1</td><td>零售数据采集指导</td><td>10min</td><td><b>5分</b></td><td>纯文档</td></tr>
-    </tbody>
-  </table>
-  <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px">
-    <b>&#128161; 得分策略：</b>S+A级 = 65分，拿满即稳过。B级锦上添花，C级背模板即可。
-  </div>
-</div>
+			.layout {
+				display: flex;
+				min-height: 100vh
+			}
 
-<!-- ========== PHASE 1: 1.1.1 ========== -->
-<div class="section" id="sec-p1-111">
-  <div class="section-title"><span class="icon" style="background:var(--s-color)">S</span> 1.1.1 智能医疗数据处理 <span class="phase-tag s" style="margin-left:8px">25分</span></div>
-  <div class="day-block">
-    <h4>Day 1 — 跑通代码</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d1-1"><span>安装环境：<code>pip install -r requirements.txt</code></span></li>
-      <li><input type="checkbox" data-id="d1-2"><span>运行 <code>practices/1.1.1_.../example.ipynb</code>，逐Cell理解输出</span></li>
-      <li><input type="checkbox" data-id="d1-3"><span>掌握 <code>np.where</code> 条件判断、<code>pd.cut</code> 区间划分（<code>right=False</code>）、<code>groupby+apply</code></span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 2 — 背诵得分点</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d2-1"><span>读CSV(1分) → np.where创建RiskLevel(3分) → value_counts(2分) → 占比(2分)</span></li>
-      <li><input type="checkbox" data-id="d2-2"><span>BMI区间 bins=[0,18.5,24,28,inf] labels=['偏瘦','正常','超重','肥胖'](4分) → 比例(2分) → 计数(1分)</span></li>
-      <li><input type="checkbox" data-id="d2-3"><span>年龄区间 bins=[0,26,36,46,56,66,inf](4分) → 比例(2分) → 计数(1分)</span></li>
-      <li><input type="checkbox" data-id="d2-4"><span><b>关闭所有参考，独立默写完整代码</b></span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 3 — 变体强化</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d3-1"><span>用 上网素材/1.1.1/1.1.1.ipynb 独立练习</span></li>
-      <li><input type="checkbox" data-id="d3-2"><span>打开 考试平台模拟界面/1.1.1.html 熟悉考试UI</span></li>
-      <li><input type="checkbox" data-id="d3-3"><span>做 上网素材/1.1.2/(sensor_data) 和 1.1.3/(credit_data) 变体</span></li>
-    </ul>
-  </div>
-</div>
+			.sidebar {
+				width: 260px;
+				background: linear-gradient(135deg, #1e1b4b, #312e81);
+				color: #fff;
+				padding: 20px 0;
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 100vh;
+				overflow-y: auto;
+				z-index: 100;
+				transition: transform .3s
+			}
 
-<!-- ========== PHASE 1: 2.2.1 ========== -->
-<div class="section" id="sec-p1-221">
-  <div class="section-title"><span class="icon" style="background:var(--a-color)">A</span> 2.2.1 Logistic回归信用评分 <span class="phase-tag a" style="margin-left:8px">20分</span></div>
-  <div class="day-block">
-    <h4>Day 4 — 跑通完整流程</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d4-1"><span>运行 <code>practices/2.2.1_.../example.ipynb</code></span></li>
-      <li><input type="checkbox" data-id="d4-2"><span>理解完整链条：加载→drop→split→LogisticRegression(max_iter=1000)→fit→predict→pickle.dump→classification_report→SMOTE→重训练</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 5 — 评估指标与错误分析模板</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d5-1"><span>背诵 precision / recall / f1-score 含义</span></li>
-      <li><input type="checkbox" data-id="d5-2"><span>掌握错误分析模板：类别0(准确率0.95+召回率0.99) / 类别1(准确率0.57+召回率0.14)</span></li>
-      <li><input type="checkbox" data-id="d5-3"><span>改进建议：① SMOTE ② 特征选择优化 ③ 特征构造（交互项）</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 6 — 文件输出练习</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d6-1"><span>独立完成输出：2.2.1_model.pkl / results.txt / report.txt / results_xg.txt</span></li>
-      <li><input type="checkbox" data-id="d6-2"><span>编写测试报告 2.2.1.docx：模型性能 → 错误分析 → 改进建议</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 7 — 变体强化</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d7-1"><span>做 上网素材/2.2.1/(含docx模板) + 上网素材/2.2.2/ 变体</span></li>
-      <li><input type="checkbox" data-id="d7-2"><span>打开 考试平台模拟界面/2.2.1.html 熟悉UI</span></li>
-    </ul>
-  </div>
-</div>
+			.sidebar h1 {
+				font-size: 16px;
+				padding: 0 20px 16px;
+				border-bottom: 1px solid rgba(255, 255, 255, .15);
+				margin-bottom: 12px
+			}
 
-<!-- ========== PHASE 1: 3.2.1 ========== -->
-<div class="section" id="sec-p1-321">
-  <div class="section-title"><span class="icon" style="background:var(--a-color)">A</span> 3.2.1 图像识别ONNX推理 <span class="phase-tag a" style="margin-left:8px">20分</span></div>
-  <p class="warn" style="margin-bottom:12px">&#9888;&#65039; practices/3.2.1 中代码全部被注释，需从第6部分参考答案学习</p>
-  <div class="day-block">
-    <h4>Day 8 — 理解代码框架</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d8-1"><span>阅读第6部分3.2.1参考代码（完整版）</span></li>
-      <li><input type="checkbox" data-id="d8-2"><span>理解 preprocess_image: resize(256)→center_crop(224)→/255→normalize→HWC→CHW→reshape</span></li>
-      <li><input type="checkbox" data-id="d8-3"><span>理解推理链: InferenceSession→session.run→softmax→argsort Top5</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 9 — 默写代码</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d9-1"><span>记忆并默写 preprocess_image 函数（6参数5步处理）</span></li>
-      <li><input type="checkbox" data-id="d9-2"><span>默写推理链 <code>session.run([output_name], {input_name: processed_image})[0]</code></span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 10 — 文档写作</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d10-1"><span>编写人机交互最优方式 3.2.1.docx（11要点：界面→预加载→上传→识别→展示→反馈→帮助→优化→安全→多语言→可访问）</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 11 — 变体强化</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d11-1"><span>做 上网素材/3.2.1/ ~ 3.2.3/ 变体</span></li>
-      <li><input type="checkbox" data-id="d11-2"><span>打开 考试平台模拟界面/3.2.1.html 熟悉UI</span></li>
-    </ul>
-  </div>
-</div>
+			.sidebar h1 span {
+				display: block;
+				font-size: 12px;
+				color: rgba(255, 255, 255, .6);
+				font-weight: 400;
+				margin-top: 4px
+			}
 
-<!-- ========== PHASE 1: Day12 Mock ========== -->
-<div class="section" id="sec-p1-mock">
-  <div class="section-title"><span class="icon" style="background:var(--s-color)">&#9201;</span> Day 12：S+A级综合限时模拟</div>
-  <div class="day-block">
-    <h4>限时70分钟模拟</h4>
-    <ul class="checklist" data-phase="p1">
-      <li><input type="checkbox" data-id="d12-1"><span>1.1.1 (30min) 独立完成</span></li>
-      <li><input type="checkbox" data-id="d12-2"><span>2.2.1 (20min) 独立完成</span></li>
-      <li><input type="checkbox" data-id="d12-3"><span>3.2.1 (20min) 独立完成</span></li>
-      <li><input type="checkbox" data-id="d12-4"><span>对照第6部分评分标准自评打分</span></li>
-      <li><input type="checkbox" data-id="d12-5"><span>记录失分点和超时环节</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">模拟得分：</label><input type="text" class="score-input" data-score="mock12" placeholder="__/65"></div>
-  </div>
-  <div class="checkpoint">
-    <h4>&#9989; 阶段一检查点</h4>
-    <ul class="checklist">
-      <li><input type="checkbox" data-id="cp1-1"><span>1.1.1 能独立默写全部代码（目标25分满分）</span></li>
-      <li><input type="checkbox" data-id="cp1-2"><span>2.2.1 能独立完成代码+文档（目标20分满分）</span></li>
-      <li><input type="checkbox" data-id="cp1-3"><span>3.2.1 能默写推理代码+预处理函数+交互文档</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-group {
+				margin-bottom: 8px
+			}
 
-<!-- ========== PHASE 2: 2.1.1 ========== -->
-<div class="section" id="sec-p2-211">
-  <div class="section-title"><span class="icon" style="background:var(--b-color)">B</span> 2.1.1 数据清洗与标注 <span class="phase-tag b" style="margin-left:8px">15分</span></div>
-  <div class="day-block">
-    <h4>Day 13 — 代码部分</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d13-1"><span>运行 <code>practices/2.1.1_.../example.ipynb</code></span></li>
-      <li><input type="checkbox" data-id="d13-2"><span>掌握流程：read_csv→head→dtypes→isnull→dropna→to_numeric(errors='coerce')→dropna(subset)→StandardScaler→train_test_split→to_csv</span></li>
-      <li><input type="checkbox" data-id="d13-3"><span>注意标准化只对 ['displacement','horsepower','weight','acceleration']</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 14 — 文档+变体</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d14-1"><span>背诵清洗规范(答对2点)：①数据加载 ②检查缺失值 ③转换异常值 ④标准化 ⑤保存</span></li>
-      <li><input type="checkbox" data-id="d14-2"><span>背诵标注规范(答对3点)：①数据来源 ②数据描述 ③特征选择 ④目标变量 ⑤数据划分 ⑥保存记录</span></li>
-      <li><input type="checkbox" data-id="d14-3"><span>做 上网素材/2.1.1/(含docx) + 上网素材/2.1.2/(大学生低碳生活)</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-group-title {
+				font-size: 11px;
+				text-transform: uppercase;
+				color: rgba(255, 255, 255, .4);
+				padding: 8px 20px 4px;
+				letter-spacing: 1px
+			}
 
-<!-- ========== PHASE 2: 3.1.1 ========== -->
-<div class="section" id="sec-p2-311">
-  <div class="section-title"><span class="icon" style="background:var(--b-color)">B</span> 3.1.1 智能音箱分析与优化 <span class="phase-tag b" style="margin-left:8px">15分</span></div>
-  <p class="warn" style="margin-bottom:12px">&#9888;&#65039; 数据文件实际为 smart_speaker_data.csv（非xlsx）</p>
-  <div class="day-block">
-    <h4>Day 15 — 数据分析</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d15-1"><span>运行 <code>practices/3.1.1_.../example.ipynb</code></span></li>
-      <li><input type="checkbox" data-id="d15-2"><span>分析三要素：使用习惯(最常用) → 使用频率(最多/最少) → 响应时间(长/中/短)</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 16 — 文档写作+变体</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d16-1"><span>编写分析报告 3.1.1-1.docx + 优化方案 3.1.1-2.docx</span></li>
-      <li><input type="checkbox" data-id="d16-2"><span>背诵5个优化方向(选3)：①网络优化 ②检索效率 ③本地处理 ④闹钟提醒 ⑤语音识别</span></li>
-      <li><input type="checkbox" data-id="d16-3"><span>做 上网素材/3.1.2/ ~ 3.1.3/ 变体</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-item {
+				display: flex;
+				align-items: center;
+				padding: 8px 20px;
+				font-size: 13px;
+				color: rgba(255, 255, 255, .75);
+				cursor: pointer;
+				transition: all .15s;
+				text-decoration: none;
+				gap: 8px
+			}
 
-<!-- ========== PHASE 2: 4.2.1 ========== -->
-<div class="section" id="sec-p2-421">
-  <div class="section-title"><span class="icon" style="background:var(--c-color)">C</span> 4.2.1 智能零售数据采集 <span class="phase-tag c" style="margin-left:8px">5分</span></div>
-  <div class="day-block">
-    <h4>Day 17 — 背模板（5分钟搞定）</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d17-1"><span>阅读 practices/4.2.1_.../example.ipynb</span></li>
-      <li><input type="checkbox" data-id="d17-2"><span>背诵6段方案：①数据源(POS/会员/库存/反馈/外部) ②采集方法(API/传感器/问卷) ③预处理(清洗/标准化/整合) ④安全合规(加密/访问控制/匿名化) ⑤存储(云/备份) ⑥分析(建模/可视化/报告)</span></li>
-      <li><input type="checkbox" data-id="d17-3"><span>限时5分钟默写完整方案</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-item:hover {
+				background: rgba(255, 255, 255, .1);
+				color: #fff
+			}
 
-<!-- ========== PHASE 2: Theory ========== -->
-<div class="section" id="sec-p2-theory">
-  <div class="section-title"><span class="icon" style="background:var(--primary)">&#128214;</span> 理论知识第一轮</div>
-  <div class="day-block">
-    <h4>Day 18-20</h4>
-    <ul class="checklist" data-phase="p2">
-      <li><input type="checkbox" data-id="d18-1"><span>Day 18：系统学习 第3部分_理论知识复习题.docx（上半部分），标记错题</span></li>
-      <li><input type="checkbox" data-id="d19-1"><span>Day 19：完成理论复习题（下半部分），标记错题</span></li>
-      <li><input type="checkbox" data-id="d20-1"><span>Day 20：限时做 第5部分_理论知识模拟试卷.docx</span></li>
-      <li><input type="checkbox" data-id="d20-2"><span>统计正确率，重点：职业定义、监督/非监督学习、数据预处理、评估指标</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">理论模拟正确率：</label><input type="text" class="score-input" data-score="theory1" placeholder="___%"></div>
-  </div>
-  <div class="checkpoint">
-    <h4>&#9989; 阶段二检查点</h4>
-    <ul class="checklist">
-      <li><input type="checkbox" data-id="cp2-1"><span>2.1.1 代码+清洗标注规范能独立完成</span></li>
-      <li><input type="checkbox" data-id="cp2-2"><span>3.1.1 分析报告+优化方案模板熟练</span></li>
-      <li><input type="checkbox" data-id="cp2-3"><span>4.2.1 方案模板能5分钟默写</span></li>
-      <li><input type="checkbox" data-id="cp2-4"><span>理论第一轮完成，正确率已统计</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-item.active {
+				background: rgba(255, 255, 255, .15);
+				color: #fff;
+				border-right: 3px solid var(--primary-light)
+			}
 
-<!-- ========== PHASE 3 ========== -->
-<div class="section" id="sec-p3">
-  <div class="section-title"><span class="icon" style="background:var(--danger)">&#128293;</span> 阶段三：全真模拟与交叉训练 (Day 21-27)</div>
-  <div class="day-block">
-    <h4>Day 21 — 全真模拟1</h4>
-    <ul class="checklist" data-phase="p3">
-      <li><input type="checkbox" data-id="d21-1"><span>严格120分钟，6题连做，不参考资料</span></li>
-      <li><input type="checkbox" data-id="d21-2"><span>做题顺序：4.2.1→1.1.1→2.1.1→2.2.1→3.1.1→3.2.1</span></li>
-      <li><input type="checkbox" data-id="d21-3"><span>对照第6部分答案逐条评分，记录每题得分、用时、失分原因</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">模拟1得分：</label><input type="text" class="score-input" data-score="mock1" placeholder="__/100"></div>
-  </div>
-  <div class="day-block">
-    <h4>Day 22-23 — 薄弱环节+变体训练</h4>
-    <ul class="checklist" data-phase="p3">
-      <li><input type="checkbox" data-id="d22-1"><span>针对模拟1失分情况专项练习</span></li>
-      <li><input type="checkbox" data-id="d22-2"><span>变体训练：上网素材/1.1.4/ 1.1.5/</span></li>
-      <li><input type="checkbox" data-id="d22-3"><span>变体训练：上网素材/2.1.3/ 2.1.4/</span></li>
-      <li><input type="checkbox" data-id="d22-4"><span>变体训练：上网素材/2.2.3/ 2.2.4/ 3.1.4/ 3.1.5/ 3.2.4/ 3.2.5/</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 24 — 全真模拟2</h4>
-    <ul class="checklist" data-phase="p3">
-      <li><input type="checkbox" data-id="d24-1"><span>严格120分钟，争取100分钟完成</span></li>
-      <li><input type="checkbox" data-id="d24-2"><span>重点检查：文件命名正确？输出文件齐全？截图保存？</span></li>
-      <li><input type="checkbox" data-id="d24-3"><span>与模拟1对比进步</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">模拟2得分：</label><input type="text" class="score-input" data-score="mock2" placeholder="__/100"></div>
-  </div>
-  <div class="day-block">
-    <h4>Day 25-26 — 理论知识强化</h4>
-    <ul class="checklist" data-phase="p3">
-      <li><input type="checkbox" data-id="d25-1"><span>Day 25：重做第一轮错题 + 弱项知识点扩展</span></li>
-      <li><input type="checkbox" data-id="d26-1"><span>Day 26：限时做第5部分_模拟试卷第二遍，目标 >85%</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">理论第二遍正确率：</label><input type="text" class="score-input" data-score="theory2" placeholder="___%"></div>
-  </div>
-  <div class="day-block">
-    <h4>Day 27 — 全真模拟3</h4>
-    <ul class="checklist" data-phase="p3">
-      <li><input type="checkbox" data-id="d27-1"><span>目标：100分钟内完成，总分 >85</span></li>
-      <li><input type="checkbox" data-id="d27-2"><span>配合考试平台模拟界面HTML还原真实考试体验</span></li>
-    </ul>
-    <div style="margin-top:12px"><label style="font-size:13px">模拟3得分：</label><input type="text" class="score-input" data-score="mock3" placeholder="__/100"></div>
-  </div>
-  <div class="checkpoint">
-    <h4>&#9989; 阶段三检查点</h4>
-    <ul class="checklist">
-      <li><input type="checkbox" data-id="cp3-1"><span>操作技能模拟得分 >85分</span></li>
-      <li><input type="checkbox" data-id="cp3-2"><span>操作技能能在100分钟内完成</span></li>
-      <li><input type="checkbox" data-id="cp3-3"><span>理论模拟题正确率 >85%</span></li>
-      <li><input type="checkbox" data-id="cp3-4"><span>每种题型至少做过3个变体</span></li>
-    </ul>
-  </div>
-</div>
+			.nav-item .badge {
+				margin-left: auto;
+				background: rgba(255, 255, 255, .2);
+				padding: 1px 8px;
+				border-radius: 10px;
+				font-size: 11px
+			}
 
-<!-- ========== PHASE 4 ========== -->
-<div class="section" id="sec-p4">
-  <div class="section-title"><span class="icon" style="background:var(--success)">&#127937;</span> 阶段四：考前冲刺 (Day 28-30)</div>
-  <div class="day-block">
-    <h4>Day 28 — 代码模板快速默写</h4>
-    <ul class="checklist" data-phase="p4">
-      <li><input type="checkbox" data-id="d28-1"><span><b>1.1.1 模板</b>(8min)：read_csv→np.where→value_counts→pd.cut(BMI)→groupby→pd.cut(年龄)→groupby</span></li>
-      <li><input type="checkbox" data-id="d28-2"><span><b>2.1.1 模板</b>(6min)：read_csv→isnull→dropna→to_numeric→StandardScaler→train_test_split→to_csv</span></li>
-      <li><input type="checkbox" data-id="d28-3"><span><b>2.2.1 模板</b>(8min)：read_csv→drop→split→LogisticRegression→fit→pickle.dump→predict→report→SMOTE→refit</span></li>
-      <li><input type="checkbox" data-id="d28-4"><span><b>3.2.1 模板</b>(6min)：preprocess_image→InferenceSession→Image.open→preprocess→session.run→softmax→argsort</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 29 — 文档模板默写+理论收尾</h4>
-    <ul class="checklist" data-phase="p4">
-      <li><input type="checkbox" data-id="d29-1"><span><b>2.1.1 清洗标注规范</b>(5min)：清洗5点 + 标注7点</span></li>
-      <li><input type="checkbox" data-id="d29-2"><span><b>2.2.1 测试报告</b>(5min)：性能表 + 错误分析 + 改进建议</span></li>
-      <li><input type="checkbox" data-id="d29-3"><span><b>3.1.1 分析+优化</b>(8min)：三维分析 + 3个优化方向</span></li>
-      <li><input type="checkbox" data-id="d29-4"><span><b>3.2.1 人机交互</b>(3min)：11个要点</span></li>
-      <li><input type="checkbox" data-id="d29-5"><span><b>4.2.1 采集方案</b>(3min)：6段模板</span></li>
-      <li><input type="checkbox" data-id="d29-6"><span>理论错题最后一轮回顾</span></li>
-    </ul>
-  </div>
-  <div class="day-block">
-    <h4>Day 30 — 考前最终准备</h4>
-    <ul class="checklist" data-phase="p4">
-      <li><input type="checkbox" data-id="d30-1"><span>考生文件夹命名确认：<code>准考证号+身份证号后六位</code></span></li>
-      <li><input type="checkbox" data-id="d30-2"><span>1.1.1 → 1.1.1-1.jpg / 1.1.1-2.jpg / 1.1.1-3.jpg</span></li>
-      <li><input type="checkbox" data-id="d30-3"><span>2.1.1 → 2.1.1_cleaned_data.csv / 2.1.1.docx / 2.1.1.html</span></li>
-      <li><input type="checkbox" data-id="d30-4"><span>2.2.1 → model.pkl / results.txt / report.txt / results_xg.txt / .docx / .html</span></li>
-      <li><input type="checkbox" data-id="d30-5"><span>3.1.1 → 3.1.1-1.docx(分析) / 3.1.1-2.docx(优化)</span></li>
-      <li><input type="checkbox" data-id="d30-6"><span>3.2.1 → 3.2.1-1.jpg(截图) / 3.2.1.docx(交互)</span></li>
-      <li><input type="checkbox" data-id="d30-7"><span>4.2.1 → 4.2.1.docx</span></li>
-      <li><input type="checkbox" data-id="d30-8"><span>Python + 所有依赖包已安装 + Jupyter正常运行</span></li>
-      <li><input type="checkbox" data-id="d30-9"><span>准考证、身份证准备好</span></li>
-      <li><input type="checkbox" data-id="d30-10"><span>再看一遍HTML模拟页面熟悉考试界面</span></li>
-    </ul>
-  </div>
-</div>
+			.main {
+				margin-left: 260px;
+				padding: 32px 40px;
+				max-width: 960px;
+				flex: 1
+			}
 
-<!-- ========== CODE REFERENCE ========== -->
-<div class="section" id="sec-code">
-  <div class="section-title"><span class="icon" style="background:#1e293b">&#128187;</span> 考试代码速查</div>
+			.top-bar {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 28px;
+				flex-wrap: wrap;
+				gap: 12px
+			}
 
-  <h3 style="margin:16px 0 8px;font-size:15px">1.1.1 完整代码（25分）</h3>
-  <pre><code>import pandas as pd
+			.top-bar h2 {
+				font-size: 24px;
+				font-weight: 700
+			}
+
+			.progress-overview {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 16px;
+				margin-bottom: 32px
+			}
+
+			.progress-card {
+				background: var(--card);
+				border-radius: 12px;
+				padding: 20px;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+				border: 1px solid var(--border)
+			}
+
+			.progress-card .label {
+				font-size: 12px;
+				color: var(--text-light);
+				margin-bottom: 4px
+			}
+
+			.progress-card .value {
+				font-size: 28px;
+				font-weight: 700;
+				color: var(--primary)
+			}
+
+			.progress-card .bar {
+				height: 6px;
+				background: #e2e8f0;
+				border-radius: 3px;
+				margin-top: 8px;
+				overflow: hidden
+			}
+
+			.progress-card .bar-fill {
+				height: 100%;
+				border-radius: 3px;
+				transition: width .4s ease
+			}
+
+			.section {
+				background: var(--card);
+				border-radius: 12px;
+				padding: 24px;
+				margin-bottom: 20px;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+				border: 1px solid var(--border);
+				display: none
+			}
+
+			.section.visible {
+				display: block
+			}
+
+			.section-title {
+				font-size: 18px;
+				font-weight: 700;
+				margin-bottom: 16px;
+				display: flex;
+				align-items: center;
+				gap: 8px
+			}
+
+			.section-title .icon {
+				width: 28px;
+				height: 28px;
+				border-radius: 8px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 14px;
+				color: #fff;
+				flex-shrink: 0
+			}
+
+			.phase-tag {
+				display: inline-block;
+				padding: 2px 10px;
+				border-radius: 12px;
+				font-size: 11px;
+				font-weight: 600;
+				color: #fff
+			}
+
+			.phase-tag.s {
+				background: var(--s-color)
+			}
+
+			.phase-tag.a {
+				background: var(--a-color)
+			}
+
+			.phase-tag.b {
+				background: var(--b-color)
+			}
+
+			.phase-tag.c {
+				background: var(--c-color)
+			}
+
+			.day-block {
+				margin-bottom: 16px;
+				padding: 16px;
+				border-radius: 10px;
+				background: #f8fafc;
+				border: 1px solid var(--border)
+			}
+
+			.day-block h4 {
+				font-size: 14px;
+				font-weight: 600;
+				margin-bottom: 10px;
+				color: var(--primary)
+			}
+
+			.checklist {
+				list-style: none
+			}
+
+			.checklist li {
+				display: flex;
+				align-items: flex-start;
+				gap: 10px;
+				padding: 6px 0;
+				font-size: 13.5px;
+				line-height: 1.5
+			}
+
+			.checklist li+li {
+				border-top: 1px solid #f1f5f9
+			}
+
+			.checklist input[type=checkbox] {
+				margin-top: 4px;
+				width: 16px;
+				height: 16px;
+				accent-color: var(--primary);
+				cursor: pointer;
+				flex-shrink: 0
+			}
+
+			.checklist li.checked>span {
+				color: var(--text-light);
+				text-decoration: line-through
+			}
+
+			.checkpoint {
+				background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+				border: 1px solid #bbf7d0;
+				border-radius: 10px;
+				padding: 14px 18px;
+				margin-top: 16px
+			}
+
+			.checkpoint h4 {
+				font-size: 13px;
+				color: #166534;
+				margin-bottom: 8px
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 13px;
+				margin: 12px 0
+			}
+
+			table th {
+				background: #f1f5f9;
+				font-weight: 600;
+				text-align: left;
+				padding: 8px 12px;
+				border-bottom: 2px solid var(--border)
+			}
+
+			table td {
+				padding: 8px 12px;
+				border-bottom: 1px solid var(--border)
+			}
+
+			table tr:hover td {
+				background: #f8fafc
+			}
+
+			code {
+				background: #f1f5f9;
+				padding: 1px 6px;
+				border-radius: 4px;
+				font-size: 12.5px;
+				font-family: "Fira Code", monospace
+			}
+
+			pre {
+				background: #1e293b;
+				color: #e2e8f0;
+				padding: 16px;
+				border-radius: 10px;
+				overflow-x: auto;
+				font-size: 12.5px;
+				line-height: 1.6;
+				margin: 12px 0
+			}
+
+			pre code {
+				background: transparent;
+				padding: 0;
+				color: inherit
+			}
+
+			.comment {
+				color: #94a3b8
+			}
+
+			.warn {
+				color: var(--warning);
+				font-weight: 600;
+				font-size: 12px
+			}
+
+			.btn-reset {
+				background: none;
+				border: 1px solid var(--danger);
+				color: var(--danger);
+				padding: 6px 16px;
+				border-radius: 8px;
+				font-size: 12px;
+				cursor: pointer;
+				transition: all .15s
+			}
+
+			.btn-reset:hover {
+				background: var(--danger);
+				color: #fff
+			}
+
+			.skill-rating {
+				display: flex;
+				gap: 4px;
+				align-items: center
+			}
+
+			.skill-rating .star {
+				width: 20px;
+				height: 20px;
+				cursor: pointer;
+				border-radius: 4px;
+				border: 1px solid #cbd5e1;
+				background: #fff;
+				font-size: 11px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all .15s
+			}
+
+			.skill-rating .star.active {
+				background: var(--primary);
+				color: #fff;
+				border-color: var(--primary)
+			}
+
+			.note-input {
+				width: 100%;
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				padding: 6px 10px;
+				font-size: 12px;
+				resize: none;
+				font-family: inherit
+			}
+
+			.score-input {
+				width: 60px;
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				padding: 4px 8px;
+				font-size: 12px;
+				text-align: center
+			}
+
+			@media(max-width:768px) {
+				.sidebar {
+					transform: translateX(-100%)
+				}
+
+				.sidebar.open {
+					transform: translateX(0)
+				}
+
+				.main {
+					margin-left: 0;
+					padding: 16px
+				}
+
+				.menu-toggle {
+					display: block !important
+				}
+			}
+
+			.menu-toggle {
+				display: none;
+				position: fixed;
+				top: 12px;
+				left: 12px;
+				z-index: 200;
+				background: var(--primary);
+				color: #fff;
+				border: none;
+				width: 40px;
+				height: 40px;
+				border-radius: 10px;
+				font-size: 20px;
+				cursor: pointer
+			}
+
+			.overlay {
+				display: none;
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 0, .4);
+				z-index: 99
+			}
+
+			.overlay.open {
+				display: block
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<button class="menu-toggle" onclick="toggleSidebar()">&#9776;</button>
+		<div class="overlay" onclick="toggleSidebar()"></div>
+		<div class="layout">
+			<nav class="sidebar" id="sidebar">
+				<h1>AI训练师三级<span>30天学习计划 Checklist</span></h1>
+				<div class="nav-group">
+					<div class="nav-group-title">总览</div>
+					<a class="nav-item active" data-section="overview" onclick="showSection('overview')">
+						<span>&#128200;</span> 进度总览 </a>
+					<a class="nav-item" data-section="strategy" onclick="showSection('strategy')">
+						<span>&#127919;</span> 得分策略 </a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-group-title">阶段一 · Day 1-12</div>
+					<a class="nav-item" data-section="p1-111" onclick="showSection('p1-111')">
+						<span>&#128308;</span> 1.1.1 医疗数据 <span class="badge">25分</span>
+					</a>
+					<a class="nav-item" data-section="p1-221" onclick="showSection('p1-221')">
+						<span>&#128992;</span> 2.2.1 信用评分 <span class="badge">20分</span>
+					</a>
+					<a class="nav-item" data-section="p1-321" onclick="showSection('p1-321')">
+						<span>&#128992;</span> 3.2.1 图像识别 <span class="badge">20分</span>
+					</a>
+					<a class="nav-item" data-section="p1-mock" onclick="showSection('p1-mock')">
+						<span>&#9201;</span> Day12 限时模拟 </a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-group-title">阶段二 · Day 13-20</div>
+					<a class="nav-item" data-section="p2-211" onclick="showSection('p2-211')">
+						<span>&#128309;</span> 2.1.1 数据清洗 <span class="badge">15分</span>
+					</a>
+					<a class="nav-item" data-section="p2-311" onclick="showSection('p2-311')">
+						<span>&#128309;</span> 3.1.1 音箱分析 <span class="badge">15分</span>
+					</a>
+					<a class="nav-item" data-section="p2-421" onclick="showSection('p2-421')">
+						<span>&#11093;</span> 4.2.1 零售采集 <span class="badge">5分</span>
+					</a>
+					<a class="nav-item" data-section="p2-theory" onclick="showSection('p2-theory')">
+						<span>&#128214;</span> 理论第一轮 </a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-group-title">阶段三 · Day 21-27</div>
+					<a class="nav-item" data-section="p3" onclick="showSection('p3')">
+						<span>&#128293;</span> 全真模拟 &amp; 变体 </a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-group-title">阶段四 · Day 28-30</div>
+					<a class="nav-item" data-section="p4" onclick="showSection('p4')">
+						<span>&#127937;</span> 考前冲刺 </a>
+				</div>
+				<div class="nav-group">
+					<div class="nav-group-title">参考</div>
+					<a class="nav-item" data-section="code" onclick="showSection('code')">
+						<span>&#128187;</span> 代码速查 </a>
+					<a class="nav-item" data-section="exam" onclick="showSection('exam')">
+						<span>&#128203;</span> 考试注意事项 </a>
+					<a class="nav-item" data-section="skills" onclick="showSection('skills')">
+						<span>&#11088;</span> 技能自评 </a>
+				</div>
+			</nav>
+			<main class="main" id="mainContent">
+				<!-- ========== OVERVIEW ========== -->
+				<div class="section visible" id="sec-overview">
+					<div class="top-bar">
+						<h2>&#128200; 30天学习进度总览</h2>
+						<button class="btn-reset" onclick="resetAll()">&#128260; 重置全部进度</button>
+					</div>
+					<div class="progress-overview">
+						<div class="progress-card">
+							<div class="label">总体完成</div>
+							<div class="value" id="stat-total">0%</div>
+							<div class="bar">
+								<div class="bar-fill" id="bar-total" style="width:0%;background:var(--primary)"></div>
+							</div>
+						</div>
+						<div class="progress-card">
+							<div class="label">阶段一 · S+A级 (Day 1-12)</div>
+							<div class="value" id="stat-p1">0%</div>
+							<div class="bar">
+								<div class="bar-fill" id="bar-p1" style="width:0%;background:var(--s-color)"></div>
+							</div>
+						</div>
+						<div class="progress-card">
+							<div class="label">阶段二 · B+C+理论 (Day 13-20)</div>
+							<div class="value" id="stat-p2">0%</div>
+							<div class="bar">
+								<div class="bar-fill" id="bar-p2" style="width:0%;background:var(--a-color)"></div>
+							</div>
+						</div>
+						<div class="progress-card">
+							<div class="label">阶段三 · 模拟训练 (Day 21-27)</div>
+							<div class="value" id="stat-p3">0%</div>
+							<div class="bar">
+								<div class="bar-fill" id="bar-p3" style="width:0%;background:var(--b-color)"></div>
+							</div>
+						</div>
+						<div class="progress-card">
+							<div class="label">阶段四 · 考前冲刺 (Day 28-30)</div>
+							<div class="value" id="stat-p4">0%</div>
+							<div class="bar">
+								<div class="bar-fill" id="bar-p4" style="width:0%;background:var(--success)"></div>
+							</div>
+						</div>
+					</div>
+					<!-- Daily tracker -->
+					<div class="section-title"><span class="icon" style="background:var(--primary)">&#128197;</span> 30天每日打卡</div>
+					<table>
+						<thead>
+							<tr>
+								<th style="width:36px">&#10004;</th>
+								<th style="width:70px">天数</th>
+								<th>学习内容</th>
+								<th style="width:80px">得分/备注</th>
+							</tr>
+						</thead>
+						<tbody id="daily-tracker"></tbody>
+					</table>
+				</div>
+				<!-- ========== STRATEGY ========== -->
+				<div class="section" id="sec-strategy">
+					<div class="section-title"><span class="icon" style="background:var(--primary)">&#127919;</span> 考试全景与得分策略</div>
+					<p style="margin-bottom:16px;color:var(--text-light);font-size:14px">操作技能考试 120分钟 / 100分 · 理论知识考试另计</p>
+					<table>
+						<thead>
+							<tr>
+								<th>优先级</th>
+								<th>题目</th>
+								<th>名称</th>
+								<th>时间</th>
+								<th>分值</th>
+								<th>题型</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span class="phase-tag s">S</span></td>
+								<td>1.1.1</td>
+								<td>智能医疗数据处理</td>
+								<td>30min</td>
+								<td><b>25分</b></td>
+								<td>纯代码</td>
+							</tr>
+							<tr>
+								<td><span class="phase-tag a">A</span></td>
+								<td>2.2.1</td>
+								<td>Logistic回归信用评分</td>
+								<td>20min</td>
+								<td><b>20分</b></td>
+								<td>代码+文档</td>
+							</tr>
+							<tr>
+								<td><span class="phase-tag a">A</span></td>
+								<td>3.2.1</td>
+								<td>图像识别ONNX推理</td>
+								<td>20min</td>
+								<td><b>20分</b></td>
+								<td>代码+文档</td>
+							</tr>
+							<tr>
+								<td><span class="phase-tag b">B</span></td>
+								<td>2.1.1</td>
+								<td>燃油效率数据清洗</td>
+								<td>20min</td>
+								<td><b>15分</b></td>
+								<td>代码+文档</td>
+							</tr>
+							<tr>
+								<td><span class="phase-tag b">B</span></td>
+								<td>3.1.1</td>
+								<td>智能音箱分析优化</td>
+								<td>20min</td>
+								<td><b>15分</b></td>
+								<td>纯文档</td>
+							</tr>
+							<tr>
+								<td><span class="phase-tag c">C</span></td>
+								<td>4.2.1</td>
+								<td>零售数据采集指导</td>
+								<td>10min</td>
+								<td><b>5分</b></td>
+								<td>纯文档</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px">
+						<b>&#128161; 得分策略：</b>S+A级 = 65分，拿满即稳过。B级锦上添花，C级背模板即可。
+					</div>
+				</div>
+				<!-- ========== PHASE 1: 1.1.1 ========== -->
+				<div class="section" id="sec-p1-111">
+					<div class="section-title"><span class="icon" style="background:var(--s-color)">S</span> 1.1.1 智能医疗数据处理 <span class="phase-tag s" style="margin-left:8px">25分</span></div>
+					<div class="day-block">
+						<h4>Day 1 — 跑通代码</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d1-1"><span>安装环境：<code>pip install -r requirements.txt</code></span></li>
+							<li><input type="checkbox" data-id="d1-2"><span>运行 <code>practices/1.1.1_.../example.ipynb</code>，逐Cell理解输出</span></li>
+							<li><input type="checkbox" data-id="d1-3"><span>掌握 <code>np.where</code> 条件判断、<code>pd.cut</code> 区间划分（<code>right=False</code>）、<code>groupby+apply</code></span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 2 — 背诵得分点</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d2-1"><span>读CSV(1分) → np.where创建RiskLevel(3分) → value_counts(2分) → 占比(2分)</span></li>
+							<li><input type="checkbox" data-id="d2-2"><span>BMI区间 bins=[0,18.5,24,28,inf] labels=['偏瘦','正常','超重','肥胖'](4分) → 比例(2分) → 计数(1分)</span></li>
+							<li><input type="checkbox" data-id="d2-3"><span>年龄区间 bins=[0,26,36,46,56,66,inf](4分) → 比例(2分) → 计数(1分)</span></li>
+							<li><input type="checkbox" data-id="d2-4"><span><b>关闭所有参考，独立默写完整代码</b></span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 3 — 变体强化</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d3-1"><span>用 上网素材/1.1.1/1.1.1.ipynb 独立练习</span></li>
+							<li><input type="checkbox" data-id="d3-2"><span>打开 考试平台模拟界面/1.1.1.html 熟悉考试UI</span></li>
+							<li><input type="checkbox" data-id="d3-3"><span>做 上网素材/1.1.2/(sensor_data) 和 1.1.3/(credit_data) 变体</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 1: 2.2.1 ========== -->
+				<div class="section" id="sec-p1-221">
+					<div class="section-title"><span class="icon" style="background:var(--a-color)">A</span> 2.2.1 Logistic回归信用评分 <span class="phase-tag a" style="margin-left:8px">20分</span></div>
+					<div class="day-block">
+						<h4>Day 4 — 跑通完整流程</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d4-1"><span>运行 <code>practices/2.2.1_.../example.ipynb</code></span></li>
+							<li><input type="checkbox" data-id="d4-2"><span>理解完整链条：加载→drop→split→LogisticRegression(max_iter=1000)→fit→predict→pickle.dump→classification_report→SMOTE→重训练</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 5 — 评估指标与错误分析模板</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d5-1"><span>背诵 precision / recall / f1-score 含义</span></li>
+							<li><input type="checkbox" data-id="d5-2"><span>掌握错误分析模板：类别0(准确率0.95+召回率0.99) / 类别1(准确率0.57+召回率0.14)</span></li>
+							<li><input type="checkbox" data-id="d5-3"><span>改进建议：① SMOTE ② 特征选择优化 ③ 特征构造（交互项）</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 6 — 文件输出练习</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d6-1"><span>独立完成输出：2.2.1_model.pkl / results.txt / report.txt / results_xg.txt</span></li>
+							<li><input type="checkbox" data-id="d6-2"><span>编写测试报告 2.2.1.docx：模型性能 → 错误分析 → 改进建议</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 7 — 变体强化</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d7-1"><span>做 上网素材/2.2.1/(含docx模板) + 上网素材/2.2.2/ 变体</span></li>
+							<li><input type="checkbox" data-id="d7-2"><span>打开 考试平台模拟界面/2.2.1.html 熟悉UI</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 1: 3.2.1 ========== -->
+				<div class="section" id="sec-p1-321">
+					<div class="section-title"><span class="icon" style="background:var(--a-color)">A</span> 3.2.1 图像识别ONNX推理 <span class="phase-tag a" style="margin-left:8px">20分</span></div>
+					<p class="warn" style="margin-bottom:12px">&#9888;&#65039; practices/3.2.1 中代码全部被注释，需从第6部分参考答案学习</p>
+					<div class="day-block">
+						<h4>Day 8 — 理解代码框架</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d8-1"><span>阅读第6部分3.2.1参考代码（完整版）</span></li>
+							<li><input type="checkbox" data-id="d8-2"><span>理解 preprocess_image: resize(256)→center_crop(224)→/255→normalize→HWC→CHW→reshape</span></li>
+							<li><input type="checkbox" data-id="d8-3"><span>理解推理链: InferenceSession→session.run→softmax→argsort Top5</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 9 — 默写代码</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d9-1"><span>记忆并默写 preprocess_image 函数（6参数5步处理）</span></li>
+							<li><input type="checkbox" data-id="d9-2"><span>默写推理链 <code>session.run([output_name], {input_name: processed_image})[0]</code></span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 10 — 文档写作</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d10-1"><span>编写人机交互最优方式 3.2.1.docx（11要点：界面→预加载→上传→识别→展示→反馈→帮助→优化→安全→多语言→可访问）</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 11 — 变体强化</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d11-1"><span>做 上网素材/3.2.1/ ~ 3.2.3/ 变体</span></li>
+							<li><input type="checkbox" data-id="d11-2"><span>打开 考试平台模拟界面/3.2.1.html 熟悉UI</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 1: Day12 Mock ========== -->
+				<div class="section" id="sec-p1-mock">
+					<div class="section-title"><span class="icon" style="background:var(--s-color)">&#9201;</span> Day 12：S+A级综合限时模拟</div>
+					<div class="day-block">
+						<h4>限时70分钟模拟</h4>
+						<ul class="checklist" data-phase="p1">
+							<li><input type="checkbox" data-id="d12-1"><span>1.1.1 (30min) 独立完成</span></li>
+							<li><input type="checkbox" data-id="d12-2"><span>2.2.1 (20min) 独立完成</span></li>
+							<li><input type="checkbox" data-id="d12-3"><span>3.2.1 (20min) 独立完成</span></li>
+							<li><input type="checkbox" data-id="d12-4"><span>对照第6部分评分标准自评打分</span></li>
+							<li><input type="checkbox" data-id="d12-5"><span>记录失分点和超时环节</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">模拟得分：</label><input type="text" class="score-input" data-score="mock12" placeholder="__/65"></div>
+					</div>
+					<div class="checkpoint">
+						<h4>&#9989; 阶段一检查点</h4>
+						<ul class="checklist">
+							<li><input type="checkbox" data-id="cp1-1"><span>1.1.1 能独立默写全部代码（目标25分满分）</span></li>
+							<li><input type="checkbox" data-id="cp1-2"><span>2.2.1 能独立完成代码+文档（目标20分满分）</span></li>
+							<li><input type="checkbox" data-id="cp1-3"><span>3.2.1 能默写推理代码+预处理函数+交互文档</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 2: 2.1.1 ========== -->
+				<div class="section" id="sec-p2-211">
+					<div class="section-title"><span class="icon" style="background:var(--b-color)">B</span> 2.1.1 数据清洗与标注 <span class="phase-tag b" style="margin-left:8px">15分</span></div>
+					<div class="day-block">
+						<h4>Day 13 — 代码部分</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d13-1"><span>运行 <code>practices/2.1.1_.../example.ipynb</code></span></li>
+							<li><input type="checkbox" data-id="d13-2"><span>掌握流程：read_csv→head→dtypes→isnull→dropna→to_numeric(errors='coerce')→dropna(subset)→StandardScaler→train_test_split→to_csv</span></li>
+							<li><input type="checkbox" data-id="d13-3"><span>注意标准化只对 ['displacement','horsepower','weight','acceleration']</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 14 — 文档+变体</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d14-1"><span>背诵清洗规范(答对2点)：①数据加载 ②检查缺失值 ③转换异常值 ④标准化 ⑤保存</span></li>
+							<li><input type="checkbox" data-id="d14-2"><span>背诵标注规范(答对3点)：①数据来源 ②数据描述 ③特征选择 ④目标变量 ⑤数据划分 ⑥保存记录</span></li>
+							<li><input type="checkbox" data-id="d14-3"><span>做 上网素材/2.1.1/(含docx) + 上网素材/2.1.2/(大学生低碳生活)</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 2: 3.1.1 ========== -->
+				<div class="section" id="sec-p2-311">
+					<div class="section-title"><span class="icon" style="background:var(--b-color)">B</span> 3.1.1 智能音箱分析与优化 <span class="phase-tag b" style="margin-left:8px">15分</span></div>
+					<p class="warn" style="margin-bottom:12px">&#9888;&#65039; 数据文件实际为 smart_speaker_data.csv（非xlsx）</p>
+					<div class="day-block">
+						<h4>Day 15 — 数据分析</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d15-1"><span>运行 <code>practices/3.1.1_.../example.ipynb</code></span></li>
+							<li><input type="checkbox" data-id="d15-2"><span>分析三要素：使用习惯(最常用) → 使用频率(最多/最少) → 响应时间(长/中/短)</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 16 — 文档写作+变体</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d16-1"><span>编写分析报告 3.1.1-1.docx + 优化方案 3.1.1-2.docx</span></li>
+							<li><input type="checkbox" data-id="d16-2"><span>背诵5个优化方向(选3)：①网络优化 ②检索效率 ③本地处理 ④闹钟提醒 ⑤语音识别</span></li>
+							<li><input type="checkbox" data-id="d16-3"><span>做 上网素材/3.1.2/ ~ 3.1.3/ 变体</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 2: 4.2.1 ========== -->
+				<div class="section" id="sec-p2-421">
+					<div class="section-title"><span class="icon" style="background:var(--c-color)">C</span> 4.2.1 智能零售数据采集 <span class="phase-tag c" style="margin-left:8px">5分</span></div>
+					<div class="day-block">
+						<h4>Day 17 — 背模板（5分钟搞定）</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d17-1"><span>阅读 practices/4.2.1_.../example.ipynb</span></li>
+							<li><input type="checkbox" data-id="d17-2"><span>背诵6段方案：①数据源(POS/会员/库存/反馈/外部) ②采集方法(API/传感器/问卷) ③预处理(清洗/标准化/整合) ④安全合规(加密/访问控制/匿名化) ⑤存储(云/备份) ⑥分析(建模/可视化/报告)</span></li>
+							<li><input type="checkbox" data-id="d17-3"><span>限时5分钟默写完整方案</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 2: Theory ========== -->
+				<div class="section" id="sec-p2-theory">
+					<div class="section-title"><span class="icon" style="background:var(--primary)">&#128214;</span> 理论知识第一轮</div>
+					<div class="day-block">
+						<h4>Day 18-20</h4>
+						<ul class="checklist" data-phase="p2">
+							<li><input type="checkbox" data-id="d18-1"><span>Day 18：系统学习 第3部分_理论知识复习题.docx（上半部分），标记错题</span></li>
+							<li><input type="checkbox" data-id="d19-1"><span>Day 19：完成理论复习题（下半部分），标记错题</span></li>
+							<li><input type="checkbox" data-id="d20-1"><span>Day 20：限时做 第5部分_理论知识模拟试卷.docx</span></li>
+							<li><input type="checkbox" data-id="d20-2"><span>统计正确率，重点：职业定义、监督/非监督学习、数据预处理、评估指标</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">理论模拟正确率：</label><input type="text" class="score-input" data-score="theory1" placeholder="___%"></div>
+					</div>
+					<div class="checkpoint">
+						<h4>&#9989; 阶段二检查点</h4>
+						<ul class="checklist">
+							<li><input type="checkbox" data-id="cp2-1"><span>2.1.1 代码+清洗标注规范能独立完成</span></li>
+							<li><input type="checkbox" data-id="cp2-2"><span>3.1.1 分析报告+优化方案模板熟练</span></li>
+							<li><input type="checkbox" data-id="cp2-3"><span>4.2.1 方案模板能5分钟默写</span></li>
+							<li><input type="checkbox" data-id="cp2-4"><span>理论第一轮完成，正确率已统计</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 3 ========== -->
+				<div class="section" id="sec-p3">
+					<div class="section-title"><span class="icon" style="background:var(--danger)">&#128293;</span> 阶段三：全真模拟与交叉训练 (Day 21-27)</div>
+					<div class="day-block">
+						<h4>Day 21 — 全真模拟1</h4>
+						<ul class="checklist" data-phase="p3">
+							<li><input type="checkbox" data-id="d21-1"><span>严格120分钟，6题连做，不参考资料</span></li>
+							<li><input type="checkbox" data-id="d21-2"><span>做题顺序：4.2.1→1.1.1→2.1.1→2.2.1→3.1.1→3.2.1</span></li>
+							<li><input type="checkbox" data-id="d21-3"><span>对照第6部分答案逐条评分，记录每题得分、用时、失分原因</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">模拟1得分：</label><input type="text" class="score-input" data-score="mock1" placeholder="__/100"></div>
+					</div>
+					<div class="day-block">
+						<h4>Day 22-23 — 薄弱环节+变体训练</h4>
+						<ul class="checklist" data-phase="p3">
+							<li><input type="checkbox" data-id="d22-1"><span>针对模拟1失分情况专项练习</span></li>
+							<li><input type="checkbox" data-id="d22-2"><span>变体训练：上网素材/1.1.4/ 1.1.5/</span></li>
+							<li><input type="checkbox" data-id="d22-3"><span>变体训练：上网素材/2.1.3/ 2.1.4/</span></li>
+							<li><input type="checkbox" data-id="d22-4"><span>变体训练：上网素材/2.2.3/ 2.2.4/ 3.1.4/ 3.1.5/ 3.2.4/ 3.2.5/</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 24 — 全真模拟2</h4>
+						<ul class="checklist" data-phase="p3">
+							<li><input type="checkbox" data-id="d24-1"><span>严格120分钟，争取100分钟完成</span></li>
+							<li><input type="checkbox" data-id="d24-2"><span>重点检查：文件命名正确？输出文件齐全？截图保存？</span></li>
+							<li><input type="checkbox" data-id="d24-3"><span>与模拟1对比进步</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">模拟2得分：</label><input type="text" class="score-input" data-score="mock2" placeholder="__/100"></div>
+					</div>
+					<div class="day-block">
+						<h4>Day 25-26 — 理论知识强化</h4>
+						<ul class="checklist" data-phase="p3">
+							<li><input type="checkbox" data-id="d25-1"><span>Day 25：重做第一轮错题 + 弱项知识点扩展</span></li>
+							<li><input type="checkbox" data-id="d26-1"><span>Day 26：限时做第5部分_模拟试卷第二遍，目标 >85%</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">理论第二遍正确率：</label><input type="text" class="score-input" data-score="theory2" placeholder="___%"></div>
+					</div>
+					<div class="day-block">
+						<h4>Day 27 — 全真模拟3</h4>
+						<ul class="checklist" data-phase="p3">
+							<li><input type="checkbox" data-id="d27-1"><span>目标：100分钟内完成，总分 >85</span></li>
+							<li><input type="checkbox" data-id="d27-2"><span>配合考试平台模拟界面HTML还原真实考试体验</span></li>
+						</ul>
+						<div style="margin-top:12px"><label style="font-size:13px">模拟3得分：</label><input type="text" class="score-input" data-score="mock3" placeholder="__/100"></div>
+					</div>
+					<div class="checkpoint">
+						<h4>&#9989; 阶段三检查点</h4>
+						<ul class="checklist">
+							<li><input type="checkbox" data-id="cp3-1"><span>操作技能模拟得分 >85分</span></li>
+							<li><input type="checkbox" data-id="cp3-2"><span>操作技能能在100分钟内完成</span></li>
+							<li><input type="checkbox" data-id="cp3-3"><span>理论模拟题正确率 >85%</span></li>
+							<li><input type="checkbox" data-id="cp3-4"><span>每种题型至少做过3个变体</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== PHASE 4 ========== -->
+				<div class="section" id="sec-p4">
+					<div class="section-title"><span class="icon" style="background:var(--success)">&#127937;</span> 阶段四：考前冲刺 (Day 28-30)</div>
+					<div class="day-block">
+						<h4>Day 28 — 代码模板快速默写</h4>
+						<ul class="checklist" data-phase="p4">
+							<li><input type="checkbox" data-id="d28-1"><span><b>1.1.1 模板</b>(8min)：read_csv→np.where→value_counts→pd.cut(BMI)→groupby→pd.cut(年龄)→groupby</span></li>
+							<li><input type="checkbox" data-id="d28-2"><span><b>2.1.1 模板</b>(6min)：read_csv→isnull→dropna→to_numeric→StandardScaler→train_test_split→to_csv</span></li>
+							<li><input type="checkbox" data-id="d28-3"><span><b>2.2.1 模板</b>(8min)：read_csv→drop→split→LogisticRegression→fit→pickle.dump→predict→report→SMOTE→refit</span></li>
+							<li><input type="checkbox" data-id="d28-4"><span><b>3.2.1 模板</b>(6min)：preprocess_image→InferenceSession→Image.open→preprocess→session.run→softmax→argsort</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 29 — 文档模板默写+理论收尾</h4>
+						<ul class="checklist" data-phase="p4">
+							<li><input type="checkbox" data-id="d29-1"><span><b>2.1.1 清洗标注规范</b>(5min)：清洗5点 + 标注7点</span></li>
+							<li><input type="checkbox" data-id="d29-2"><span><b>2.2.1 测试报告</b>(5min)：性能表 + 错误分析 + 改进建议</span></li>
+							<li><input type="checkbox" data-id="d29-3"><span><b>3.1.1 分析+优化</b>(8min)：三维分析 + 3个优化方向</span></li>
+							<li><input type="checkbox" data-id="d29-4"><span><b>3.2.1 人机交互</b>(3min)：11个要点</span></li>
+							<li><input type="checkbox" data-id="d29-5"><span><b>4.2.1 采集方案</b>(3min)：6段模板</span></li>
+							<li><input type="checkbox" data-id="d29-6"><span>理论错题最后一轮回顾</span></li>
+						</ul>
+					</div>
+					<div class="day-block">
+						<h4>Day 30 — 考前最终准备</h4>
+						<ul class="checklist" data-phase="p4">
+							<li><input type="checkbox" data-id="d30-1"><span>考生文件夹命名确认：<code>准考证号+身份证号后六位</code></span></li>
+							<li><input type="checkbox" data-id="d30-2"><span>1.1.1 → 1.1.1-1.jpg / 1.1.1-2.jpg / 1.1.1-3.jpg</span></li>
+							<li><input type="checkbox" data-id="d30-3"><span>2.1.1 → 2.1.1_cleaned_data.csv / 2.1.1.docx / 2.1.1.html</span></li>
+							<li><input type="checkbox" data-id="d30-4"><span>2.2.1 → model.pkl / results.txt / report.txt / results_xg.txt / .docx / .html</span></li>
+							<li><input type="checkbox" data-id="d30-5"><span>3.1.1 → 3.1.1-1.docx(分析) / 3.1.1-2.docx(优化)</span></li>
+							<li><input type="checkbox" data-id="d30-6"><span>3.2.1 → 3.2.1-1.jpg(截图) / 3.2.1.docx(交互)</span></li>
+							<li><input type="checkbox" data-id="d30-7"><span>4.2.1 → 4.2.1.docx</span></li>
+							<li><input type="checkbox" data-id="d30-8"><span>Python + 所有依赖包已安装 + Jupyter正常运行</span></li>
+							<li><input type="checkbox" data-id="d30-9"><span>准考证、身份证准备好</span></li>
+							<li><input type="checkbox" data-id="d30-10"><span>再看一遍HTML模拟页面熟悉考试界面</span></li>
+						</ul>
+					</div>
+				</div>
+				<!-- ========== CODE REFERENCE ========== -->
+				<div class="section" id="sec-code">
+					<div class="section-title"><span class="icon" style="background:#1e293b">&#128187;</span> 考试代码速查</div>
+					<h3 style="margin:16px 0 8px;font-size:15px">1.1.1 完整代码（25分）</h3>
+					<pre><code>import pandas as pd
 import numpy as np
 
 data = pd.read_csv('patient_data.csv')                                    <span class="comment"># 1分</span>
@@ -529,9 +968,8 @@ data['AgeRange'] = pd.cut(data['Age'], bins=age_bins, labels=age_labels, right=F
 age_risk_rate = data.groupby('AgeRange')['RiskLevel'].apply(
     lambda x: (x == '高风险患者').mean())  <span class="comment"># 2分</span>
 age_patient_count = data['AgeRange'].value_counts()                       <span class="comment"># 1分</span></code></pre>
-
-  <h3 style="margin:16px 0 8px;font-size:15px">2.2.1 完整代码（20分）</h3>
-  <pre><code>import pandas as pd
+					<h3 style="margin:16px 0 8px;font-size:15px">2.2.1 完整代码（20分）</h3>
+					<pre><code>import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import pickle
@@ -560,9 +998,8 @@ X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
 model.fit(X_resampled, y_resampled)
 y_pred_resampled = model.predict(X_test)
 pd.DataFrame(y_pred_resampled, columns=['预测结果']).to_csv('2.2.1_results_xg.txt', index=False)</code></pre>
-
-  <h3 style="margin:16px 0 8px;font-size:15px">3.2.1 完整代码（20分）</h3>
-  <pre><code>import onnxruntime as ort
+					<h3 style="margin:16px 0 8px;font-size:15px">3.2.1 完整代码（20分）</h3>
+					<pre><code>import onnxruntime as ort
 import numpy as np
 import scipy.special
 from PIL import Image
@@ -594,241 +1031,463 @@ top5_idx = np.argsort(probabilities[0])[-5:][::-1]                        <span 
 top5_prob = probabilities[0][top5_idx]
 for i in range(5):
     print(f"{i+1}: {labels[top5_idx[i]]} - Probability: {top5_prob[i]}")</code></pre>
-</div>
+				</div>
+				<!-- ========== EXAM NOTES ========== -->
+				<div class="section" id="sec-exam">
+					<div class="section-title"><span class="icon" style="background:var(--warning)">&#128203;</span> 考试注意事项</div>
+					<h3 style="font-size:15px;margin-bottom:12px">建议做题顺序</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>顺序</th>
+								<th>题目</th>
+								<th>时间/分值</th>
+								<th>说明</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>4.2.1</td>
+								<td>10min/5分</td>
+								<td>纯文档，快速热手</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>1.1.1</td>
+								<td>30min/25分</td>
+								<td>分最高优先保</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>2.1.1</td>
+								<td>20min/15分</td>
+								<td>流程固定</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>2.2.1</td>
+								<td>20min/20分</td>
+								<td>步骤最多</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>3.1.1</td>
+								<td>20min/15分</td>
+								<td>背模板</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>3.2.1</td>
+								<td>20min/20分</td>
+								<td>需默写代码</td>
+							</tr>
+						</tbody>
+					</table>
+					<h3 style="font-size:15px;margin:20px 0 12px">文件输出清单</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>题目</th>
+								<th>必须提交的文件</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><b>1.1.1</b></td>
+								<td><code>1.1.1-1.jpg</code> <code>1.1.1-2.jpg</code> <code>1.1.1-3.jpg</code></td>
+							</tr>
+							<tr>
+								<td><b>2.1.1</b></td>
+								<td><code>2.1.1_cleaned_data.csv</code> <code>2.1.1.docx</code> <code>2.1.1.html</code></td>
+							</tr>
+							<tr>
+								<td><b>2.2.1</b></td>
+								<td><code>2.2.1_model.pkl</code> <code>results.txt</code> <code>report.txt</code> <code>results_xg.txt</code> <code>.docx</code> <code>.html</code></td>
+							</tr>
+							<tr>
+								<td><b>3.1.1</b></td>
+								<td><code>3.1.1-1.docx</code>(分析) <code>3.1.1-2.docx</code>(优化)</td>
+							</tr>
+							<tr>
+								<td><b>3.2.1</b></td>
+								<td><code>3.2.1-1.jpg</code>(截图) <code>3.2.1.docx</code>(交互)</td>
+							</tr>
+							<tr>
+								<td><b>4.2.1</b></td>
+								<td><code>4.2.1.docx</code></td>
+							</tr>
+						</tbody>
+					</table>
+					<h3 style="font-size:15px;margin:20px 0 12px">代码易错点</h3>
+					<ul style="font-size:13px;padding-left:20px;line-height:2">
+						<li><code>pd.cut</code> 必须加 <code>right=False</code>（左闭右开）</li>
+						<li><code>LogisticRegression</code> 必须加 <code>max_iter=1000</code></li>
+						<li><code>classification_report</code> 必须加 <code>zero_division=1</code></li>
+						<li><code>preprocess_image</code> 中 mean/std 是固定值，不要改</li>
+						<li>保存结果用 <code>pd.DataFrame(y_pred, columns=['预测结果']).to_csv()</code></li>
+					</ul>
+				</div>
+				<!-- ========== SKILLS ========== -->
+				<div class="section" id="sec-skills">
+					<div class="section-title"><span class="icon" style="background:var(--primary)">&#11088;</span> 技能掌握自评</div>
+					<table>
+						<thead>
+							<tr>
+								<th>技能点</th>
+								<th>题目</th>
+								<th>分值</th>
+								<th>掌握程度</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>np.where + pd.cut + groupby</td>
+								<td>1.1.1</td>
+								<td>25分</td>
+								<td>
+									<div class="skill-rating" data-skill="s1"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>LogisticRegression + pickle + SMOTE</td>
+								<td>2.2.1</td>
+								<td>20分</td>
+								<td>
+									<div class="skill-rating" data-skill="s2"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>ONNX推理 + 图像预处理</td>
+								<td>3.2.1</td>
+								<td>20分</td>
+								<td>
+									<div class="skill-rating" data-skill="s3"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>数据清洗 + StandardScaler</td>
+								<td>2.1.1</td>
+								<td>15分</td>
+								<td>
+									<div class="skill-rating" data-skill="s4"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>数据分析报告 + 优化方案</td>
+								<td>3.1.1</td>
+								<td>15分</td>
+								<td>
+									<div class="skill-rating" data-skill="s5"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>数据采集方案文档</td>
+								<td>4.2.1</td>
+								<td>5分</td>
+								<td>
+									<div class="skill-rating" data-skill="s6"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>classification_report解读</td>
+								<td>2.2.1</td>
+								<td>—</td>
+								<td>
+									<div class="skill-rating" data-skill="s7"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>清洗/标注规范文档</td>
+								<td>2.1.1</td>
+								<td>—</td>
+								<td>
+									<div class="skill-rating" data-skill="s8"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>理论知识(职业定义/ML/评估)</td>
+								<td>理论卷</td>
+								<td>—</td>
+								<td>
+									<div class="skill-rating" data-skill="s9"></div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</main>
+		</div>
+		<script>
+			const STORAGE_KEY = 'ai-trainer-3-checklist';
+			const DAILY_DATA = [{
+				day: 1,
+				content: '1.1.1 跑通代码',
+				phase: 'p1'
+			}, {
+				day: 2,
+				content: '1.1.1 背诵得分点+默写',
+				phase: 'p1'
+			}, {
+				day: 3,
+				content: '1.1.1 变体强化',
+				phase: 'p1'
+			}, {
+				day: 4,
+				content: '2.2.1 跑通完整流程',
+				phase: 'p1'
+			}, {
+				day: 5,
+				content: '2.2.1 评估指标+分析模板',
+				phase: 'p1'
+			}, {
+				day: 6,
+				content: '2.2.1 文件输出练习',
+				phase: 'p1'
+			}, {
+				day: 7,
+				content: '2.2.1 变体强化',
+				phase: 'p1'
+			}, {
+				day: 8,
+				content: '3.2.1 理解代码框架',
+				phase: 'p1'
+			}, {
+				day: 9,
+				content: '3.2.1 默写代码',
+				phase: 'p1'
+			}, {
+				day: 10,
+				content: '3.2.1 文档写作',
+				phase: 'p1'
+			}, {
+				day: 11,
+				content: '3.2.1 变体强化',
+				phase: 'p1'
+			}, {
+				day: 12,
+				content: 'S+A级限时模拟（70min）',
+				phase: 'p1',
+				score: 'mock12'
+			}, {
+				day: 13,
+				content: '2.1.1 代码部分',
+				phase: 'p2'
+			}, {
+				day: 14,
+				content: '2.1.1 文档+变体',
+				phase: 'p2'
+			}, {
+				day: 15,
+				content: '3.1.1 数据分析',
+				phase: 'p2'
+			}, {
+				day: 16,
+				content: '3.1.1 文档+变体',
+				phase: 'p2'
+			}, {
+				day: 17,
+				content: '4.2.1 背模板',
+				phase: 'p2'
+			}, {
+				day: 18,
+				content: '理论复习题（上半）',
+				phase: 'p2'
+			}, {
+				day: 19,
+				content: '理论复习题（下半）',
+				phase: 'p2'
+			}, {
+				day: 20,
+				content: '理论模拟卷',
+				phase: 'p2',
+				score: 'theory1'
+			}, {
+				day: 21,
+				content: '全真模拟1（120min）',
+				phase: 'p3',
+				score: 'mock1'
+			}, {
+				day: 22,
+				content: '薄弱环节+变体',
+				phase: 'p3'
+			}, {
+				day: 23,
+				content: '薄弱环节+变体',
+				phase: 'p3'
+			}, {
+				day: 24,
+				content: '全真模拟2（120min）',
+				phase: 'p3',
+				score: 'mock2'
+			}, {
+				day: 25,
+				content: '理论错题回顾',
+				phase: 'p3'
+			}, {
+				day: 26,
+				content: '理论模拟卷第二遍',
+				phase: 'p3',
+				score: 'theory2'
+			}, {
+				day: 27,
+				content: '全真模拟3（120min）',
+				phase: 'p3',
+				score: 'mock3'
+			}, {
+				day: 28,
+				content: '代码模板快速默写',
+				phase: 'p4'
+			}, {
+				day: 29,
+				content: '文档模板默写+理论收尾',
+				phase: 'p4'
+			}, {
+				day: 30,
+				content: '考前准备',
+				phase: 'p4'
+			}];
+			let state = {};
 
-<!-- ========== EXAM NOTES ========== -->
-<div class="section" id="sec-exam">
-  <div class="section-title"><span class="icon" style="background:var(--warning)">&#128203;</span> 考试注意事项</div>
+			function loadState() {
+				try {
+					state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+				} catch (e) {
+					state = {};
+				}
+			}
 
-  <h3 style="font-size:15px;margin-bottom:12px">建议做题顺序</h3>
-  <table>
-    <thead><tr><th>顺序</th><th>题目</th><th>时间/分值</th><th>说明</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>4.2.1</td><td>10min/5分</td><td>纯文档，快速热手</td></tr>
-      <tr><td>2</td><td>1.1.1</td><td>30min/25分</td><td>分最高优先保</td></tr>
-      <tr><td>3</td><td>2.1.1</td><td>20min/15分</td><td>流程固定</td></tr>
-      <tr><td>4</td><td>2.2.1</td><td>20min/20分</td><td>步骤最多</td></tr>
-      <tr><td>5</td><td>3.1.1</td><td>20min/15分</td><td>背模板</td></tr>
-      <tr><td>6</td><td>3.2.1</td><td>20min/20分</td><td>需默写代码</td></tr>
-    </tbody>
-  </table>
+			function saveState() {
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+			}
 
-  <h3 style="font-size:15px;margin:20px 0 12px">文件输出清单</h3>
-  <table>
-    <thead><tr><th>题目</th><th>必须提交的文件</th></tr></thead>
-    <tbody>
-      <tr><td><b>1.1.1</b></td><td><code>1.1.1-1.jpg</code> <code>1.1.1-2.jpg</code> <code>1.1.1-3.jpg</code></td></tr>
-      <tr><td><b>2.1.1</b></td><td><code>2.1.1_cleaned_data.csv</code> <code>2.1.1.docx</code> <code>2.1.1.html</code></td></tr>
-      <tr><td><b>2.2.1</b></td><td><code>2.2.1_model.pkl</code> <code>results.txt</code> <code>report.txt</code> <code>results_xg.txt</code> <code>.docx</code> <code>.html</code></td></tr>
-      <tr><td><b>3.1.1</b></td><td><code>3.1.1-1.docx</code>(分析) <code>3.1.1-2.docx</code>(优化)</td></tr>
-      <tr><td><b>3.2.1</b></td><td><code>3.2.1-1.jpg</code>(截图) <code>3.2.1.docx</code>(交互)</td></tr>
-      <tr><td><b>4.2.1</b></td><td><code>4.2.1.docx</code></td></tr>
-    </tbody>
-  </table>
+			function initCheckboxes() {
+				document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb => {
+					const id = cb.dataset.id;
+					if (!id) return;
+					cb.checked = !!state[id];
+					cb.parentElement.classList.toggle('checked', cb.checked);
+					cb.addEventListener('change', () => {
+						state[id] = cb.checked;
+						cb.parentElement.classList.toggle('checked', cb.checked);
+						saveState();
+						updateStats();
+					});
+				});
+			}
 
-  <h3 style="font-size:15px;margin:20px 0 12px">代码易错点</h3>
-  <ul style="font-size:13px;padding-left:20px;line-height:2">
-    <li><code>pd.cut</code> 必须加 <code>right=False</code>（左闭右开）</li>
-    <li><code>LogisticRegression</code> 必须加 <code>max_iter=1000</code></li>
-    <li><code>classification_report</code> 必须加 <code>zero_division=1</code></li>
-    <li><code>preprocess_image</code> 中 mean/std 是固定值，不要改</li>
-    <li>保存结果用 <code>pd.DataFrame(y_pred, columns=['预测结果']).to_csv()</code></li>
-  </ul>
-</div>
+			function initScoreInputs() {
+				document.querySelectorAll('.score-input').forEach(input => {
+					const key = 'score_' + input.dataset.score;
+					input.value = state[key] || '';
+					input.addEventListener('input', () => {
+						state[key] = input.value;
+						saveState();
+					});
+				});
+			}
 
-<!-- ========== SKILLS ========== -->
-<div class="section" id="sec-skills">
-  <div class="section-title"><span class="icon" style="background:var(--primary)">&#11088;</span> 技能掌握自评</div>
-  <table>
-    <thead><tr><th>技能点</th><th>题目</th><th>分值</th><th>掌握程度</th></tr></thead>
-    <tbody>
-      <tr><td>np.where + pd.cut + groupby</td><td>1.1.1</td><td>25分</td><td><div class="skill-rating" data-skill="s1"></div></td></tr>
-      <tr><td>LogisticRegression + pickle + SMOTE</td><td>2.2.1</td><td>20分</td><td><div class="skill-rating" data-skill="s2"></div></td></tr>
-      <tr><td>ONNX推理 + 图像预处理</td><td>3.2.1</td><td>20分</td><td><div class="skill-rating" data-skill="s3"></div></td></tr>
-      <tr><td>数据清洗 + StandardScaler</td><td>2.1.1</td><td>15分</td><td><div class="skill-rating" data-skill="s4"></div></td></tr>
-      <tr><td>数据分析报告 + 优化方案</td><td>3.1.1</td><td>15分</td><td><div class="skill-rating" data-skill="s5"></div></td></tr>
-      <tr><td>数据采集方案文档</td><td>4.2.1</td><td>5分</td><td><div class="skill-rating" data-skill="s6"></div></td></tr>
-      <tr><td>classification_report解读</td><td>2.2.1</td><td>—</td><td><div class="skill-rating" data-skill="s7"></div></td></tr>
-      <tr><td>清洗/标注规范文档</td><td>2.1.1</td><td>—</td><td><div class="skill-rating" data-skill="s8"></div></td></tr>
-      <tr><td>理论知识(职业定义/ML/评估)</td><td>理论卷</td><td>—</td><td><div class="skill-rating" data-skill="s9"></div></td></tr>
-    </tbody>
-  </table>
-</div>
+			function initSkillRatings() {
+				document.querySelectorAll('.skill-rating').forEach(container => {
+					const skill = container.dataset.skill;
+					const current = state['skill_' + skill] || 0;
+					for (let i = 1; i <= 5; i++) {
+						const star = document.createElement('div');
+						star.className = 'star' + (i <= current ? ' active' : '');
+						star.textContent = i;
+						star.addEventListener('click', () => {
+							const newVal = (state['skill_' + skill] === i) ? 0 : i;
+							state['skill_' + skill] = newVal;
+							saveState();
+							container.querySelectorAll('.star').forEach((s, idx) => {
+								s.classList.toggle('active', idx < newVal);
+							});
+						});
+						container.appendChild(star);
+					}
+				});
+			}
 
-</main>
-</div>
-
-<script>
-const STORAGE_KEY = 'ai-trainer-3-checklist';
-
-const DAILY_DATA = [
-  {day:1,  content:'1.1.1 跑通代码', phase:'p1'},
-  {day:2,  content:'1.1.1 背诵得分点+默写', phase:'p1'},
-  {day:3,  content:'1.1.1 变体强化', phase:'p1'},
-  {day:4,  content:'2.2.1 跑通完整流程', phase:'p1'},
-  {day:5,  content:'2.2.1 评估指标+分析模板', phase:'p1'},
-  {day:6,  content:'2.2.1 文件输出练习', phase:'p1'},
-  {day:7,  content:'2.2.1 变体强化', phase:'p1'},
-  {day:8,  content:'3.2.1 理解代码框架', phase:'p1'},
-  {day:9,  content:'3.2.1 默写代码', phase:'p1'},
-  {day:10, content:'3.2.1 文档写作', phase:'p1'},
-  {day:11, content:'3.2.1 变体强化', phase:'p1'},
-  {day:12, content:'S+A级限时模拟（70min）', phase:'p1', score:'mock12'},
-  {day:13, content:'2.1.1 代码部分', phase:'p2'},
-  {day:14, content:'2.1.1 文档+变体', phase:'p2'},
-  {day:15, content:'3.1.1 数据分析', phase:'p2'},
-  {day:16, content:'3.1.1 文档+变体', phase:'p2'},
-  {day:17, content:'4.2.1 背模板', phase:'p2'},
-  {day:18, content:'理论复习题（上半）', phase:'p2'},
-  {day:19, content:'理论复习题（下半）', phase:'p2'},
-  {day:20, content:'理论模拟卷', phase:'p2', score:'theory1'},
-  {day:21, content:'全真模拟1（120min）', phase:'p3', score:'mock1'},
-  {day:22, content:'薄弱环节+变体', phase:'p3'},
-  {day:23, content:'薄弱环节+变体', phase:'p3'},
-  {day:24, content:'全真模拟2（120min）', phase:'p3', score:'mock2'},
-  {day:25, content:'理论错题回顾', phase:'p3'},
-  {day:26, content:'理论模拟卷第二遍', phase:'p3', score:'theory2'},
-  {day:27, content:'全真模拟3（120min）', phase:'p3', score:'mock3'},
-  {day:28, content:'代码模板快速默写', phase:'p4'},
-  {day:29, content:'文档模板默写+理论收尾', phase:'p4'},
-  {day:30, content:'考前准备', phase:'p4'}
-];
-
-let state = {};
-
-function loadState() {
-  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { state = {}; }
-}
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function initCheckboxes() {
-  document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb => {
-    const id = cb.dataset.id;
-    if (!id) return;
-    cb.checked = !!state[id];
-    cb.parentElement.classList.toggle('checked', cb.checked);
-    cb.addEventListener('change', () => {
-      state[id] = cb.checked;
-      cb.parentElement.classList.toggle('checked', cb.checked);
-      saveState();
-      updateStats();
-    });
-  });
-}
-
-function initScoreInputs() {
-  document.querySelectorAll('.score-input').forEach(input => {
-    const key = 'score_' + input.dataset.score;
-    input.value = state[key] || '';
-    input.addEventListener('input', () => {
-      state[key] = input.value;
-      saveState();
-    });
-  });
-}
-
-function initSkillRatings() {
-  document.querySelectorAll('.skill-rating').forEach(container => {
-    const skill = container.dataset.skill;
-    const current = state['skill_' + skill] || 0;
-    for (let i = 1; i <= 5; i++) {
-      const star = document.createElement('div');
-      star.className = 'star' + (i <= current ? ' active' : '');
-      star.textContent = i;
-      star.addEventListener('click', () => {
-        const newVal = (state['skill_' + skill] === i) ? 0 : i;
-        state['skill_' + skill] = newVal;
-        saveState();
-        container.querySelectorAll('.star').forEach((s, idx) => {
-          s.classList.toggle('active', idx < newVal);
-        });
-      });
-      container.appendChild(star);
-    }
-  });
-}
-
-function buildDailyTracker() {
-  const tbody = document.getElementById('daily-tracker');
-  DAILY_DATA.forEach(d => {
-    const id = 'daily_' + d.day;
-    const tr = document.createElement('tr');
-    const isHighlight = d.content.includes('模拟') || d.content.includes('考前');
-    tr.innerHTML = `
+			function buildDailyTracker() {
+				const tbody = document.getElementById('daily-tracker');
+				DAILY_DATA.forEach(d => {
+					const id = 'daily_' + d.day;
+					const tr = document.createElement('tr');
+					const isHighlight = d.content.includes('模拟') || d.content.includes('考前');
+					tr.innerHTML = `
       <td><input type="checkbox" data-id="${id}" style="accent-color:var(--primary);cursor:pointer"></td>
       <td style="font-weight:600;${isHighlight ? 'color:var(--primary)' : ''}">Day ${d.day}</td>
       <td>${isHighlight ? '<b>' + d.content + '</b>' : d.content}</td>
       <td>${d.score ? '<input type="text" class="score-input" data-score="daily_'+d.score+'" placeholder="___" style="width:50px">' : ''}</td>
     `;
-    tbody.appendChild(tr);
-  });
-}
+					tbody.appendChild(tr);
+				});
+			}
 
-function getCheckboxesByPhase(phase) {
-  const all = [];
-  document.querySelectorAll(`.checklist[data-phase="${phase}"] input[type=checkbox]`).forEach(cb => {
-    if (cb.dataset.id) all.push(cb.dataset.id);
-  });
-  // Also include daily tracker for this phase
-  DAILY_DATA.filter(d => d.phase === phase).forEach(d => {
-    all.push('daily_' + d.day);
-  });
-  return all;
-}
+			function getCheckboxesByPhase(phase) {
+				const all = [];
+				document.querySelectorAll(`.checklist[data-phase="${phase}"] input[type=checkbox]`).forEach(cb => {
+					if (cb.dataset.id) all.push(cb.dataset.id);
+				});
+				// Also include daily tracker for this phase
+				DAILY_DATA.filter(d => d.phase === phase).forEach(d => {
+					all.push('daily_' + d.day);
+				});
+				return all;
+			}
 
-function updateStats() {
-  const allIds = [];
-  document.querySelectorAll('.checklist input[type=checkbox][data-id]').forEach(cb => allIds.push(cb.dataset.id));
-  DAILY_DATA.forEach(d => { if (!allIds.includes('daily_' + d.day)) allIds.push('daily_' + d.day); });
+			function updateStats() {
+				const allIds = [];
+				document.querySelectorAll('.checklist input[type=checkbox][data-id]').forEach(cb => allIds.push(cb.dataset.id));
+				DAILY_DATA.forEach(d => {
+					if (!allIds.includes('daily_' + d.day)) allIds.push('daily_' + d.day);
+				});
+				const total = allIds.length;
+				const checked = allIds.filter(id => state[id]).length;
+				const pct = total ? Math.round(checked / total * 100) : 0;
+				document.getElementById('stat-total').textContent = pct + '%';
+				document.getElementById('bar-total').style.width = pct + '%';
+				['p1', 'p2', 'p3', 'p4'].forEach((phase, i) => {
+					const ids = getCheckboxesByPhase(phase);
+					const c = ids.filter(id => state[id]).length;
+					const p = ids.length ? Math.round(c / ids.length * 100) : 0;
+					document.getElementById('stat-' + phase).textContent = p + '%';
+					document.getElementById('bar-' + phase).style.width = p + '%';
+				});
+			}
 
-  const total = allIds.length;
-  const checked = allIds.filter(id => state[id]).length;
-  const pct = total ? Math.round(checked / total * 100) : 0;
-  document.getElementById('stat-total').textContent = pct + '%';
-  document.getElementById('bar-total').style.width = pct + '%';
+			function showSection(name) {
+				document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+				const sec = document.getElementById('sec-' + name);
+				if (sec) sec.classList.add('visible');
+				document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+				document.querySelector(`.nav-item[data-section="${name}"]`)?.classList.add('active');
+				// Close mobile sidebar
+				document.getElementById('sidebar').classList.remove('open');
+				document.querySelector('.overlay').classList.remove('open');
+			}
 
-  ['p1','p2','p3','p4'].forEach((phase, i) => {
-    const ids = getCheckboxesByPhase(phase);
-    const c = ids.filter(id => state[id]).length;
-    const p = ids.length ? Math.round(c / ids.length * 100) : 0;
-    document.getElementById('stat-' + phase).textContent = p + '%';
-    document.getElementById('bar-' + phase).style.width = p + '%';
-  });
-}
+			function toggleSidebar() {
+				document.getElementById('sidebar').classList.toggle('open');
+				document.querySelector('.overlay').classList.toggle('open');
+			}
 
-function showSection(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
-  const sec = document.getElementById('sec-' + name);
-  if (sec) sec.classList.add('visible');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelector(`.nav-item[data-section="${name}"]`)?.classList.add('active');
-  // Close mobile sidebar
-  document.getElementById('sidebar').classList.remove('open');
-  document.querySelector('.overlay').classList.remove('open');
-}
+			function resetAll() {
+				if (confirm('确定要重置所有进度吗？此操作不可撤销。')) {
+					state = {};
+					saveState();
+					location.reload();
+				}
+			}
+			// Init
+			loadState();
+			buildDailyTracker();
+			initCheckboxes();
+			initScoreInputs();
+			initSkillRatings();
+			updateStats();
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.querySelector('.overlay').classList.toggle('open');
-}
+		</script>
+	</body>
 
-function resetAll() {
-  if (confirm('确定要重置所有进度吗？此操作不可撤销。')) {
-    state = {};
-    saveState();
-    location.reload();
-  }
-}
-
-// Init
-loadState();
-buildDailyTracker();
-initCheckboxes();
-initScoreInputs();
-initSkillRatings();
-updateStats();
-</script>
-</body>
 </html>
