@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>播客频道 | Podcast Channels</title>
+    <meta name="description" content="政治学、国际关系等考试复习播客频道">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #3b82f6;
+            --bg-blur: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-blur: rgba(15, 23, 42, 0.4);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            background: url('assets/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+            z-index: -1;
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Channel Tabs */
+        .channel-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .channel-tab {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .channel-tab:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .channel-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Episode List */
+        .episodes-section {
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .episode-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .episode-card:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .episode-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .episode-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .episode-info {
+            flex: 1;
+        }
+
+        .episode-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .episode-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .episode-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Audio Player */
+        .audio-player-wrapper {
+            margin-top: 15px;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--bg-blur);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Channel Info */
+        .channel-info {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .channel-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .channel-details h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .channel-details p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .channel-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Now Playing Indicator */
+        .now-playing {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .now-playing.active {
+            display: flex;
+        }
+
+        .now-playing span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .channel-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .channel-stats {
+                justify-content: center;
+            }
+
+            .episode-header {
+                flex-direction: column;
+            }
+
+            .episode-number {
+                align-self: flex-start;
+            }
+        }
+
+        /* Tag */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .tag-short {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .tag-essay {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--secondary);
+        }
+
+        .tag-fill {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .tag-term {
+            background: rgba(249, 115, 22, 0.1);
+            color: #f97316;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            返回首页
+        </a>
+
+        <header>
+            <h1>🎙️ 播客频道</h1>
+            <p class="subtitle">Podcast Channels - 复习带背</p>
+        </header>
+
+        <!-- Channel Tabs -->
+        <div class="channel-tabs" id="channelTabs">
+            <div class="channel-tab active" data-channel="political-science">
+                <span>📚</span> 国考政治学
+            </div>
+            <div class="channel-tab" data-channel="international-relations">
+                <span>🌍</span> 国际关系
+            </div>
+            <div class="channel-tab" data-channel="political-economy">
+                <span>💰</span> 政治经济学
+            </div>
+            <div class="channel-tab" data-channel="dialectics">
+                <span>🔬</span> 自然辩证法
+            </div>
+        </div>
+
+        <!-- Channel Info -->
+        <div class="channel-info" id="channelInfo">
+            <div class="channel-icon">📚</div>
+            <div class="channel-details">
+                <h2 id="channelName">国考政治学</h2>
+                <p id="channelDesc">政治学核心考点带背，包含简答题、论述题、名词解释等题型，帮助你高效掌握重点知识。</p>
+                <div class="channel-stats">
+                    <div class="stat">📢 <span id="episodeCount">8</span> 集</div>
+                    <div class="stat">⏱️ 总时长约 4 小时</div>
+                    <div class="stat">🎓 适合考研/国考复习</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Episodes List -->
+        <div class="episodes-section" id="episodesList">
+            <!-- Episodes will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Channel Data
+        const channels = {
+            'political-science': {
+                name: '国考政治学',
+                icon: '📚',
+                desc: '政治学核心考点带背，包含简答题、论述题、名词解释等题型，帮助你高效掌握重点知识。',
+                episodes: [
+                    {
+                        title: '名词解释30题必背',
+                        file: 'podcasts/political-science/名词解释_30题必背.mp3',
+                        duration: '约15分钟',
+                        type: 'term',
+                        date: '2024-04-13'
+                    },
+                    {
+                        title: '填空题专项',
+                        file: 'podcasts/political-science/填空题.mp3',
+                        duration: '约10分钟',
+                        type: 'fill',
+                        date: '2024-04-13'
+                    },
+                    {
+                        title: '简答题带背 第1集 (茉莉版)',
+                        file: 'podcasts/political-science/政治学简答题带背第1集_茉莉版.mp3',
+                        duration: '约25分钟',
+                        type: 'short',
+                        date: '2024-05-05'
+                    },
+                    {
+                        title: '简答题带背 第2集 (茉莉版)',
+                        file: 'podcasts/political-science/政治学简答题带背第2集_茉莉版.mp3',
+                        duration: '约30分钟',
+                        type: 'short',
+                        date: '2024-05-05'
+                    },
+                    {
+                        title: '简答题带背 第3集 (茉莉版)',
+                        file: 'podcasts/political-science/政治学简答题带背第3集_茉莉版.mp3',
+                        duration: '约20分钟',
+                        type: 'short',
+                        date: '2024-05-05'
+                    },
+                    {
+                        title: '论述题带背 第1集',
+                        file: 'podcasts/political-science/政治学论述题带背第1集.mp3',
+                        duration: '约35分钟',
+                        type: 'essay',
+                        date: '2024-05-06'
+                    },
+                    {
+                        title: '论述题带背 第2集 (MIMO版)',
+                        file: 'podcasts/political-science/政治学论述题带背第2集_mimo.mp3',
+                        duration: '约15分钟',
+                        type: 'essay',
+                        date: '2024-05-05'
+                    }
+                ]
+            },
+            'international-relations': {
+                name: '国际关系',
+                icon: '🌍',
+                desc: '国际关系史、制度分析方法等核心内容带背，涵盖理论框架与重点案例。',
+                episodes: []
+            },
+            'political-economy': {
+                name: '政治经济学',
+                icon: '💰',
+                desc: '产业发展的政治经济学、全球周期分析、能源与环境等专题内容。',
+                episodes: []
+            },
+            'dialectics': {
+                name: '自然辩证法',
+                icon: '🔬',
+                desc: '科学技术观、方法论与辩证思维要点带背，助力快速掌握核心概念。',
+                episodes: []
+            }
+        };
+
+        // Tag labels
+        const tagLabels = {
+            'short': { text: '简答', class: 'tag-short' },
+            'essay': { text: '论述', class: 'tag-essay' },
+            'fill': { text: '填空', class: 'tag-fill' },
+            'term': { text: '名词', class: 'tag-term' }
+        };
+
+        let currentChannel = 'political-science';
+        let currentAudio = null;
+
+        // Initialize
+        function init() {
+            renderChannel(currentChannel);
+            setupTabs();
+
+            // Dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        // Setup tabs
+        function setupTabs() {
+            document.querySelectorAll('.channel-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentChannel = tab.dataset.channel;
+                    renderChannel(currentChannel);
+                });
+            });
+        }
+
+        // Render channel
+        function renderChannel(channelId) {
+            const channel = channels[channelId];
+            document.getElementById('channelName').textContent = channel.name;
+            document.getElementById('channelDesc').textContent = channel.desc;
+            document.getElementById('episodeCount').textContent = channel.episodes.length;
+            document.querySelector('.channel-icon').textContent = channel.icon;
+
+            const episodesList = document.getElementById('episodesList');
+
+            if (channel.episodes.length === 0) {
+                episodesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>暂无内容</h3>
+                        <p>该频道正在准备中，敬请期待...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            episodesList.innerHTML = channel.episodes.map((ep, index) => `
+                <div class="episode-card">
+                    <div class="episode-header">
+                        <div class="episode-number">${index + 1}</div>
+                        <div class="episode-info">
+                            <div class="episode-title">
+                                ${ep.title}
+                                <span class="tag ${tagLabels[ep.type]?.class || 'tag-short'}">${tagLabels[ep.type]?.text || '音频'}</span>
+                            </div>
+                            <div class="episode-meta">
+                                <span>📅 ${ep.date}</span>
+                                <span>⏱️ ${ep.duration}</span>
+                                <span>🎵 ${ep.file.split('.').pop().toUpperCase()}</span>
+                            </div>
+                            <div class="audio-player-wrapper">
+                                <audio class="audio-player" controls preload="none">
+                                    <source src="${ep.file}" type="audio/mpeg">
+                                    您的浏览器不支持音频播放。
+                                </audio>
+                                <div class="now-playing" id="now-playing-${index}">
+                                    <span></span> 正在播放...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Setup audio events
+            setupAudioEvents();
+        }
+
+        // Setup audio events
+        function setupAudioEvents() {
+            document.querySelectorAll('.audio-player').forEach((audio, index) => {
+                audio.addEventListener('play', () => {
+                    // Pause other audios
+                    document.querySelectorAll('.audio-player').forEach((a, i) => {
+                        if (i !== index && !a.paused) {
+                            a.pause();
+                            document.getElementById(`now-playing-${i}`).classList.remove('active');
+                        }
+                    });
+                    document.getElementById(`now-playing-${index}`).classList.add('active');
+                });
+
+                audio.addEventListener('pause', () => {
+                    document.getElementById(`now-playing-${index}`).classList.remove('active');
+                });
+
+                audio.addEventListener('ended', () => {
+                    document.getElementById(`now-playing-${index}`).classList.remove('active');
+                });
+            });
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+
+</html>
