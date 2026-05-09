@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>政治学答题高频词 & 套路整理</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700;900&display=swap');
+
+  :root {
+    --bg: #0f0d0a;
+    --bg2: #181410;
+    --bg3: #221e18;
+    --bg4: #2c2620;
+    --card: #1e1a14;
+    --border: #3a3020;
+    --gold: #c8973a;
+    --gold2: #e8b84b;
+    --gold-dim: rgba(200,151,58,0.15);
+    --red: #c0392b;
+    --red-dim: rgba(192,57,43,0.15);
+    --green: #27ae60;
+    --green-dim: rgba(39,174,96,0.12);
+    --blue: #2980b9;
+    --blue-dim: rgba(41,128,185,0.12);
+    --purple: #8e44ad;
+    --purple-dim: rgba(142,68,173,0.12);
+    --text: #e8dcc8;
+    --text2: #b8a890;
+    --text3: #786a52;
+    --accent: #c8973a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    background: linear-gradient(135deg, #1a1408 0%, #0f0d0a 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,151,58,0.08) 0%, transparent 70%);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,151,58,0.4);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .header h1 span { color: var(--gold); }
+  .header-sub {
+    color: var(--text3);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  .header-stat {
+    text-align: center;
+  }
+  .header-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .header-stat .label {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+
+  /* ---- NAV TABS ---- */
+  .nav-wrapper {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-tabs {
+    display: flex;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 0;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-tab:hover { color: var(--text2); }
+  .nav-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ---- SECTION HEADER ---- */
+  .section-header {
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .section-header p {
+    color: var(--text3);
+    font-size: 13px;
+  }
+
+  /* ---- CARDS GRID ---- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color .2s, transform .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: rgba(200,151,58,0.4);
+    transform: translateY(-2px);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .card.gold::before { background: linear-gradient(90deg, var(--gold), transparent); }
+  .card.red::before { background: linear-gradient(90deg, var(--red), transparent); }
+  .card.green::before { background: linear-gradient(90deg, var(--green), transparent); }
+  .card.blue::before { background: linear-gradient(90deg, var(--blue), transparent); }
+  .card.purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+
+  .card-rank {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--border);
+    position: absolute;
+    top: 12px; right: 16px;
+    line-height: 1;
+  }
+  .card-word {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .card-pinyin {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .card-def {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .card-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,151,58,0.25);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .card-count.red-count {
+    background: var(--red-dim);
+    border-color: rgba(192,57,43,0.25);
+    color: #e74c3c;
+  }
+  .card-count.green-count {
+    background: var(--green-dim);
+    border-color: rgba(39,174,96,0.25);
+    color: #2ecc71;
+  }
+  .card-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .q-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .q-badge.fill { background: rgba(41,128,185,0.15); color: #5dade2; border-color: rgba(93,173,226,0.2); }
+  .q-badge.short { background: rgba(39,174,96,0.12); color: #58d68d; border-color: rgba(88,214,141,0.2); }
+  .q-badge.essay { background: rgba(192,57,43,0.12); color: #e74c3c; border-color: rgba(231,76,60,0.2); }
+  .q-badge.term { background: rgba(142,68,173,0.12); color: #bb8fce; border-color: rgba(187,143,206,0.2); }
+
+  /* ---- PHRASE LIST ---- */
+  .phrase-list { display: flex; flex-direction: column; gap: 12px; }
+  .phrase-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+    transition: border-color .2s;
+  }
+  .phrase-item:hover { border-color: rgba(200,151,58,0.35); }
+  .phrase-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,151,58,0.35);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .phrase-body {}
+  .phrase-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .phrase-usage {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .phrase-example {
+    background: var(--bg3);
+    border-left: 3px solid var(--gold);
+    padding: 10px 12px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .phrase-example em { color: var(--gold2); font-style: normal; font-weight: 600; }
+  .phrase-questions { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  /* ---- TEMPLATES ---- */
+  .template-grid { display: flex; flex-direction: column; gap: 20px; }
+  .template-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .template-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .template-type-badge {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .template-title {
+    flex: 1;
+  }
+  .template-title h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .template-title p {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .template-toggle {
+    color: var(--text3);
+    font-size: 18px;
+    transition: transform .3s;
+  }
+  .template-card.open .template-toggle { transform: rotate(180deg); }
+  .template-body {
+    display: none;
+    padding: 20px;
+  }
+  .template-card.open .template-body { display: block; }
+  .template-structure {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+  .ts-row {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+  }
+  .ts-label {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 72px;
+    display: flex; align-items: center;
+    border-right: none;
+    border-bottom: none;
+  }
+  .ts-row:last-child .ts-label,
+  .ts-row:last-child .ts-content {
+    border-bottom: 1px solid var(--border);
+  }
+  .ts-row:first-child .ts-label,
+  .ts-row:first-child .ts-content {
+    border-top: none;
+  }
+  .ts-label { border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .ts-content {
+    flex: 1;
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .ts-content em { color: var(--gold2); font-style: normal; font-weight: 600; }
+  .ts-content strong { color: var(--text); font-weight: 600; }
+
+  .template-example-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+  .template-example-block .ex-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .template-example-block .ex-text {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+  .template-example-block .ex-text em { color: var(--gold2); font-style: normal; font-weight: 600; }
+  .applicable-questions {
+    margin-top: 12px;
+    display: flex; flex-wrap: wrap; gap: 5px;
+  }
+
+  /* ---- VOCAB STRUCTURE (keyword deep dive) ---- */
+  .vocab-section { margin-bottom: 40px; }
+  .vocab-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .vocab-section-title h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .vocab-section-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .keyword-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .keyword-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--text3);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: 1px solid var(--border);
+  }
+  .keyword-table td {
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.7;
+  }
+  .keyword-table tr:hover td { background: var(--bg3); }
+  .keyword-table .kw { color: var(--gold); font-weight: 700; font-family: 'Noto Serif SC', serif; font-size: 14px; }
+  .keyword-table .combo { color: var(--gold2); font-weight: 600; }
+  .keyword-table .usage { color: var(--text2); }
+
+  /* ---- ANSWER STRUCTURES ---- */
+  .struct-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .struct-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    transition: border-color .2s;
+  }
+  .struct-card:hover { border-color: rgba(200,151,58,0.35); }
+  .struct-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .struct-name .icon { font-size: 18px; }
+  .struct-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .struct-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .struct-arrow {
+    color: var(--text3);
+    font-size: 10px;
+    line-height: 1;
+    padding-top: 6px;
+    flex-shrink: 0;
+  }
+  .struct-step-text {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 5px 10px;
+    flex: 1;
+    line-height: 1.5;
+  }
+  .struct-step-text em { color: var(--gold2); font-style: normal; font-weight: 600; }
+  .struct-qs { font-size: 11px; color: var(--text3); }
+
+  /* ---- TIPS BOX ---- */
+  .tips-box {
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+  .tips-box .tips-title {
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .info-box {
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,151,58,0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  .info-box .info-title {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  /* ---- CONNECTIVE WORDS TABLE ---- */
+  .conn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .conn-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .conn-role {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .conn-role::before {
+    content: '';
+    display: block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .conn-words {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .conn-word {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Noto Serif SC', serif;
+  }
+  .conn-word.highlight { 
+    background: var(--gold-dim); 
+    border-color: rgba(200,151,58,0.3); 
+    color: var(--gold2);
+    font-weight: 600;
+  }
+
+  /* ---- SCROLLBAR ---- */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 640px) {
+    .header-stats { gap: 20px; }
+    .header-stat .num { font-size: 22px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .main { padding: 20px 16px 60px; }
+  }
+
+  /* ---- HIGHLIGHT SPANS ---- */
+  .hl-gold { color: var(--gold); font-weight: 700; }
+  .hl-red { color: #e74c3c; font-weight: 700; }
+  .pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pill-gold { background: var(--gold-dim); color: var(--gold2); border: 1px solid rgba(200,151,58,0.25); }
+  .pill-red { background: var(--red-dim); color: #e74c3c; border: 1px solid rgba(192,57,43,0.25); }
+  .pill-green { background: var(--green-dim); color: #58d68d; border: 1px solid rgba(88,214,141,0.2); }
+  .pill-blue { background: var(--blue-dim); color: #5dade2; border: 1px solid rgba(93,173,226,0.2); }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">备考核心整理</div>
+  <h1>政治学答题 <span>高频词 · 套路</span> 全析</h1>
+  <p class="header-sub">覆盖全部填空 / 简答 / 论述 / 名词解释</p>
+  <div class="header-stats">
+    <div class="header-stat"><span class="num">138</span><span class="label">题目总数</span></div>
+    <div class="header-stat"><span class="num">15</span><span class="label">高频核心词</span></div>
+    <div class="header-stat"><span class="num">18</span><span class="label">高频套话</span></div>
+    <div class="header-stat"><span class="num">5</span><span class="label">论述模板</span></div>
+  </div>
+</div>
+
+<div class="nav-wrapper">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchTab('words')">① 高频核心词</div>
+    <div class="nav-tab" onclick="switchTab('phrases')">② 高频套话短语</div>
+    <div class="nav-tab" onclick="switchTab('templates')">③ 论述题模板</div>
+    <div class="nav-tab" onclick="switchTab('structures')">④ 答题结构套路</div>
+    <div class="nav-tab" onclick="switchTab('connectives')">⑤ 连接词 & 过渡语</div>
+    <div class="nav-tab" onclick="switchTab('families')">⑥ 词族速查</div>
+    <div class="nav-tab" onclick="switchTab('clusters')">⑦ 题目关联图谱</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== TAB 1: HIGH-FREQ WORDS ===== -->
+<div id="tab-words" class="section active">
+  <div class="section-header">
+    <h2>高频核心词 TOP 15</h2>
+    <p>按出现频率排序 · 标注全部相关题目 · 含核心用法</p>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">📌 使用说明</div>
+    蓝色标签 = 填空题 &nbsp;|&nbsp; 绿色标签 = 简答题 &nbsp;|&nbsp; 红色标签 = 论述题 &nbsp;|&nbsp; 紫色标签 = 名词解释
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- 1. 必须 -->
+    <div class="card gold">
+      <div class="card-rank">1</div>
+      <div class="card-word">必须</div>
+      <div class="card-pinyin">bì xū &nbsp;·&nbsp; 出现 22 次</div>
+      <div class="card-count">🔥 超高频 — 论述题核心动词</div>
+      <div class="card-def">
+        论述题中最高频动词，主要用于"经验/教训类"答题结构。固定搭配：<br>
+        <strong>必须坚持……</strong>（正面经验）<br>
+        <strong>必须防止……</strong>（反面教训）<br>
+        <strong>必须处理好……</strong>（辩证关系）
+      </div>
+      <div class="card-questions">
+        <span class="q-badge essay">论述-1 苏联模式</span>
+        <span class="q-badge essay">论述-2 科学社会主义</span>
+        <span class="q-badge essay">论述-3 习近平思想</span>
+        <span class="q-badge essay">论述-9 政治参与</span>
+        <span class="q-badge short">简答-11 苏联失败</span>
+        <span class="q-badge short">简答-12 冷战后探索</span>
+      </div>
+    </div>
+
+    <!-- 2. 坚持 -->
+    <div class="card gold">
+      <div class="card-rank">2</div>
+      <div class="card-word">坚持</div>
+      <div class="card-pinyin">jiān chí &nbsp;·&nbsp; 出现 28 次</div>
+      <div class="card-count">🔥 最高频词 — 几乎每题必现</div>
+      <div class="card-def">
+        与"必须"连用（<strong>必须坚持……</strong>），或与具体原则连用：<br>
+        坚持党的领导 / 坚持以人民为中心 / 坚持独立自主 / 坚持科学社会主义基本原则 / 坚持改革方向
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-51 十九大</span>
+        <span class="q-badge essay">论述-2 科学社会主义</span>
+        <span class="q-badge essay">论述-3 十四个坚持</span>
+        <span class="q-badge essay">论述-5 民主制度</span>
+        <span class="q-badge short">简答-11 苏联失败</span>
+        <span class="q-badge short">简答-12 冷战后探索</span>
+        <span class="q-badge term">名词-16 习近平思想</span>
+      </div>
+    </div>
+
+    <!-- 3. 合法性/合法化 -->
+    <div class="card red">
+      <div class="card-rank">3</div>
+      <div class="card-word">合法性 / 合法化</div>
+      <div class="card-pinyin">hé fǎ xìng &nbsp;·&nbsp; 出现 8 次</div>
+      <div class="card-count red-count">⚡ 考核重点</div>
+      <div class="card-def">
+        区分两种用法：<br>
+        <strong>合法性</strong>（名词）= 统治被认可的资格、正当性<br>
+        <strong>合法化</strong>（动词）= 通过法律/意识形态论证统治正当性的过程<br>
+        途径：法律基础（硬）+ 意识形态教化（软）
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-1 政治权力特征</span>
+        <span class="q-badge fill">填空-11 国家能力</span>
+        <span class="q-badge short">简答-7 合法化途径</span>
+        <span class="q-badge essay">论述-8 意识形态功能</span>
+        <span class="q-badge essay">论述-6 国际体系</span>
+      </div>
+    </div>
+
+    <!-- 4. 意识形态 -->
+    <div class="card gold">
+      <div class="card-rank">4</div>
+      <div class="card-word">意识形态</div>
+      <div class="card-pinyin">yì shí xíng tài &nbsp;·&nbsp; 出现 12 次</div>
+      <div class="card-count">🔥 核心概念词</div>
+      <div class="card-def">
+        <strong>定义</strong>：社会思想上层建筑，阶级/集团基于根本利益形成的理论体系<br>
+        <strong>5大特征</strong>：阶级性、现实性、相对独立性、依赖性、总体性（口诀：阶现独依总）<br>
+        <strong>政治功能</strong>：合法化 + 动员 + 政权转移<br>
+        <strong>经济功能</strong>：团结 + 论证集体行动 + 规模效益 + 约束搭便车
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-5 意识形态特征</span>
+        <span class="q-badge term">名词-4 意识形态</span>
+        <span class="q-badge short">简答-7 合法化途径</span>
+        <span class="q-badge short">简答-11 苏联失败</span>
+        <span class="q-badge essay">论述-8 意识形态功能</span>
+      </div>
+    </div>
+
+    <!-- 5. 阶级 -->
+    <div class="card red">
+      <div class="card-rank">5</div>
+      <div class="card-word">阶级</div>
+      <div class="card-pinyin">jiē jí &nbsp;·&nbsp; 出现 15 次</div>
+      <div class="card-count red-count">⚡ 马克思主义核心词</div>
+      <div class="card-def">
+        核心搭配：<br>
+        <strong>阶级性</strong>（意识形态/民主的特征）<br>
+        <strong>阶级利益</strong>（意识形态的出发点）<br>
+        <strong>阶级斗争</strong>（科学社会主义的路径）<br>
+        <strong>阶级统治形式</strong>（马克思主义民主的定义）<br>
+        <strong>阶级局限性</strong>（空想社会主义/资本主义民主的批评）
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-5 意识形态特征</span>
+        <span class="q-badge fill">填空-20 空想社会主义局限性</span>
+        <span class="q-badge term">名词-4 意识形态</span>
+        <span class="q-badge term">名词-11 民主（马克思主义）</span>
+        <span class="q-badge short">简答-8 空想局限性</span>
+        <span class="q-badge essay">论述-2 科学社会主义</span>
+        <span class="q-badge essay">论述-8 意识形态功能</span>
+      </div>
+    </div>
+
+    <!-- 6. 人民 -->
+    <div class="card green">
+      <div class="card-rank">6</div>
+      <div class="card-word">人民</div>
+      <div class="card-pinyin">rén mín &nbsp;·&nbsp; 出现 20+ 次</div>
+      <div class="card-count green-count">✅ 答题万能词</div>
+      <div class="card-def">
+        高频固定搭配：<br>
+        <strong>以人民为中心</strong>（十四个坚持之一）<br>
+        <strong>人民当家作主</strong>（社会主义民主本质）<br>
+        <strong>人民群众</strong>（历史创造者，空想社会主义忽视）<br>
+        <strong>人民日益增长的美好生活需要</strong>（新时代主要矛盾）<br>
+        <strong>人民代表大会制度</strong>（根本政治制度）
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-53 新时代主要矛盾</span>
+        <span class="q-badge fill">填空-61 国家安全</span>
+        <span class="q-badge term">名词-9 政治参与</span>
+        <span class="q-badge short">简答-5 政治参与方向</span>
+        <span class="q-badge essay">论述-3 习近平思想</span>
+        <span class="q-badge essay">论述-5 民主制度</span>
+        <span class="q-badge short">简答-13 新时代意义</span>
+      </div>
+    </div>
+
+    <!-- 7. 民主 -->
+    <div class="card blue">
+      <div class="card-rank">7</div>
+      <div class="card-word">民主</div>
+      <div class="card-pinyin">mín zhǔ &nbsp;·&nbsp; 出现 14 次</div>
+      <div class="card-count" style="background:var(--blue-dim);border-color:rgba(41,128,185,0.3);color:#5dade2;">📘 制度核心词</div>
+      <div class="card-def">
+        <strong>马克思主义民主三层含义</strong>：阶级统治形式 / 国家形式（政体）/ 公民平等参政权<br>
+        <strong>中国特色社会主义民主四项制度</strong>：<br>
+        ①人民代表大会（根本）②多党合作政治协商 ③民族区域自治 ④基层群众自治<br>
+        <strong>民主监督</strong>（议会功能之一，⚠️注意区别于行政权/司法权）
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-7 议会职能</span>
+        <span class="q-badge term">名词-11 民主（马克思主义）</span>
+        <span class="q-badge essay">论述-5 中国特色民主制度</span>
+        <span class="q-badge essay">论述-10 多党合作制</span>
+        <span class="q-badge short">简答-6 政治管理作用</span>
+      </div>
+    </div>
+
+    <!-- 8. 主权 -->
+    <div class="card blue">
+      <div class="card-rank">8</div>
+      <div class="card-word">主权</div>
+      <div class="card-pinyin">zhǔ quán &nbsp;·&nbsp; 出现 10 次</div>
+      <div class="card-count" style="background:var(--blue-dim);border-color:rgba(41,128,185,0.3);color:#5dade2;">📘 国际政治核心词</div>
+      <div class="card-def">
+        <strong>定义</strong>：处理对内对外事务的最高权力（1648年《威斯特伐利亚和约》确立）<br>
+        <strong>对内</strong>：政府在领土内的最高管辖权<br>
+        <strong>对外</strong>：独立自主，不受他国干涉<br>
+        搭配：主权平等 / 领土主权 / 国家主权 / 尊重主权
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-59 国家四要素</span>
+        <span class="q-badge fill">填空-60 国家根本利益</span>
+        <span class="q-badge term">名词-24 国家主权</span>
+        <span class="q-badge short">简答-17 中国共产党国际政治思想</span>
+        <span class="q-badge essay">论述-7 中共国际政治思想</span>
+      </div>
+    </div>
+
+    <!-- 9. 霸权主义 -->
+    <div class="card red">
+      <div class="card-rank">9</div>
+      <div class="card-word">霸权主义</div>
+      <div class="card-pinyin">bà quán zhǔ yì &nbsp;·&nbsp; 出现 8 次</div>
+      <div class="card-count red-count">⚡ 国际政治必考词</div>
+      <div class="card-def">
+        固定搭配：<br>
+        <strong>反对霸权主义和强权政治</strong>（建立国际新秩序的口号）<br>
+        <strong>美国霸权地位相对衰落</strong>（冷战后格局分析）<br>
+        对立概念：多极化 / 公正合理的国际新秩序
+      </div>
+      <div class="card-questions">
+        <span class="q-badge short">简答-17 中国共产党国际政治思想</span>
+        <span class="q-badge short">简答-19 冷战后格局</span>
+        <span class="q-badge essay">论述-6 国际体系变化</span>
+        <span class="q-badge essay">论述-7 中共国际政治思想</span>
+      </div>
+    </div>
+
+    <!-- 10. 与时俱进 -->
+    <div class="card gold">
+      <div class="card-rank">10</div>
+      <div class="card-word">与时俱进</div>
+      <div class="card-pinyin">yǔ shí jù jìn &nbsp;·&nbsp; 出现 7 次</div>
+      <div class="card-count">🔥 结尾/总结首选词</div>
+      <div class="card-def">
+        用于总结某一理论/制度的优越性，强调动态适应性。<br>
+        <strong>典型句式</strong>：<br>
+        "体现了……与时俱进的理论品格"<br>
+        "实现了党的指导思想的又一次与时俱进"<br>
+        "……不断推进……中国化、时代化"
+      </div>
+      <div class="card-questions">
+        <span class="q-badge short">简答-14 十八大贡献</span>
+        <span class="q-badge short">简答-15 十九大贡献</span>
+        <span class="q-badge essay">论述-7 中共国际政治思想</span>
+        <span class="q-badge term">名词-14 毛泽东思想</span>
+      </div>
+    </div>
+
+    <!-- 11. 中国特色社会主义 -->
+    <div class="card green">
+      <div class="card-rank">11</div>
+      <div class="card-word">中国特色社会主义</div>
+      <div class="card-pinyin">出现 18 次</div>
+      <div class="card-count green-count">✅ 政治路线核心词</div>
+      <div class="card-def">
+        配套词组：<br>
+        <strong>中国特色社会主义道路</strong>（不走封闭僵化的老路，不走改旗易帜的邪路）<br>
+        <strong>中国特色社会主义理论体系</strong>（毛→邓→三个代表→科发→习思想）<br>
+        <strong>中国特色社会主义制度</strong>（四项基本民主制度）<br>
+        <strong>中国特色社会主义文化</strong>
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-51 十九大</span>
+        <span class="q-badge short">简答-14 十八大</span>
+        <span class="q-badge short">简答-15 十九大</span>
+        <span class="q-badge essay">论述-3 习近平思想</span>
+        <span class="q-badge essay">论述-5 民主制度</span>
+        <span class="q-badge essay">论述-10 多党合作制</span>
+      </div>
+    </div>
+
+    <!-- 12. 马克思主义中国化 -->
+    <div class="card green">
+      <div class="card-rank">12</div>
+      <div class="card-word">马克思主义中国化</div>
+      <div class="card-pinyin">出现 8 次</div>
+      <div class="card-count green-count">✅ 理论定性必用词</div>
+      <div class="card-def">
+        用于定性某一理论是马克思主义与中国实际的结合，是给论述题加分的定性语。<br>
+        <strong>最新成果</strong>：习近平新时代中国特色社会主义思想<br>
+        <strong>重要成果</strong>：毛泽东思想、邓小平理论
+      </div>
+      <div class="card-questions">
+        <span class="q-badge term">名词-14 毛泽东思想</span>
+        <span class="q-badge term">名词-16 习近平思想</span>
+        <span class="q-badge essay">论述-3 习近平思想</span>
+        <span class="q-badge essay">论述-4 农村包围城市</span>
+      </div>
+    </div>
+
+    <!-- 13. 合作共赢 -->
+    <div class="card blue">
+      <div class="card-rank">13</div>
+      <div class="card-word">合作共赢</div>
+      <div class="card-pinyin">出现 8 次</div>
+      <div class="card-count" style="background:var(--blue-dim);border-color:rgba(41,128,185,0.3);color:#5dade2;">📘 国际关系新理念</div>
+      <div class="card-def">
+        对比西方"零和博弈"（你赢我输）的中国方案。<br>
+        搭配：人类命运共同体 / 新型国际关系 / 相互尊重<br>
+        <strong>人类命运共同体四内涵</strong>：相互尊重平等 / 文明交流互鉴 / <span class="hl-gold">合作共赢</span> / 可持续安全
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-69 人类命运共同体</span>
+        <span class="q-badge term">名词-21 人类命运共同体</span>
+        <span class="q-badge short">简答-17 中共国际政治思想</span>
+        <span class="q-badge essay">论述-7 中共国际政治思想</span>
+      </div>
+    </div>
+
+    <!-- 14. 实事求是 -->
+    <div class="card gold">
+      <div class="card-rank">14</div>
+      <div class="card-word">实事求是</div>
+      <div class="card-pinyin">出现 7 次</div>
+      <div class="card-count">🔥 思想路线核心词</div>
+      <div class="card-def">
+        毛泽东思想"活的灵魂"之一，邓小平理论精髓（解放思想+实事求是）。<br>
+        答题常用：说明某理论/政策是坚持实事求是原则，从实际出发的成果。
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-45 邓小平理论精髓</span>
+        <span class="q-badge term">名词-14 毛泽东思想</span>
+        <span class="q-badge term">名词-15 邓小平理论</span>
+        <span class="q-badge essay">论述-2 科学社会主义</span>
+      </div>
+    </div>
+
+    <!-- 15. 历史必然性 -->
+    <div class="card purple">
+      <div class="card-rank">15</div>
+      <div class="card-word">历史必然性</div>
+      <div class="card-pinyin">出现 6 次</div>
+      <div class="card-count" style="background:var(--purple-dim);border-color:rgba(142,68,173,0.25);color:#bb8fce;">💜 论述结尾必用词</div>
+      <div class="card-def">
+        用于论述题总结段，强调某一历史事件/制度的客观规律性。<br>
+        <strong>正面用法</strong>：社会主义代替资本主义具有历史必然性<br>
+        <strong>负面批评</strong>：空想社会主义"否认历史发展的必然性"（空想局限性第1条）<br>
+        <strong>总结句式</strong>："因此，×××具有历史必然性。"
+      </div>
+      <div class="card-questions">
+        <span class="q-badge fill">填空-20 空想局限性</span>
+        <span class="q-badge short">简答-8 空想局限性</span>
+        <span class="q-badge short">简答-9 科学社会主义意义</span>
+        <span class="q-badge essay">论述-2 科学社会主义</span>
+        <span class="q-badge essay">论述-1 苏联模式</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TAB 2: HIGH-FREQ PHRASES ===== -->
+<div id="tab-phrases" class="section">
+  <div class="section-header">
+    <h2>高频套话短语 TOP 18</h2>
+    <p>可直接套用于答题的固定句式 · 含出处题目</p>
+  </div>
+
+  <div class="phrase-list">
+
+    <!-- 论述题总起句 -->
+    <div style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:8px 0 4px;">📌 论述题 —— 总起句</div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">1</div>
+      <div class="phrase-body">
+        <div class="phrase-text">×××是多种因素共同作用的结果。</div>
+        <div class="phrase-usage">适用：原因/条件类题目开头</div>
+        <div class="phrase-example">例：<em>苏联解体是多种因素共同作用的结果。</em>体制积弊太深、改革路线错误、西方和平演变……</div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-1 苏联模式</span>
+          <span class="q-badge essay">论述题模板1 原因类</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">2</div>
+      <div class="phrase-body">
+        <div class="phrase-text">×××具有重大而深远的意义。</div>
+        <div class="phrase-usage">适用：意义/作用类题目开头</div>
+        <div class="phrase-example">例：<em>科学社会主义的诞生具有重大而深远的意义。</em>①使社会主义从空想变为科学……</div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板2 意义类</span>
+          <span class="q-badge short">简答-9 科学社会主义意义</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">3</div>
+      <div class="phrase-body">
+        <div class="phrase-text">×××主要表现为以下几个方面。</div>
+        <div class="phrase-usage">适用：特征/表现类题目开头</div>
+        <div class="phrase-example">例：<em>苏联模式的基本特征主要表现为以下几个方面。</em>①政治维度……②经济维度……</div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板3 特征类</span>
+          <span class="q-badge short">简答-10 苏联模式</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">4</div>
+      <div class="phrase-body">
+        <div class="phrase-text">A与B是辩证统一、相互影响的关系。</div>
+        <div class="phrase-usage">适用：关系/联系类题目开头</div>
+        <div class="phrase-example">例：<em>意识形态与经济基础是辩证统一、相互影响的关系。</em>①经济基础决定意识形态……②意识形态反作用于经济基础……</div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板5 关系类</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 论述题经验教训句 -->
+    <div style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 4px;">📌 经验/教训类 —— 分点句式</div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">5</div>
+      <div class="phrase-body">
+        <div class="phrase-text">必须坚持……（经验正面表述）</div>
+        <div class="phrase-usage">经验教训类5点中，正面经验写法</div>
+        <div class="phrase-example">
+          <em>必须坚持共产党的领导。</em><br>
+          <em>必须坚定社会主义信念。</em><br>
+          <em>必须坚持并丰富发展马克思主义。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-2 科学社会主义经验教训</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">6</div>
+      <div class="phrase-body">
+        <div class="phrase-text">必须防止……（教训反面表述）</div>
+        <div class="phrase-usage">经验教训类中，反面教训写法</div>
+        <div class="phrase-example">
+          <em>必须防止"左"的和右的错误倾向。</em><br>
+          <em>必须高度警惕西方敌对势力的"和平演变"图谋。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-2 科学社会主义</span>
+          <span class="q-badge short">简答-11 苏联模式失败</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">7</div>
+      <div class="phrase-body">
+        <div class="phrase-text">既要……，又要……</div>
+        <div class="phrase-usage">辩证关系、双向要求的标志句型</div>
+        <div class="phrase-example">
+          <em>既要坚持共产主义的远大理想，又要脚踏实地地从社会主义初级阶段实际出发。</em><br>
+          <em>既要学习借鉴国外有益经验，又要维护国家主权和独立。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-2 科学社会主义</span>
+          <span class="q-badge essay">论述-9 政治参与</span>
+          <span class="q-badge short">简答-16 八个明确与十四个坚持</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 论述题总结句 -->
+    <div style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 4px;">📌 总结段 —— 收尾句式</div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">8</div>
+      <div class="phrase-body">
+        <div class="phrase-text">综上所述，×××是……的重要里程碑。</div>
+        <div class="phrase-usage">意义类结尾</div>
+        <div class="phrase-example">例：<em>综上所述，农村包围城市道路理论是毛泽东思想形成的重要标志，是马克思主义中国化的伟大创举。</em></div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板2</span>
+          <span class="q-badge essay">论述-4 农村包围城市</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">9</div>
+      <div class="phrase-body">
+        <div class="phrase-text">因此，×××具有历史必然性。</div>
+        <div class="phrase-usage">原因类结尾</div>
+        <div class="phrase-example">例：<em>因此，科学社会主义代替空想社会主义，无产阶级革命代替资产阶级统治，具有历史必然性。</em></div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板1</span>
+          <span class="q-badge short">简答-9 科学社会主义意义</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">10</div>
+      <div class="phrase-body">
+        <div class="phrase-text">这些特征相互联系，共同构成了×××的总体面貌。</div>
+        <div class="phrase-usage">特征类结尾套话</div>
+        <div class="phrase-example">例：<em>这些特征相互联系、相互制约，共同构成了苏联模式的总体面貌，也揭示了其历史局限性。</em></div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板3</span>
+          <span class="q-badge short">简答-10 苏联模式</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">11</div>
+      <div class="phrase-body">
+        <div class="phrase-text">只有……才能……</div>
+        <div class="phrase-usage">经验教训类结尾</div>
+        <div class="phrase-example">例：<em>只有坚持党的领导、坚持科学社会主义基本原则，才能避免苏联的悲剧重演。</em></div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板4</span>
+          <span class="q-badge essay">论述-1 苏联模式</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 维度展开句 -->
+    <div style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 4px;">📌 论述/简答题 —— 分析句式</div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">12</div>
+      <div class="phrase-body">
+        <div class="phrase-text">①政治上……②经济上……③思想文化上……④对外关系上……</div>
+        <div class="phrase-usage">四维度分析结构，适用于分析制度/政策特征</div>
+        <div class="phrase-example">苏联模式4个维度 / 意识形态功能分析 / 苏联模式弊病</div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-1 苏联模式</span>
+          <span class="q-badge short">简答-10 苏联模式特征</span>
+          <span class="q-badge short">简答-11 苏联失败</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">13</div>
+      <div class="phrase-body">
+        <div class="phrase-text">是……的产物 / 是……高度发展的产物</div>
+        <div class="phrase-usage">定义某一事物的历史成因</div>
+        <div class="phrase-example">
+          <em>跨国公司是垄断资本主义高度发展的产物。</em><br>
+          <em>国际体系是19世纪末资本主义发展到帝国主义阶段后逐步形成的。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge fill">填空-64 跨国公司</span>
+          <span class="q-badge term">名词-28 跨国公司</span>
+          <span class="q-badge essay">论述-6 国际体系</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">14</div>
+      <div class="phrase-body">
+        <div class="phrase-text">正确认识和处理……的关系，对于……具有重要意义。</div>
+        <div class="phrase-usage">关系类结尾套话</div>
+        <div class="phrase-example">例：<em>正确认识和处理A与B的辩证关系，对于推进中国特色社会主义事业具有重要意义。</em></div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述题模板5 关系类</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 名词解释套话 -->
+    <div style="color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:16px 0 4px;">📌 名词解释 —— 定义句式</div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">15</div>
+      <div class="phrase-body">
+        <div class="phrase-text">……是指……的系统化过程/方式/活动。</div>
+        <div class="phrase-usage">名词解释定义句</div>
+        <div class="phrase-example">
+          <em>政治是指围绕公共权力展开的活动及资源的权威性分配的系统化过程。</em><br>
+          <em>政治参与是指公民直接或间接影响政府决定的政治行为。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge term">名词-1 政治</span>
+          <span class="q-badge term">名词-9 政治参与</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">16</div>
+      <div class="phrase-body">
+        <div class="phrase-text">……体现了……的原则/本质/精神。</div>
+        <div class="phrase-usage">用于名词解释、论述题评价某制度</div>
+        <div class="phrase-example">
+          <em>人民代表大会制度体现了国家一切权力属于人民的宪法原则。</em><br>
+          <em>社会主义民主体现了人民当家作主的本质。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-5 民主制度</span>
+          <span class="q-badge term">名词-11 民主（马克思主义）</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">17</div>
+      <div class="phrase-body">
+        <div class="phrase-text">从……出发，……（从本国实际出发……）</div>
+        <div class="phrase-usage">说明某国政策/理论的立足点</div>
+        <div class="phrase-example">
+          <em>必须从本国实际出发，走自己的路，不能照搬外国模式。</em><br>
+          <em>从最广大人民根本利益出发……</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-2 科学社会主义</span>
+          <span class="q-badge essay">论述-4 农村包围城市</span>
+          <span class="q-badge short">简答-12 冷战后探索</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="phrase-item">
+      <div class="phrase-num">18</div>
+      <div class="phrase-body">
+        <div class="phrase-text">……是……的重要组成部分 / 最新成果 / 重要标志</div>
+        <div class="phrase-usage">对某理论/事件进行历史定位</div>
+        <div class="phrase-example">
+          <em>习近平新时代中国特色社会主义思想是马克思主义中国化最新成果，是中国特色社会主义理论体系的重要组成部分。</em>
+        </div>
+        <div class="phrase-questions">
+          <span class="q-badge essay">论述-3 习近平思想</span>
+          <span class="q-badge essay">论述-4 农村包围城市</span>
+          <span class="q-badge term">名词-16 习近平思想</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TAB 3: TEMPLATES ===== -->
+<div id="tab-templates" class="section">
+  <div class="section-header">
+    <h2>论述题答题模板 × 5</h2>
+    <p>按题型识别 → 套用对应模板 → 填入知识点</p>
+  </div>
+
+  <div class="tips-box">
+    <div class="tips-title">⚠️ 急救技巧</div>
+    实在不会写，就抄材料中的相关句子，加上"首先、其次、再次、最后"凑够三段，每段写 3-4 行。至少得一半分。
+  </div>
+
+  <div class="template-grid">
+
+    <!-- Template 1 -->
+    <div class="template-card open">
+      <div class="template-header" onclick="toggleTemplate(this)">
+        <div class="template-type-badge" style="background:rgba(192,57,43,0.15);font-size:18px;">🔎</div>
+        <div class="template-title">
+          <h3>模板 1 · 原因 / 条件类</h3>
+          <p>触发词：为什么……｜试述……的原因｜……的条件</p>
+        </div>
+        <div class="template-toggle">▲</div>
+      </div>
+      <div class="template-body">
+        <div class="template-structure">
+          <div class="ts-row">
+            <div class="ts-label">总起</div>
+            <div class="ts-content"><em>×××是多种因素共同作用的结果。</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">①</div>
+            <div class="ts-content"><strong>经济基础</strong>……（物质条件）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">②</div>
+            <div class="ts-content"><strong>阶级力量</strong>……（主体力量）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">③</div>
+            <div class="ts-content"><strong>时代背景</strong>……（国际/历史环境）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">④</div>
+            <div class="ts-content"><strong>主观条件</strong>……（组织/理论/领导力）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">⑤</div>
+            <div class="ts-content"><strong>外部环境</strong>……（国际因素）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">总结</div>
+            <div class="ts-content"><em>因此，×××具有历史必然性。</em></div>
+          </div>
+        </div>
+        <div class="template-example-block">
+          <div class="ex-label">适用题目</div>
+          <div class="ex-text"><em>论述-4</em> 农村包围城市（红色政权为何存在）&nbsp;|&nbsp; <em>论述-6</em> 国际体系变化原因 &nbsp;|&nbsp; <em>论述-10</em> 中国选择多党合作制原因</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template 2 -->
+    <div class="template-card">
+      <div class="template-header" onclick="toggleTemplate(this)">
+        <div class="template-type-badge" style="background:rgba(39,174,96,0.12);font-size:18px;">⭐</div>
+        <div class="template-title">
+          <h3>模板 2 · 意义 / 作用类</h3>
+          <p>触发词：试述×××的意义｜×××的作用</p>
+        </div>
+        <div class="template-toggle">▼</div>
+      </div>
+      <div class="template-body">
+        <div class="template-structure">
+          <div class="ts-row">
+            <div class="ts-label">总起</div>
+            <div class="ts-content"><em>×××具有重大而深远的意义。</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">①</div>
+            <div class="ts-content"><strong>政治上</strong>……（政权/制度/权力）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">②</div>
+            <div class="ts-content"><strong>经济上</strong>……（生产力/物质基础）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">③</div>
+            <div class="ts-content"><strong>思想上</strong>……（意识形态/理论贡献）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">④</div>
+            <div class="ts-content"><strong>国际上</strong>……（对世界的影响）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">⑤</div>
+            <div class="ts-content"><strong>对未来</strong>……（历史启示/当代价值）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">总结</div>
+            <div class="ts-content"><em>综上所述，×××是……的重要里程碑。</em></div>
+          </div>
+        </div>
+        <div class="template-example-block">
+          <div class="ex-label">适用题目</div>
+          <div class="ex-text"><em>论述-3</em> 习近平思想历史地位 &nbsp;|&nbsp; <em>论述-4</em> 农村包围城市历史意义 &nbsp;|&nbsp; <em>论述-8</em> 意识形态功能 &nbsp;|&nbsp; <em>简答-9</em> 科学社会主义意义</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template 3 -->
+    <div class="template-card">
+      <div class="template-header" onclick="toggleTemplate(this)">
+        <div class="template-type-badge" style="background:rgba(41,128,185,0.12);font-size:18px;">📋</div>
+        <div class="template-title">
+          <h3>模板 3 · 特征 / 表现类</h3>
+          <p>触发词：基本特征｜主要表现｜具体内容</p>
+        </div>
+        <div class="template-toggle">▼</div>
+      </div>
+      <div class="template-body">
+        <div class="template-structure">
+          <div class="ts-row">
+            <div class="ts-label">总起</div>
+            <div class="ts-content"><em>×××主要表现为以下几个方面。</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">①…性</div>
+            <div class="ts-content">特征1（一般带"性"字或"化"字结尾）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">②…性</div>
+            <div class="ts-content">特征2</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">③…性</div>
+            <div class="ts-content">特征3</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">④…性</div>
+            <div class="ts-content">特征4（一般写4-5点）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">总结</div>
+            <div class="ts-content"><em>这些特征相互联系，共同构成了×××的总体面貌。</em></div>
+          </div>
+        </div>
+        <div class="template-example-block">
+          <div class="ex-label">适用题目</div>
+          <div class="ex-text"><em>论述-1</em> 苏联模式特征 &nbsp;|&nbsp; <em>论述-5</em> 中国民主制度 &nbsp;|&nbsp; <em>论述-7</em> 中共国际政治思想演变 &nbsp;|&nbsp; <em>论述-10</em> 多党合作制特点</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template 4 -->
+    <div class="template-card">
+      <div class="template-header" onclick="toggleTemplate(this)">
+        <div class="template-type-badge" style="background:rgba(200,151,58,0.15);font-size:18px;">📖</div>
+        <div class="template-title">
+          <h3>模板 4 · 经验 / 教训类</h3>
+          <p>触发词：历史教训｜基本经验｜得失总结</p>
+        </div>
+        <div class="template-toggle">▼</div>
+      </div>
+      <div class="template-body">
+        <div class="template-structure">
+          <div class="ts-row">
+            <div class="ts-label">总起</div>
+            <div class="ts-content"><em>×××给我们提供了深刻的经验/教训。</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">经验①</div>
+            <div class="ts-content"><em>必须坚持……</em>（正面，该做的）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">经验②</div>
+            <div class="ts-content"><em>必须坚持……</em>（正面，该做的）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">教训①</div>
+            <div class="ts-content"><em>必须防止……</em>（反面，不该做的）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">教训②</div>
+            <div class="ts-content"><em>必须处理好……与……的关系</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">总结</div>
+            <div class="ts-content"><em>只有……才能……</em></div>
+          </div>
+        </div>
+        <div class="template-example-block">
+          <div class="ex-label">适用题目</div>
+          <div class="ex-text"><em>论述-2</em> 科学社会主义基本经验和教训 &nbsp;|&nbsp; <em>论述-1</em> 苏联模式历史教训 &nbsp;|&nbsp; <em>简答-11</em> 苏联模式失败教训</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template 5 -->
+    <div class="template-card">
+      <div class="template-header" onclick="toggleTemplate(this)">
+        <div class="template-type-badge" style="background:rgba(142,68,173,0.12);font-size:18px;">🔗</div>
+        <div class="template-title">
+          <h3>模板 5 · 关系 / 联系类</h3>
+          <p>触发词：A与B的关系｜×××与×××的联系</p>
+        </div>
+        <div class="template-toggle">▼</div>
+      </div>
+      <div class="template-body">
+        <div class="template-structure">
+          <div class="ts-row">
+            <div class="ts-label">总起</div>
+            <div class="ts-content"><em>A与B是辩证统一、相互影响的关系。</em></div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">①</div>
+            <div class="ts-content"><strong>A决定B</strong>……（正向影响）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">②</div>
+            <div class="ts-content"><strong>B反作用于A</strong>……（反向影响）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">③</div>
+            <div class="ts-content"><strong>在……条件下</strong>，两者相互转化……（辩证统一）</div>
+          </div>
+          <div class="ts-row">
+            <div class="ts-label">总结</div>
+            <div class="ts-content"><em>正确认识和处理A与B的关系，对于……具有重要意义。</em></div>
+          </div>
+        </div>
+        <div class="template-example-block">
+          <div class="ex-label">适用题目</div>
+          <div class="ex-text"><em>简答-16</em> 八个明确与十四个坚持的关系 &nbsp;|&nbsp; 国际格局与国际秩序的关系 &nbsp;|&nbsp; 政治参与与政治稳定的关系</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TAB 4: STRUCTURES ===== -->
+<div id="tab-structures" class="section">
+  <div class="section-header">
+    <h2>答题结构套路</h2>
+    <p>不同题型的内部分点结构 · 可直接套用</p>
+  </div>
+
+  <div class="section-header" style="margin-top:0; border:none; padding:0 0 12px;">
+    <h3 style="font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px;">📝 论述题内部结构</h3>
+  </div>
+
+  <div class="struct-list" style="margin-bottom:32px;">
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🏛️</span>四维度分析</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>①政治上</em>——权力/制度/领导体制</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>②经济上</em>——所有制/计划/市场</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>③思想文化上</em>——意识形态/学术</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>④对外关系上</em>——外交/国际影响</div></div>
+      </div>
+      <div class="struct-qs">出处：论述-1 苏联模式 | 简答-10 苏联特征</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">⚖️</span>内外因+导火索</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>内因</em>——体制积弊（根本原因）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>导火索</em>——错误决策（直接原因）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>外因</em>——西方渗透（外部原因）</div></div>
+      </div>
+      <div class="struct-qs">出处：简答-11 苏联失败 | 论述-6 国际体系变化</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">📅</span>时间线演变</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>50年代</em>——和平共处五项原则</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>70年代</em>——三个世界理论</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>80-90年代</em>——和平与发展/新秩序</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>2000s-今</em>——和谐世界/命运共同体</div></div>
+      </div>
+      <div class="struct-qs">出处：简答-17 / 论述-7 中共国际政治思想</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">⚖️</span>正面经验+反面教训对比</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>经验（正面）</em>必须坚持……（5点）</div></div>
+        <div class="struct-arrow">↕</div>
+        <div class="struct-step"><div class="struct-step-text"><em>教训（反面）</em>必须防止……（5点）</div></div>
+      </div>
+      <div class="struct-qs">出处：论述-2 科学社会主义经验和教训</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🎯</span>背景+内容+意义</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>时代背景</em>——产生的历史条件</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>核心内容</em>——理论/制度的主要内容</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>历史意义</em>——理论定位/实践价值</div></div>
+      </div>
+      <div class="struct-qs">出处：论述-3 习近平思想 | 论述-4 农村包围城市</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🔺</span>理论→实践</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>八个明确</em>——怎么看（理论/世界观）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>十四个坚持</em>——怎么做（实践/方法论）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>历史定位</em>——是……最新成果/重要组成部分</div></div>
+      </div>
+      <div class="struct-qs">出处：论述-3 习近平思想 | 简答-16 八个明确</div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div style="margin-bottom:16px;">
+    <h3 style="font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px;">📝 简答题 & 名词解释结构</h3>
+  </div>
+
+  <div class="struct-list">
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">📌</span>简答题通用</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>定义/背景</em>（1句话点题）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>①②③④</em>分点展开（3-5点，每点2-3行）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>口诀/关键词</em>（有助记忆）</div></div>
+      </div>
+      <div class="struct-qs">适用：全部简答题</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">📖</span>名词解释通用</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>是什么</em>（核心定义，1句）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>有什么特征</em>（关键特征/组成）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text"><em>举例子</em>（具体实例验证）</div></div>
+      </div>
+      <div class="struct-qs">适用：全部名词解释题</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">⚠️</span>填空题注意事项</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text">顺序题：先背<em>口诀</em>，再对应展开</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text">⚠️ 易错：议会职能=<em>立法+财政+监督</em>（非行政司法）</div></div>
+        <div class="struct-arrow">↓</div>
+        <div class="struct-step"><div class="struct-step-text">注意数量词：国家能力5项、意识形态特征5项</div></div>
+      </div>
+      <div class="struct-qs">出处：填空-7 ⚠️ 高频易错题</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TAB 5: CONNECTIVES ===== -->
+<div id="tab-connectives" class="section">
+  <div class="section-header">
+    <h2>连接词 & 过渡语大全</h2>
+    <p>按功能分类 · 大量使用可显著提高答题层次感</p>
+  </div>
+
+  <div class="conn-grid">
+
+    <div class="conn-card">
+      <div class="conn-role">🔢 分点/列举</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">①②③④⑤</span>
+        <span class="conn-word highlight">首先</span>
+        <span class="conn-word highlight">其次</span>
+        <span class="conn-word highlight">再次</span>
+        <span class="conn-word highlight">最后</span>
+        <span class="conn-word">一方面</span>
+        <span class="conn-word">另一方面</span>
+        <span class="conn-word">此外</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">📌 总起/引入</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">×××是多种因素共同作用的结果</span>
+        <span class="conn-word highlight">×××主要表现为以下几个方面</span>
+        <span class="conn-word">总体来看</span>
+        <span class="conn-word">从整体而言</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">✅ 总结/收尾</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">综上所述</span>
+        <span class="conn-word highlight">因此</span>
+        <span class="conn-word highlight">总之</span>
+        <span class="conn-word">由此可见</span>
+        <span class="conn-word">综合以上分析</span>
+        <span class="conn-word">不难看出</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">↕ 转折/对比</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">然而</span>
+        <span class="conn-word highlight">但是</span>
+        <span class="conn-word">相比之下</span>
+        <span class="conn-word">与此相对</span>
+        <span class="conn-word">不同于</span>
+        <span class="conn-word">区别在于</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">🔗 递进/深化</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">不仅……而且</span>
+        <span class="conn-word highlight">更为重要的是</span>
+        <span class="conn-word">进一步</span>
+        <span class="conn-word">尤其是</span>
+        <span class="conn-word">特别是</span>
+        <span class="conn-word">甚至</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">⚙️ 因果</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">正是因为……才</span>
+        <span class="conn-word highlight">由于……导致</span>
+        <span class="conn-word">这是因为</span>
+        <span class="conn-word">究其原因</span>
+        <span class="conn-word">由此导致</span>
+        <span class="conn-word">从而</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">⚖️ 辩证/两面</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">既要……又要……</span>
+        <span class="conn-word highlight">一方面……另一方面</span>
+        <span class="conn-word">与此同时</span>
+        <span class="conn-word">相互依存</span>
+        <span class="conn-word">辩证统一</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">📝 举例说明</div>
+      <div class="conn-words">
+        <span class="conn-word">例如</span>
+        <span class="conn-word">以……为例</span>
+        <span class="conn-word">如</span>
+        <span class="conn-word">具体表现为</span>
+        <span class="conn-word">典型案例是</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">📐 维度展开</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">从……维度来看</span>
+        <span class="conn-word highlight">在……方面</span>
+        <span class="conn-word highlight">就……而言</span>
+        <span class="conn-word">在政治层面</span>
+        <span class="conn-word">在理论上</span>
+        <span class="conn-word">在实践中</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">🏆 评价/定性</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">是……的重要里程碑</span>
+        <span class="conn-word highlight">具有重大而深远的意义</span>
+        <span class="conn-word highlight">是……最新成果</span>
+        <span class="conn-word">标志着……</span>
+        <span class="conn-word">开创了……</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">🎯 强调/凸显</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">必须坚持</span>
+        <span class="conn-word highlight">必须防止</span>
+        <span class="conn-word highlight">必须高度重视</span>
+        <span class="conn-word">绝不能</span>
+        <span class="conn-word">至关重要的是</span>
+      </div>
+    </div>
+
+    <div class="conn-card">
+      <div class="conn-role">🔄 时间/历史</div>
+      <div class="conn-words">
+        <span class="conn-word highlight">与时俱进</span>
+        <span class="conn-word">在新的历史条件下</span>
+        <span class="conn-word">历史地</span>
+        <span class="conn-word">随着……的发展</span>
+        <span class="conn-word">承前启后</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Quick Reference Table -->
+  <div style="margin-bottom:16px;">
+    <h3 style="font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px;">📊 核心词搭配速查</h3>
+  </div>
+  <table class="keyword-table" style="margin-bottom:32px;">
+    <thead>
+      <tr>
+        <th style="width:60px;">题数</th>
+        <th style="width:140px;">核心词</th>
+        <th>高频搭配</th>
+        <th style="width:160px;">常见题型</th>
+        <th style="width:180px;">适用场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center;"><span class="pill pill-red">27</span></td>
+        <td class="kw">阶级</td>
+        <td class="combo">阶级性（意识形态特征）/ 阶级斗争（社会主义路径）/ 阶级统治（民主的本质）</td>
+        <td>名词-4/11 / 简答-8 / 论述-4/8/9/10</td>
+        <td class="usage">意识形态本质、民主阶级性、科社基本概念</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill pill-red">25</span></td>
+        <td class="kw">民主</td>
+        <td class="combo">人民当家作主 / 民主集中制 / 发展更加广泛的人民民主 / 民主监督</td>
+        <td>填空-9/13/17/35/36/53 / 论述-5 / 简答-3</td>
+        <td class="usage">政治制度、国家形式、社会主义民主题</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill pill-red">22</span></td>
+        <td class="kw">人民</td>
+        <td class="combo">以人民为中心 / 人民当家作主 / 人民群众 / 人民日益增长的美好生活需要</td>
+        <td>填空-13/20/53/59/61 / 简答-13 / 论述-3/5</td>
+        <td class="usage">新时代理论、共同富裕、政治发展题</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#3a2a1a;color:var(--gold);">12</span></td>
+        <td class="kw">主权</td>
+        <td class="combo">尊重主权和领土完整 / 国家主权独立 / 主权平等 / 不干涉内政</td>
+        <td>填空-13/44/59 / 名词-24 / 简答-17 / 论述-1/2/5/7</td>
+        <td class="usage">国际关系、外交原则、联合国题</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#3a2a1a;color:var(--gold);">12</span></td>
+        <td class="kw">必须坚持</td>
+        <td class="combo">必须坚持党的领导 / 必须坚持科学社会主义 / 必须坚持改革方向</td>
+        <td>填空-54 / 简答-11/14/15/16 / 论述-1/2/3/4/7</td>
+        <td class="usage">总结类论述题结尾，强调原则底线</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#3a2a1a;color:var(--gold);">7</span></td>
+        <td class="kw">合法性</td>
+        <td class="combo">政治统治合法化 / 合法化途径（法律+意识形态）/ 维护合法性</td>
+        <td>填空-2/11 / 简答-1/7 / 论述-6/8/10</td>
+        <td class="usage">政治统治、国家治理、意识形态功能题</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#2a2a1a;color:#8a8;">5</span></td>
+        <td class="kw">与时俱进</td>
+        <td class="combo">实现了党的指导思想的又一次与时俱进 / 体现了……与时俱进的理论品格</td>
+        <td>简答-14/15 / 论述-1/7</td>
+        <td class="usage">理论创新、指导思想演进类题</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#2a2a1a;color:#8a8;">5</span></td>
+        <td class="kw">相互尊重、合作共赢</td>
+        <td class="combo">命运共同体核心话术 / 相互尊重平等互利 / 合作共赢新型国际关系</td>
+        <td>填空-69 / 名词-21/30 / 简答-17 / 论述-7</td>
+        <td class="usage">国际关系与外交政策题高频</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#2a2a1a;color:#8a8;">4</span></td>
+        <td class="kw">历史必然性</td>
+        <td class="combo">具有历史必然性（总结句）/ 否认历史必然性（批评空想主义）</td>
+        <td>填空-20 / 简答-8 / 论述-2</td>
+        <td class="usage">论述题总结段，论证社会主义发展规律</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#1a2a2a;color:#8ac;">5</span></td>
+        <td class="kw">解放思想、实事求是</td>
+        <td class="combo">邓小平理论精髓 / 思想路线核心 / 解放思想就是实事求是</td>
+        <td>填空-45 / 名词-14/15 / 论述-1</td>
+        <td class="usage">改革开放、理论创新类万能表述</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#1a2a2a;color:#8ac;">3</span></td>
+        <td class="kw">以人民为中心</td>
+        <td class="combo">以人民为中心的发展思想 / 发展为了人民 / 发展成果由人民共享</td>
+        <td>简答-13/16 / 论述-3</td>
+        <td class="usage">共同富裕、现代化、发展类万能句</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#1a2a2a;color:#8ac;">3</span></td>
+        <td class="kw">理论与实践相统一</td>
+        <td class="combo">理论联系实际 / 在实践中检验真理 / 理论指导实践、实践丰富理论</td>
+        <td>简答-9/16 / 论述-3</td>
+        <td class="usage">分析意义题、理论题万能结尾</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#1a2a2a;color:#8ac;">3</span></td>
+        <td class="kw">维护政治稳定与社会秩序</td>
+        <td class="combo">维护政治稳定 / 维护社会秩序 / 保障国家安全 / 稳定压倒一切</td>
+        <td>填空-11 / 简答-1/6</td>
+        <td class="usage">国家能力、政治管理、合法化题通用</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><span class="pill" style="background:#1a2a2a;color:#8ac;">2</span></td>
+        <td class="kw">和平与发展是时代主题</td>
+        <td class="combo">时代主题判断 / 和平与发展相互促进 / 维护和平促进发展</td>
+        <td>简答-17 / 论述-7</td>
+        <td class="usage">国际关系题通用背景句</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- ===== TAB 6: WORD FAMILIES ===== -->
+<div id="tab-families" class="section">
+  <div class="section-header">
+    <h2>高频词族速查</h2>
+    <p>性/化/力 三大词族 · 填空题和名词解释高频考点</p>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">📌 答题技巧</div>
+    特征类题目大量使用"性"字尾词汇。如果考场忘了具体有几项，优先猜"性"结尾的词（如××性），命中率极高。
+  </div>
+
+  <!-- 性字尾 -->
+  <div class="vocab-section">
+    <div class="vocab-section-title">
+      <div class="dot"></div>
+      <h3>"性"字尾词族 · 25 个</h3>
+      <span class="pill pill-red">高频填空考点</span>
+    </div>
+    <table class="keyword-table">
+      <thead>
+        <tr>
+          <th style="width:100px;">词汇</th>
+          <th style="width:180px;">含义简述</th>
+          <th>出处题目（完整题干）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="kw">强制性</td><td>依靠暴力/法律强制执行</td><td><span class="q-badge fill">填空-1</span> 政治权力特征：___、___、___<br><span class="q-badge fill">填空-2</span> 政治权力五种方式：___、___、___、___、___</td></tr>
+        <tr><td class="kw">专业性</td><td>只有特定国家机关才能行使</td><td><span class="q-badge fill">填空-1</span> 政治权力特征：___、___、___</td></tr>
+        <tr><td class="kw">自主性</td><td>不受其他社会力量支配</td><td><span class="q-badge fill">填空-1</span> 政治权力特征：___、___、___</td></tr>
+        <tr><td class="kw">阶级性</td><td>为特定阶级服务</td><td><span class="q-badge fill">填空-5</span> 意识形态特征（5项）：___、___、___、___、___<br><span class="q-badge term">名词-25</span> 国家利益</td></tr>
+        <tr><td class="kw">现实性</td><td>反映现实社会状况</td><td><span class="q-badge fill">填空-5</span> 意识形态特征（5项）：___、___、___、___、___</td></tr>
+        <tr><td class="kw">相对独立性</td><td>不完全随经济基础变化</td><td><span class="q-badge fill">填空-5</span> 意识形态特征（5项）：___、___、___、___、___</td></tr>
+        <tr><td class="kw">依赖性</td><td>最终取决于经济基础</td><td><span class="q-badge fill">填空-5</span> 意识形态特征（5项）：___、___、___、___、___</td></tr>
+        <tr><td class="kw">总体性</td><td>涵盖政治经济文化全方位</td><td><span class="q-badge fill">填空-5</span> 意识形态特征（5项）：___、___、___、___、___</td></tr>
+        <tr><td class="kw">互动性</td><td>家庭、学校、媒体等多方互动塑造</td><td><span class="q-badge fill">填空-6</span> 政治社会化特征：___、___、___</td></tr>
+        <tr><td class="kw">创新性</td><td>每代人都有新的政治认知</td><td><span class="q-badge fill">填空-6</span> 政治社会化特征：___、___、___</td></tr>
+        <tr><td class="kw">持续性</td><td>从童年到终生不断进行</td><td><span class="q-badge fill">填空-6</span> 政治社会化特征：___、___、___</td></tr>
+        <tr><td class="kw">不平等性</td><td>南北差距、大国小国不平等</td><td><span class="q-badge fill">填空-57</span> 国际体系特征：___、___、___<br><span class="q-badge term">名词-22</span> 国际体系</td></tr>
+        <tr><td class="kw">联系性</td><td>各国经济贸易紧密联系</td><td><span class="q-badge fill">填空-57</span> 国际体系特征：___、___、___<br><span class="q-badge term">名词-22</span> 国际体系</td></tr>
+        <tr><td class="kw">整体性</td><td>牵一发而动全身</td><td><span class="q-badge fill">填空-57</span> 国际体系特征：___、___、___<br><span class="q-badge term">名词-22</span> 国际体系</td></tr>
+        <tr><td class="kw">敏感性</td><td>一方变化传导到另一方的速度</td><td><span class="q-badge fill">填空-65</span> 相互依存：___阐述，分___和___两维度<br><span class="q-badge term">名词-29</span> 相互依存</td></tr>
+        <tr><td class="kw">脆弱性</td><td>承受变化冲击后恢复的能力</td><td><span class="q-badge fill">填空-65</span> 相互依存：___阐述，分___和___两维度<br><span class="q-badge term">名词-29</span> 相互依存</td></tr>
+        <tr><td class="kw">政治性</td><td>外交决策的政治属性</td><td><span class="q-badge fill">填空-67</span> 外交决策特点：政治性、法制性、权威性、___、___</td></tr>
+        <tr><td class="kw">法制性</td><td>外交决策的法律属性</td><td><span class="q-badge fill">填空-67</span> 外交决策特点：政治性、法制性、权威性、___、___</td></tr>
+        <tr><td class="kw">权威性</td><td>外交决策的权威属性</td><td><span class="q-badge fill">填空-67</span> 外交决策特点：政治性、法制性、权威性、___、___</td></tr>
+        <tr><td class="kw">组织性</td><td>按程序有步骤地决策（有序性）</td><td><span class="q-badge fill">填空-67</span> 外交决策特点：政治性、法制性、权威性、___、___</td></tr>
+        <tr><td class="kw">广泛性</td><td>涉及经济军事文化等方方面面</td><td><span class="q-badge fill">填空-67</span> 外交决策特点：政治性、法制性、权威性、___、___</td></tr>
+        <tr><td class="kw">民族性</td><td>国家利益的民族整体属性</td><td><span class="q-badge term">名词-25</span> 国家利益</td></tr>
+        <tr><td class="kw">特殊性</td><td>国家利益的特定阶级属性</td><td><span class="q-badge term">名词-25</span> 国家利益</td></tr>
+        <tr><td class="kw">普遍性</td><td>各国共有的普遍利益属性</td><td><span class="q-badge term">名词-25</span> 国家利益</td></tr>
+        <tr><td class="kw">合法性</td><td>民众认同统治的程度</td><td><span class="q-badge fill">填空-2</span> 政治权力五种方式：___、___、___、___、___<br><span class="q-badge fill">填空-11</span> 国家能力（5项）：___、___、___、___、___<br><span class="q-badge short">简答-7</span> 政治统治合法化途径（2点）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 化字尾 -->
+  <div class="vocab-section">
+    <div class="vocab-section-title">
+      <div class="dot" style="background:var(--green);"></div>
+      <h3>"化"字尾词族 · 12 个</h3>
+      <span class="pill pill-green">政治发展 & 国际格局</span>
+    </div>
+    <table class="keyword-table">
+      <thead>
+        <tr>
+          <th style="width:120px;">词汇</th>
+          <th style="width:180px;">含义简述</th>
+          <th>出处题目（完整题干）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="kw">政治社会化</td><td>获取政治知识能力和意识的过程</td><td><span class="q-badge fill">填空-6</span> 政治社会化特征：___、___、___<br><span class="q-badge term">名词-5</span> 政治社会化<br><span class="q-badge short">简答-2</span> 政党作用（4点）</td></tr>
+        <tr><td class="kw">合法化</td><td>让统治获得民众认同</td><td><span class="q-badge fill">填空-11</span> 国家能力（5项）：___、___、___、___、___<br><span class="q-badge short">简答-7</span> 政治统治合法化途径（2点）<br><span class="q-badge essay">论述-8</span> 意识形态功能</td></tr>
+        <tr><td class="kw">民主化</td><td>政治生活的民主转型</td><td><span class="q-badge short">简答-5</span> 政治参与发展方向（3点）<br><span class="q-badge short">简答-6</span> 政治管理作用（3点）<br><span class="q-badge essay">论述-9</span> 政治参与制约因素</td></tr>
+        <tr><td class="kw">工业化</td><td>斯大林高速工业化运动</td><td><span class="q-badge fill">填空-26</span> 斯大林三大运动：___、___、___<br><span class="q-badge essay">论述-1</span> 苏联模式基本特征和弊病</td></tr>
+        <tr><td class="kw">集体化</td><td>强迫农民加入集体农庄</td><td><span class="q-badge fill">填空-26</span> 斯大林三大运动：___、___、___<br><span class="q-badge essay">论述-1</span> 苏联模式基本特征和弊病</td></tr>
+        <tr><td class="kw">全球化</td><td>经济全球化深入发展</td><td><span class="q-badge short">简答-19</span> 冷战后格局<br><span class="q-badge essay">论述-6</span> 国际体系变化及原因</td></tr>
+        <tr><td class="kw">多极化</td><td>世界格局从单极走向多极</td><td><span class="q-badge short">简答-19</span> 冷战后格局<br><span class="q-badge essay">论述-6</span> 国际体系变化及原因</td></tr>
+        <tr><td class="kw">制度化</td><td>通过制度方式规范管理</td><td><span class="q-badge short">简答-6</span> 政治管理作用（3点）</td></tr>
+        <tr><td class="kw">现代化</td><td>四个现代化 / 社会主义现代化强国</td><td><span class="q-badge fill">填空-43</span> 十二大提出___：工业、农业、___和___<br><span class="q-badge fill">填空-52</span> 两步走：___；___<br><span class="q-badge short">简答-13</span> 新时代意义（5个"是"）<br><span class="q-badge short">简答-15</span> 十九大历史贡献（2017年，4点）<br><span class="q-badge essay">论述-3</span> 习近平新时代中国特色社会主义思想</td></tr>
+        <tr><td class="kw">多元化</td><td>参与方式从单一到多元</td><td><span class="q-badge short">简答-5</span> 政治参与发展方向（3点）<br><span class="q-badge short">简答-19</span> 冷战后格局</td></tr>
+        <tr><td class="kw">规范化</td><td>政治秩序的制度规范</td><td><span class="q-badge short">简答-6</span> 政治管理作用（3点）</td></tr>
+        <tr><td class="kw">马克思主义中国化</td><td>马列主义与中国具体实际相结合</td><td><span class="q-badge term">名词-14</span> 毛泽东思想<br><span class="q-badge term">名词-16</span> 习近平新时代中国特色社会主义思想<br><span class="q-badge essay">论述-2</span> 科学社会主义基本经验和教训<br><span class="q-badge essay">论述-3</span> 习近平新时代中国特色社会主义思想<br><span class="q-badge essay">论述-4</span> 农村包围城市理论</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 力字尾 -->
+  <div class="vocab-section">
+    <div class="vocab-section-title">
+      <div class="dot" style="background:var(--blue);"></div>
+      <h3>"力"字尾词族 · 10 个</h3>
+      <span class="pill pill-blue">国家能力 & 综合国力</span>
+    </div>
+    <table class="keyword-table">
+      <thead>
+        <tr>
+          <th style="width:100px;">词汇</th>
+          <th style="width:180px;">含义简述</th>
+          <th>出处题目（完整题干）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="kw">强制力</td><td>以暴力为后盾的执行力量</td><td><span class="q-badge term">名词-2</span> 政治权力</td></tr>
+        <tr><td class="kw">生产力</td><td>解放和发展生产力（社会主义根本任务）</td><td><span class="q-badge fill">填空-47</span> 社会主义本质：___ + ___<br><span class="q-badge term">名词-18</span> 社会主义本质<br><span class="q-badge essay">论述-2</span> 科学社会主义基本经验和教训</td></tr>
+        <tr><td class="kw">权力</td><td>政治权力 / 公共权力 / 国家权力</td><td><span class="q-badge fill">填空-1</span> 政治权力特征：___、___、___<br><span class="q-badge fill">填空-2</span> 政治权力五种方式：___、___、___、___、___<br><span class="q-badge fill">填空-3</span> 政治权力基础：___、___、___、___<br><span class="q-badge term">名词-1</span> 政治<br><span class="q-badge term">名词-2</span> 政治权力<br><span class="q-badge short">简答-3</span> 议会三大职能</td></tr>
+        <tr><td class="kw">能力（国家能力）</td><td>五项：资源提取/经济调控/合法化/社会管理/服务</td><td><span class="q-badge fill">填空-11</span> 国家能力（5项）：___、___、___、___、___<br><span class="q-badge term">名词-6</span> 国家能力</td></tr>
+        <tr><td class="kw">力量（政治力量）</td><td>国际政治格局中的力量对比</td><td><span class="q-badge term">名词-23</span> 国际政治格局<br><span class="q-badge essay">论述-6</span> 国际体系变化及原因</td></tr>
+        <tr><td class="kw">综合国力</td><td>克莱因公式：PP=(C+E+M)×(S+W)</td><td><span class="q-badge fill">填空-70</span> 综合国力克莱因公式：___（物质要素×精神要素）<br><span class="q-badge term">名词-26</span> 综合国力</td></tr>
+        <tr><td class="kw">软实力</td><td>约瑟夫·奈提出的非物质性影响力</td><td><span class="q-badge fill">填空-56</span> 新自由制度主义代表：___、___、___</td></tr>
+        <tr><td class="kw">凝聚力</td><td>意识形态的团体整合功能</td><td><span class="q-badge essay">论述-8</span> 意识形态功能</td></tr>
+        <tr><td class="kw">吸引力</td><td>文化/制度/价值观的吸引力</td><td><span class="q-badge essay">论述-8</span> 意识形态功能</td></tr>
+        <tr><td class="kw">执行力</td><td>政府制定并实施政策的能力</td><td><span class="q-badge term">名词-6</span> 国家能力</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== TAB 7: QUESTION CLUSTERS ===== -->
+<div id="tab-clusters" class="section">
+  <div class="section-header">
+    <h2>题目关联图谱</h2>
+    <p>138 题按知识簇归类 · 同簇题目知识点互通 · 可集中突破</p>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">📊 复习策略</div>
+    全部 138 题覆盖 14 个知识簇，按题目数量从多到少排列。前三簇「国际关系理论」(22题)、「中国特色社会主义理论」(18题)、「社会主义理论与历史」(17题) 合计 57 题，优先攻克可覆盖约 41% 题目。
+  </div>
+
+  <div class="struct-list">
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🌍</span> 国际关系理论</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-55~69</em> 行为主义→体系→格局→冲突→组织→依存</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-21~30</em> 命运共同体→体系→格局→主权→外交</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-17~20</em> 中共外交思想+格局+联合国</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-6/7</em> 国际体系变化+中共外交思想演变</div></div>
+      </div>
+      <div class="struct-qs">共 22 题 · 最大簇 · 考点：体系+格局+外交+联合国</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">📕</span> 中国特色社会主义理论</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-45~54</em> 邓论→初级阶段→本质→一国两制→十九大</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-14~20</em> 毛思想→邓论→习思想→初级阶段→新时代</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-13~16</em> 新时代+十八大+十九大+八明确</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-3~5</em> 习思想+农村包围+民主制度</div></div>
+      </div>
+      <div class="struct-qs">共 18 题 · 第二大簇 · 考点：理论演进+四项制度</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">⭐</span> 社会主义理论与历史</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-18~24</em> 空想→科学→共产主义者同盟</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-25~32</em> 苏联模式→东欧→冷战</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-8~12</em> 空想局限→科学意义→苏联→冷战探索</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-1/2</em> 苏联模式+科学社会主义经验教训</div></div>
+      </div>
+      <div class="struct-qs">共 17 题 · 第三大簇 · 考点：空想→科学→苏联→冷战后</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🇨🇳</span> 中国近代史</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-33~37</em> 鸦片战争→五四运动→三大起义</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-38~44</em> 土地法→文革→四个现代化→改革</div></div>
+      </div>
+      <div class="struct-qs">共 12 题 · 考点：不平等条约+革命+土地法+改革开放</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🎯</span> 政党与议会</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-7</em> 议会三大职能 ⚠️易错</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-8</em> 政党四作用 / <em>填空-9</em> 政党制度</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-2</em> 政党作用 / <em>简答-3</em> 议会职能</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-10</em> 多党合作制特点及原因</div></div>
+      </div>
+      <div class="struct-qs">共 7 题 · 核心大簇 · 考点：政党+议会+多党合作</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🏗️</span> 国家能力与利益</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-11</em> 国家五能力 / <em>填空-59</em> 国家四要素</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-60</em> 根本利益 / <em>填空-61</em> 国家安全</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-6/24/25</em> 能力·主权·利益</div></div>
+      </div>
+      <div class="struct-qs">共 7 题 · 考点：五能力+四要素+根本利益+安全观</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🔮</span> 冷战后格局</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-32</em> 冷战后三大流派 / <em>填空-57/58</em> 体系+格局</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-18/19</em> 格局特征+冷战后格局</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-6</em> 国际体系变化及原因</div></div>
+      </div>
+      <div class="struct-qs">共 6 题 · 考点：多极化+力量重组+区域化</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🗳️</span> 政治参与</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-12</em> 四方式 / <em>名词-9</em> 政治参与</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-4</em> 四方式详解 / <em>简答-5</em> 三发展方向</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-9</em> 政治参与制约因素</div></div>
+      </div>
+      <div class="struct-qs">共 5 题 · 考点：四方式+三方向+四制约因素</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🏛️</span> 政治权力</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-1</em> 权力三特征（强专自）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-2</em> 权力五方式（强功操合人）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-3</em> 权力四基础（物知动制）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-2</em> 政治权力定义</div></div>
+      </div>
+      <div class="struct-qs">共 4 题 · 考点：权力特征+方式+基础+定义</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">💭</span> 意识形态</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-5</em> 五特征（阶现独依总）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-4</em> 意识形态定义</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-7</em> 统治合法化两途径</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>论述-8</em> 意识形态功能（政治3+经济4）</div></div>
+      </div>
+      <div class="struct-qs">共 4 题 · 考点：五特征+两途径+七功能</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🏆</span> 综合国力 & 联合国</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-70</em> 克莱因公式 PP=(C+E+M)×(S+W)</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-71</em> 联合国 1945年成立</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-26/27</em> 综合国力 + 联合国</div></div>
+      </div>
+      <div class="struct-qs">共 4 题 · 考点：克莱因公式+联合国宗旨</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">📖</span> 政治文化</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-4</em> 文化三成分（知情评）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-3</em> 政治文化定义</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>简答-1</em> 文化四功能</div></div>
+      </div>
+      <div class="struct-qs">共 3 题 · 考点：三成分+四功能</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">🌱</span> 政治社会化</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-6</em> 三特征（持续、创新、互动）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>名词-5</em> 政治社会化定义</div></div>
+      </div>
+      <div class="struct-qs">共 2 题 · 考点：三特征+定义</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-name"><span class="icon">👑</span> 政治统治</div>
+      <div class="struct-flow">
+        <div class="struct-step"><div class="struct-step-text"><em>填空-10</em> 韦伯统治三类型（魅传法）</div></div>
+        <div class="struct-step"><div class="struct-step-text"><em>填空-17</em> 西方统治理论三流派（精多新马）</div></div>
+      </div>
+      <div class="struct-qs">共 2 题 · 考点：韦伯三类型+三流派</div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- .main -->
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTemplate(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+  const toggle = header.querySelector('.template-toggle');
+  toggle.textContent = card.classList.contains('open') ? '▲' : '▼';
+}
+</script>
+
+</body>
+</html>
