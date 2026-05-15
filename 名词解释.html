@@ -200,39 +200,37 @@
   /* Hidden sections */
   .hidden { display: none; }
 
-  /* Print styles */
+  /* Print styles — explicit color overrides (no CSS variables) */
   @media print {
-    body {
+    html, body {
       padding: 0;
       max-width: none;
       background: #fff;
       font-size: 11pt;
+      color: #000;
     }
-    .controls { display: none !important; }
+    .header h1 { color: #000; }
+    .header .subtitle { color: #333; }
+    .header .stats,
+    .header .stats span { color: #000; background: #eee; }
     .term-card {
-      border: 1px solid #ccc;
+      background: #fff;
+      border-color: #999;
       box-shadow: none;
       margin-bottom: 10px;
-      padding: 14px 18px;
+      page-break-inside: avoid;
     }
-    .term-card:hover { box-shadow: none; }
-    .header {
-      padding: 10px 0;
-      border-bottom: 2px solid #999;
-      margin-bottom: 16px;
-    }
-    .header h1 { font-size: 20pt; }
-    .category-divider { margin: 16px 0 10px; }
-    .category-divider .cat-name { font-size: 12pt; }
-    .term-card .term-name { font-size: 13pt; }
-    .term-card .answer { font-size: 10.5pt; }
-    .term-card .section { font-size: 9.5pt; padding: 6px 10px; }
+    .term-card .term-name { color: #000; }
+    .term-card .term-num { color: #000; background: #eee; }
+    .term-card .answer { color: #000; border-left-color: #666; }
+    .term-card .explanation .section-label { color: #333; }
+    .term-card .memorization .section-label { color: #333; }
+    .category-divider .cat-name { color: #000; }
+    .category-divider .cat-count { color: #333; background: #eee; }
+    .category-divider .cat-line { background: #999; }
+    .controls { display: none !important; }
     .footer { display: none; }
-
-    @page {
-      size: A4;
-      margin: 15mm 12mm;
-    }
+    @page { size: A4; margin: 15mm 12mm; }
   }
 
   /* Mobile */
