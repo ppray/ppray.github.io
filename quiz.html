@@ -664,7 +664,8 @@
         </div>
 
         <div class="filters">
-            <button class="filter-chip active" data-bank="source">源题库 <span class="chip-count" id="cnt-source">0</span><span class="chip-rate" id="rate-source"></span></button>
+            <button class="filter-chip active" data-bank="source">政治学 <span class="chip-count" id="cnt-source">0</span><span class="chip-rate" id="rate-source"></span></button>
+            <button class="filter-chip" data-bank="ipe">翟东升IPE <span class="chip-count" id="cnt-ipe">0</span></button>
             <button class="filter-chip" data-bank="wrong">错题库 <span class="chip-count" id="cnt-wrong">0</span></button>
         </div>
 
@@ -743,20 +744,25 @@
 
         function loadStats() {
             const raw = localStorage.getItem(STATS_KEY);
-            if (!raw) return { source: { correct: 0, wrong: 0 }, wrong: { correct: 0, wrong: 0 } };
+            if (!raw) return { source: { correct: 0, wrong: 0 }, ipe: { correct: 0, wrong: 0 }, wrong: { correct: 0, wrong: 0 } };
             try {
                 const parsed = JSON.parse(raw);
                 // 兼容旧格式 {correct, wrong}
                 if ('correct' in parsed) {
-                    return { source: { correct: parsed.correct || 0, wrong: parsed.wrong || 0 }, wrong: { correct: 0, wrong: 0 } };
+                    return { source: { correct: parsed.correct || 0, wrong: parsed.wrong || 0 }, ipe: { correct: 0, wrong: 0 }, wrong: { correct: 0, wrong: 0 } };
                 }
+                if (!parsed.ipe) parsed.ipe = { correct: 0, wrong: 0 };
                 return parsed;
             } catch (e) {
-                return { source: { correct: 0, wrong: 0 }, wrong: { correct: 0, wrong: 0 } };
+                return { source: { correct: 0, wrong: 0 }, ipe: { correct: 0, wrong: 0 }, wrong: { correct: 0, wrong: 0 } };
             }
         }
 
         let stats = loadStats();
+
+        function isIpeQuestion(q) {
+            return q.source && q.source.includes('翟东升-货币金融');
+        }
 
         function saveWrong() { localStorage.setItem(WRONG_KEY, JSON.stringify(wrongIds)); }
         function saveMastered() { localStorage.setItem(MASTERED_KEY, JSON.stringify(masteredIds)); }
@@ -765,8 +771,8 @@
         function updateUI() {
             document.getElementById('wrong-count').textContent = wrongIds.length;
             // 全局正确率
-            const totalCorrect = stats.source.correct + stats.wrong.correct;
-            const totalWrong = stats.source.wrong + stats.wrong.wrong;
+            const totalCorrect = (stats.source.correct || 0) + (stats.ipe.correct || 0) + (stats.wrong.correct || 0);
+            const totalWrong = (stats.source.wrong || 0) + (stats.ipe.wrong || 0) + (stats.wrong.wrong || 0);
             const total = totalCorrect + totalWrong;
             const pct = total > 0 ? Math.round(totalCorrect / total * 100) : 0;
             const pill = document.getElementById('accuracy-pill');
@@ -778,7 +784,11 @@
 
         function updateChipCounts() {
             const remaining = questions.filter(q => !masteredIds.includes(q.id));
-            document.getElementById('cnt-source').textContent = remaining.length;
+            const ipeRemaining = remaining.filter(isIpeQuestion);
+            const nonIpeRemaining = remaining.filter(q => !isIpeQuestion(q));
+
+            document.getElementById('cnt-source').textContent = nonIpeRemaining.length;
+            document.getElementById('cnt-ipe').textContent = ipeRemaining.length;
             document.getElementById('cnt-wrong').textContent = wrongIds.length;
 
             // 源题库正确率
@@ -787,23 +797,33 @@
             const sourceRate = sourceTotal > 0 ? Math.round(s.correct / sourceTotal * 100) : 0;
             document.getElementById('rate-source').textContent = sourceTotal > 0 ? sourceRate + '%' : '';
 
-            const allCount = currentBank === 'wrong'
-                ? questions.filter(q => wrongIds.includes(q.id) && !masteredIds.includes(q.id)).length
-                : remaining.length;
+            let allCount;
+            if (currentBank === 'wrong') {
+                allCount = questions.filter(q => wrongIds.includes(q.id) && !masteredIds.includes(q.id)).length;
+            } else if (currentBank === 'ipe') {
+                allCount = ipeRemaining.length;
+            } else {
+                allCount = nonIpeRemaining.length;
+            }
             document.getElementById('cnt-all').textContent = allCount;
 
             ['填空题', '名词解释', '简答题', '论述题'].forEach(cat => {
                 let count;
                 if (currentBank === 'wrong') {
                     count = questions.filter(q => q.category === cat && wrongIds.includes(q.id) && !masteredIds.includes(q.id)).length;
+                } else if (currentBank === 'ipe') {
+                    count = ipeRemaining.filter(q => q.category === cat).length;
                 } else {
-                    count = remaining.filter(q => q.category === cat).length;
+                    count = nonIpeRemaining.filter(q => q.category === cat).length;
                 }
                 document.getElementById('cnt-' + cat).textContent = count;
             });
 
             // 进度条（按当前题型筛选）
-            const pool = currentCategory === 'all' ? questions : questions.filter(q => q.category === currentCategory);
+            let pool = questions;
+            if (currentBank === 'ipe') pool = pool.filter(isIpeQuestion);
+            else if (currentBank === 'source') pool = pool.filter(q => !isIpeQuestion(q));
+            if (currentCategory !== 'all') pool = pool.filter(q => q.category === currentCategory);
             const mastered = pool.filter(q => masteredIds.includes(q.id)).length;
             const total = pool.length;
             const pct = total > 0 ? Math.round(mastered / total * 100) : 0;
@@ -815,7 +835,13 @@
 
         function getFiltered() {
             let list = questions;
-            if (currentBank === 'wrong') list = list.filter(q => wrongIds.includes(q.id));
+            if (currentBank === 'wrong') {
+                list = list.filter(q => wrongIds.includes(q.id));
+            } else if (currentBank === 'ipe') {
+                list = list.filter(isIpeQuestion);
+            } else {
+                list = list.filter(q => !isIpeQuestion(q));
+            }
             list = list.filter(q => !masteredIds.includes(q.id));
             if (currentCategory !== 'all') list = list.filter(q => q.category === currentCategory);
             return list;
@@ -969,13 +995,17 @@
 
         function renderEmpty() {
             const isWrongBank = currentBank === 'wrong';
+            const isIpeBank = currentBank === 'ipe';
             const allMastered = masteredIds.length === questions.length;
+            let icon = allMastered ? '🏆' : isWrongBank ? '🎉' : isIpeBank ? '📚' : '📭';
+            let title = allMastered ? '全部掌握！' : isWrongBank ? '错题库已清空！' : isIpeBank ? '翟东升IPE题库已刷完' : '暂无题目';
+            let text = allMastered ? '所有题目都已掌握，点击上方「重置」可重新开始' : isWrongBank ? '所有错题都已掌握，继续保持' : isIpeBank ? '该题库题目已全部掌握，可切换其他题库' : '当前筛选条件下没有题目';
             document.getElementById('card-area').innerHTML = `
                 <div class="card">
                     <div class="empty">
-                        <div class="empty-icon">${allMastered ? '🏆' : isWrongBank ? '🎉' : '📭'}</div>
-                        <div class="empty-title">${allMastered ? '全部掌握！' : isWrongBank ? '错题库已清空！' : '暂无题目'}</div>
-                        <div class="empty-text">${allMastered ? '所有题目都已掌握，点击上方「重置」可重新开始' : isWrongBank ? '所有错题都已掌握，继续保持' : '当前筛选条件下没有题目'}</div>
+                        <div class="empty-icon">${icon}</div>
+                        <div class="empty-title">${title}</div>
+                        <div class="empty-text">${text}</div>
                     </div>
                 </div>
             `;
