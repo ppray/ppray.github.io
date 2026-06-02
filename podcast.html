@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>播客频道 | Podcast Channels</title>
-    <meta name="description" content="政治学、国际关系等考试复习播客频道">
+    <meta name="description" content="政治学、国政经、国际关系等考试复习播客频道">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap"
         rel="stylesheet">
     <style>
@@ -217,6 +217,44 @@
             height: 44px;
             border-radius: 10px;
             background: var(--bg-blur);
+        }
+
+        .episode-notes {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.14);
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .episode-notes strong {
+            color: var(--primary);
+        }
+
+        .episode-notes ul {
+            margin: 8px 0 0 18px;
+        }
+
+        .episode-notes li {
+            margin: 4px 0;
+        }
+
+        .episode-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .episode-action:hover {
+            text-decoration: underline;
         }
 
         /* Empty State */
@@ -435,11 +473,11 @@
             <div class="channel-tab active" data-channel="political-science">
                 <span>📚</span> 国考政治学
             </div>
+            <div class="channel-tab" data-channel="ipe">
+                <span>💹</span> 国政经
+            </div>
             <div class="channel-tab" data-channel="international-relations">
                 <span>🌍</span> 国际关系
-            </div>
-            <div class="channel-tab" data-channel="political-economy">
-                <span>💰</span> 政治经济学
             </div>
             <div class="channel-tab" data-channel="dialectics">
                 <span>🔬</span> 自然辩证法
@@ -454,8 +492,8 @@
                 <p id="channelDesc">政治学核心考点带背，包含简答题、论述题、名词解释等题型，帮助你高效掌握重点知识。</p>
                 <div class="channel-stats">
                     <div class="stat">📢 <span id="episodeCount">9</span> 集</div>
-                    <div class="stat">⏱️ 总时长约 4 小时</div>
-                    <div class="stat">🎓 适合考研/国考复习</div>
+                    <div class="stat">⏱️ <span id="channelDuration">总时长约 4 小时</span></div>
+                    <div class="stat">🎓 <span id="channelAudience">适合考研/国考复习</span></div>
                 </div>
             </div>
         </div>
@@ -473,6 +511,8 @@
                 name: '国考政治学',
                 icon: '📚',
                 desc: '政治学核心考点带背，包含简答题、论述题、名词解释等题型，帮助你高效掌握重点知识。',
+                duration: '总时长约 4 小时',
+                audience: '适合考研/国考复习',
                 episodes: [
                     {
                         title: '名词解释30题必背',
@@ -539,22 +579,99 @@
                     }
                 ]
             },
+            'ipe': {
+                name: '国政经',
+                icon: '💹',
+                desc: '国政经（翟东升·货币金融）题库 137 题全量带背，按名词解释 / 简答 / 论述分集，茉莉中文 TTS。',
+                duration: '总时长约 4 小时',
+                audience: '适合国政经专题复习',
+                episodes: [
+                    {
+                        title: '名词解释带背 第1集（1-20题）',
+                        file: 'podcasts/ipe/ipe-term-01.mp3',
+                        duration: '约18分钟',
+                        type: 'term',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '名词解释带背 第2集（21-40题）',
+                        file: 'podcasts/ipe/ipe-term-02.mp3',
+                        duration: '约24分钟',
+                        type: 'term',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '名词解释带背 第3集（41-60题）',
+                        file: 'podcasts/ipe/ipe-term-03.mp3',
+                        duration: '约34分钟',
+                        type: 'term',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '名词解释带背 第4集（61-62题）',
+                        file: 'podcasts/ipe/ipe-term-04.mp3',
+                        duration: '约4分钟',
+                        type: 'term',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '简答题带背 第1集（1-15题）',
+                        file: 'podcasts/ipe/ipe-short-01.mp3',
+                        duration: '约19分钟',
+                        type: 'short',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '简答题带背 第2集（16-30题）',
+                        file: 'podcasts/ipe/ipe-short-02.mp3',
+                        duration: '约28分钟',
+                        type: 'short',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '简答题带背 第3集（31-45题）',
+                        file: 'podcasts/ipe/ipe-short-03.mp3',
+                        duration: '约27分钟',
+                        type: 'short',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '论述题带背 第1集（1-10题）',
+                        file: 'podcasts/ipe/ipe-essay-01.mp3',
+                        duration: '约17分钟',
+                        type: 'essay',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '论述题带背 第2集（11-20题）',
+                        file: 'podcasts/ipe/ipe-essay-02.mp3',
+                        duration: '约25分钟',
+                        type: 'essay',
+                        date: '2026-06-02'
+                    },
+                    {
+                        title: '论述题带背 第3集（21-30题）',
+                        file: 'podcasts/ipe/ipe-essay-03.mp3',
+                        duration: '约30分钟',
+                        type: 'essay',
+                        date: '2026-06-02'
+                    }
+                ]
+            },
             'international-relations': {
                 name: '国际关系',
                 icon: '🌍',
                 desc: '国际关系史、制度分析方法等核心内容带背，涵盖理论框架与重点案例。',
-                episodes: []
-            },
-            'political-economy': {
-                name: '政治经济学',
-                icon: '💰',
-                desc: '产业发展的政治经济学、全球周期分析、能源与环境等专题内容。',
+                duration: '待更新',
+                audience: '适合国关课程复习',
                 episodes: []
             },
             'dialectics': {
                 name: '自然辩证法',
                 icon: '🔬',
                 desc: '科学技术观、方法论与辩证思维要点带背，助力快速掌握核心概念。',
+                duration: '待更新',
+                audience: '适合自然辩证法复习',
                 episodes: []
             }
         };
@@ -599,6 +716,8 @@
             document.getElementById('channelName').textContent = channel.name;
             document.getElementById('channelDesc').textContent = channel.desc;
             document.getElementById('episodeCount').textContent = channel.episodes.length;
+            document.getElementById('channelDuration').textContent = channel.duration;
+            document.getElementById('channelAudience').textContent = channel.audience;
             document.querySelector('.channel-icon').textContent = channel.icon;
 
             const episodesList = document.getElementById('episodesList');
@@ -626,17 +745,27 @@
                             <div class="episode-meta">
                                 <span>📅 ${ep.date}</span>
                                 <span>⏱️ ${ep.duration}</span>
-                                <span>🎵 ${ep.file.split('.').pop().toUpperCase()}</span>
+                                <span>${ep.file ? `🎵 ${ep.file.split('.').pop().toUpperCase()}` : '📝 文字带背'}</span>
                             </div>
-                            <div class="audio-player-wrapper">
-                                <audio class="audio-player" controls preload="none">
-                                    <source src="${ep.file}" type="audio/mpeg">
-                                    您的浏览器不支持音频播放。
-                                </audio>
-                                <div class="now-playing" id="now-playing-${index}">
-                                    <span></span> 正在播放...
+                            ${ep.file ? `
+                                <div class="audio-player-wrapper">
+                                    <audio class="audio-player" controls preload="none">
+                                        <source src="${ep.file}" type="audio/mpeg">
+                                        您的浏览器不支持音频播放。
+                                    </audio>
+                                    <div class="now-playing" id="now-playing-${index}">
+                                        <span></span> 正在播放...
+                                    </div>
                                 </div>
-                            </div>
+                            ` : `
+                                <div class="episode-notes">
+                                    <strong>带背提纲</strong>
+                                    <ul>
+                                        ${ep.notes.map(note => `<li>${note}</li>`).join('')}
+                                    </ul>
+                                    ${ep.link ? `<a class="episode-action" href="${ep.link}">进入题库继续刷题 →</a>` : ''}
+                                </div>
+                            `}
                         </div>
                     </div>
                 </div>

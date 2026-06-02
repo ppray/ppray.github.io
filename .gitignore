@@ -8,3 +8,9 @@
 
 # Playwright MCP 测试产物
 .playwright-mcp/
+
+# Python 字节码
+__pycache__/
+
+# 播客 TTS 中间产物（WAV 缓存）
+podcasts/*/.cache/
