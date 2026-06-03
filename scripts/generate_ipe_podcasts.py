@@ -65,7 +65,9 @@ const code = fs.readFileSync('quiz-questions.js', 'utf8') + '\\nthis.questions =
 const ctx = {};
 vm.createContext(ctx);
 vm.runInContext(code, ctx);
-const ipe = ctx.questions.filter(q => q.source && q.source.includes('翟东升-货币金融'));
+const ipe = ctx.questions.filter(q => q.source && (
+    q.source.includes('翟东升-货币金融') || q.source.includes('IPE-学术人物')
+));
 process.stdout.write(JSON.stringify(ipe));
 """
     proc = run(["node", "-e", node_code])
@@ -113,6 +115,7 @@ def episode_plan(questions: list[dict]) -> list[dict]:
         ("term", "名词解释", 20),
         ("short", "简答题", 15),
         ("essay", "论述题", 10),
+        ("scholar", "学术人物", 12),
     ]
     episodes: list[dict] = []
     for prefix, category, chunk_size in specs:
@@ -122,7 +125,8 @@ def episode_plan(questions: list[dict]) -> list[dict]:
             ep_no = len(episodes) + 1
             start = idx + 1
             end = idx + len(chunk)
-            title = f"国政经{category}带背 第{idx // chunk_size + 1}集（{start}-{end}题）"
+            label = "12位学术人物必背" if category == "学术人物" else f"{category}带背 第{idx // chunk_size + 1}集（{start}-{end}题）"
+            title = f"国政经{label}"
             episodes.append({
                 "episode": ep_no,
                 "slug": f"ipe-{prefix}-{idx // chunk_size + 1:02d}",
@@ -266,7 +270,7 @@ def concat_episode(episode: dict, card_wavs: list[Path], bitrate: str) -> dict:
         "file": str(mp3.relative_to(ROOT)),
         "duration_seconds": round(duration),
         "size_bytes": size,
-        "type": {"名词解释": "term", "简答题": "short", "论述题": "essay"}[episode["category"]],
+        "type": {"名词解释": "term", "简答题": "short", "论述题": "essay", "学术人物": "scholar"}[episode["category"]],
         "question_count": len(episode["questions"]),
     }
 

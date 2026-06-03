@@ -455,6 +455,11 @@
             background: rgba(14, 165, 233, 0.12);
             color: #0ea5e9;
         }
+
+        .tag-scholar {
+            background: rgba(236, 72, 153, 0.1);
+            color: #ec4899;
+        }
     </style>
 </head>
 
@@ -663,6 +668,13 @@
                         duration: '约30分钟',
                         type: 'essay',
                         date: '2026-06-02'
+                    },
+                    {
+                        title: '12位学术人物必背',
+                        file: 'podcasts/ipe/ipe-scholar-01.mp3',
+                        duration: '约11分钟',
+                        type: 'scholar',
+                        date: '2026-06-03'
                     }
                 ]
             },
@@ -714,7 +726,8 @@
             'essay': { text: '论述', class: 'tag-essay' },
             'fill': { text: '填空', class: 'tag-fill' },
             'term': { text: '名词', class: 'tag-term' },
-            'mock': { text: '模拟卷', class: 'tag-mock' }
+            'mock': { text: '模拟卷', class: 'tag-mock' },
+            'scholar': { text: '学术人物', class: 'tag-scholar' }
         };
 
         let currentChannel = 'political-science';
