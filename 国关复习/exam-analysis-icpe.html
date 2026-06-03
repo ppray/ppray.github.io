@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《国际与比较政治经济学研究》应试分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #212529;
+    --muted: #6c757d;
+    --accent: #0d6efd;
+    --accent2: #dc3545;
+    --accent3: #198754;
+    --accent4: #fd7e14;
+    --border: #dee2e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  header {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    color: white;
+    padding: 48px 24px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  header h1 { margin: 0 0 8px; font-size: 2rem; }
+  header p { margin: 0; opacity: 0.9; font-size: 1.05rem; }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 1.35rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+  .stat-box {
+    background: linear-gradient(135deg, #f0f4ff, #e8f4f8);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .stat-box .num {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-box .label { color: var(--muted); font-size: 0.9rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: #f1f3f5; font-weight: 600; }
+  tr:hover { background: #f8f9fa; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .tag-red { background: #ffe5e5; color: #c0392b; }
+  .tag-orange { background: #fff3e0; color: #e67e22; }
+  .tag-green { background: #e8f5e9; color: #27ae60; }
+  .tag-blue { background: #e3f2fd; color: #2980b9; }
+  .tag-purple { background: #f3e5f5; color: #8e44ad; }
+  .priority-5 { color: #c0392b; font-weight: 700; }
+  .priority-4 { color: #e67e22; font-weight: 600; }
+  .priority-3 { color: #2980b9; }
+  .highlight-box {
+    background: #fffbeb;
+    border-left: 4px solid var(--accent4);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    color: var(--accent);
+  }
+  ul.compact { margin: 8px 0; padding-left: 20px; }
+  ul.compact li { margin-bottom: 6px; }
+  .chart-container { position: relative; height: 300px; margin: 16px 0; }
+  .chart-container-sm { position: relative; height: 220px; margin: 16px 0; }
+  .footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 40px; padding-bottom: 24px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav style="margin-bottom:16px;font-size:0.9rem;">
+  <a href="../index.html" style="color:var(--accent);text-decoration:none;">&larr; 首页</a>
+  <span style="color:var(--muted);margin:0 8px;">/</span>
+  <a href="%E3%80%8A%E5%9B%BD%E9%99%85%E4%B8%8E%E6%AF%94%E8%BE%83%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E7%A0%94%E7%A9%B6%E3%80%8B%E6%A8%A1%E6%8B%9F%E5%8D%B7%E7%AD%94%E6%A1%88.html" style="color:var(--accent);text-decoration:none;">模拟卷答案</a>
+  <span style="color:var(--muted);margin:0 8px;">/</span>
+  <span style="color:var(--muted);">应试分析报告</span>
+</nav>
+
+<header>
+  <h1>《国际与比较政治经济学研究》</h1>
+  <p>15套模拟卷 · 应试分析报告 · 2025题库完善版</p>
+</header>
+
+<!-- 概览 -->
+<div class="card">
+  <h2>一、考试概览与数据总览</h2>
+  <div class="grid-4">
+    <div class="stat-box">
+      <span class="num">15</span>
+      <span class="label">模拟套卷</span>
+    </div>
+    <div class="stat-box">
+      <span class="num">59</span>
+      <span class="label">独立名词解释</span>
+    </div>
+    <div class="stat-box">
+      <span class="num">39</span>
+      <span class="label">独立简答题</span>
+    </div>
+    <div class="stat-box">
+      <span class="num">28</span>
+      <span class="label">独立论述题</span>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <strong>核心结论：</strong>15套卷去重后共126道独立题目，但实际考点高度集中。
+    高频理论板块（霸权稳定、复合相互依赖、贸易和平、世界体系、交易成本/制度主义）反复出现，
+    建议优先掌握<strong>20个核心考点</strong>即可覆盖80%以上的抽题概率。
+  </div>
+</div>
+
+<!-- 题型结构 -->
+<div class="card">
+  <h2>二、题型结构与分值推演</h2>
+  <div class="grid-2">
+    <div>
+      <div class="section-title">标准卷面结构（每套）</div>
+      <table>
+        <tr><th>题型</th><th>题量</th><th>建议分值</th><th>占比</th></tr>
+        <tr><td>名词解释</td><td>5题</td><td>4分×5=20分</td><td>20%</td></tr>
+        <tr><td>简答题</td><td>3题</td><td>10分×3=30分</td><td>30%</td></tr>
+        <tr><td>论述题</td><td>2题</td><td>25分×2=50分</td><td>50%</td></tr>
+        <tr style="font-weight:700;background:#f1f3f5"><td>合计</td><td>10题</td><td>100分</td><td>100%</td></tr>
+      </table>
+      <p style="color:var(--muted);font-size:0.85rem;margin-top:8px">* 个别套卷论述题为1题，但主流为2题，按2题备考。</p>
+    </div>
+    <div class="chart-container-sm">
+      <canvas id="typeChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- 高频考点 -->
+<div class="card">
+  <h2>三、高频考点热力分布（五星必背）</h2>
+  <div class="grid-2">
+    <div>
+      <table>
+        <tr><th>考点主题</th><th>出现频次</th><th>优先级</th></tr>
+        <tr><td>复合相互依赖（含敏感性/脆弱性）</td><td>6次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>世界体系/依附/中心—外围</td><td>6次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>中国主题（入世/人民币/自主创新/能源/粮食）</td><td>6次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>霸权稳定理论（金德尔伯格/克拉斯纳）</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>贸易和平理论（波拉切克/罗斯克兰斯/Russett-Oneal）</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>国家自主性/国家能力/国家主义</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>交易成本/科斯定理/制度主义</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>重商主义谱系（古典/汉密尔顿/李斯特/凯恩斯）</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>公共物品/集体行动/公地悲剧/搭便车</td><td>5次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>WTO/IMF/多哈回合等国际组织</td><td>4次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>长波周期（康德拉季耶夫/熊彼特）</td><td>4次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>国际贸易与国内政治（Rogowski/Hiscox/G-H）</td><td>4次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>汇率制度政治/选举制度影响</td><td>3次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>路径依赖+历史制度主义</td><td>3次</td><td class="priority-3">⭐⭐⭐</td></tr>
+      </table>
+    </div>
+    <div class="chart-container">
+      <canvas id="heatChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- 理论板块 -->
+<div class="card">
+  <h2>四、理论板块分布与命题偏好</h2>
+  <div class="grid-2">
+    <div class="chart-container">
+      <canvas id="topicChart"></canvas>
+    </div>
+    <div>
+      <div class="section-title">六大命题板块</div>
+      <p><span class="tag tag-red">制度主义</span>基欧汉、科斯、交易成本、国际制度、路径依赖——名词+简答高频</p>
+      <p><span class="tag tag-orange">霸权与秩序</span>金德尔伯格、克拉斯纳、吉尔平、Ikenberry——简答+论述高频</p>
+      <p><span class="tag tag-green">贸易政治</span>H-O模型、李嘉图-维纳、Rogowski、Hiscox、Grossman-Helpman——名词+论述高频</p>
+      <p><span class="tag tag-blue">相互依赖</span>基欧汉/奈、复合相互依赖、敏感性/脆弱性、贸易和平——全题型覆盖</p>
+      <p><span class="tag tag-purple">批判理论</span>沃勒斯坦、弗兰克、卡多佐、考克斯、斯特兰奇——名词+简答高频</p>
+      <p><span class="tag tag-orange">中国专题</span>入世、人民币国际化、自主创新、能源/粮食安全、走出去——论述必考</p>
+    </div>
+  </div>
+</div>
+
+<!-- 各题型规律 -->
+<div class="card">
+  <h2>五、各题型命题规律拆解</h2>
+
+  <div class="section-title">名词解释（5题×4分=20分）— 保分题</div>
+  <ul class="compact">
+    <li><strong>规律1：概念+人物混搭</strong> — 每套约3个纯概念（如公共物品、囚徒困境、路径依赖）+ 2个人物（如罗伯特·基欧汉、苏珊·斯特兰奇）</li>
+    <li><strong>规律2：制度经济学概念密度高</strong> — 交易成本、科斯定理、外部性、市场失灵、阿罗不可能定理等反复出现</li>
+    <li><strong>规律3：批判IPE人物必考</strong> — 考克斯、斯特兰奇、沃勒斯坦、弗兰克、卡多佐至少出现1人</li>
+    <li><strong>答题模板：</strong>提出者/出处 → 核心定义（2句话）→ 关键要素/维度 → IPE应用/举例 → 理论意义（80-150字）</li>
+  </ul>
+
+  <div class="section-title">简答题（3题×10分=30分）— 拉分题</div>
+  <ul class="compact">
+    <li><strong>规律1：理论简述为主</strong> — "简述XXX的主要命题/成因/影响/特征"占70%以上</li>
+    <li><strong>规律2：比较类题目稳定出现</strong> — 如"比较英国霸权与美国霸权的差异""H-O模型vs李嘉图-维纳模型"</li>
+    <li><strong>规律3：每套必有1道制度/国家类</strong> — 国家自主性、国内结构、交易成本、公共选择等</li>
+    <li><strong>答题模板：</strong>核心命题（1句）→ 分点论述（4-6点，每点1-2句+举例）→ 理论评价/中国意涵（300-500字）</li>
+  </ul>
+
+  <div class="section-title">论述题（2题×25分=50分）— 决胜题</div>
+  <ul class="compact">
+    <li><strong>规律1："运用所学IPE理论分析XXX"占绝对主导</strong> — 15套中约20道采用此设问</li>
+    <li><strong>规律2：必考1道中国专题</strong> — 中国入世、人民币国际化、自主创新、能源安全、粮食安全、走出去、与国际经济组织关系轮流出</li>
+    <li><strong>规律3：必考1道经典理论评析</strong> — 霸权稳定、世界体系、贸易和平、三角和平、国家主义、诺思国家理论等</li>
+    <li><strong>规律4：多理论视角整合</strong> — 高分答案需调用2-3个理论框架（如分析WTO需同时用制度主义+霸权稳定+双层博弈）</li>
+    <li><strong>答题模板：</strong>问题界定（1段）→ 理论框架（2-3个视角，每视角1段）→ 案例/经验分析（1-2段）→ 中国意涵/政策评价（1段）→ 结论（1段）（800-1200字）</li>
+  </ul>
+</div>
+
+<!-- 复习策略 -->
+<div class="card">
+  <h2>六、分阶段复习策略</h2>
+  <div class="grid-3">
+    <div style="background:#e8f4f8;border-radius:10px;padding:16px;">
+      <div class="section-title" style="margin-top:0;color:#2980b9">第一阶段：框架速通（3-5天）</div>
+      <ul class="compact">
+        <li>通读答案文件Part I全部59个名词，建立概念地图</li>
+        <li>重点掌握20个五星高频概念的人物+定义</li>
+        <li>画出6大理论板块的关系图</li>
+      </ul>
+    </div>
+    <div style="background:#fff3e0;border-radius:10px;padding:16px;">
+      <div class="section-title" style="margin-top:0;color:#e67e22">第二阶段：专题突破（5-7天）</div>
+      <ul class="compact">
+        <li>按"制度主义→霸权秩序→贸易政治→相互依赖→批判理论→中国专题"六板块逐一攻克</li>
+        <li>每板块整理1张A4纸核心要点</li>
+        <li>简答题逐题背诵要点编号</li>
+      </ul>
+    </div>
+    <div style="background:#e8f5e9;border-radius:10px;padding:16px;">
+      <div class="section-title" style="margin-top:0;color:#27ae60">第三阶段：论述模板化（3-5天）</div>
+      <ul class="compact">
+        <li>准备8个论述题万能模板（中国专题4个+经典理论4个）</li>
+        <li>练习"理论视角切换"——同一案例用不同理论解释</li>
+        <li>限时模拟：名词8min+简答15min+论述35min</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 五星必背清单 -->
+<div class="card">
+  <h2>七、五星必背清单（按板块）</h2>
+
+  <div class="section-title">制度主义与公共选择（必背链）</div>
+  <p><span class="tag tag-blue">名词</span>交易成本 · 科斯第一/第二定理 · 外部性 · 市场失灵 · 政府失灵 · 寻租 · 阿罗不可能定理 · 公共物品 · 公共池塘资源 · 搭便车 · 协调/协作型博弈 · 囚徒困境 · 公地悲剧</p>
+  <p><span class="tag tag-green">简答</span>理性选择制度主义 · 历史制度主义 · 交易成本分类 · 公共选择假设 · 寻租支出类型 · 集体行动困境成因 · 奥尔森集体行动理论</p>
+
+  <div class="section-title">霸权与国际秩序（必背链）</div>
+  <p><span class="tag tag-blue">名词</span>结构性权力 · 路径依赖 · 罗斯克兰斯的贸易国 · 金本位 · 布雷顿森林体系 · IMF · WTO</p>
+  <p><span class="tag tag-green">简答</span>金德尔伯格霸权稳定 · 克拉斯纳霸权稳定 · 两种霸权模型比较 · 英国vs美国霸权差异 · 霸权国建立约束性制度动机</p>
+  <p><span class="tag tag-red">论述</span>评析霸权稳定理论 · 美元霸权 · 路径依赖对政治经济发展影响 · 国际货币体系与政治体系关系</p>
+
+  <div class="section-title">相互依赖与贸易和平（必背链）</div>
+  <p><span class="tag tag-blue">名词</span>全球化 · 全球治理 · 国际制度 · 复合相互依赖 · 敏感性/脆弱性相互依赖</p>
+  <p><span class="tag tag-green">简答</span>复合相互依赖特征 · 复合相互依赖政治过程 · 波拉切克贸易和平 · 罗斯克兰斯贸易和平 · 贸易预期价值对战争和平影响</p>
+  <p><span class="tag tag-red">论述</span>评析贸易和平理论 · 评析三角和平理论（Russett-Oneal）</p>
+
+  <div class="section-title">贸易政治（必背链）</div>
+  <p><span class="tag tag-blue">名词</span>H-O模型 · 李嘉图-维纳模型 · 保护待售模型 · 行业间要素流动程度 · 社会联盟</p>
+  <p><span class="tag tag-green">简答</span>要素流动程度对政治联盟影响 · 选举制度对汇率制度选择影响 · 寻租对贸易政策影响</p>
+  <p><span class="tag tag-red">论述</span>国际贸易对国内政治分化影响 · 贸易保护主义国内政治根源</p>
+
+  <div class="section-title">世界体系与批判理论（必背链）</div>
+  <p><span class="tag tag-blue">名词</span>依附 · 商品链 · 世界体系 · 二元结构论 · 经济成长阶段论 · 长波理论 · 康德拉季耶夫周期 · 熊彼特周期</p>
+  <p><span class="tag tag-green">简答</span>弗兰克宗主-卫星模式 · 卡多佐联系性依附发展 · 世界体系学术源头 · 现代世界体系性质 · 世界体系结构 · 考克斯批判理论 · 斯特兰奇结构性权力 · 列宁帝国主义理论 · 熊彼特周期分析</p>
+  <p><span class="tag tag-red">论述</span>评析世界体系理论</p>
+
+  <div class="section-title">中国专题（必背链）</div>
+  <p><span class="tag tag-red">论述</span>中国入世原因 · 中国与国际经济组织关系 · 人民币国际化 · 中国企业走出去困境 · 自主创新政策 · 能源安全 · 粮食安全</p>
+  <p><span class="tag tag-orange">提示</span>每题准备≥1000字模板，含：理论框架（2-3个）+ 经验/数据 + 政策评价 + 中国立场</p>
+</div>
+
+<!-- 答题技巧 -->
+<div class="card">
+  <h2>八、考场答题技巧</h2>
+  <div class="grid-2">
+    <div>
+      <div class="section-title">时间分配（建议）</div>
+      <table>
+        <tr><th>题型</th><th>建议用时</th><th>字数要求</th></tr>
+        <tr><td>名词解释（5题）</td><td>40分钟</td><td>80-150字/题</td></tr>
+        <tr><td>简答题（3题）</td><td>45分钟</td><td>300-500字/题</td></tr>
+        <tr><td>论述题（2题）</td><td>80分钟</td><td>800-1200字/题</td></tr>
+        <tr><td>检查</td><td>15分钟</td><td>—</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-title">得分要点</div>
+      <ul class="compact">
+        <li><strong>名词：</strong>人物+定义+关键要素+例子，缺一不可</li>
+        <li><strong>简答：</strong>分点编号（1.2.3.），每点有"理论+举例"</li>
+        <li><strong>论述：</strong>必须有"理论框架"段落，忌纯描述</li>
+        <li><strong>加分项：</strong>提及中国案例、最新数据（2020后）、当代政策</li>
+        <li><strong>避坑：</strong>不混淆"敏感性"与"脆弱性"；不混淆"协作型"与"协调型"博弈</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <strong>终极提醒：</strong>论述题无论考什么中国专题，都可以调用这套"理论组合拳"——
+    <strong>制度自由主义（基欧汉）+ 国家主义/发展型国家（Evans/Skocpol）+ 结构性权力（Strange）+ 颠倒的第二意象（Gourevitch）</strong>。
+    提前写好这4个理论的"万能引入段"，考场直接套用可节省10分钟以上。
+  </div>
+</div>
+
+<!-- 套卷预测 -->
+<div class="card">
+  <h2>九、高频套卷组合与押题提示</h2>
+  <p>根据15套卷索引，以下题目组合在多套卷中重复出现，抽中概率极高：</p>
+  <table>
+    <tr><th>组合类型</th><th>典型题目</th><th>出现套号</th></tr>
+    <tr>
+      <td>重商主义三件套</td>
+      <td>托马斯·孟 / 汉密尔顿 / 李斯特 / 凯恩斯超保护</td>
+      <td>1,2,3,4,5</td>
+    </tr>
+    <tr>
+      <td>复合相互依赖全套餐</td>
+      <td>名词（复合相互依赖/敏感性/脆弱性）+ 简答（特征/政治过程）</td>
+      <td>2,3,7,15</td>
+    </tr>
+    <tr>
+      <td>霸权稳定双线</td>
+      <td>简答（金德尔伯格/克拉斯纳）+ 论述（评析HST/美元霸权）</td>
+      <td>4,8,11,12</td>
+    </tr>
+    <tr>
+      <td>贸易和平演进</td>
+      <td>简答（波拉切克/罗斯克兰斯）+ 论述（评析贸易和平/三角和平）</td>
+      <td>5,6,7,8,14</td>
+    </tr>
+    <tr>
+      <td>中国论述双雄</td>
+      <td>中国入世/人民币国际化 + 自主创新/能源安全/粮食安全</td>
+      <td>7,8,10,11,13,14</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 参考文献 -->
+<div class="card">
+  <h2>十、核心参考文献速查</h2>
+  <div class="grid-2">
+    <div>
+      <div class="section-title">必读教材（按优先级）</div>
+      <ul class="compact">
+        <li>田野《国际关系的制度分析方法》（人大出版社，2010）</li>
+        <li>宋新宁/陈岳《国际政治经济学概论》（人大出版社）</li>
+        <li>罗伯特·吉尔平《国际关系政治经济学》《全球政治经济学》</li>
+        <li>罗伯特·基欧汉《霸权之后》</li>
+        <li>基欧汉/奈《权力与相互依赖》</li>
+        <li>苏珊·斯特兰奇《国家与市场》</li>
+      </ul>
+    </div>
+    <div>
+      <div class="section-title">关键学者与代表作</div>
+      <ul class="compact">
+        <li>沃勒斯坦《现代世界体系》</li>
+        <li>考克斯《生产、权力与世界秩序》</li>
+        <li>奥斯特罗姆《公共事物的治理之道》</li>
+        <li>奥尔森《集体行动的逻辑》</li>
+        <li>诺思《经济史中的结构与变迁》</li>
+        <li>王正毅《世界体系论与中国》</li>
+        <li>樊勇明《西方国际政治经济学》</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  本报告基于15套模拟卷答案去重整理版自动生成 · 供复习参考 · 祝考试顺利
+</div>
+
+</div>
+
+<script>
+// 题型占比饼图
+new Chart(document.getElementById('typeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['名词解释 20%', '简答题 30%', '论述题 50%'],
+    datasets: [{
+      data: [20, 30, 50],
+      backgroundColor: ['#0d6efd', '#198754', '#dc3545'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'right' } }
+  }
+});
+
+// 高频考点横向条形图
+new Chart(document.getElementById('heatChart'), {
+  type: 'bar',
+  data: {
+    labels: ['复合相互依赖', '世界体系/依附', '中国专题', '霸权稳定', '贸易和平', '国家自主性', '交易成本/制度', '重商主义', '公共物品/集体行动', 'WTO/IMF', '长波周期', '贸易与国内政治'],
+    datasets: [{
+      label: '出现频次',
+      data: [6, 6, 6, 5, 5, 5, 5, 5, 5, 4, 4, 4],
+      backgroundColor: ['#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#fd7e14','#fd7e14','#fd7e14'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, max: 8 } }
+  }
+});
+
+// 理论板块分布饼图
+new Chart(document.getElementById('topicChart'), {
+  type: 'pie',
+  data: {
+    labels: ['制度主义', '霸权与秩序', '贸易政治', '相互依赖', '批判理论', '中国专题', '发展理论', '货币金融'],
+    datasets: [{
+      data: [22, 18, 16, 15, 14, 10, 3, 2],
+      backgroundColor: ['#0d6efd','#dc3545','#198754','#fd7e14','#8e44ad','#e67e22','#17a2b8','#6c757d'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'right' } }
+  }
+});
+</script>
+</body>
+</html>
