@@ -450,6 +450,11 @@
             background: rgba(249, 115, 22, 0.1);
             color: #f97316;
         }
+
+        .tag-mock {
+            background: rgba(14, 165, 233, 0.12);
+            color: #0ea5e9;
+        }
     </style>
 </head>
 
@@ -475,6 +480,9 @@
             </div>
             <div class="channel-tab" data-channel="ipe">
                 <span>💹</span> 国政经
+            </div>
+            <div class="channel-tab" data-channel="ipcs-mocks">
+                <span>🌐</span> 国比政经
             </div>
             <div class="channel-tab" data-channel="international-relations">
                 <span>🌍</span> 国际关系
@@ -658,6 +666,30 @@
                     }
                 ]
             },
+            'ipcs-mocks': {
+                name: '国比政经模拟卷',
+                icon: '🌐',
+                desc: '《国际与比较政治经济学研究》15 套模拟卷全量带背，每集一套：5 名词 + 3 简答 + 2 论述。参考田野、宋新宁/陈岳、吉尔平、基欧汉、斯特兰奇、考克斯、沃勒斯坦等。',
+                duration: '总时长约 7 小时',
+                audience: '适合考前一周冲刺',
+                episodes: [
+                    { title: '模拟卷 01 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-01.mp3', duration: '约21分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 02 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-02.mp3', duration: '约23分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 03 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-03.mp3', duration: '约24分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 04 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-04.mp3', duration: '约25分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 05 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-05.mp3', duration: '约29分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 06 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-06.mp3', duration: '约44分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 07 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-07.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 08 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-08.mp3', duration: '约30分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 09 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-09.mp3', duration: '约24分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 10 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-10.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 11 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-11.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 12 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-12.mp3', duration: '约36分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 13 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-13.mp3', duration: '约36分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 14 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-14.mp3', duration: '约23分钟', type: 'mock', date: '2026-06-03' },
+                    { title: '模拟卷 15 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-15.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' }
+                ]
+            },
             'international-relations': {
                 name: '国际关系',
                 icon: '🌍',
@@ -681,7 +713,8 @@
             'short': { text: '简答', class: 'tag-short' },
             'essay': { text: '论述', class: 'tag-essay' },
             'fill': { text: '填空', class: 'tag-fill' },
-            'term': { text: '名词', class: 'tag-term' }
+            'term': { text: '名词', class: 'tag-term' },
+            'mock': { text: '模拟卷', class: 'tag-mock' }
         };
 
         let currentChannel = 'political-science';

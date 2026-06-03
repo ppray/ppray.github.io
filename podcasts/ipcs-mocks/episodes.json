@@ -1,0 +1,212 @@
+[
+  {
+    "set": 1,
+    "slug": "ipcs-mock-01",
+    "title": "《国际与比较政治经济学研究》模拟卷 01",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-01.mp3",
+    "duration_seconds": 1273,
+    "size_bytes": 5090540,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 2,
+    "slug": "ipcs-mock-02",
+    "title": "《国际与比较政治经济学研究》模拟卷 02",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-02.mp3",
+    "duration_seconds": 1371,
+    "size_bytes": 5484812,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 3,
+    "slug": "ipcs-mock-03",
+    "title": "《国际与比较政治经济学研究》模拟卷 03",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-03.mp3",
+    "duration_seconds": 1437,
+    "size_bytes": 5747852,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 4,
+    "slug": "ipcs-mock-04",
+    "title": "《国际与比较政治经济学研究》模拟卷 04",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-04.mp3",
+    "duration_seconds": 1479,
+    "size_bytes": 5917388,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 5,
+    "slug": "ipcs-mock-05",
+    "title": "《国际与比较政治经济学研究》模拟卷 05",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-05.mp3",
+    "duration_seconds": 1711,
+    "size_bytes": 6843500,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 6,
+    "slug": "ipcs-mock-06",
+    "title": "《国际与比较政治经济学研究》模拟卷 06",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-06.mp3",
+    "duration_seconds": 2622,
+    "size_bytes": 10488908,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 7,
+    "slug": "ipcs-mock-07",
+    "title": "《国际与比较政治经济学研究》模拟卷 07",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-07.mp3",
+    "duration_seconds": 1636,
+    "size_bytes": 6544652,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 8,
+    "slug": "ipcs-mock-08",
+    "title": "《国际与比较政治经济学研究》模拟卷 08",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-08.mp3",
+    "duration_seconds": 1818,
+    "size_bytes": 7273580,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 9,
+    "slug": "ipcs-mock-09",
+    "title": "《国际与比较政治经济学研究》模拟卷 09",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-09.mp3",
+    "duration_seconds": 1425,
+    "size_bytes": 5698508,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 10,
+    "slug": "ipcs-mock-10",
+    "title": "《国际与比较政治经济学研究》模拟卷 10",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-10.mp3",
+    "duration_seconds": 1590,
+    "size_bytes": 6360332,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 11,
+    "slug": "ipcs-mock-11",
+    "title": "《国际与比较政治经济学研究》模拟卷 11",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-11.mp3",
+    "duration_seconds": 1621,
+    "size_bytes": 6485132,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 12,
+    "slug": "ipcs-mock-12",
+    "title": "《国际与比较政治经济学研究》模拟卷 12",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-12.mp3",
+    "duration_seconds": 2133,
+    "size_bytes": 8530508,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 13,
+    "slug": "ipcs-mock-13",
+    "title": "《国际与比较政治经济学研究》模拟卷 13",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-13.mp3",
+    "duration_seconds": 2158,
+    "size_bytes": 8631692,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 14,
+    "slug": "ipcs-mock-14",
+    "title": "《国际与比较政治经济学研究》模拟卷 14",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-14.mp3",
+    "duration_seconds": 1396,
+    "size_bytes": 5584652,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  },
+  {
+    "set": 15,
+    "slug": "ipcs-mock-15",
+    "title": "《国际与比较政治经济学研究》模拟卷 15",
+    "file": "podcasts/ipcs-mocks/ipcs-mock-15.mp3",
+    "duration_seconds": 1632,
+    "size_bytes": 6526700,
+    "question_count": 10,
+    "type_counts": {
+      "名词": 5,
+      "简答": 3,
+      "论述": 2
+    }
+  }
+]
