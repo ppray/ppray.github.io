@@ -95,10 +95,65 @@
 
         /* Search Section */
         .search-container {
-            margin: 0 auto 40px;
+            margin: 0 auto 24px;
             max-width: 600px;
             position: relative;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto 50px;
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .tab-btn {
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+        }
+
+        .tab-count {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.08);
+            padding: 2px 7px;
+            border-radius: 20px;
+        }
+
+        .tab-btn.active .tab-count {
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .search-input {
@@ -275,6 +330,36 @@
             }
         }
 
+        /* Featured podcast card */
+        .featured-card {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 24px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
+            border-color: var(--primary);
+        }
+
+        .featured-card .card-icon {
+            width: 64px;
+            height: 64px;
+            font-size: 2rem;
+            margin-bottom: 0;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .featured-card .card-title {
+            font-size: 1.4rem;
+        }
+
+        .featured-card > div {
+            flex: 1;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             h1 {
@@ -287,6 +372,27 @@
 
             body {
                 padding: 20px 15px;
+            }
+
+            .tab-bar {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 10px;
+                margin-bottom: 30px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab-btn {
+                flex-shrink: 0;
+                font-size: 0.85rem;
+                padding: 9px 14px;
+            }
+
+            .featured-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
             }
         }
 
@@ -336,9 +442,35 @@
             <input type="text" id="searchInput" class="search-input" placeholder="搜索资源文件名或关键词...">
         </div>
 
-        <!-- 核心速记 (New) -->
-        <div class="category-section">
-            <h2 class="category-title">🚀 核心速记 (Quick Review)</h2>
+        <!-- Tab Bar -->
+        <div class="tab-bar" id="tabBar">
+            <button class="tab-btn active" data-tab="all">全部</button>
+            <button class="tab-btn" data-tab="podcast">🎙️ 播客</button>
+            <button class="tab-btn" data-tab="quickreview">🚀 速记工具</button>
+            <button class="tab-btn" data-tab="guokao">🎯 国考冲刺</button>
+            <button class="tab-btn" data-tab="ir">📊 政治学·国关</button>
+            <button class="tab-btn" data-tab="ipe">💱 IPE</button>
+            <button class="tab-btn" data-tab="philosophy">🧠 哲学通识</button>
+        </div>
+
+        <!-- 播客频道（精选） -->
+        <div class="category-section" data-tab="podcast">
+            <h2 class="category-title">🎙️ 播客频道</h2>
+            <div class="grid">
+                <a href="podcast.html" class="card resource featured-card">
+                    <div class="card-icon">🎙️</div>
+                    <div>
+                        <div class="card-title">播客频道 · 复习带背</div>
+                        <div class="card-desc">政治学音频、国政经专题与 IPE 必背人物分频道整理，支持后台播放。通勤、走路、做家务时听一段，碎片时间也能稳定推进复习。</div>
+                        <span class="card-tag">Audio · 多频道</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 速记工具 -->
+        <div class="category-section" data-tab="quickreview">
+            <h2 class="category-title">🚀 速记工具</h2>
             <div class="grid">
                 <a href="review_ppt.html" class="card resource"
                     style="border-color: var(--primary); background: rgba(99, 102, 241, 0.05);">
@@ -357,14 +489,6 @@
                         <div class="card-desc">随机抽题、自评会/不会、错题库、正确率统计。手机端优先，适合碎片时间刷题。</div>
                     </div>
                     <span class="card-tag">H5 APP</span>
-                </a>
-                <a href="podcast.html" class="card resource">
-                    <div class="card-icon">🎙️</div>
-                    <div>
-                        <div class="card-title">播客频道 - 复习带背</div>
-                        <div class="card-desc">复习带背内容，支持多频道。政治学音频与国政经专题分开整理，适合通勤和碎片时间复习。</div>
-                    </div>
-                    <span class="card-tag">Audio</span>
                 </a>
                 <a href="mindmap.html" class="card resource">
                     <div class="card-icon">🧠</div>
@@ -386,7 +510,7 @@
         </div>
 
         <!-- 国考政治冲刺 -->
-        <div class="category-section">
+        <div class="category-section" data-tab="guokao">
             <h2 class="category-title">🎯 国考政治冲刺</h2>
             <div class="grid">
                 <a href="quiz-analysis.html" class="card resource"
@@ -418,8 +542,8 @@
         </div>
 
         <!-- 政治学与国际关系 -->
-        <div class="category-section">
-            <h2 class="category-title">政治学与国际关系</h2>
+        <div class="category-section" data-tab="ir">
+            <h2 class="category-title">📊 政治学与国际关系</h2>
             <div class="grid">
                 <a href="Political Science Exam Topics Card View with Fixed Grid Layout (2004-2022).html"
                     class="card resource">
@@ -467,8 +591,8 @@
         </div>
 
         <!-- 政治经济学与环境 -->
-        <div class="category-section">
-            <h2 class="category-title">政治经济学与环境</h2>
+        <div class="category-section" data-tab="ipe">
+            <h2 class="category-title">💱 国际政治经济学 (IPE)</h2>
             <div class="grid">
                 <a href="%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/%E3%80%8A%E5%9B%BD%E9%99%85%E4%B8%8E%E6%AF%94%E8%BE%83%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E7%A0%94%E7%A9%B6%E3%80%8B%E6%A8%A1%E6%8B%9F%E5%8D%B7%E7%AD%94%E6%A1%88.html"
                     class="card resource"
@@ -535,8 +659,8 @@
         </div>
 
         <!-- 哲学与通识 -->
-        <div class="category-section">
-            <h2 class="category-title">哲学与通识</h2>
+        <div class="category-section" data-tab="philosophy">
+            <h2 class="category-title">🧠 哲学与通识</h2>
             <div class="grid">
                 <a href="《自然辩证法》期末复习全攻略.html" class="card resource">
                     <div class="card-icon">🧠</div>
@@ -569,36 +693,47 @@
         </footer>
     </div>
 
-    <!-- Search Script -->
+    <!-- Search & Tab Script -->
     <script>
         const searchInput = document.getElementById('searchInput');
-        const resourceCards = document.querySelectorAll('.resource');
+        const sections = document.querySelectorAll('.category-section');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        let activeTab = 'all';
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            resourceCards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
-                const desc = card.querySelector('.card-desc').textContent.toLowerCase();
-                if (title.includes(term) || desc.includes(term)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+        function applyFilters() {
+            const term = searchInput.value.trim().toLowerCase();
+
+            sections.forEach(section => {
+                const sectionTab = section.dataset.tab;
+                const tabMatches = (activeTab === 'all' || activeTab === sectionTab);
+
+                let anyVisible = false;
+                section.querySelectorAll('.resource').forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+                    const termMatch = term === '' || title.includes(term) || desc.includes(term);
+
+                    if (tabMatches && termMatch) {
+                        card.style.display = 'flex';
+                        anyVisible = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                section.style.display = (tabMatches && anyVisible) ? 'block' : 'none';
             });
+        }
 
-            // Hide empty categories
-            document.querySelectorAll('.category-section').forEach(section => {
-                const visibleCards = section.querySelectorAll('.resource[style="display: flex;"]').length;
-                const totalCards = section.querySelectorAll('.resource').length;
-                // If input is empty, show all
-                if (term === "") {
-                    section.style.display = 'block';
-                    section.querySelectorAll('.resource').forEach(c => c.style.display = 'flex');
-                } else if (visibleCards === 0) {
-                    section.style.display = 'none';
-                } else {
-                    section.style.display = 'block';
-                }
+        searchInput.addEventListener('input', applyFilters);
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeTab = btn.dataset.tab;
+                applyFilters();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
 
