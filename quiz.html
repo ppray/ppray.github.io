@@ -665,7 +665,7 @@
 
         <div class="filters">
             <button class="filter-chip active" data-bank="source">政治学 <span class="chip-count" id="cnt-source">0</span><span class="chip-rate" id="rate-source"></span></button>
-            <button class="filter-chip" data-bank="ipe">翟东升IPE <span class="chip-count" id="cnt-ipe">0</span></button>
+            <button class="filter-chip" data-bank="ipe">国政经 <span class="chip-count" id="cnt-ipe">0</span></button>
             <button class="filter-chip" data-bank="wrong">错题库 <span class="chip-count" id="cnt-wrong">0</span></button>
         </div>
 
@@ -735,7 +735,8 @@
             overlay.classList.add('show');
         }
 
-        let currentBank = 'source';
+        const initialBank = new URLSearchParams(window.location.search).get('bank');
+        let currentBank = ['source', 'ipe', 'wrong'].includes(initialBank) ? initialBank : 'source';
         let currentCategory = 'all';
         let currentQuestion = null;
         let revealed = false;
@@ -1022,6 +1023,12 @@
             });
         });
 
+        function syncActiveBankChip() {
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.bank === currentBank);
+            });
+        }
+
         document.querySelectorAll('.cat-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
@@ -1057,6 +1064,7 @@
         });
 
         /* ── 启动 ── */
+        syncActiveBankChip();
         updateUI();
         nextQuestion();
     </script>
