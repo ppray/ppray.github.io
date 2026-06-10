@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>US Debt Live Widget</title>
+<style>
+:root{
+  --bg:#0c0e14; --line:#1c2030; --text:#e7e9ee; --muted:#8b90a0;
+  --red:#ff4d5e; --dim:#5a5f70;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Share Tech Mono",monospace;
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --line:#e4e6ec; --text:#16181f; --muted:#5a5f70;
+  --red:#d92638; --dim:#9aa0ae;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 14px;overflow:hidden;
+}
+.w{width:100%;max-width:480px}
+.top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.85);opacity:.55}50%{transform:scale(1.15);opacity:1}}
+@media(prefers-reduced-motion:reduce){.dot{animation:none}}
+.lbl{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.val{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:clamp(18px,7.2vw,30px);font-weight:700;color:var(--red);
+  line-height:1.15;word-break:break-all;
+  text-shadow:0 0 10px rgba(255,77,94,.35);
+}
+:root[data-theme="light"] .val{text-shadow:none}
+.sub{
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  margin-top:5px;font-size:10px;color:var(--dim);font-family:var(--mono);
+}
+.sub a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.sub a:hover{color:var(--text);text-decoration:underline}
+.compact .sub{display:none}
+</style>
+</head>
+<body>
+<div class="w" id="wrap">
+  <div class="top">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="lbl" id="lbl">美国国债实时总额</span>
+  </div>
+  <div class="val" aria-live="off">$<span id="v">39,230,385,715,009</span></div>
+  <div class="sub">
+    <span id="speed">+$94,804.90/秒 · 数据: 美国财政部</span>
+    <a id="link" href="#" target="_blank" rel="noopener">完整看板 →</a>
+  </div>
+</div>
+<script>
+'use strict';
+/* ===== 部署后改成你的主看板地址 ===== */
+const MAIN_SITE_URL = './index.html';
+
+/* ===== 与主看板一致的数据基准（2026-06 核实）===== */
+const BASE_DEBT = 39230385715009;                       // 2026-06-08 官方记录
+const BASE_TIME = Date.UTC(2026, 5, 8, 21, 0, 0);
+const GROWTH_PER_MS = 8190000000 / 86400000;            // 日均 $81.9 亿
+let anchorDebt = BASE_DEBT, anchorTime = BASE_TIME;
+
+/* ===== URL 参数：?lang=en&theme=light&compact=1 ===== */
+const q = new URLSearchParams(location.search);
+const lang = q.get('lang') === 'en' ? 'en' : 'zh';
+if (q.get('theme') === 'light') document.documentElement.dataset.theme = 'light';
+if (q.get('compact') === '1') document.getElementById('wrap').classList.add('compact');
+
+const T = {
+  zh: { lbl: '美国国债实时总额', speed: '+$94,804.90/秒 · 数据: 美国财政部', link: '完整看板 →' },
+  en: { lbl: 'US National Debt — Live', speed: '+$94,804.90/sec · Source: U.S. Treasury', link: 'Full dashboard →' }
+};
+document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+document.getElementById('lbl').textContent = T[lang].lbl;
+document.getElementById('speed').textContent = T[lang].speed;
+const link = document.getElementById('link');
+link.textContent = T[lang].link;
+link.href = MAIN_SITE_URL;
+
+/* ===== 实时滚动（隐藏时暂停；尊重减少动态偏好则降为1Hz）===== */
+const el = document.getElementById('v');
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let rafId = null;
+function tick() {
+  const debt = anchorDebt + Math.max(0, Date.now() - anchorTime) * GROWTH_PER_MS;
+  el.textContent = debt.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  if (reduced) { if (!document.hidden) setTimeout(tick, 1000); }
+  else rafId = requestAnimationFrame(tick);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+  else if (reduced) tick();
+  else if (!rafId) rafId = requestAnimationFrame(tick);
+});
+
+/* ===== 同步财政部官方锚点（失败则静默用内置基准）===== */
+(async () => {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 6000);
+    const res = await fetch(
+      'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny'
+      + '?fields=record_date,tot_pub_debt_out_amt&sort=-record_date&page%5Bsize%5D=1',
+      { signal: ctrl.signal });
+    clearTimeout(t);
+    if (!res.ok) return;
+    const row = (await res.json()).data?.[0];
+    const amt = row && parseFloat(row.tot_pub_debt_out_amt);
+    if (!isFinite(amt) || amt < 3e13) return;
+    const [y, m, d] = row.record_date.split('-').map(Number);
+    anchorDebt = amt;
+    anchorTime = Date.UTC(y, m - 1, d, 21, 0, 0);
+  } catch (e) { /* 静默回退 */ }
+})();
+
+tick();
+</script>
+</body>
+</html>

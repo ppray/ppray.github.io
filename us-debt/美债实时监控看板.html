@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="美国国债实时监控看板：接入美国财政部官方 Debt to the Penny 数据，实时滚动展示美债总额、利息燃烧速度、人均负债与 $40 万亿倒计时。">
+<meta name="theme-color" content="#06070b">
+<meta property="og:title" content="美债实时监控看板 | US Debt Live Monitor">
+<meta property="og:description" content="接入美国财政部官方数据 · 实时滚动 · 利息燃烧 · $40万亿倒计时">
+<meta property="og:type" content="website">
+<title>美债实时监控看板 | US Debt Live Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06070b;
+  --panel:#0c0e14;
+  --panel-2:#10131b;
+  --line:#1c2030;
+  --text:#e7e9ee;
+  --muted:#8b90a0;
+  --dim:#5a5f70;
+  --red:#ff4d5e;
+  --red-deep:#7f1d28;
+  --amber:#fbbf24;
+  --green:#34d399;
+  --blue:#60a5fa;
+  --gold:#facc15;
+  --mono:'Share Tech Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:
+    radial-gradient(1200px 500px at 70% -10%, rgba(255,77,94,.06), transparent 60%),
+    radial-gradient(900px 400px at 10% 110%, rgba(52,211,153,.05), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;
+}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+
+/* ===== 顶部状态栏 ===== */
+header{
+  position:sticky;top:0;z-index:50;
+  border-bottom:1px solid rgba(127,29,40,.35);
+  background:rgba(6,7,11,.78);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:.65rem 1rem;
+}
+.bar{max-width:64rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:.75rem}
+.live{display:flex;align-items:center;gap:.5rem;min-width:0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex:none;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.85);opacity:.55}50%{transform:scale(1.15);opacity:1}}
+.live-label{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-right{display:flex;align-items:center;gap:.6rem}
+.sync{
+  display:none;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.68rem;color:var(--muted);
+  padding:.3rem .6rem;border:1px solid var(--line);border-radius:.5rem;background:var(--panel);
+}
+.sync .s-dot{width:6px;height:6px;border-radius:50%;background:var(--dim);flex:none}
+.sync.ok .s-dot{background:var(--green);box-shadow:0 0 6px rgba(52,211,153,.7)}
+.sync.ok{color:var(--green);border-color:rgba(52,211,153,.3)}
+.sync.sim{color:var(--amber);border-color:rgba(251,191,36,.25)}
+.sync.sim .s-dot{background:var(--amber)}
+@media(min-width:640px){.sync{display:flex}}
+.lang{display:flex;background:#14161f;border:1px solid var(--line);border-radius:.55rem;padding:2px;font-size:.72rem;font-weight:700}
+.lang button{
+  appearance:none;border:0;background:transparent;color:var(--muted);
+  padding:.3rem .7rem;border-radius:.4rem;cursor:pointer;font:inherit;transition:all .15s;
+}
+.lang button:hover{color:var(--text)}
+.lang button.on{background:rgba(127,29,40,.55);color:#ff8a95}
+.lang button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+
+/* ===== 主体 ===== */
+main{max-width:64rem;margin:0 auto;padding:1.4rem 1rem 2rem;width:100%;flex:1;display:flex;flex-direction:column;gap:1.1rem}
+.card{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel) 55%);
+  border:1px solid var(--line);
+  border-radius:1.1rem;
+  padding:1.4rem;
+  position:relative;overflow:hidden;
+}
+@media(min-width:768px){.card{padding:1.75rem}}
+.card.debt{border-color:rgba(127,29,40,.5);box-shadow:0 0 28px rgba(255,77,94,.07)}
+.card.debt::after{
+  content:"DEBT";position:absolute;right:-1rem;bottom:-2.4rem;
+  font-family:var(--mono);font-size:8rem;font-weight:700;color:rgba(127,29,40,.07);
+  user-select:none;pointer-events:none;
+}
+.card.interest{border-color:rgba(6,78,59,.6)}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:.75rem;margin-bottom:1.1rem}
+.card-title{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+.card-title svg{width:14px;height:14px;flex:none}
+.card-sub{font-size:.72rem;margin-top:.3rem}
+.card.debt .card-sub{color:rgba(255,138,149,.85)}
+.card.interest .card-sub{color:rgba(110,231,183,.8)}
+.chip{
+  font-family:var(--mono);font-size:.7rem;padding:.3rem .65rem;border-radius:.45rem;
+  border:1px solid;white-space:nowrap;
+}
+.chip.red{color:#ff8a95;border-color:rgba(127,29,40,.55);background:rgba(127,29,40,.22)}
+.chip.zinc{color:var(--muted);border-color:var(--line);background:#14161f;display:flex;align-items:center;gap:.45rem}
+.chip.zinc b{color:#fff;font-weight:700}
+
+/* 主计数器 */
+.big-debt{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:clamp(1.9rem,6.4vw,4.4rem);
+  font-weight:700;color:var(--red);line-height:1.12;
+  text-shadow:0 0 14px rgba(255,77,94,.45),0 0 34px rgba(255,77,94,.18);
+  word-break:break-all;margin:.4rem 0 1.2rem;
+}
+.stat-grid{display:grid;grid-template-columns:1fr;gap:1rem;padding-top:1.1rem;border-top:1px solid rgba(127,29,40,.25)}
+@media(min-width:640px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.stat-grid.cols4{grid-template-columns:repeat(4,1fr)}}
+.stat-label{font-size:.7rem;color:var(--muted)}
+.stat-value{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:1.25rem;font-weight:700;margin-top:.25rem}
+.stat-value small{font-size:.72em}
+.c-amber{color:var(--amber)} .c-gray{color:#cdd1da} .c-red{color:#ff7c89} .c-blue{color:var(--blue)}
+
+/* ===== $40T 里程碑（签名元素）===== */
+.milestone{border-color:rgba(251,191,36,.28)}
+.mile-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem;margin-bottom:.8rem}
+.mile-title{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.mile-eta{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.mile-eta b{color:var(--gold)}
+.track{height:14px;border-radius:999px;background:#14161f;border:1px solid var(--line);overflow:hidden;position:relative}
+.fill{
+  height:100%;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,#7f1d28,var(--red) 60%,var(--gold));
+  box-shadow:0 0 12px rgba(255,77,94,.5);
+  transition:width .5s ease;position:relative;
+}
+.fill::after{
+  content:"";position:absolute;inset:0;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+  background-size:200% 100%;animation:sheen 2.6s linear infinite;
+}
+@keyframes sheen{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.mile-bottom{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-top:.45rem}
+.mile-remaining{text-align:center;margin-top:.9rem;font-size:.78rem;color:var(--muted)}
+.mile-remaining .num{color:var(--gold);font-size:1.05rem;font-weight:700}
+
+/* ===== 利息卡片 ===== */
+.i-grid{display:grid;grid-template-columns:1fr;gap:.9rem}
+@media(min-width:768px){.i-grid{grid-template-columns:repeat(3,1fr)}}
+.i-cell{background:rgba(0,0,0,.35);border:1px solid rgba(6,78,59,.5);border-radius:.85rem;padding:1rem;display:flex;flex-direction:column;justify-content:space-between}
+.i-cell .lbl{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.i-cell .val{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:clamp(1.25rem,2.6vw,1.7rem);font-weight:700;color:var(--green);
+  text-shadow:0 0 10px rgba(52,211,153,.4);margin-top:.45rem;word-break:break-all;
+}
+.i-cell .cny{font-size:.66rem;color:var(--dim);margin-top:.3rem}
+.session{
+  margin-top:.9rem;background:rgba(6,78,59,.12);border:1px solid rgba(6,78,59,.45);
+  border-radius:.85rem;padding:1rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem;
+}
+.session-left{display:flex;align-items:center;gap:.75rem}
+.hourglass{
+  width:38px;height:38px;flex:none;border-radius:.6rem;background:rgba(6,78,59,.4);
+  display:flex;align-items:center;justify-content:center;color:var(--green);
+}
+.session .t1{font-size:.7rem;color:var(--muted)}
+.session .t2{font-size:.8rem;font-weight:700;color:var(--amber);font-family:var(--mono)}
+.session-right{text-align:right;margin-left:auto}
+.session .val{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:1.7rem;font-weight:700;color:var(--green)}
+.session .speed{font-size:.66rem;color:var(--dim);margin-top:.2rem}
+
+/* ===== 债务构成 ===== */
+.comp-bar{display:flex;height:30px;border-radius:.6rem;overflow:hidden;border:1px solid var(--line);font-family:var(--mono);font-size:.66rem}
+.comp-bar>div{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;color:rgba(255,255,255,.85)}
+.comp-pub{background:linear-gradient(180deg,#9f2733,#7f1d28)}
+.comp-gov{background:linear-gradient(180deg,#2b3245,#1d2231)}
+.legend{display:flex;flex-wrap:wrap;gap:1.2rem;margin-top:.7rem;font-size:.72rem;color:var(--muted)}
+.legend .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.4rem;vertical-align:-1px}
+.legend b{color:var(--text);font-family:var(--mono)}
+.holders{display:grid;grid-template-columns:1fr;gap:.7rem;margin-top:1.1rem}
+@media(min-width:640px){.holders{grid-template-columns:repeat(3,1fr)}}
+.holder{background:#0a0c12;border:1px solid var(--line);border-radius:.7rem;padding:.8rem .9rem}
+.holder .h-name{font-size:.68rem;color:var(--muted)}
+.holder .h-val{font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-top:.2rem}
+.holder .h-note{font-size:.62rem;color:var(--dim);margin-top:.2rem}
+
+/* ===== 趣味对比 ===== */
+.fun-grid{display:grid;grid-template-columns:1fr;gap:1rem;text-align:center}
+@media(min-width:640px){.fun-grid{grid-template-columns:repeat(3,1fr)}}
+.fun{
+  background:rgba(255,255,255,.018);border:1px solid var(--line);border-radius:.85rem;
+  padding:1.2rem 1rem;display:flex;flex-direction:column;align-items:center;transition:border-color .2s,transform .2s;
+}
+.fun:hover{transform:translateY(-2px)}
+.fun.b:hover{border-color:rgba(96,165,250,.4)} .fun.g:hover{border-color:rgba(250,204,21,.4)} .fun.r:hover{border-color:rgba(255,77,94,.4)}
+.fun svg{width:60px;height:60px;margin-bottom:.9rem}
+.fun .f-name{font-size:.7rem;color:var(--dim);margin-bottom:.25rem}
+.fun .f-time{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:#fff}
+.fun .f-desc{font-size:.64rem;font-weight:600;margin-top:.3rem}
+.fun.b .f-desc{color:var(--blue)} .fun.g .f-desc{color:var(--gold)} .fun.r .f-desc{color:#ff8a95}
+
+/* ===== 历史增长曲线 ===== */
+.hist-tabs{display:flex;background:#14161f;border:1px solid var(--line);border-radius:.55rem;padding:2px;font-size:.7rem;font-weight:700}
+.hist-tabs button{appearance:none;border:0;background:transparent;color:var(--muted);padding:.32rem .75rem;border-radius:.4rem;cursor:pointer;font:inherit;font-family:var(--mono);transition:all .15s}
+.hist-tabs button:hover{color:var(--text)}
+.hist-tabs button.on{background:rgba(127,29,40,.55);color:#ff8a95}
+.hist-tabs button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.chart-wrap{position:relative;margin-top:.4rem}
+.chart-wrap svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.chart-tip{
+  position:absolute;pointer-events:none;display:none;
+  background:#14161fee;border:1px solid var(--line);border-radius:.5rem;
+  padding:.4rem .6rem;font-family:var(--mono);font-size:.68rem;line-height:1.5;
+  white-space:nowrap;z-index:5;transform:translate(-50%,-110%);
+}
+.chart-tip .tv{color:var(--red);font-weight:700;font-size:.8rem}
+.chart-status{font-family:var(--mono);font-size:.68rem;color:var(--dim);min-height:1em;margin-top:.5rem}
+.chart-status.warn{color:var(--amber)}
+.hist-stats{display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:.7rem;font-size:.72rem;color:var(--muted)}
+.hist-stats b{font-family:var(--mono);color:var(--text)}
+.hist-stats .up{color:#ff8a95}
+
+/* ===== 页脚 ===== */
+footer{border-top:1px solid #14161f;background:rgba(0,0,0,.5);padding:1.4rem 1rem;text-align:center;font-size:.7rem;color:var(--dim)}
+footer p{max-width:42rem;margin:0 auto;line-height:1.7}
+footer a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}
+footer a:hover{color:var(--text)}
+footer .src{margin-top:.6rem}
+
+@media(prefers-reduced-motion:reduce){
+  .dot,.fill::after{animation:none}
+  .fun:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="live">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="live-label" data-i18n="live_status">LIVE · 美债实时监控</span>
+    </div>
+    <div class="bar-right">
+      <div class="sync" id="sync-chip" role="status">
+        <span class="s-dot" aria-hidden="true"></span>
+        <span id="sync-text" data-i18n="sync_connecting">正在连接财政部数据…</span>
+      </div>
+      <div class="lang" role="group" aria-label="Language">
+        <button id="btn-zh" class="on" onclick="switchLanguage('zh')">中</button>
+        <button id="btn-en" onclick="switchLanguage('en')">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ① 本金实时总览 -->
+  <section class="card debt" aria-labelledby="debt-h">
+    <div class="card-head">
+      <div>
+        <h2 class="card-title" id="debt-h">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" aria-hidden="true"><path d="M12 3v18M5 7l7-4 7 4M3 13l2-6 2 6a3.5 3.5 0 0 1-4 0zM17 13l2-6 2 6a3.5 3.5 0 0 1-4 0z"/></svg>
+          <span data-i18n="debt_title">美国国债实时总额 (USD)</span>
+        </h2>
+        <p class="card-sub" id="debt-sub" data-i18n="debt_sub">*基于财政部官方基准 + 日均 ~$81.9 亿净增速度平滑滚动</p>
+      </div>
+      <div class="chip red num" id="daily-growth-chip">日均增加: $8,190,000,000</div>
+    </div>
+
+    <div class="big-debt" aria-live="off">$<span id="total-debt">39,230,385,715,009.00</span></div>
+
+    <div class="stat-grid cols4">
+      <div>
+        <div class="stat-label" data-i18n="today_debt_title">今日已新增债务 (本地时间0点起)</div>
+        <div class="stat-value c-amber" id="today-debt-gain">$0.00</div>
+      </div>
+      <div>
+        <div class="stat-label" data-i18n="principal_speed">每秒增加本金速度</div>
+        <div class="stat-value c-gray">$94,804.<small>90</small> / <span data-i18n="speed_unit">秒</span></div>
+      </div>
+      <div>
+        <div class="stat-label" data-i18n="per_capita">人均负债 (约3.42亿人)</div>
+        <div class="stat-value c-red" id="per-capita">$114,708</div>
+      </div>
+      <div>
+        <div class="stat-label" data-i18n="per_household">每户负债 (约1.348亿户)</div>
+        <div class="stat-value c-red" id="per-household">$291,027</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② $40万亿 倒计时（签名元素） -->
+  <section class="card milestone" aria-labelledby="mile-h">
+    <div class="mile-top">
+      <h2 class="mile-title" id="mile-h" data-i18n="mile_title">⚠ 倒计时：冲向 $40,000,000,000,000</h2>
+      <div class="mile-eta"><span data-i18n="mile_eta_lbl">按当前速度预计到达</span> <b class="num" id="mile-eta">2026-09-23</b></div>
+    </div>
+    <div class="track" role="progressbar" aria-valuemin="39" aria-valuemax="40" aria-label="Progress from $39T to $40T">
+      <div class="fill" id="mile-fill"></div>
+    </div>
+    <div class="mile-bottom">
+      <span>$39T <span data-i18n="mile_from">(2026-03-17 突破)</span></span>
+      <span class="num" id="mile-pct">23.0%</span>
+      <span>$40T</span>
+    </div>
+    <div class="mile-remaining">
+      <span data-i18n="mile_remaining_lbl">距离下一个万亿还剩</span>
+      <div class="num" id="mile-remaining">$769,614,284,991</div>
+    </div>
+  </section>
+
+  <!-- ③ 历史增长曲线 -->
+  <section class="card" aria-labelledby="hist-h">
+    <div class="card-head">
+      <h2 class="card-title" id="hist-h">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" aria-hidden="true"><path d="M3 20h18M3 20V4"/><path d="M5 17c4-1 6-5 8-8s4-4 8-5"/></svg>
+        <span data-i18n="hist_title">历史增长曲线（财政部逐日数据）</span>
+      </h2>
+      <div class="hist-tabs" role="group" aria-label="Time range">
+        <button data-range="1Y" class="on" onclick="setHistRange('1Y')" data-i18n="hist_1y">1年</button>
+        <button data-range="5Y" onclick="setHistRange('5Y')" data-i18n="hist_5y">5年</button>
+        <button data-range="MAX" onclick="setHistRange('MAX')" data-i18n="hist_max">1993至今</button>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg id="hist-svg" viewBox="0 0 800 320" role="img" aria-label="US national debt historical chart"></svg>
+      <div class="chart-tip" id="chart-tip"></div>
+    </div>
+    <div class="hist-stats">
+      <span><span data-i18n="hist_range_growth">区间增长</span> <b class="up" id="hist-growth">--</b></span>
+      <span><span data-i18n="hist_range_pct">涨幅</span> <b class="up" id="hist-pct">--</b></span>
+      <span><span data-i18n="hist_points">数据点</span> <b id="hist-points">--</b></span>
+      <span><span style="color:#facc15">◆</span> <span data-i18n="hist_lg_m">万亿关口</span>　<span style="color:#60a5fa">●</span> <span data-i18n="hist_lg_p">政策/评级事件（悬停查看）</span></span>
+    </div>
+    <div class="chart-status" id="chart-status" role="status"></div>
+  </section>
+
+  <!-- ④ 实时利息看板 -->
+  <section class="card interest" aria-labelledby="int-h">
+    <div class="card-head">
+      <div>
+        <h2 class="card-title" id="int-h">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><path d="M12 2c1 4-4 6-4 10a4 4 0 0 0 8 0c0-1.5-.5-2.5-1-3.5-1.5 1-2 2-2 3.5"/><path d="M12 22a7 7 0 0 0 7-7c0-3-1.5-5.5-3-7.5"/><path d="M12 22a7 7 0 0 1-7-7c0-3 1.5-5.5 3-7.5"/></svg>
+          <span data-i18n="interest_title">利息燃烧实况 (USD)</span>
+        </h2>
+        <p class="card-sub" data-i18n="interest_sub">*年总利息约 $1.2 万亿（CBO 预计 FY2026 净利息 $1.04 万亿）· 可流通债务平均利率 3.386%</p>
+      </div>
+      <div class="chip zinc">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span data-i18n="current_time_lbl">当前时间:</span>
+        <b class="num" id="current-time-display">--</b>
+      </div>
+    </div>
+
+    <div class="i-grid">
+      <div class="i-cell">
+        <span class="lbl" data-i18n="interest_day_lbl">每天利息 (24h)</span>
+        <span class="val" id="interest-day">$--</span>
+        <span class="cny num" id="interest-day-cny">≈ ¥--</span>
+      </div>
+      <div class="i-cell">
+        <span class="lbl" data-i18n="interest_hour_lbl">每小时利息</span>
+        <span class="val" id="interest-hour">$--</span>
+        <span class="cny num" id="interest-hour-cny">≈ ¥--</span>
+      </div>
+      <div class="i-cell">
+        <span class="lbl" data-i18n="interest_minute_lbl">每分钟利息</span>
+        <span class="val" id="interest-minute">$--</span>
+        <span class="cny num" id="interest-minute-cny">≈ ¥--</span>
+      </div>
+    </div>
+
+    <div class="session">
+      <div class="session-left">
+        <div class="hourglass" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12M6 22h12M7 2c0 5 5 6 5 10s-5 5-5 10M17 2c0 5-5 6-5 10s5 5 5 10"/></svg>
+        </div>
+        <div>
+          <div class="t1" data-i18n="stay_lbl">您在本页停留期间</div>
+          <div class="t2" data-i18n="accum_lbl">美债新增利息已累计</div>
+        </div>
+      </div>
+      <div class="session-right">
+        <div class="val" id="micro-interest">$0.00000</div>
+        <div class="speed num" id="stay-speed">每秒净烧 $38,051.75（约 ¥25.9 万）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 谁持有这些债务 -->
+  <section class="card" aria-labelledby="comp-h">
+    <div class="card-head">
+      <h2 class="card-title" id="comp-h">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.5 6.5"/></svg>
+        <span data-i18n="comp_title">谁持有这 $39 万亿？</span>
+      </h2>
+    </div>
+    <div class="comp-bar" aria-hidden="true">
+      <div class="comp-pub" style="width:80.5%">80.5%</div>
+      <div class="comp-gov" style="width:19.5%">19.5%</div>
+    </div>
+    <div class="legend">
+      <span><span class="sw" style="background:#9f2733"></span><span data-i18n="comp_public">公众持有</span> <b>$31.60T</b></span>
+      <span><span class="sw" style="background:#2b3245"></span><span data-i18n="comp_gov">政府内部持有</span> <b>$7.63T</b></span>
+    </div>
+    <div class="holders">
+      <div class="holder">
+        <div class="h-name" data-i18n="h_foreign">外国持有总额</div>
+        <div class="h-val c-blue">$9.35T</div>
+        <div class="h-note" data-i18n="h_foreign_note">约占公众持有的 30%（2026年3月 TIC 数据）</div>
+      </div>
+      <div class="holder">
+        <div class="h-name" data-i18n="h_top3">日本 + 英国 + 中国合计</div>
+        <div class="h-val c-blue">$2.77T</div>
+        <div class="h-note" data-i18n="h_top3_note">约占全部外国持有的 30%</div>
+      </div>
+      <div class="holder">
+        <div class="h-name" data-i18n="h_china">中国持仓</div>
+        <div class="h-val c-amber">$652.3B</div>
+        <div class="h-note" data-i18n="h_china_note">降至 2008 年 9 月以来最低水平</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 趣味对比 -->
+  <section class="card" aria-labelledby="fun-h">
+    <div class="card-head">
+      <h2 class="card-title" id="fun-h">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" aria-hidden="true"><path d="M3 17l5-6 4 4 6-8 3 4"/><path d="M3 21h18"/></svg>
+        <span data-i18n="observe_title">趣味观察：仅利息的燃烧速度，烧出这些东西要多久？</span>
+      </h2>
+    </div>
+    <div class="fun-grid">
+      <div class="fun b">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true" style="filter:drop-shadow(0 0 8px rgba(96,165,250,.3))">
+          <rect x="18" y="6" width="28" height="52" rx="6" stroke="#60a5fa" stroke-width="2" fill="#09090b"/>
+          <rect x="21" y="9" width="22" height="46" rx="4" fill="#13151c"/>
+          <path d="M29 7.5H35" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="32" cy="51" r="1.5" fill="#60a5fa"/>
+          <rect x="24" y="14" width="16" height="12" rx="2" stroke="#60a5fa" stroke-opacity=".4"/>
+          <circle cx="28" cy="18" r="1.5" fill="#ff4d5e"/><circle cx="36" cy="18" r="1.5" fill="#60a5fa"/><circle cx="32" cy="22" r="1.5" fill="#fbbf24"/>
+        </svg>
+        <div class="f-name" data-i18n="item_iphone_name">1台 iPhone 17 Pro（约 $1,100）</div>
+        <div class="f-time num" id="time-iphone">--</div>
+        <div class="f-desc" data-i18n="item_iphone_desc">眨一次眼，造出一台</div>
+      </div>
+      <div class="fun g">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true" style="filter:drop-shadow(0 0 8px rgba(250,204,21,.3))">
+          <path d="M12 44L20 28H44L52 44H12Z" fill="#eab308" fill-opacity=".1"/>
+          <path d="M14 42L20 30H44L50 42H14Z" fill="#eab308" stroke="#facc15" stroke-width="1.5"/>
+          <path d="M14 42L20 30H24L18 42H14Z" fill="#fef08a" fill-opacity=".4"/>
+          <path d="M24 28L28 20H48L52 28H24Z" fill="#ca8a04" stroke="#eab308" stroke-width="1.5"/>
+          <path d="M48 16L50 20L52 16L50 12L48 16Z" fill="#fff"/><path d="M18 24L19 26L20 24L19 22L18 24Z" fill="#fff"/>
+        </svg>
+        <div class="f-name" data-i18n="item_gold_name">1公斤黄金（按 ~$4,838/盎司 ≈ $155,000）</div>
+        <div class="f-time num" id="time-gold">--</div>
+        <div class="f-desc" data-i18n="item_gold_desc">倒杯水的工夫，烧出一公斤</div>
+      </div>
+      <div class="fun r">
+        <svg viewBox="0 0 80 64" fill="none" aria-hidden="true" style="filter:drop-shadow(0 0 8px rgba(255,77,94,.3))">
+          <path d="M10 42C10 42 12 36 18 34C24 32 30 24 44 24C58 24 68 34 72 38L74 42H10Z" fill="#ff4d5e" fill-opacity=".1" stroke="#ff4d5e" stroke-width="1.5"/>
+          <path d="M30 24C34 24 38 25 42 27L54 34H26L30 24Z" fill="#13151c" stroke="#ff4d5e"/>
+          <circle cx="22" cy="42" r="6" fill="#09090b" stroke="#ff4d5e" stroke-width="2"/><circle cx="22" cy="42" r="2" fill="#ff4d5e"/>
+          <circle cx="58" cy="42" r="6" fill="#09090b" stroke="#ff4d5e" stroke-width="2"/><circle cx="58" cy="42" r="2" fill="#ff4d5e"/>
+          <path d="M72 38L80 40L74 42L72 38Z" fill="#facc15" fill-opacity=".8"/>
+        </svg>
+        <div class="f-name" data-i18n="item_car_name">一辆超跑（约 $300,000）</div>
+        <div class="f-time num" id="time-car">--</div>
+        <div class="f-desc" data-i18n="item_car_desc">一脚油门还没踩完</div>
+      </div>
+    </div>
+  <!-- ⑦ 嵌入到你的网站 -->
+  <section class="card" aria-labelledby="embed-h">
+    <div class="card-head">
+      <div>
+        <h2 class="card-title" id="embed-h">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+          <span data-i18n="embed_title">把实时计数器嵌入你的网站</span>
+        </h2>
+        <p class="card-sub" style="color:var(--muted)" data-i18n="embed_desc">复制下面的代码贴进任意网页，即可获得一个自动滚动的美债计数器。支持参数：lang=en（英文）、theme=light（浅色）、compact=1（极简）。</p>
+      </div>
+      <button class="chip zinc" id="embed-copy" onclick="copyEmbed()" style="cursor:pointer" data-i18n="embed_copy">复制代码</button>
+    </div>
+    <textarea id="embed-code" readonly rows="3" spellcheck="false"
+      style="width:100%;background:#0a0c12;border:1px solid var(--line);border-radius:.6rem;padding:.75rem;color:var(--muted);font-family:var(--mono);font-size:.7rem;line-height:1.6;resize:none"
+      onclick="this.select()"></textarea>
+    <div class="chart-status" id="embed-note" data-i18n="embed_note">提示：部署上线后，代码中的地址会自动指向你的域名下的 widget.html。</div>
+  </section>
+
+</main>
+
+<footer>
+  <p data-i18n="footer_desc">数据说明：基准数据取自美国财政部 Debt to the Penny 官方数据集（2026年6月8日：$39,230,385,715,009）。页面加载时自动尝试同步财政部最新官方数据；若网络不可达则以该基准平滑模拟。日均增速 $81.9 亿、利率 3.386% 取自国会联合经济委员会过去12个月统计。汇率按 1 USD ≈ 6.80 CNY 估算，仅供参考。本页面为公共数据可视化，不构成任何投资建议。</p>
+  <p class="src">
+    <span data-i18n="footer_src">数据来源：</span>
+    <a href="https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/debt-to-the-penny" target="_blank" rel="noopener">U.S. Treasury FiscalData</a> ·
+    <a href="https://www.jec.senate.gov/" target="_blank" rel="noopener">JEC Monthly Debt Update</a>
+  </p>
+</footer>
+
+<script>
+'use strict';
+/* ================= 配置（2026-06 核实） ================= */
+const CFG = {
+  // 财政部 Debt to the Penny：2026-06-08 官方记录
+  BASE_DEBT: 39230385715009,
+  BASE_DATE_UTC: Date.UTC(2026, 5, 8, 21, 0, 0),   // 记录日收盘（美东约 17:00 ≈ 21:00 UTC）
+  DAILY_GROWTH: 8190000000,                        // 过去一年日均净增（JEC）
+  ANNUAL_INTEREST: 1200000000000,                  // 年总利息 ~$1.2T
+  USD_CNY: 6.80,                                   // 2026-06 约 6.78–6.82
+  POPULATION: 342000000,
+  HOUSEHOLDS: 134800000,
+  MILESTONE_FROM: 39000000000000,
+  MILESTONE_TO: 40000000000000,
+  PRICE_IPHONE: 1100,
+  PRICE_GOLD_KG: 155000,                           // 金价 ~$4,838/oz × 32.15oz
+  PRICE_SUPERCAR: 300000
+};
+const MS_DAY = 86400000;
+const GROWTH_PER_MS = CFG.DAILY_GROWTH / MS_DAY;
+const INT_DAY = CFG.ANNUAL_INTEREST / 365;
+const INT_HOUR = INT_DAY / 24;
+const INT_MIN = INT_HOUR / 60;
+const INT_SEC = INT_MIN / 60;
+const INT_MS = INT_SEC / 1000;
+
+/* 运行时锚点（API 同步成功后会被官方数据覆盖） */
+let anchorDebt = CFG.BASE_DEBT;
+let anchorTime = CFG.BASE_DATE_UTC;
+let dataSource = 'sim'; // 'sim' | 'official'
+let officialDate = '2026-06-08';
+
+/* ================= i18n ================= */
+const i18n = {
+  zh: {
+    live_status: "LIVE · 美债实时监控",
+    sync_connecting: "正在连接财政部数据…",
+    sync_ok: "官方数据已同步 · 截至 {d}",
+    sync_sim: "离线模式 · 基准 2026-06-08",
+    debt_title: "美国国债实时总额 (USD)",
+    debt_sub: "*基于财政部官方基准 + 日均 ~$81.9 亿净增速度平滑滚动",
+    daily_growth: "日均增加: $8,190,000,000",
+    today_debt_title: "今日已新增债务 (本地时间0点起)",
+    principal_speed: "每秒增加本金速度",
+    speed_unit: "秒",
+    per_capita: "人均负债 (约3.42亿人)",
+    per_household: "每户负债 (约1.348亿户)",
+    mile_title: "⚠ 倒计时：冲向 $40,000,000,000,000",
+    mile_eta_lbl: "按当前速度预计到达",
+    mile_from: "(2026-03-17 突破)",
+    mile_remaining_lbl: "距离下一个万亿还剩",
+    hist_title: "历史增长曲线（财政部逐日数据）",
+    hist_1y: "1年",
+    hist_5y: "5年",
+    hist_max: "1993至今",
+    hist_range_growth: "区间增长",
+    hist_range_pct: "涨幅",
+    hist_points: "数据点",
+    hist_loading: "正在从财政部 API 拉取历史数据…",
+    hist_live: "数据来源：U.S. Treasury FiscalData · Debt to the Penny（逐日官方记录）",
+    hist_fallback: "⚠ API 不可达，正在显示内置的年度基准数据（近似值）",
+    hist_lg_m: "万亿关口",
+    hist_lg_p: "政策/评级事件（悬停查看）",
+    embed_title: "把实时计数器嵌入你的网站",
+    embed_desc: "复制下面的代码贴进任意网页，即可获得一个自动滚动的美债计数器。支持参数：lang=en（英文）、theme=light（浅色）、compact=1（极简）。",
+    embed_copy: "复制代码",
+    embed_copied: "✓ 已复制",
+    embed_note: "提示：部署上线后，代码中的地址会自动指向你的域名下的 widget.html。",
+    interest_title: "利息燃烧实况 (USD)",
+    interest_sub: "*年总利息约 $1.2 万亿（CBO 预计 FY2026 净利息 $1.04 万亿）· 可流通债务平均利率 3.386%",
+    current_time_lbl: "当前时间:",
+    interest_day_lbl: "每天利息 (24h)",
+    interest_hour_lbl: "每小时利息",
+    interest_minute_lbl: "每分钟利息",
+    stay_lbl: "您在本页停留期间",
+    accum_lbl: "美债新增利息已累计",
+    stay_speed: "每秒净烧 ${u}（约 ¥{c} 万）",
+    comp_title: "谁持有这 $39 万亿？",
+    comp_public: "公众持有",
+    comp_gov: "政府内部持有",
+    h_foreign: "外国持有总额",
+    h_foreign_note: "约占公众持有的 30%（2026年3月 TIC 数据）",
+    h_top3: "日本 + 英国 + 中国合计",
+    h_top3_note: "约占全部外国持有的 30%",
+    h_china: "中国持仓",
+    h_china_note: "降至 2008 年 9 月以来最低水平",
+    observe_title: "趣味观察：仅利息的燃烧速度，烧出这些东西要多久？",
+    item_iphone_name: "1台 iPhone 17 Pro（约 $1,100）",
+    item_iphone_desc: "眨一次眼，造出一台",
+    item_gold_name: "1公斤黄金（按 ~$4,838/盎司 ≈ $155,000）",
+    item_gold_desc: "倒杯水的工夫，烧出一公斤",
+    item_car_name: "一辆超跑（约 $300,000）",
+    item_car_desc: "一脚油门还没踩完",
+    sec_unit: " 秒",
+    footer_desc: "数据说明：基准数据取自美国财政部 Debt to the Penny 官方数据集（2026年6月8日：$39,230,385,715,009）。页面加载时自动尝试同步财政部最新官方数据；若网络不可达则以该基准平滑模拟。日均增速 $81.9 亿、利率 3.386% 取自国会联合经济委员会过去12个月统计。汇率按 1 USD ≈ 6.80 CNY 估算，仅供参考。本页面为公共数据可视化，不构成任何投资建议。",
+    footer_src: "数据来源："
+  },
+  en: {
+    live_status: "LIVE · US National Debt Monitor",
+    sync_connecting: "Connecting to Treasury data…",
+    sync_ok: "Official data synced · as of {d}",
+    sync_sim: "Offline mode · baseline 2026-06-08",
+    debt_title: "US National Debt Live Counter (USD)",
+    debt_sub: "*Anchored to official Treasury data, smoothed at ~$8.19B/day net growth",
+    daily_growth: "Daily increase: $8,190,000,000",
+    today_debt_title: "Debt added today (since local midnight)",
+    principal_speed: "Principal growth per second",
+    speed_unit: "sec",
+    per_capita: "Debt per person (~342M people)",
+    per_household: "Debt per household (~134.8M)",
+    mile_title: "⚠ Countdown to $40,000,000,000,000",
+    mile_eta_lbl: "Projected arrival at current pace",
+    mile_from: "(crossed 2026-03-17)",
+    mile_remaining_lbl: "Remaining to the next trillion",
+    hist_title: "Historical growth (Treasury daily records)",
+    hist_1y: "1Y",
+    hist_5y: "5Y",
+    hist_max: "Since 1993",
+    hist_range_growth: "Growth in range",
+    hist_range_pct: "Change",
+    hist_points: "Data points",
+    hist_loading: "Fetching history from the Treasury API…",
+    hist_live: "Source: U.S. Treasury FiscalData · Debt to the Penny (official daily records)",
+    hist_fallback: "⚠ API unreachable — showing built-in annual baseline (approximate)",
+    hist_lg_m: "Trillion milestones",
+    hist_lg_p: "Policy / rating events (hover)",
+    embed_title: "Embed this live counter on your site",
+    embed_desc: "Copy the code below into any webpage to get an auto-ticking debt counter. Params: lang=en, theme=light, compact=1.",
+    embed_copy: "Copy code",
+    embed_copied: "✓ Copied",
+    embed_note: "Note: once deployed, the snippet automatically points to widget.html under your domain.",
+    interest_title: "Interest Burning Live (USD)",
+    interest_sub: "*Gross interest ~$1.2T/yr (CBO FY2026 net interest: $1.04T) · avg marketable rate 3.386%",
+    current_time_lbl: "Current time:",
+    interest_day_lbl: "Daily interest (24h)",
+    interest_hour_lbl: "Hourly interest",
+    interest_minute_lbl: "Per-minute interest",
+    stay_lbl: "Since you opened this page",
+    accum_lbl: "Interest accumulated",
+    stay_speed: "Net burn: ${u}/sec (≈ ¥{c}k CNY)",
+    comp_title: "Who holds the $39 trillion?",
+    comp_public: "Held by the public",
+    comp_gov: "Intragovernmental",
+    h_foreign: "Total foreign holdings",
+    h_foreign_note: "~30% of publicly held debt (TIC, Mar 2026)",
+    h_top3: "Japan + UK + China combined",
+    h_top3_note: "~30% of all foreign holdings",
+    h_china: "China's holdings",
+    h_china_note: "Lowest level since September 2008",
+    observe_title: "Perspective: at interest-burn speed alone, how long to cover…",
+    item_iphone_name: "1× iPhone 17 Pro (~$1,100)",
+    item_iphone_desc: "Built in a blink",
+    item_gold_name: "1 kg of gold (@~$4,838/oz ≈ $155,000)",
+    item_gold_desc: "Done before your water is poured",
+    item_car_name: "A supercar (~$300,000)",
+    item_car_desc: "Gone before the throttle lifts",
+    sec_unit: " s",
+    footer_desc: "Data notes: baseline from the U.S. Treasury's official Debt to the Penny dataset (June 8, 2026: $39,230,385,715,009). On load, the page attempts to sync the latest official figure; if unreachable, it falls back to smooth simulation from the baseline. Daily growth ($8.19B) and avg rate (3.386%) from the Joint Economic Committee trailing-12-month update. FX assumed at 1 USD ≈ 6.80 CNY, for reference only. This page visualizes public data and is not investment advice.",
+    footer_src: "Sources: "
+  }
+};
+let lang = 'zh';
+
+/* ================= 工具 ================= */
+const $ = id => document.getElementById(id);
+const fmt = (v, d = 2) => v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt0 = v => Math.round(v).toLocaleString('en-US');
+
+/* CNY 大数转中文单位（亿/万） */
+function cnyText(usd) {
+  const cny = usd * CFG.USD_CNY;
+  if (lang === 'en') {
+    if (cny >= 1e9) return '≈ ¥' + fmt(cny / 1e9, 2) + 'B CNY';
+    return '≈ ¥' + fmt(cny / 1e6, 1) + 'M CNY';
+  }
+  if (cny >= 1e8) return '≈ ' + fmt(cny / 1e8, 2) + ' 亿元人民币';
+  return '≈ ' + fmt(cny / 1e4, 0) + ' 万元人民币';
+}
+
+/* ================= 静态值渲染 ================= */
+function renderStatics() {
+  $('interest-day').textContent = '$' + fmt(INT_DAY);
+  $('interest-hour').textContent = '$' + fmt(INT_HOUR);
+  $('interest-minute').textContent = '$' + fmt(INT_MIN);
+  $('interest-day-cny').textContent = cnyText(INT_DAY);
+  $('interest-hour-cny').textContent = cnyText(INT_HOUR);
+  $('interest-minute-cny').textContent = cnyText(INT_MIN);
+
+  const u = i18n[lang].sec_unit;
+  $('time-iphone').textContent = (CFG.PRICE_IPHONE / INT_SEC).toFixed(3) + u;
+  $('time-gold').textContent = (CFG.PRICE_GOLD_KG / INT_SEC).toFixed(2) + u;
+  $('time-car').textContent = (CFG.PRICE_SUPERCAR / INT_SEC).toFixed(2) + u;
+
+  const burnCny = INT_SEC * CFG.USD_CNY;
+  const cVal = lang === 'zh' ? (burnCny / 1e4).toFixed(1) : String(Math.round(burnCny / 1e3));
+  $('stay-speed').textContent = i18n[lang].stay_speed
+    .replace('{u}', fmt(INT_SEC)).replace('{c}', cVal);
+
+  $('daily-growth-chip').textContent =
+    (lang === 'zh' ? '日均增加: ' : 'Daily increase: ') + '$' + fmt0(CFG.DAILY_GROWTH);
+}
+
+/* ================= 语言切换 ================= */
+function switchLanguage(l) {
+  lang = l;
+  document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+  $('btn-zh').classList.toggle('on', l === 'zh');
+  $('btn-en').classList.toggle('on', l === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (i18n[l][k] !== undefined) el.textContent = i18n[l][k];
+  });
+  renderStatics();
+  renderSyncChip();
+  renderEmbedCode();
+  if (histPts.length) drawHist(histPts, !$('chart-status').classList.contains('warn'));
+  try { localStorage.setItem('debt_lang', l); } catch (e) { /* 受限环境忽略 */ }
+}
+
+function renderSyncChip() {
+  const chip = $('sync-chip'), txt = $('sync-text');
+  chip.classList.remove('ok', 'sim');
+  if (dataSource === 'official') {
+    chip.classList.add('ok');
+    txt.textContent = i18n[lang].sync_ok.replace('{d}', officialDate);
+  } else {
+    chip.classList.add('sim');
+    txt.textContent = i18n[lang].sync_sim;
+  }
+}
+
+/* ================= 财政部官方数据同步 ================= */
+async function syncOfficial() {
+  const url = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny'
+    + '?fields=record_date,tot_pub_debt_out_amt&sort=-record_date&page%5Bsize%5D=1';
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 6000);
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    const row = json && json.data && json.data[0];
+    const amt = row && parseFloat(row.tot_pub_debt_out_amt);
+    if (!row || !isFinite(amt) || amt < 3e13) throw new Error('bad payload');
+    // 以官方记录日的收盘时刻（美东17:00 ≈ UTC 21:00）为新锚点
+    const [y, m, d] = row.record_date.split('-').map(Number);
+    anchorDebt = amt;
+    anchorTime = Date.UTC(y, m - 1, d, 21, 0, 0);
+    officialDate = row.record_date;
+    dataSource = 'official';
+  } catch (e) {
+    dataSource = 'sim'; // 静默回退到基准模拟
+  }
+  renderSyncChip();
+}
+
+/* ================= 历史增长曲线 ================= */
+/* 离线后备：财政年度末总额（万亿美元，近似，仅在 API 不可达时显示） */
+const HIST_FALLBACK = [
+  ["1993-09-30",4.41],["1994-09-30",4.69],["1995-09-29",4.97],["1996-09-30",5.22],
+  ["1997-09-30",5.41],["1998-09-30",5.53],["1999-09-30",5.66],["2000-09-29",5.67],
+  ["2001-09-28",5.81],["2002-09-30",6.23],["2003-09-30",6.78],["2004-09-30",7.38],
+  ["2005-09-30",7.93],["2006-09-29",8.51],["2007-09-28",9.01],["2008-09-30",10.02],
+  ["2009-09-30",11.91],["2010-09-30",13.56],["2011-09-30",14.79],["2012-09-28",16.07],
+  ["2013-09-30",16.74],["2014-09-30",17.82],["2015-09-30",18.15],["2016-09-30",19.57],
+  ["2017-09-29",20.24],["2018-09-28",21.52],["2019-09-30",22.72],["2020-09-30",26.95],
+  ["2021-09-30",28.43],["2022-09-30",30.93],["2023-09-29",33.17],["2024-09-30",35.46],
+  ["2025-12-31",37.64],["2026-03-17",39.00],["2026-06-08",39.23]
+];
+const HIST_API = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny';
+const histCache = {};       // range -> [{t,v}]  (v 单位：万亿)
+let histRange = '1Y';
+let histPts = [];           // 当前绘制的点
+let histGeom = null;        // 绘制几何信息（用于悬停命中）
+
+function histFromDate(range) {
+  const d = new Date();
+  if (range === '1Y') d.setDate(d.getDate() - 370);
+  else if (range === '5Y') d.setFullYear(d.getFullYear() - 5);
+  else return null;
+  return d.toISOString().slice(0, 10);
+}
+
+/* 均匀降采样到 maxN 个点（始终保留首尾） */
+function downsample(pts, maxN) {
+  if (pts.length <= maxN) return pts;
+  const out = [];
+  const step = (pts.length - 1) / (maxN - 1);
+  for (let i = 0; i < maxN; i++) out.push(pts[Math.round(i * step)]);
+  return out;
+}
+
+/* ===== 政策/评级事件（编辑维护；万亿关口由数据自动检测，无需手填） =====
+   可选：在站点根目录放一个 events.json（格式同下方数组），页面会自动加载并替换内置列表，
+   以后更新事件只需改 JSON，不用动代码。 */
+const EVENTS = [
+  { d: '2011-08-05', k: 'p', zh: '债务上限危机 · 标普下调美国评级至 AA+', en: 'Debt-ceiling crisis · S&P cuts US to AA+' },
+  { d: '2020-03-27', k: 'p', zh: 'CARES 法案签署 · 疫情大规模财政刺激', en: 'CARES Act signed · pandemic stimulus' },
+  { d: '2023-06-03', k: 'p', zh: '《财政责任法案》暂停债务上限', en: 'Fiscal Responsibility Act suspends ceiling' },
+  { d: '2023-08-01', k: 'p', zh: '惠誉下调美国评级至 AA+', en: 'Fitch downgrades US to AA+' },
+  { d: '2025-05-16', k: 'p', zh: '穆迪下调评级至 Aa1 · 最后一个 AAA 失守', en: "Moody's cuts to Aa1 · last AAA gone" },
+  { d: '2025-07-04', k: 'p', zh: '「大而美法案」签署', en: 'One Big Beautiful Bill signed' }
+];
+let remoteEvents = null; // events.json 加载成功后替换内置列表
+let histEvts = [];       // 当前视图内的事件及其画布坐标
+let histCross = [];      // 当前档位自动检测出的万亿关口 [{t, n}]
+
+/* 从全分辨率序列中自动检测每个整数万亿的首次突破日 */
+function detectCrossings(pts) {
+  const out = [];
+  let next = Math.floor(pts[0].v) + 1;
+  for (const p of pts) {
+    while (p.v >= next) { out.push({ t: p.t, n: next }); next++; }
+  }
+  return out;
+}
+
+/* 密度控制：关口太多时只保留 $5T 的倍数 + 最近一个 */
+function milestonesToShow(cross) {
+  if (cross.length <= 10) return cross;
+  const last = cross[cross.length - 1];
+  return cross.filter(c => c.n % 5 === 0 || c === last);
+}
+
+/* 可选远程事件库：部署后在同目录放 events.json 即可接管事件列表 */
+async function loadRemoteEvents() {
+  try {
+    const res = await fetch('events.json', { cache: 'no-cache' });
+    if (!res.ok) return;
+    const arr = await res.json();
+    if (!Array.isArray(arr)) return;
+    const ok = arr.filter(e => e && /^\d{4}-\d{2}-\d{2}$/.test(e.d) && e.zh && e.en);
+    if (ok.length) {
+      remoteEvents = ok;
+      if (histPts.length) drawHist(histPts, !$('chart-status').classList.contains('warn'));
+    }
+  } catch (e) { /* 没有该文件或加载失败：继续用内置列表 */ }
+}
+
+/* 在已知锚点序列上做线性插值 */
+function interpAt(series, t) {
+  if (t <= series[0].t) return series[0].v;
+  for (let i = 1; i < series.length; i++) {
+    if (t <= series[i].t) {
+      const a = series[i - 1], b = series[i];
+      return a.v + (b.v - a.v) * (t - a.t) / (b.t - a.t);
+    }
+  }
+  return series[series.length - 1].v;
+}
+
+/* 离线降级：按所选档位生成近似曲线（年度锚点 + 线性插值 + 实时外推终点） */
+function fallbackForRange(range) {
+  const now = Date.now();
+  const base = HIST_FALLBACK.map(([d, v]) => ({ t: Date.parse(d), v }));
+  // 末端追加“此刻”的外推值，保证曲线右端与顶部计数器一致
+  base.push({ t: now, v: (anchorDebt + Math.max(0, now - anchorTime) * GROWTH_PER_MS) / 1e12 });
+  if (range === 'MAX') return base;
+  const from = now - (range === '1Y' ? 370 : 5 * 365.25) * MS_DAY;
+  const N = range === '1Y' ? 13 : 61; // 月度粒度
+  const pts = [];
+  for (let i = 0; i < N; i++) {
+    const t = from + (now - from) * i / (N - 1);
+    pts.push({ t, v: interpAt(base, t) });
+  }
+  return pts;
+}
+
+async function loadHist(range) {
+  if (histCache[range]) return { ...histCache[range], live: true };
+  const from = histFromDate(range);
+  let url = HIST_API + '?fields=record_date,tot_pub_debt_out_amt&sort=record_date&page%5Bsize%5D=10000';
+  if (from) url += '&filter=record_date:gte:' + from;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 12000);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    let pts = (json.data || [])
+      .map(r => ({ t: Date.parse(r.record_date), v: parseFloat(r.tot_pub_debt_out_amt) / 1e12 }))
+      .filter(p => isFinite(p.t) && isFinite(p.v));
+    if (pts.length < 2) throw new Error('empty payload');
+    const cross = detectCrossings(pts);   // 用全分辨率数据检测，日期精确到官方记录日
+    pts = downsample(pts, 360);
+    histCache[range] = { pts, cross };
+    return { pts, cross, live: true };
+  } catch (e) {
+    clearTimeout(timer);
+    // 诊断日志：在 DevTools Console 可看到具体失败原因（CORS/CSP/超时/断网等）
+    console.warn('[debt-monitor] 历史数据 API 请求失败，已降级为内置近似数据。原因:', e && e.message ? e.message : e, '| URL:', url);
+    const pts = fallbackForRange(range);
+    return { pts, cross: detectCrossings(pts), live: false };
+  }
+}
+
+function drawHist(pts, live) {
+  histPts = pts;
+  const W = 800, H = 320, padL = 56, padR = 16, padT = 18, padB = 34;
+  const iW = W - padL - padR, iH = H - padT - padB;
+  const t0 = pts[0].t, t1 = pts[pts.length - 1].t;
+  let vMin = Infinity, vMax = -Infinity;
+  for (const p of pts) { if (p.v < vMin) vMin = p.v; if (p.v > vMax) vMax = p.v; }
+  const span = Math.max(vMax - vMin, 0.001), padV = span * 0.08;
+  vMin = Math.max(0, vMin - padV); vMax += padV;
+  const X = t => padL + (t - t0) / (t1 - t0) * iW;
+  const Y = v => padT + (1 - (v - vMin) / (vMax - vMin)) * iH;
+  histGeom = { X, Y, padL, padT, iW, iH, W, H };
+
+  let s = '<defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0%" stop-color="#ff4d5e" stop-opacity=".28"/>'
+    + '<stop offset="100%" stop-color="#ff4d5e" stop-opacity="0"/></linearGradient></defs>';
+
+  /* 横向网格 + Y 轴刻度 */
+  const yTicks = 4;
+  for (let i = 0; i <= yTicks; i++) {
+    const v = vMin + (vMax - vMin) * i / yTicks, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#1c2030" stroke-width="1"/>`;
+    s += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#5a5f70" font-family="Share Tech Mono,monospace">$${v.toFixed(1)}T</text>`;
+  }
+  /* X 轴刻度 */
+  const xTicks = 5;
+  for (let i = 0; i <= xTicks; i++) {
+    const t = t0 + (t1 - t0) * i / xTicks, x = X(t), d = new Date(t);
+    const lbl = histRange === '1Y'
+      ? `${d.getFullYear().toString().slice(2)}/${String(d.getMonth() + 1).padStart(2, '0')}`
+      : String(d.getFullYear());
+    s += `<text x="${x}" y="${H - 12}" text-anchor="middle" font-size="11" fill="#5a5f70" font-family="Share Tech Mono,monospace">${lbl}</text>`;
+  }
+
+  /* 面积 + 折线 */
+  let line = '', area = `M ${X(pts[0].t).toFixed(1)} ${(padT + iH).toFixed(1)}`;
+  pts.forEach((p, i) => {
+    const x = X(p.t).toFixed(1), y = Y(p.v).toFixed(1);
+    line += (i ? ' L ' : 'M ') + x + ' ' + y;
+    area += ' L ' + x + ' ' + y;
+  });
+  area += ` L ${X(t1).toFixed(1)} ${(padT + iH).toFixed(1)} Z`;
+  s += `<path d="${area}" fill="url(#hg)"/>`;
+  s += `<path d="${line}" fill="none" stroke="#ff4d5e" stroke-width="2" stroke-linejoin="round" style="filter:drop-shadow(0 0 5px rgba(255,77,94,.5))"/>`;
+
+  /* 关键事件标记：自动检测的万亿关口 + 编辑维护的政策事件 */
+  histEvts = [];
+  const pad2 = n => String(n).padStart(2, '0');
+  const fmtD = t => { const d = new Date(t); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; };
+  const approx = live ? '' : (lang === 'en' ? ' (approx.)' : '（约）');
+  const all = [];
+  for (const c of milestonesToShow(histCross)) {
+    all.push({ t: c.t, k: 'm',
+      label: (lang === 'en' ? `Crosses $${c.n}T` : `突破 $${c.n} 万亿`) + approx });
+  }
+  for (const ev of (remoteEvents || EVENTS)) {
+    all.push({ t: Date.parse(ev.d), k: 'p', label: lang === 'en' ? ev.en : ev.zh });
+  }
+  for (const ev of all) {
+    if (!isFinite(ev.t) || ev.t < t0 || ev.t > t1) continue;
+    const x = X(ev.t), y = Y(interpAt(pts, ev.t));
+    histEvts.push({ x, y, label: ev.label, k: ev.k, d: fmtD(ev.t) });
+    if (ev.k === 'm') {
+      s += `<path d="M ${x} ${y - 5} L ${x + 5} ${y} L ${x} ${y + 5} L ${x - 5} ${y} Z" `
+        + `fill="#facc15" stroke="#06070b" stroke-width="1.2"/>`;
+    } else {
+      s += `<circle cx="${x}" cy="${y}" r="4" fill="#60a5fa" stroke="#06070b" stroke-width="1.2"/>`;
+    }
+  }
+
+  /* 悬停元素（初始隐藏） */
+  s += `<line id="hx" x1="0" y1="${padT}" x2="0" y2="${padT + iH}" stroke="#8b90a0" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>`;
+  s += `<circle id="hc" r="4" fill="#ff4d5e" stroke="#fff" stroke-width="1.5" visibility="hidden"/>`;
+  /* 命中区域 */
+  s += `<rect id="hit" x="${padL}" y="${padT}" width="${iW}" height="${iH}" fill="transparent"/>`;
+
+  $('hist-svg').innerHTML = s;
+
+  /* 区间统计 */
+  const first = pts[0].v, last = pts[pts.length - 1].v;
+  $('hist-growth').textContent = '+$' + (last - first).toFixed(2) + 'T';
+  $('hist-pct').textContent = '+' + ((last - first) / first * 100).toFixed(1) + '%';
+  $('hist-points').textContent = String(pts.length);
+
+  const st = $('chart-status');
+  st.classList.toggle('warn', !live);
+  st.textContent = i18n[lang][live ? 'hist_live' : 'hist_fallback'];
+
+  bindHover();
+}
+
+function bindHover() {
+  const svg = $('hist-svg'), tip = $('chart-tip');
+  const hit = svg.querySelector('#hit'), hx = svg.querySelector('#hx'), hc = svg.querySelector('#hc');
+  if (!hit) return;
+  const move = ev => {
+    const rect = svg.getBoundingClientRect();
+    const cx = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+    const sx = cx * (histGeom.W / rect.width);            // 转回 viewBox 坐标
+    /* 找最近点 */
+    let best = 0, bd = Infinity;
+    for (let i = 0; i < histPts.length; i++) {
+      const d = Math.abs(histGeom.X(histPts[i].t) - sx);
+      if (d < bd) { bd = d; best = i; }
+    }
+    const p = histPts[best], x = histGeom.X(p.t), y = histGeom.Y(p.v);
+    hx.setAttribute('x1', x); hx.setAttribute('x2', x); hx.setAttribute('visibility', 'visible');
+    hc.setAttribute('cx', x); hc.setAttribute('cy', y); hc.setAttribute('visibility', 'visible');
+    const d = new Date(p.t), pad = n => String(n).padStart(2, '0');
+    let html = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}<br><span class="tv">$${p.v.toFixed(3)}T</span>`;
+    /* 命中附近的关键事件（横向 14px 范围内） */
+    for (const ev of histEvts) {
+      if (Math.abs(ev.x - sx) < 14) {
+        const ic = ev.k === 'm' ? '<span style="color:#facc15">◆</span>' : '<span style="color:#60a5fa">●</span>';
+        html += `<br>${ic} <span style="color:#cdd1da">${ev.d} ${ev.label}</span>`;
+      }
+    }
+    tip.innerHTML = html;
+    tip.style.left = (x / histGeom.W * rect.width) + 'px';
+    tip.style.top = (y / histGeom.H * rect.height) + 'px';
+    tip.style.display = 'block';
+  };
+  const leave = () => {
+    tip.style.display = 'none';
+    hx.setAttribute('visibility', 'hidden');
+    hc.setAttribute('visibility', 'hidden');
+  };
+  hit.addEventListener('mousemove', move);
+  hit.addEventListener('touchstart', move, { passive: true });
+  hit.addEventListener('touchmove', move, { passive: true });
+  hit.addEventListener('mouseleave', leave);
+  hit.addEventListener('touchend', leave);
+}
+
+async function setHistRange(range) {
+  histRange = range;
+  document.querySelectorAll('.hist-tabs button').forEach(b =>
+    b.classList.toggle('on', b.dataset.range === range));
+  $('chart-status').classList.remove('warn');
+  $('chart-status').textContent = i18n[lang].hist_loading;
+  const { pts, cross, live } = await loadHist(range);
+  if (range !== histRange) return; // 用户已切换到其他档位，丢弃过期结果
+  histCross = cross || [];
+  drawHist(pts, live);
+}
+
+/* ================= 嵌入代码生成 ================= */
+function renderEmbedCode() {
+  let widgetUrl;
+  try { widgetUrl = new URL('widget.html', location.href).href; }
+  catch (e) { widgetUrl = 'https://ppray.github.io/us-debt/widget.html'; }
+  if (location.protocol === 'file:') widgetUrl = 'https://ppray.github.io/us-debt/widget.html';
+  const langParam = lang === 'en' ? '?lang=en' : '';
+  $('embed-code').value =
+    `<iframe src="${widgetUrl}${langParam}" width="100%" height="110" `
+    + `style="border:0;max-width:480px;border-radius:12px" loading="lazy" `
+    + `title="US National Debt Live Counter"></iframe>`;
+}
+function copyEmbed() {
+  const ta = $('embed-code');
+  const done = () => {
+    $('embed-copy').textContent = i18n[lang].embed_copied;
+    setTimeout(() => { $('embed-copy').textContent = i18n[lang].embed_copy; }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(done).catch(() => { ta.select(); document.execCommand('copy'); done(); });
+  } else { ta.select(); document.execCommand('copy'); done(); }
+}
+
+/* ================= 实时滚动 ================= */
+const PAGE_LOAD = Date.now();
+let rafId = null;
+let lastSecond = -1;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function tick() {
+  const now = Date.now();
+
+  // ① 总额（锚点 + 平滑外推；外推为估算，刷新后官方锚点保证连贯）
+  const debt = anchorDebt + Math.max(0, now - anchorTime) * GROWTH_PER_MS;
+  $('total-debt').textContent = fmt(debt);
+
+  // ② 今日新增（本地 0 点起）
+  const t0 = new Date(); t0.setHours(0, 0, 0, 0);
+  $('today-debt-gain').textContent = '$' + fmt((now - t0.getTime()) * GROWTH_PER_MS);
+
+  // ③ 停留期间累计利息
+  $('micro-interest').textContent = '$' + fmt((now - PAGE_LOAD) * INT_MS, 5);
+
+  // ④ 每秒级更新（时间、人均、里程碑）——避免不必要的重排
+  const sec = Math.floor(now / 1000);
+  if (sec !== lastSecond) {
+    lastSecond = sec;
+    const d = new Date(now), p = n => String(n).padStart(2, '0');
+    $('current-time-display').textContent =
+      `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+
+    $('per-capita').textContent = '$' + fmt0(debt / CFG.POPULATION);
+    $('per-household').textContent = '$' + fmt0(debt / CFG.HOUSEHOLDS);
+
+    // $40T 里程碑
+    const span = CFG.MILESTONE_TO - CFG.MILESTONE_FROM;
+    const pct = Math.min(100, Math.max(0, (debt - CFG.MILESTONE_FROM) / span * 100));
+    $('mile-fill').style.width = pct.toFixed(3) + '%';
+    $('mile-pct').textContent = pct.toFixed(2) + '%';
+    const remaining = Math.max(0, CFG.MILESTONE_TO - debt);
+    $('mile-remaining').textContent = '$' + fmt0(remaining);
+    const etaMs = remaining / GROWTH_PER_MS;
+    const eta = new Date(now + etaMs);
+    $('mile-eta').textContent =
+      `${eta.getFullYear()}-${p(eta.getMonth() + 1)}-${p(eta.getDate())}`;
+  }
+
+  if (reducedMotion) {
+    if (!document.hidden) setTimeout(tick, 1000); // 降低运动偏好：1Hz 更新
+  } else {
+    rafId = requestAnimationFrame(tick);
+  }
+}
+
+/* 页面隐藏时暂停，节能且防后台空转 */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  } else {
+    lastSecond = -1;
+    if (reducedMotion) tick();
+    else if (!rafId) rafId = requestAnimationFrame(tick);
+  }
+});
+
+/* ================= 启动 ================= */
+window.addEventListener('DOMContentLoaded', () => {
+  let saved = 'zh';
+  try { saved = localStorage.getItem('debt_lang') || 'zh'; } catch (e) {}
+  switchLanguage(saved === 'en' ? 'en' : 'zh');
+  tick();
+  syncOfficial();
+  setHistRange('1Y');
+  loadRemoteEvents();
+});
+</script>
+</body>
+</html>
