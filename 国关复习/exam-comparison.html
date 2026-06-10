@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>两科IPE考试难度对比分析</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #212529;
+    --muted: #6c757d;
+    --accent: #0d6efd;
+    --accent2: #dc3545;
+    --accent3: #198754;
+    --accent4: #fd7e14;
+    --border: #dee2e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  header {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    color: white;
+    padding: 48px 24px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  header h1 { margin: 0 0 8px; font-size: 2rem; }
+  header p { margin: 0; opacity: 0.9; }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 1.35rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  .verdict-box {
+    background: linear-gradient(135deg, #e8f5e9, #d4edda);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 2px solid #27ae60;
+    text-align: center;
+  }
+  .verdict-box h2 {
+    color: #1e8449;
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    border: none;
+    padding: 0;
+  }
+  .verdict-box p {
+    margin: 0;
+    color: #2d5a3d;
+    font-size: 1.05rem;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: #f1f3f5; font-weight: 600; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .tag-green { background: #e8f5e9; color: #27ae60; }
+  .tag-red { background: #ffe5e5; color: #c0392b; }
+  .tag-orange { background: #fff3e0; color: #e67e22; }
+  .tag-blue { background: #e3f2fd; color: #2980b9; }
+  .highlight-box {
+    background: #fffbeb;
+    border-left: 4px solid var(--accent4);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    color: var(--accent);
+  }
+  ul.compact { margin: 8px 0; padding-left: 20px; }
+  ul.compact li { margin-bottom: 6px; }
+  .score-bar {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+  }
+  .score-label {
+    width: 120px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .score-track {
+    flex: 1;
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 10px;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 10px;
+  }
+  .score-fill-easy { background: #27ae60; }
+  .score-fill-hard { background: #dc3545; }
+  .score-value {
+    width: 40px;
+    text-align: right;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 40px; padding-bottom: 24px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>两科 IPE 考试难度对比</h1>
+  <p>《货币与金融的国际政治经济学》vs《国际与比较政治经济学研究》</p>
+</header>
+
+<!-- 结论 -->
+<div class="verdict-box">
+  <h2>🎯 综合结论：货币与金融的 IPE 更好考</h2>
+  <p>核心理由：理论来源高度集中（翟东升一人体系）+ 有万能答题公式 + 中国专题占比虽高但套路固定<br>
+  相比之下，国际与比较政治经济学理论流派繁杂、人物众多、概念辨析要求高，备考负担更重。</p>
+</div>
+
+<!-- 数据对比 -->
+<div class="card">
+  <h2>一、基础数据对比</h2>
+  <table>
+    <tr>
+      <th>维度</th>
+      <th>国际与比较政治经济学（ICPE）</th>
+      <th>货币与金融的 IPE（MFPE）</th>
+    </tr>
+    <tr>
+      <td>模拟套卷</td>
+      <td>15套</td>
+      <td>10套</td>
+    </tr>
+    <tr>
+      <td>去重后独立题目</td>
+      <td>126题（名词59 + 简答39 + 论述28）</td>
+      <td>约105题（名词~50 + 简答~40 + 论述~22）</td>
+    </tr>
+    <tr>
+      <td>题型稳定性</td>
+      <td>非常固定：5名词+3简答+2论述</td>
+      <td>波动较大：5-7名词+4-5简答+2-3论述</td>
+    </tr>
+    <tr>
+      <td>答案完备度</td>
+      <td>一份4414行统一MD答案，去重整理版</td>
+      <td>分散在PDF和少量MD中，需自行整合</td>
+    </tr>
+    <tr>
+      <td>核心理论来源</td>
+      <td>田野、基欧汉、吉尔平、斯特兰奇、考克斯、沃勒斯坦、奥尔森等<strong>十余人</strong></td>
+      <td>翟东升<strong>一人</strong>为主，辅以标准货币金融学</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 难度雷达 -->
+<div class="card">
+  <h2>二、难度维度逐项对比（分值越低越简单）</h2>
+  
+  <div class="section-title">📚 理论集中度（MFPE 完胜）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 理论流派</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:85%"></div></div>
+    <span class="score-value">8.5</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 理论流派</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:35%"></div></div>
+    <span class="score-value">3.5</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">ICPE需要在制度主义、现实主义、自由主义、建构主义、马克思主义、批判理论六大门派间切换；MFPE基本只用翟东升一个框架。</p>
+
+  <div class="section-title">🧠 背诵负担（MFPE 更轻）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 背诵量</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:80%"></div></div>
+    <span class="score-value">8.0</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 背诵量</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:50%"></div></div>
+    <span class="score-value">5.0</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">ICPE需记忆59个名词+39个简答+28个论述，且人物众多（基欧汉/斯特兰奇/考克斯/沃勒斯坦等十几人）；MFPE很多是金融学常识概念（如铸币税、特里芬难题、购买力平价），理解即可。</p>
+
+  <div class="section-title">✍️ 论述题套路化（MFPE 更套路）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 论述套路</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:65%"></div></div>
+    <span class="score-value">6.5</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 论述套路</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:40%"></div></div>
+    <span class="score-value">4.0</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">MFPE论述题80%可归入固定模板（汇率政策分析/外汇储备分析/国际货币体系演变/金融危机比较），且都有"翟东升万能公式"。ICPE论述题需根据题目灵活组合2-3个理论框架。</p>
+
+  <div class="section-title">📖 答案获取难度（ICPE 完胜）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 答案完备</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:20%"></div></div>
+    <span class="score-value">2.0</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 答案完备</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:70%"></div></div>
+    <span class="score-value">7.0</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">ICPE有一份4414行的统一MD答案，去重整理，直接可背。MFPE答案分散在7个PDF+4个MD中，需要自行整合，01-07套甚至没有MD版详细答案。</p>
+
+  <div class="section-title">🔢 金融知识门槛（MFPE 更难）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 金融门槛</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:25%"></div></div>
+    <span class="score-value">2.5</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 金融门槛</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:60%"></div></div>
+    <span class="score-value">6.0</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">MFPE涉及具体货币政策工具（公开市场操作、法定存款准备金率、央票、MLF/SLF/PSL）、汇率形成机制、国际收支平衡表等，需要一定金融学基础。ICPE基本是纯政治经济学概念。</p>
+
+  <div class="section-title">🎲 命题稳定性（ICPE 更稳）</div>
+  <div class="score-bar">
+    <span class="score-label">ICPE 命题稳定</span>
+    <div class="score-track"><div class="score-fill score-fill-easy" style="width:30%"></div></div>
+    <span class="score-value">3.0</span>
+  </div>
+  <div class="score-bar">
+    <span class="score-label">MFPE 命题稳定</span>
+    <div class="score-track"><div class="score-fill score-fill-hard" style="width:55%"></div></div>
+    <span class="score-value">5.5</span>
+  </div>
+  <p style="color:var(--muted);font-size:0.88rem;margin-top:4px">ICPE每套卷严格5+3+2，题量固定。MFPE题量波动大（5-7名词、4-5简答、2-3论述），且部分题目在docx转md时存在格式错乱，备考时难以精准备考。</p>
+</div>
+
+<!-- 详细分析 -->
+<div class="card">
+  <h2>三、详细对比分析</h2>
+
+  <div class="section-title">🟢 MFPE 更好考的五大理由</div>
+  <ol class="compact">
+    <li><strong>"一人体系"降低认知负担</strong>：翟东升的理论框架贯穿全部题目，不需要在多个学者、多个范式间反复切换。记住"中心-外围→美元潮汐→货币地租→三外路线→剥夺补贴→民本主义"这一条主线，可以串起80%的答案。</li>
+    <li><strong>论述题高度套路化</strong>：汇率分析、外汇储备分析、人民币国际化、国际货币体系演变——每种题型都有固定模板，考场上只需填入具体数据。</li>
+    <li><strong>概念理解重于死记硬背</strong>：铸币税、特里芬难题、购买力平价、利率平价等名词是标准金融学概念，理解机制后不需要硬背。</li>
+    <li><strong>中国专题占比高但范围窄</strong>：虽然中国相关题目占50%，但基本集中在"汇率+外储+人民币国际化"三个子主题，不像ICPE中国专题那样分散（入世、自主创新、能源、粮食、走出去）。</li>
+    <li><strong>有明确的"批判武器"</strong>：翟东升的"剥夺-补贴分析""货币地租""美元潮汐收割"是万能批判工具，几乎所有负面现象都可以用这三个概念解释。</li>
+  </ol>
+
+  <div class="section-title">🔴 MFPE 更难考的三大陷阱</div>
+  <ol class="compact">
+    <li><strong>货币政策工具细节多</strong>：MLF、SLF、PSL、SLO、央票、正回购、逆回购、法定准备金、财政存款——这些工具的区别、使用场景、优缺点必须精确掌握，不能模糊。</li>
+    <li><strong>答案整合成本高</strong>：01-07套只有PDF答案，没有可编辑的文本版，无法像ICPE那样直接搜索定位。需要自行整理或打印PDF。</li>
+    <li><strong>需要一定的金融数据敏感度</strong>：论述题经常要求结合"双顺差""外汇占款""汇率波动区间"等具体数据，对非金融背景考生有一定门槛。</li>
+  </ol>
+
+  <div class="section-title">🟢 ICPE 更好考的两大优势</div>
+  <ol class="compact">
+    <li><strong>答案体系极度完备</strong>：一份4414行的统一MD答案，覆盖全部15套卷，去重整理，带套卷索引，可直接Ctrl+F搜索定位，是应试复习的"核武器"。</li>
+    <li><strong>纯文科思维，无需金融计算</strong>：不涉及任何货币政策操作细节、汇率计算、国际收支平衡表编制，全部是概念辨析和理论运用。</li>
+  </ol>
+
+  <div class="section-title">🔴 ICPE 更难考的四大痛点</div>
+  <ol class="compact">
+    <li><strong>理论流派繁杂</strong>：制度主义（理性选择/历史/社会学）、霸权稳定论（金德尔伯格/克拉斯纳/吉尔平）、相互依赖（基欧汉/奈）、贸易政治（H-O/李嘉图-维纳/Rogowski/Hiscox/G-H）、批判理论（考克斯/斯特兰奇/沃勒斯坦）——每个流派都有自己的核心概念和代表人物。</li>
+    <li><strong>人物记忆负担重</strong>：59个名词解释中约20个是人物（考克斯、斯特兰奇、基欧汉、奥斯特罗姆、卡赞斯坦等），每个人都要记代表作+核心贡献+IPE意义。</li>
+    <li><strong>概念辨析要求高</strong>：敏感性与脆弱性、协作型与协调型博弈、科斯第一与第二定理、H-O与李嘉图-维纳——这些成对概念必须精确区分，考场极易混淆。</li>
+    <li><strong>论述题需要多理论整合</strong>：高分答案要求同时调用2-3个理论框架（如分析WTO需用制度主义+霸权稳定+双层博弈），对理论综合能力强。</li>
+  </ol>
+</div>
+
+<!-- 人群建议 -->
+<div class="card">
+  <h2>四、按考生背景的建议</h2>
+  <div class="grid-2">
+    <div style="background:#e8f5e9;border-radius:10px;padding:16px;">
+      <div class="section-title" style="margin-top:0;color:#27ae60">建议选择 MFPE 的人群</div>
+      <ul class="compact">
+        <li>✅ 有经济学/金融学基础，熟悉货币政策基本概念</li>
+        <li>✅ 偏好"一人体系"，不喜欢在多个理论流派间切换</li>
+        <li>✅ 擅长套路化答题，喜欢"万能公式"</li>
+        <li>✅ 对中国经济政策（汇率、外储、人民币国际化）有日常关注</li>
+        <li>✅ 备考时间有限（<10天），需要快速突击</li>
+        <li>✅ 看过翟东升《货币、权力与人》或B站课程</li>
+      </ul>
+    </div>
+    <div style="background:#fff5f5;border-radius:10px;padding:16px;">
+      <div class="section-title" style="margin-top:0;color:#c0392b">建议选择 ICPE 的人群</div>
+      <ul class="compact">
+        <li>✅ 纯文科背景，对金融货币政策完全陌生</li>
+        <li>✅ 喜欢系统性的完整答案，希望直接背诵</li>
+        <li>✅ 备考时间充裕（>2周），愿意啃4414行答案</li>
+        <li>✅ 对国际关系理论（现实主义/自由主义/建构主义）有一定基础</li>
+        <li>✅ 擅长概念辨析和比较分析</li>
+        <li>✅ 不排斥记忆大量人物和代表作</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 备考效率 -->
+<div class="card">
+  <h2>五、备考效率对比（同等时间投入下）</h2>
+  <table>
+    <tr><th>备考时间</th><th>ICPE 可达到水平</th><th>MFPE 可达到水平</th></tr>
+    <tr>
+      <td>3-5天突击</td>
+      <td>勉强覆盖名词解释，简答和论述只能写框架</td>
+      <td><strong>可掌握翟东升主线+5大论述模板，有望及格</strong></td>
+    </tr>
+    <tr>
+      <td>7-10天</td>
+      <td>名词和简答基本覆盖，论述题模板化不足</td>
+      <td><strong>全面覆盖，论述题可写出完整答案</strong></td>
+    </tr>
+    <tr>
+      <td>14天以上</td>
+      <td><strong>可充分消化4414行答案，高分有望</strong></td>
+      <td>高分稳定，但边际收益递减</td>
+    </tr>
+  </table>
+  <div class="highlight-box">
+    <strong>核心判断：</strong>如果时间紧张（<10天），MFPE的"一人体系+万能公式"可以让你快速形成答题能力；如果时间充裕（>14天），ICPE的完备答案体系可以让你走得更稳、分数上限更高。
+  </div>
+</div>
+
+<!-- 最终建议 -->
+<div class="card">
+  <h2>六、最终选择建议</h2>
+  <p style="font-size:1.05rem;line-height:1.7">
+    综合以上分析，<strong>对于大多数考生而言，《货币与金融的国际政治经济学》是更好考的一科</strong>。
+    它的"好考"不是题目简单，而是<strong>备考的"投入产出比"更高</strong>——
+    你只需要掌握一个理论框架（翟东升），就可以应对80%以上的题目；
+    论述题有明确的套路和模板；概念以理解为主，背诵负担相对较轻。
+  </p>
+  <p style="font-size:1.05rem;line-height:1.7">
+    但如果你<strong>完全没有金融背景</strong>，看到"公开市场操作""MLF/SLF""货币乘数"就头疼，
+    或者你<strong>已经系统复习过ICPE的那4414行答案</strong>，
+    那么选择ICPE也是完全合理的——它的答案完备度和命题稳定性确实是MFPE无法比拟的。
+  </p>
+  <p style="font-size:1.05rem;line-height:1.7">
+    <strong>最务实的建议：</strong>两科的HTML分析报告都已生成，你可以花30分钟快速浏览两份报告的"五星必背清单"，
+    看看哪一科的概念你更熟悉、哪一科的论述模板你更喜欢——<strong>熟悉的那个就是更好考的那个</strong>。
+  </p>
+</div>
+
+<div class="footer">
+  本对比基于两科模拟卷应试分析报告数据综合研判 · 供选科参考
+</div>
+
+</div>
+</body>
+</html>
