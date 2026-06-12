@@ -173,6 +173,8 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
         <option value="p1">P2 生存能力</option>
         <option value="p5">P6 危机调整估值</option>
         <option value="sey">压力盈利收益率</option>
+        <option value="pdd">市场已跌(52w)</option>
+        <option value="gap">折扣缺口(机会优先)</option>
       </select>
     </div>
     <div id="cards"></div>
@@ -322,11 +324,16 @@ function renderEvidence(){
 function fmtPct(v){ return v==null ? "—" : (v*100).toFixed(1)+"%"; }
 function renderCards(){
   const sortKey = document.getElementById("sortSel").value;
+  /* 各排序键都是"越大越靠前",除了 gap:gap 越小(越负)=市场超跌算法=机会越大,
+     所以 gap 按升序排,机会候选浮到最上。缺数据的项用 -Infinity 沉底。 */
   const list = [...state.survivors].sort((a,b)=>{
-    const get = r => sortKey==="score" ? (r.score??-1)
-                  : sortKey==="p1" ? (r.p?.[1]??-1)
-                  : sortKey==="p5" ? (r.p?.[5]??-1)
-                  : (r.sey??-1);
+    const get = r => sortKey==="score" ? (r.score??-Infinity)
+                  : sortKey==="p1"  ? (r.p?.[1]??-Infinity)
+                  : sortKey==="p5"  ? (r.p?.[5]??-Infinity)
+                  : sortKey==="sey" ? (r.sey??-Infinity)
+                  : sortKey==="pdd" ? (r.pdd??-Infinity)
+                  : sortKey==="gap" ? -(r.gap??Infinity)   /* 取负→升序 */
+                  : (r.score??-Infinity);
     return get(b)-get(a);
   });
   const box = document.getElementById("cards");
