@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>危机监测作战台</title>
+<style>
+:root{
+  --bg:#0E1116; --panel:#161C26; --panel-2:#1C2330; --line:#28303E;
+  --ink:#E9E6DF; --ink-dim:#8B94A3; --ink-faint:#5A6373;
+  --sig-fin:#FF8A5C;   /* 信贷危机 · 余烬橙 */
+  --sig-rate:#6FA8FF;  /* 利率危机 · 利率蓝 */
+  --sig-svc:#C792EA;   /* 服务停摆 · 停摆紫 */
+  --sig-inf:#FFD166;   /* 滞胀冲击 · 滞胀金 */
+  --danger:#FF4D5E; --safe:#3DD68C; --warn:#FFD166;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+
+/* ---------- 头部 ---------- */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--ink-faint);
+  text-transform:uppercase;margin-bottom:6px}
+h1{font-size:24px;font-weight:700;letter-spacing:.02em}
+h1 .sub{color:var(--ink-dim);font-weight:400;font-size:14px;margin-left:8px}
+.status-strip{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0 4px;
+  padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.badge{font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:999px;
+  border:1px solid currentColor;font-weight:600}
+.readout{font-family:var(--mono);font-size:13px;color:var(--ink-dim)}
+.readout b{color:var(--ink);font-size:15px}
+.data-src{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+
+/* ---------- 区块 ---------- */
+section{margin-top:26px}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.sec-head h2{font-size:16px;font-weight:700}
+.sec-head .note{font-size:12px;color:var(--ink-faint)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+
+/* ---------- 地震仪 ---------- */
+.seismo svg{display:block;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;
+  padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);
+  cursor:pointer;user-select:none;color:var(--ink-dim);transition:opacity .15s}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.chip.off{opacity:.35}
+.threshold-note{font-size:12px;color:var(--ink-faint);margin-top:8px}
+.threshold-note em{color:var(--danger);font-style:normal;font-family:var(--mono)}
+
+/* ---------- 证据 ---------- */
+.evidence{list-style:none}
+.evidence li{display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line);
+  font-size:13px;color:var(--ink-dim);align-items:baseline}
+.evidence li:last-child{border-bottom:none}
+.tag{flex-shrink:0;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;
+  font-weight:700;letter-spacing:.05em}
+.t-fin{background:rgba(255,138,92,.15);color:var(--sig-fin)}
+.t-rate{background:rgba(111,168,255,.15);color:var(--sig-rate)}
+.t-svc{background:rgba(199,146,234,.15);color:var(--sig-svc)}
+.t-inf{background:rgba(255,209,102,.15);color:var(--sig-inf)}
+.t-sys{background:var(--panel-2);color:var(--ink-faint)}
+
+/* ---------- 排行 ---------- */
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.toolbar label{font-size:12px;color:var(--ink-faint)}
+.toolbar select{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+  border-radius:8px;padding:6px 10px;font-size:13px;font-family:var(--sans)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:14px;margin-bottom:10px;position:relative}
+.card .row1{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.rank{font-family:var(--mono);font-size:12px;color:var(--ink-faint);width:24px}
+.tk{font-family:var(--mono);font-size:16px;font-weight:700}
+.nm{font-size:13px;color:var(--ink-dim)}
+.sector{font-family:var(--mono);font-size:10px;color:var(--ink-faint);
+  border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.score{margin-left:auto;font-family:var(--mono);font-size:22px;font-weight:700}
+.score small{font-size:11px;color:var(--ink-faint);font-weight:400}
+.pillars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
+.pillar{text-align:center}
+.pillar .bar{height:36px;background:var(--panel-2);border-radius:4px;position:relative;overflow:hidden}
+.pillar .fill{position:absolute;bottom:0;left:0;right:0;background:var(--ink-dim);border-radius:4px 4px 0 0}
+.pillar .pl{font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-top:4px;display:block}
+.pillar .pv{font-family:var(--mono);font-size:11px;color:var(--ink-dim)}
+.flags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.flag{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:4px;font-weight:600}
+.f-penalty{background:rgba(255,77,94,.12);color:var(--danger)}
+.f-review{background:rgba(255,209,102,.14);color:var(--warn);border:1px dashed rgba(255,209,102,.5)}
+.f-cash{background:rgba(61,214,140,.12);color:var(--safe)}
+.metrics{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;font-family:var(--mono);
+  font-size:11px;color:var(--ink-faint)}
+.metrics b{color:var(--ink-dim);font-weight:600}
+.elim{border-left:3px solid var(--danger);background:var(--panel);border-radius:0 10px 10px 0;
+  padding:10px 14px;margin-bottom:8px;font-size:13px}
+.elim .tk{font-size:14px}
+.elim .reason{color:var(--danger);font-size:12px;font-family:var(--mono);margin-top:2px}
+details summary{cursor:pointer;font-size:13px;color:var(--ink-dim);padding:8px 0;user-select:none}
+
+/* ---------- 数据接入 ---------- */
+.loaders{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.loader{border:1px dashed var(--line);border-radius:10px;padding:12px;text-align:center;cursor:pointer;
+  font-size:12px;color:var(--ink-dim);transition:border-color .15s}
+.loader:hover{border-color:var(--ink-faint)}
+.loader b{display:block;font-family:var(--mono);font-size:12px;color:var(--ink);margin-bottom:4px}
+.loader input{display:none}
+.howto{font-size:12px;color:var(--ink-faint);margin-top:10px;line-height:1.8}
+.howto code{font-family:var(--mono);background:var(--panel-2);padding:1px 6px;border-radius:4px;
+  font-size:11px;color:var(--ink-dim)}
+
+footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
+  font-size:11px;color:var(--ink-faint);line-height:1.8}
+@media(max-width:480px){
+  .pillars{grid-template-columns:repeat(3,1fr)}
+  .loaders{grid-template-columns:1fr}
+  .score{font-size:19px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">CRISIS WATCH STATION</div>
+  <h1>危机监测作战台<span class="sub">指纹显影 · 剧本切换 · 幸存者排序</span></h1>
+
+  <div class="status-strip">
+    <span class="badge" id="diagBadge">—</span>
+    <span class="readout">SPY回撤 <b id="ddReadout">—</b></span>
+    <span class="readout">置信度 <b id="confReadout">—</b></span>
+    <span class="data-src" id="dataSrc">演示数据</span>
+  </div>
+
+  <!-- 地震仪 -->
+  <section>
+    <div class="sec-head"><h2>压力地震仪</h2><span class="note">四类危机指纹的逐日显影</span></div>
+    <div class="panel seismo">
+      <svg id="ddChart" viewBox="0 0 360 56" aria-label="SPY回撤曲线"></svg>
+      <svg id="scoreChart" viewBox="0 0 360 168" aria-label="四类危机证据强度曲线"></svg>
+      <div class="legend" id="legend"></div>
+      <div class="threshold-note">虚线为宣布阈值 <em>0.40</em>:回撤达-12%且某类证据越线,诊断才成立。越线之前的爬升,就是显影期。</div>
+    </div>
+  </section>
+
+  <!-- 诊断证据 -->
+  <section>
+    <div class="sec-head"><h2>当前诊断证据</h2><span class="note">每一分都有出处</span></div>
+    <div class="panel"><ul class="evidence" id="evidenceList"></ul></div>
+  </section>
+
+  <!-- 筛选排行 -->
+  <section>
+    <div class="sec-head"><h2>幸存者排序</h2><span class="note" id="playbookNote">剧本: —</span></div>
+    <div class="toolbar">
+      <label>排序</label>
+      <select id="sortSel">
+        <option value="score">综合分</option>
+        <option value="p1">P2 生存能力</option>
+        <option value="p5">P6 危机调整估值</option>
+        <option value="sey">压力盈利收益率</option>
+      </select>
+    </div>
+    <div id="cards"></div>
+    <details>
+      <summary>被硬性条件淘汰(一票否决) <span id="elimCount"></span></summary>
+      <div id="elims" style="margin-top:8px"></div>
+    </details>
+  </section>
+
+  <!-- 数据接入 -->
+  <section>
+    <div class="sec-head"><h2>接入真实数据</h2><span class="note">本页离线运行,数据不出本机</span></div>
+    <div class="panel">
+      <div class="loaders">
+        <label class="loader"><b>crisis_log.csv</b>每日诊断日志 → 更新地震仪<input type="file" id="logFile" accept=".csv"></label>
+        <label class="loader"><b>screen_results.csv</b>筛选结果 → 更新排行<input type="file" id="screenFile" accept=".csv"></label>
+      </div>
+      <div class="howto">
+        日志由 <code>python crisis_screener.py --detect --log crisis_log.csv</code> 每日定时生成;
+        排行由 <code>python crisis_screener.py --crisis auto --file universe.txt</code> 生成。
+        选择文件即可替换演示数据。
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    方法论:平时维护观察清单 → 指纹诊断危机性质 → 自动切换剧本重排序 → 人工复核"板块被罚但分项极强"的错杀候选。<br>
+    本页为研究工具原型,输出为排序而非买入建议;分数高 ≠ 应该买,它只回答"谁更接近历史幸存者的画像"。
+  </footer>
+</div>
+
+<script>
+const DEMO = {"log": [{"date": "2026-01-16", "dd": -0.032, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-01-20", "dd": -0.0255, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-01-22", "dd": -0.032, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-01-26", "dd": -0.0287, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-01-28", "dd": -0.0422, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-01-30", "dd": -0.0436, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-03", "dd": -0.0518, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-05", "dd": -0.0342, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-09", "dd": -0.0506, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.25}, {"date": "2026-02-11", "dd": -0.0444, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-13", "dd": -0.0486, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-17", "dd": -0.0642, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-19", "dd": -0.0443, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.5, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-23", "dd": -0.0544, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-25", "dd": -0.0606, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-02-27", "dd": -0.061, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.0, "inflation_energy": 0.0}, {"date": "2026-03-03", "dd": -0.0479, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-05", "dd": -0.0511, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-03-09", "dd": -0.0658, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-11", "dd": -0.101, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-13", "dd": -0.1148, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.17, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-17", "dd": -0.1155, "diagnosis": "generic", "confidence": 0.0, "financial": 0.14, "rates_debt": 0.0, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-19", "dd": -0.0966, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.0, "services": 0.17, "inflation_energy": 0.0}, {"date": "2026-03-23", "dd": -0.1228, "diagnosis": "services", "confidence": 0.5, "financial": 0.0, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-03-25", "dd": -0.1124, "diagnosis": "generic", "confidence": 0.0, "financial": 0.0, "rates_debt": 0.33, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-03-27", "dd": -0.1696, "diagnosis": "services", "confidence": 0.5, "financial": 0.0, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-03-31", "dd": -0.1959, "diagnosis": "services", "confidence": 0.5, "financial": 0.0, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-02", "dd": -0.2378, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.0, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-06", "dd": -0.2363, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-08", "dd": -0.2213, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-10", "dd": -0.2377, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-14", "dd": -0.2358, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-16", "dd": -0.2514, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-20", "dd": -0.2269, "diagnosis": "services", "confidence": 0.5, "financial": 0.14, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-22", "dd": -0.2413, "diagnosis": "services", "confidence": 0.5, "financial": 0.43, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-04-24", "dd": -0.2239, "diagnosis": "financial", "confidence": 0.57, "financial": 0.57, "rates_debt": 0.17, "services": 0.33, "inflation_energy": 0.0}, {"date": "2026-04-28", "dd": -0.23, "diagnosis": "financial", "confidence": 0.71, "financial": 0.71, "rates_debt": 0.17, "services": 0.33, "inflation_energy": 0.0}, {"date": "2026-04-30", "dd": -0.2408, "diagnosis": "financial", "confidence": 0.71, "financial": 0.71, "rates_debt": 0.17, "services": 0.33, "inflation_energy": 0.0}, {"date": "2026-05-04", "dd": -0.2155, "diagnosis": "financial", "confidence": 0.71, "financial": 0.71, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-06", "dd": -0.2205, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-08", "dd": -0.2602, "diagnosis": "financial", "confidence": 0.71, "financial": 0.71, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-12", "dd": -0.2656, "diagnosis": "financial", "confidence": 0.71, "financial": 0.71, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-05-14", "dd": -0.2933, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-18", "dd": -0.3022, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-20", "dd": -0.3004, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.33, "inflation_energy": 0.0}, {"date": "2026-05-22", "dd": -0.3144, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-26", "dd": -0.3247, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.0, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-05-28", "dd": -0.3378, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.0, "services": 0.5, "inflation_energy": 0.0}, {"date": "2026-06-01", "dd": -0.3169, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-06-03", "dd": -0.2809, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-06-05", "dd": -0.2746, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-06-09", "dd": -0.2947, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}, {"date": "2026-06-11", "dd": -0.296, "diagnosis": "financial", "confidence": 0.86, "financial": 0.86, "rates_debt": 0.17, "services": 0.67, "inflation_energy": 0.0}], "evidence": ["SPY 距高点回撤 -29.6%(高点 2026-01-06)", "[financial +2] 信用利差剧烈走阔(HYG-IEF -28.9%)", "[financial +2] 银行股深度领跌(XLF相对 -37.4%)", "[financial +1] 区域银行重挫(KRE相对 -28.9%)", "[financial +1] 资金避险涌入国债(TLT +24.1%)", "[rates_debt +1] 地产领跌(XLRE相对 -15.2%)", "[services +2] 可选消费相对必需消费崩塌(XLY-XLP -26.2%)", "[services +1] 油价暴跌,需求停摆信号(USO -42.4%)", "[services +1] 恐慌指数极端飙升(VIX 52)"], "diagnosis": "financial", "confidence": 0.86, "drawdown": -0.296, "survivors": [{"ticker": "FORTRESS", "name": "净现金消费品牌", "sector": "Consumer Defensive", "score": 82.593, "p": [76.667, 100.0, 75.0, 66.667, 53.333, 100.0], "penalty": 0.0, "haircut": 0.35, "ney": 0.066, "sey": 0.043, "nc": 0.167, "ic": 57.5, "sm": 24.0, "cagr": 0.059}, {"ticker": "TOLLCO", "name": "收税型支付网络", "sector": "Financial Services", "score": 39.653, "p": [90.0, 66.667, 91.667, 100.0, 86.667, 51.667], "penalty": 0.5, "haircut": 0.35, "ney": 0.029, "sey": 0.019, "nc": 0.01, "ic": 35.0, "sm": 20.0, "cagr": 0.112}, {"ticker": "CYCLICAL", "name": "重资产周期股", "sector": "Industrials", "score": 28.609, "p": [33.333, 33.333, 33.333, 33.333, 20.0, 48.333], "penalty": 0.15, "haircut": 0.64, "ney": 0.048, "sey": 0.017, "nc": -0.283, "ic": 5.0, "sm": 13.714, "cagr": -0.023}], "eliminated": [{"ticker": "LEVERED", "name": "高杠杆地产商", "sector": "Real Estate", "reason": "利息覆盖1.7x过低; 现金仅撑4个月; 债务/EBITDA=6.9过高"}, {"ticker": "GROWTH", "name": "高增长云软件", "sector": "Technology", "reason": "现金仅撑10个月"}]};
+
+const SIG = {
+  financial:        {label:"信贷危机", color:"var(--sig-fin)",  hex:"#FF8A5C"},
+  rates_debt:       {label:"利率危机", color:"var(--sig-rate)", hex:"#6FA8FF"},
+  services:         {label:"服务停摆", color:"var(--sig-svc)",  hex:"#C792EA"},
+  inflation_energy: {label:"滞胀冲击", color:"var(--sig-inf)",  hex:"#FFD166"},
+};
+const PLAYBOOK_CN = {generic:"通用", financial:"信贷危机(2008型)", rates_debt:"利率危机",
+  services:"服务停摆(2020型)", inflation_energy:"滞胀冲击", auto:"自动"};
+const PILLAR_LABELS = ["韧性","生存","进攻","收税","趋势","估值"];
+
+let state = {
+  log: DEMO.log, evidence: DEMO.evidence,
+  diagnosis: DEMO.diagnosis, confidence: DEMO.confidence, drawdown: DEMO.drawdown,
+  survivors: DEMO.survivors, eliminated: DEMO.eliminated,
+  hidden: new Set(),
+};
+
+/* ---------- 头部状态 ---------- */
+function renderStatus(){
+  const b = document.getElementById("diagBadge");
+  const sig = SIG[state.diagnosis];
+  b.textContent = sig ? ("诊断: " + sig.label) : "诊断: 平静 / generic";
+  b.style.color = sig ? sig.hex : "var(--safe)";
+  document.getElementById("ddReadout").textContent =
+    state.drawdown==null ? "—" : (state.drawdown*100).toFixed(1)+"%";
+  document.getElementById("confReadout").textContent =
+    Math.round((state.confidence||0)*100)+"%";
+  document.getElementById("playbookNote").textContent =
+    "剧本: " + (PLAYBOOK_CN[state.diagnosis]||state.diagnosis);
+}
+
+/* ---------- 地震仪 ---------- */
+function renderCharts(){
+  const log = state.log;
+  const n = log.length;
+  const W=360, padL=30, padR=8;
+  const xw = W-padL-padR;
+  const X = i => padL + (n<=1 ? 0 : i/(n-1)*xw);
+
+  /* 回撤条带(倒挂面积) */
+  const ddH=56, ddTop=6, ddBot=ddH-12;
+  const ddMin = Math.min(-0.30, ...log.map(r=>r.dd??0));
+  const Yd = v => ddTop + (v/ddMin)*(ddBot-ddTop);
+  let area = `M ${X(0)} ${Yd(0)}`;
+  log.forEach((r,i)=>{area += ` L ${X(i).toFixed(1)} ${Yd(r.dd??0).toFixed(1)}`;});
+  area += ` L ${X(n-1).toFixed(1)} ${ddTop} L ${X(0)} ${ddTop} Z`;
+  const crisisY = Yd(-0.12);
+  document.getElementById("ddChart").innerHTML = `
+    <text x="${padL}" y="14" font-size="9" fill="#5A6373" font-family="monospace">SPY DRAWDOWN</text>
+    <path d="${area}" fill="rgba(255,77,94,.16)" stroke="#FF4D5E" stroke-width="1.2"/>
+    <line x1="${padL}" y1="${crisisY}" x2="${W-padR}" y2="${crisisY}"
+      stroke="#FF4D5E" stroke-width="0.7" stroke-dasharray="3 3" opacity=".6"/>
+    <text x="${W-padR}" y="${crisisY-3}" font-size="8" fill="#FF4D5E" text-anchor="end" font-family="monospace">-12%</text>`;
+
+  /* 四信号线 */
+  const H=168, top=10, bot=H-22;
+  const Y = v => bot - v*(bot-top);
+  let g = "";
+  /* 网格与阈值 */
+  [0,0.5,1].forEach(v=>{
+    g += `<line x1="${padL}" y1="${Y(v)}" x2="${W-padR}" y2="${Y(v)}" stroke="#28303E" stroke-width="0.6"/>
+          <text x="${padL-5}" y="${Y(v)+3}" font-size="8" fill="#5A6373" text-anchor="end" font-family="monospace">${v.toFixed(1)}</text>`;
+  });
+  g += `<line x1="${padL}" y1="${Y(0.4)}" x2="${W-padR}" y2="${Y(0.4)}"
+        stroke="#FF4D5E" stroke-width="0.8" stroke-dasharray="4 3"/>
+        <text x="${W-padR}" y="${Y(0.4)-3}" font-size="8" fill="#FF4D5E" text-anchor="end" font-family="monospace">0.40</text>`;
+  /* 日期刻度 */
+  [0, Math.floor(n/2), n-1].forEach(i=>{
+    if(i>=0 && log[i]) g += `<text x="${X(i)}" y="${H-6}" font-size="8" fill="#5A6373"
+      text-anchor="middle" font-family="monospace">${(log[i].date||"").slice(5)}</text>`;
+  });
+  for(const key in SIG){
+    if(state.hidden.has(key)) continue;
+    const pts = log.map((r,i)=>`${X(i).toFixed(1)},${Y(r[key]??0).toFixed(1)}`).join(" ");
+    g += `<polyline points="${pts}" fill="none" stroke="${SIG[key].hex}"
+          stroke-width="1.6" stroke-linejoin="round"/>`;
+    const last = log[n-1] ? (log[n-1][key]??0) : 0;
+    g += `<circle cx="${X(n-1)}" cy="${Y(last)}" r="2.4" fill="${SIG[key].hex}"/>`;
+  }
+  document.getElementById("scoreChart").innerHTML = g;
+
+  /* 图例 */
+  const lg = document.getElementById("legend");
+  lg.innerHTML = "";
+  for(const key in SIG){
+    const c = document.createElement("button");
+    c.className = "chip" + (state.hidden.has(key)?" off":"");
+    c.innerHTML = `<span class="dot" style="background:${SIG[key].hex}"></span>${SIG[key].label}
+      <span style="color:${SIG[key].hex}">${(state.log[n-1]?.[key]??0).toFixed(2)}</span>`;
+    c.onclick = ()=>{ state.hidden.has(key)?state.hidden.delete(key):state.hidden.add(key); renderCharts(); };
+    lg.appendChild(c);
+  }
+}
+
+/* ---------- 证据 ---------- */
+function renderEvidence(){
+  const ul = document.getElementById("evidenceList");
+  ul.innerHTML = "";
+  (state.evidence||[]).forEach(e=>{
+    const li = document.createElement("li");
+    let cls="t-sys", tag="信号", text=e;
+    const m = e.match(/^\[(\w+) \+(\d)\]\s*(.*)$/);
+    if(m){
+      const map={financial:["t-fin","信贷"],rates_debt:["t-rate","利率"],
+                 services:["t-svc","停摆"],inflation_energy:["t-inf","滞胀"]};
+      const t = map[m[1]]||["t-sys",m[1]];
+      cls=t[0]; tag=`${t[1]} +${m[2]}`; text=m[3];
+    }
+    li.innerHTML = `<span class="tag ${cls}">${tag}</span><span>${text}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+/* ---------- 排行 ---------- */
+function fmtPct(v){ return v==null ? "—" : (v*100).toFixed(1)+"%"; }
+function renderCards(){
+  const sortKey = document.getElementById("sortSel").value;
+  const list = [...state.survivors].sort((a,b)=>{
+    const get = r => sortKey==="score" ? (r.score??-1)
+                  : sortKey==="p1" ? (r.p?.[1]??-1)
+                  : sortKey==="p5" ? (r.p?.[5]??-1)
+                  : (r.sey??-1);
+    return get(b)-get(a);
+  });
+  const box = document.getElementById("cards");
+  box.innerHTML = "";
+  list.forEach((r,idx)=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    const strongCore = Math.min(r.p?.[0]??0, r.p?.[1]??0, r.p?.[3]??0) >= 60;
+    const flags = [];
+    if((r.penalty??0) >= 0.05)
+      flags.push(`<span class="flag f-penalty">板块惩罚 -${Math.round(r.penalty*100)}%</span>`);
+    if((r.penalty??0) >= 0.3 && strongCore)
+      flags.push(`<span class="flag f-review">★ 错杀复核区:核心支柱极强,惩罚来自板块标签</span>`);
+    if((r.nc??-1) > 0.05)
+      flags.push(`<span class="flag f-cash">净现金 ${fmtPct(r.nc)} 市值</span>`);
+    const pillars = (r.p||[]).map((v,i)=>`
+      <div class="pillar">
+        <div class="bar"><div class="fill" style="height:${Math.max(2,Math.round(v??0))}%;
+          background:${(v??0)>=70?"var(--safe)":(v??0)>=40?"var(--ink-dim)":"var(--danger)"}"></div></div>
+        <span class="pl">P${i+1} ${PILLAR_LABELS[i]}</span>
+        <span class="pv">${v==null?"—":Math.round(v)}</span>
+      </div>`).join("");
+    card.innerHTML = `
+      <div class="row1">
+        <span class="rank">${String(idx+1).padStart(2,"0")}</span>
+        <span class="tk">${r.ticker}</span><span class="nm">${r.name||""}</span>
+        <span class="sector">${r.sector||"—"}</span>
+        <span class="score">${r.score==null?"—":r.score.toFixed(1)}<small> /100</small></span>
+      </div>
+      <div class="pillars">${pillars}</div>
+      <div class="flags">${flags.join("")}</div>
+      <div class="metrics">
+        <span>压力盈利收益率 <b>${fmtPct(r.sey)}</b></span>
+        <span>压力折扣 <b>${fmtPct(r.haircut)}</b></span>
+        <span>利息覆盖 <b>${r.ic==null?"—":r.ic.toFixed(0)+"x"}</b></span>
+        <span>生存月数 <b>${r.sm==null?"—":Math.round(r.sm)}</b></span>
+        <span>营收CAGR <b>${fmtPct(r.cagr)}</b></span>
+      </div>`;
+    box.appendChild(card);
+  });
+  document.getElementById("elimCount").textContent = `· ${state.eliminated.length} 家`;
+  const el = document.getElementById("elims");
+  el.innerHTML = state.eliminated.map(r=>`
+    <div class="elim"><span class="tk">${r.ticker}</span> <span class="nm">${r.name||""}</span>
+      <div class="reason">✕ ${r.reason}</div></div>`).join("");
+}
+
+/* ---------- CSV 解析(支持引号字段) ---------- */
+function parseCSV(text){
+  const rows=[]; let row=[], cell="", inQ=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(inQ){
+      if(ch==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else inQ=false; }
+      else cell+=ch;
+    }else if(ch==='"') inQ=true;
+    else if(ch===','){ row.push(cell); cell=""; }
+    else if(ch==='\n'||ch==='\r'){ if(cell!==""||row.length){row.push(cell);rows.push(row);row=[];cell="";} }
+    else cell+=ch;
+  }
+  if(cell!==""||row.length){row.push(cell);rows.push(row);}
+  if(!rows.length) return [];
+  const head=rows[0];
+  return rows.slice(1).map(r=>Object.fromEntries(head.map((h,i)=>[h.trim(), r[i]??""])));
+}
+const num = v => { const f=parseFloat(v); return isNaN(f)?null:f; };
+
+/* 应用日志数据(文件选择与远程fetch共用) */
+function applyLogCSV(text, srcLabel){
+  const recs = parseCSV(text);
+  if(!recs.length || !("score_financial" in recs[0])) return false;
+  state.log = recs.map(r=>({date:r.date, dd:num(r.spy_drawdown)??0,
+    diagnosis:r.diagnosis, confidence:num(r.confidence)??0,
+    financial:num(r.score_financial)??0, rates_debt:num(r.score_rates_debt)??0,
+    services:num(r.score_services)??0, inflation_energy:num(r.score_inflation_energy)??0}));
+  const last = state.log[state.log.length-1];
+  state.diagnosis=last.diagnosis; state.confidence=last.confidence; state.drawdown=last.dd;
+  state.evidence=[`已加载${srcLabel} ${state.log.length} 条(${state.log[0].date} → ${last.date}),证据清单请见当日 --detect 输出`];
+  document.getElementById("dataSrc").textContent = srcLabel;
+  renderStatus(); renderCharts(); renderEvidence();
+  return true;
+}
+
+/* 日志CSV → 地震仪 */
+document.getElementById("logFile").addEventListener("change", e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    if(!applyLogCSV(rd.result, "本地日志"))
+      alert("无法识别:请选择 --log 生成的 crisis_log.csv");
+  };
+  rd.readAsText(file);
+});
+
+/* 应用筛选数据(文件选择与远程fetch共用) */
+function applyScreenCSV(text, srcLabel){
+  const recs = parseCSV(text);
+  if(!recs.length || !("ticker" in recs[0])) return false;
+  const surv=[], elim=[];
+  recs.forEach(r=>{
+    if((r.eliminated_reason||"").trim()){
+      elim.push({ticker:r.ticker,name:r.name,sector:r.sector||"",reason:r.eliminated_reason});
+    }else{
+      surv.push({ticker:r.ticker,name:r.name,sector:r.sector||"",
+        score:num(r.composite_score),
+        p:[num(r.P1_resilience),num(r.P2_survival),num(r.P3_offense),
+           num(r.P4_toll_model),num(r.P5_secular),num(r.P6_valuation)],
+        penalty:num(r.crisis_sector_penalty), haircut:num(r.stress_haircut),
+        ney:num(r.norm_earnings_yield), sey:num(r.stressed_earnings_yield),
+        nc:num(r.net_cash_to_mcap), ic:num(r.interest_coverage),
+        sm:num(r.survival_months), cagr:num(r.revenue_cagr)});
+    }
+  });
+  surv.sort((a,b)=>(b.score??-1)-(a.score??-1));
+  state.survivors=surv; state.eliminated=elim;
+  document.getElementById("dataSrc").textContent = srcLabel;
+  renderCards();
+  return true;
+}
+
+/* 筛选CSV → 排行 */
+document.getElementById("screenFile").addEventListener("change", e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    if(!applyScreenCSV(rd.result, "本地数据"))
+      alert("无法识别:请选择筛选输出的 screen_results.csv");
+  };
+  rd.readAsText(file);
+});
+
+document.getElementById("sortSel").addEventListener("change", renderCards);
+
+renderStatus(); renderCharts(); renderEvidence(); renderCards();
+
+/* 部署模式:启动时自动拉取同目录 data/ 下的最新数据。
+   GitHub Actions 每日更新 data/crisis_log.csv 后,页面刷新即是最新地震仪。
+   本地 file:// 打开或文件不存在时静默回退演示数据,文件按钮始终可用。 */
+(async function boot(){
+  async function tryFetch(path){
+    try{
+      const r = await fetch(path, {cache:"no-store"});
+      return r.ok ? await r.text() : null;
+    }catch(e){ return null; }
+  }
+  const logTxt = await tryFetch("data/crisis_log.csv");
+  if(logTxt) applyLogCSV(logTxt, "远程数据(自动同步)");
+  const scrTxt = await tryFetch("data/screen_results.csv");
+  if(scrTxt) applyScreenCSV(scrTxt, "远程数据(自动同步)");
+})();
+</script>
+</body>
+</html>

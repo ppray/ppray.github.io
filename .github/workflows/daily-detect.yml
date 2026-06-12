@@ -1,0 +1,64 @@
+# 每日危机诊断：美股收盘后自动运行，把诊断结果追加到 crisis-watch/data/crisis_log.csv 并提交。
+# 仓库整体作为 GitHub Pages / Vercel 发布，dashboard.html 启动时自动 fetch 同目录下 data/ 数据。
+#
+# 路径：.github/workflows/daily-detect.yml
+# 首次使用：仓库 Settings → Actions → 允许工作流写仓库内容（默认已允许）
+# 手动触发：仓库 Actions 页面 → daily-crisis-detect → Run workflow
+
+name: daily-crisis-detect
+
+on:
+  schedule:
+    # GitHub cron 用 UTC。21:30 UTC = 美东收盘（16:00 ET）后约半小时，周一至周五。
+    # 注意夏令时切换时实际本地时间会漂移 1 小时。
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-detect
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: 安装依赖
+        run: pip install yfinance pandas numpy
+
+      - name: 运行每日诊断
+        run: |
+          mkdir -p crisis-watch/data
+          python crisis-watch/crisis_screener.py --detect --log crisis-watch/data/crisis_log.csv
+
+      # 可选：每周五额外跑一次全量个股筛选（需要 crisis-watch/universe.txt 股票池文件）
+      # 取消下面注释即可启用。--crisis auto 会自动采用当日诊断的剧本。
+      # - name: 每周个股筛选
+      #   if: ${{ github.event_name == 'workflow_dispatch' || github.event.schedule == '30 21 * * 5' }}
+      #   run: |
+      #     if [ -f crisis-watch/universe.txt ]; then
+      #       python crisis-watch/crisis_screener.py --crisis auto \
+      #         --file crisis-watch/universe.txt \
+      #         --out crisis-watch/data/screen_results.csv
+      #     fi
+
+      - name: 提交数据更新
+        run: |
+          git config user.name "crisis-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add crisis-watch/data/
+          git diff --cached --quiet && echo "无变化，跳过提交" && exit 0
+          git commit -m "detect: $(date -u +%Y-%m-%d) 自动诊断"
+          git push
