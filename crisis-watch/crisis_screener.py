@@ -661,12 +661,14 @@ def main():
 
     # --- 危机性质诊断 ---
     crisis = args.crisis
+    detect_failed = False
     if args.detect or args.detect_demo or crisis == "auto" or args.log:
         diag = None
         try:
             px = demo_market_data() if args.detect_demo else fetch_market_data()
             diag = detect_crisis(px)
         except Exception as e:
+            detect_failed = True
             print(f"\n[警告] 危机诊断失败: {e}", file=sys.stderr)
             if crisis == "auto":
                 crisis = "generic"
@@ -683,17 +685,31 @@ def main():
                 crisis = diag["crisis"]
                 print(f"→ 自动采用剧本: {crisis}")
             if args.log:
+                import os
                 rec = {"date": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
                        "spy_drawdown": round(float(diag["drawdown"]), 4)
                        if diag["drawdown"] == diag["drawdown"] else "",
                        "diagnosis": diag["crisis"],
                        "confidence": round(diag["confidence"], 2),
                        **{f"score_{k}": v for k, v in diag["scores"].items()}}
-                import os
                 pd.DataFrame([rec]).to_csv(args.log, mode="a", index=False,
                                            header=not os.path.exists(args.log))
                 print(f"诊断已追加记录到: {args.log}")
+                # 同步导出最新诊断详情(含证据清单),供作战台页面展示
+                latest = os.path.join(os.path.dirname(args.log) or ".",
+                                      "latest_diagnosis.json")
+                with open(latest, "w", encoding="utf-8") as fh:
+                    json.dump({"generated": rec["date"],
+                               "drawdown": rec["spy_drawdown"],
+                               "diagnosis": diag["crisis"],
+                               "confidence": round(diag["confidence"], 2),
+                               "scores": diag["scores"],
+                               "evidence": diag["evidence"]},
+                              fh, ensure_ascii=False, indent=1)
+                print(f"最新诊断详情已导出: {latest}")
         if (args.detect or args.detect_demo) and not (args.tickers or args.file or args.demo):
+            if detect_failed:
+                sys.exit(2)  # 让定时任务标红、触发邮件通知,而非无声的绿色
             return
 
     if args.demo:
@@ -743,6 +759,8 @@ def main():
         print(eliminated[["ticker", "name", "eliminated_reason"]].to_string(index=False))
 
     full = pd.concat([survivors, eliminated], ignore_index=True)
+    full["playbook"] = crisis        # 记录本次筛选所用剧本
+    full["generated_at"] = pd.Timestamp.now("UTC").strftime("%Y-%m-%d %H:%M UTC")
     full.to_csv(args.out, index=False)
     print(f"\n完整结果已保存: {args.out}")
 

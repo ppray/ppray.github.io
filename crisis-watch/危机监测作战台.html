@@ -147,13 +147,13 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
 
   <!-- 诊断证据 -->
   <section>
-    <div class="sec-head"><h2>当前诊断证据</h2><span class="note">每一分都有出处</span></div>
+    <div class="sec-head"><h2>当前诊断证据</h2><span class="note" id="evidenceNote">每一分都有出处 · 演示数据</span></div>
     <div class="panel"><ul class="evidence" id="evidenceList"></ul></div>
   </section>
 
   <!-- 筛选排行 -->
   <section>
-    <div class="sec-head"><h2>幸存者排序</h2><span class="note" id="playbookNote">剧本: —</span></div>
+    <div class="sec-head"><h2>幸存者排序</h2><span class="note" id="playbookNote">剧本: 信贷危机(2008型) · 演示数据</span></div>
     <div class="toolbar">
       <label>排序</label>
       <select id="sortSel">
@@ -222,8 +222,6 @@ function renderStatus(){
     state.drawdown==null ? "—" : (state.drawdown*100).toFixed(1)+"%";
   document.getElementById("confReadout").textContent =
     Math.round((state.confidence||0)*100)+"%";
-  document.getElementById("playbookNote").textContent =
-    "剧本: " + (PLAYBOOK_CN[state.diagnosis]||state.diagnosis);
 }
 
 /* ---------- 地震仪 ---------- */
@@ -354,6 +352,7 @@ function renderCards(){
         <span>利息覆盖 <b>${r.ic==null?"—":r.ic.toFixed(0)+"x"}</b></span>
         <span>生存月数 <b>${r.sm==null?"—":Math.round(r.sm)}</b></span>
         <span>营收CAGR <b>${fmtPct(r.cagr)}</b></span>
+        ${r.cov!=null?`<span>数据覆盖 <b>${Math.round(r.cov*100)}%</b></span>`:""}
       </div>`;
     box.appendChild(card);
   });
@@ -427,12 +426,17 @@ function applyScreenCSV(text, srcLabel){
         penalty:num(r.crisis_sector_penalty), haircut:num(r.stress_haircut),
         ney:num(r.norm_earnings_yield), sey:num(r.stressed_earnings_yield),
         nc:num(r.net_cash_to_mcap), ic:num(r.interest_coverage),
-        sm:num(r.survival_months), cagr:num(r.revenue_cagr)});
+        sm:num(r.survival_months), cagr:num(r.revenue_cagr),
+        cov:num(r.data_coverage)});
     }
   });
   surv.sort((a,b)=>(b.score??-1)-(a.score??-1));
   state.survivors=surv; state.eliminated=elim;
-  document.getElementById("dataSrc").textContent = srcLabel;
+  /* 用CSV自带元数据标注剧本与生成时间,而非冒用当天诊断结论 */
+  const meta = recs.find(r=>(r.playbook||"").trim()) || {};
+  document.getElementById("playbookNote").textContent =
+    "剧本: " + (PLAYBOOK_CN[meta.playbook]||meta.playbook||"未知")
+    + " · " + (meta.generated_at ? ("生成于 "+meta.generated_at) : srcLabel);
   renderCards();
   return true;
 }
@@ -464,6 +468,22 @@ renderStatus(); renderCharts(); renderEvidence(); renderCards();
   }
   const logTxt = await tryFetch("data/crisis_log.csv");
   if(logTxt) applyLogCSV(logTxt, "远程数据(自动同步)");
+  /* 拉取最新诊断详情(由 --log 同步导出),用真实证据清单替换占位提示 */
+  const diagTxt = await tryFetch("data/latest_diagnosis.json");
+  if(diagTxt){
+    try{
+      const j = JSON.parse(diagTxt);
+      if(Array.isArray(j.evidence) && j.evidence.length){
+        state.evidence = j.evidence;
+        if(j.diagnosis){ state.diagnosis = j.diagnosis; }
+        if(typeof j.confidence === "number"){ state.confidence = j.confidence; }
+        if(typeof j.drawdown === "number"){ state.drawdown = j.drawdown; }
+        if(j.generated) document.getElementById("evidenceNote").textContent =
+          "诊断生成于 " + j.generated + " UTC";
+        renderStatus(); renderEvidence();
+      }
+    }catch(e){ /* JSON损坏则保留占位提示 */ }
+  }
   const scrTxt = await tryFetch("data/screen_results.csv");
   if(scrTxt) applyScreenCSV(scrTxt, "远程数据(自动同步)");
 })();
