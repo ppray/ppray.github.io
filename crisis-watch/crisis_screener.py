@@ -174,6 +174,8 @@ class Fundamentals:
     fcf_history: list = field(default_factory=list)     # 自由现金流,旧→新
     capex: float = np.nan                # 最近一年资本开支(取绝对值)
     shares_history: list = field(default_factory=list)  # 总股本,旧→新
+    price_now: float = np.nan            # 当前价(近一日收盘)
+    price_52w_high: float = np.nan       # 过去 52 周收盘最高价
     error: str = ""
 
 
@@ -239,6 +241,18 @@ def fetch_fundamentals(ticker: str) -> Fundamentals:
         if np.isnan(f.total_debt):
             debt_h = rows(bs, ["Total Debt", "TotalDebt"])
             f.total_debt = debt_h[-1] if debt_h else 0.0
+
+        # 52 周价格:用于"市场已隐含折扣"——当前价距 52 周高点的回撤,
+        # 反映市场已经替你打的折,与 stress_haircut 的算法假设做对照。
+        try:
+            hist = t.history(period="1y", auto_adjust=False)
+            if hist is not None and not hist.empty:
+                closes = hist["Close"].dropna()
+                if not closes.empty:
+                    f.price_now = float(closes.iloc[-1])
+                    f.price_52w_high = float(closes.max())
+        except Exception:
+            pass
     except Exception as e:  # 网络/字段问题不应中断整个批处理
         f.error = str(e)
     return f
@@ -329,6 +343,13 @@ def compute_metrics(f: Fundamentals) -> dict:
         if nis[i - 1] > 0:
             ni_dd = max(ni_dd, max(0.0, (nis[i - 1] - nis[i]) / nis[i - 1]))
     m["ni_max_drawdown"] = min(ni_dd, 1.0) if nis else np.nan
+    # 市场已隐含折扣:1 - 当前价/52w高点。stress_haircut 是算法假设,
+    # 这个是市场已经实际打的折,两者的 gap 就是机会信号(详见 score()).
+    if (f.price_now and f.price_52w_high
+            and f.price_now == f.price_now and f.price_52w_high > 0):
+        m["price_drawdown_52w"] = max(0.0, 1.0 - f.price_now / f.price_52w_high)
+    else:
+        m["price_drawdown_52w"] = np.nan
     # stressed_earnings_yield 在 score() 中按危机剧本计算(依赖危机类型)
     return m
 
@@ -377,6 +398,12 @@ def score(df: pd.DataFrame, pillar_weights=None, crisis="generic") -> pd.DataFra
     df["stress_haircut"] = haircut.round(2)
     ney = pd.to_numeric(df.get("norm_earnings_yield"), errors="coerce")
     df["stressed_earnings_yield"] = ney * (1 - haircut)
+
+    # 算法折扣 vs 市场已隐含折扣的 gap:
+    #   gap > 0 → 算法说该折,市场没折 → 风险被低估
+    #   gap < 0 → 市场已比算法折更多 → 可能错杀,机会信号
+    market_dd = pd.to_numeric(df.get("price_drawdown_52w"), errors="coerce")
+    df["implied_haircut_gap"] = (haircut - market_dd).round(3)
 
     pillar_scores = {p: pd.Series(0.0, index=df.index) for p in pw}
     pillar_wsum = {p: pd.Series(0.0, index=df.index) for p in pw}
@@ -741,6 +768,7 @@ def main():
                  "P1_resilience", "P2_survival", "P3_offense",
                  "P4_toll_model", "P5_secular", "P6_valuation",
                  "crisis_sector_penalty", "stress_haircut",
+                 "price_drawdown_52w", "implied_haircut_gap",
                  "norm_earnings_yield", "stressed_earnings_yield",
                  "net_cash_to_mcap", "interest_coverage",
                  "survival_months", "revenue_cagr", "data_coverage"]
