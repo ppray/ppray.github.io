@@ -1,6 +1,6 @@
 {
- "generated": "2026-06-17 22:11",
- "drawdown": -0.0245,
+ "generated": "2026-06-18 22:15",
+ "drawdown": -0.0169,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
@@ -10,7 +10,7 @@
   "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -2.5%(高点 2026-06-02)",
+  "SPY 距高点回撤 -1.7%(高点 2026-06-02)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
   "[rates_debt +2] 股债相关性转正(0.46),债券失去避险功能"
  ]
