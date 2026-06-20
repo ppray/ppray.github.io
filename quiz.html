@@ -354,9 +354,72 @@
         }
 
         .section-title {
+            display: block;
             font-weight: 700;
             font-size: 0.95rem;
-            margin-top: 8px;
+            color: var(--ink);
+            margin-top: 14px;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* 论述/简答外层提纲 */
+        .outline-box {
+            background: var(--gold-bg, #f5f0e0);
+            border-left: 3px solid var(--gold);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.7;
+            letter-spacing: 0.3px;
+        }
+        .outline-box::before {
+            content: '📋 ';
+            margin-right: 2px;
+        }
+
+        /* 翟东升评注 inline tag */
+        .zhai-tag {
+            display: inline-block;
+            background: var(--blue-bg);
+            color: var(--blue);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 4px;
+            margin-right: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 论述题正文 */
+        .essay-body {
+            line-height: 1.95;
+            font-size: 0.92rem;
+        }
+        .essay-body b {
+            color: var(--ink);
+            font-weight: 700;
+        }
+        .essay-body .essay-sub {
+            display: block;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        /* 简答非分点答案的段落样式 */
+        .answer-paragraph {
+            line-height: 1.9;
+            font-size: 0.9rem;
+        }
+        .answer-paragraph b {
+            color: var(--ink);
+            font-weight: 700;
         }
 
         .memo-box {
@@ -873,33 +936,83 @@
             renderCard();
         }
 
+        // Convert markdown **bold** to <b>bold</b> (single-line, no newlines inside)
+        function mdBold(s) {
+            return s.replace(/\*\*([^*\n]+?)\*\*/g, '<b>$1</b>');
+        }
+
+        // Strip leading 【outline】 and return {header, rest}
+        function extractOutline(text) {
+            const m = text.match(/^\s*【([^】]+)】\s*/);
+            if (m) return { header: m[1], rest: text.slice(m[0].length) };
+            return { header: '', rest: text };
+        }
+
         function formatShortAnswer(text) {
+            const { header, rest } = extractOutline(text);
+            const outlineHTML = header ? `<div class="outline-box">${mdBold(header)}</div>` : '';
+
             // Split on ①-⑩ markers and format each point
-            const parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
+            const parts = rest.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
             const filtered = parts.filter(p => p.trim());
-            return filtered.map((part, idx) => {
-                const m = part.match(/^([①②③④⑤⑥⑦⑧⑨⑩])(.*?)(：)(.*)/s);
+
+            // 没分点：当整段段落渲染
+            const hasPoints = filtered.some(p => /^[①②③④⑤⑥⑦⑧⑨⑩]/.test(p.trim()));
+            if (!hasPoints) {
+                return outlineHTML + `<div class="answer-paragraph">${mdBold(rest.trim()).replace(/\n/g, '<br>')}</div>`;
+            }
+
+            const itemsHTML = filtered.map((part) => {
+                const trimmed = part.trim();
+                const m = trimmed.match(/^([①②③④⑤⑥⑦⑧⑨⑩])(.*?)(：)(.*)/s);
                 if (m) {
-                    const [, num, keyword, colon, detail] = m;
-                    const kw = keyword.trim();
-                    const dt = detail.trim();
+                    let [, num, keyword, colon, detail] = m;
+                    // 去掉 keyword 外层的 ** **（避免重复加粗）
+                    const kw = mdBold(keyword.trim().replace(/^\*\*|\*\*$/g, ''));
+                    const dt = mdBold(detail.trim());
                     if (kw) {
                         return `<div class="answer-point"><span class="point-label">${num}${kw}</span>${colon}${dt}</div>`;
                     } else {
                         return `<div class="answer-point"><span class="point-label">${num}</span>${colon}${dt}</div>`;
                     }
                 }
-                return `<div class="answer-point summary-text">${part.trim()}</div>`;
+                // 总结性段落（无 ①②③ 开头但出现在分点之间/之后）
+                return `<div class="answer-point summary-text">${mdBold(trimmed)}</div>`;
             }).join('');
+            return outlineHTML + itemsHTML;
         }
 
         function formatEssayAnswer(text) {
-            let s = text.replace(/\n/g, '<br>');
-            // Bold standalone section headers like "一、", "二、", etc.
+            const { header, rest } = extractOutline(text);
+            const outlineHTML = header ? `<div class="outline-box">${mdBold(header)}</div>` : '';
+
+            let s = mdBold(rest);
+            s = s.replace(/\n/g, '<br>');
+
+            // (1) 分号/句号后紧跟 ①②③ → 强制换行
+            s = s.replace(/([；;。])\s*(?=[①②③④⑤⑥⑦⑧⑨⑩])/g, '$1<br>');
+
+            // (2) 数字标号开头的关键词加粗（直到第一个全/半角冒号）
+            s = s.replace(/([①②③④⑤⑥⑦⑧⑨⑩])([^：:<>]{1,30}?)([：:])/g, '<b>$1$2</b>$3');
+
+            // (3) 中文章节标号 "一、二、..."
             s = s.replace(/(<br>|^)((?:一|二|三|四|五|六|七|八|九|十)、[^<]*)/g, (m, sep, title) => `${sep}<span class="section-title">${title}</span>`);
-            // Bold numbered points at start of line: ①②③④ etc
-            s = s.replace(/(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩)(.*?)(：)/g, '<b>$1$2</b>$3');
-            return s;
+
+            // (4) 数量子小标题如 "三大目标："/"两大支柱："/"四条教训："/"四个问题：" → 独立小标题
+            s = s.replace(/((?:一个|两个|两大|三大|四个|四大|五大|五个|六个|七大|一条|两条|三条|四条|五条|六条|七条|一类|两类|三类|四类|五类|六类|一种|两种|三种|四种|五种)[^：<]{1,14}：)/g, '<br><span class="essay-sub">$1</span>');
+
+            // (5) 单字/双字常用论述标签
+            const LABELS = ['背景', '中国启示', '中国经验', '启示', '经验', '教训', '结论', '对策', '措施', '原因', '影响', '意义', '现状', '挑战', '机制', '过程'];
+            const labelRe = new RegExp(`(^|<br>|。|；)((?:${LABELS.join('|')})：)`, 'g');
+            s = s.replace(labelRe, (m, sep, label) => `${sep}<br><span class="essay-sub">${label}</span>`);
+
+            // (6) 翟东升评注 → 独立块（支持「翟东升：」「翟东升总评：」「翟东升点评：」等）
+            s = s.replace(/(<br>)?\s*翟东升([^：<>]{0,6})：/g, (m, _br, suffix) => `<br><br><span class="zhai-tag">翟东升${suffix}</span>`);
+
+            // (7) 清理开头多余 <br>，并去掉相邻重复 <br>
+            s = s.replace(/^(?:<br>\s*)+/, '').replace(/(?:<br>\s*){3,}/g, '<br><br>');
+
+            return outlineHTML + `<div class="essay-body">${s}</div>`;
         }
 
         function renderCard() {
@@ -917,9 +1030,14 @@
             } else if (isEssay) {
                 cleanAnswer = formatEssayAnswer(cleanAnswer);
             } else {
-                // 填空题/名词解释：简单换行
-                cleanAnswer = cleanAnswer.replace(/\n/g, '<br>');
+                // 填空题/名词解释：换行 + markdown 粗体
+                cleanAnswer = mdBold(cleanAnswer).replace(/\n/g, '<br>');
             }
+            // 解释/记忆框：内容为空时不渲染
+            const explainTxt = (q.explanation || '').trim();
+            const memoTxt = (q.memorization || '').trim();
+            const explainHTML = explainTxt ? `<div class="explain-box">${mdBold(explainTxt)}</div>` : '';
+            const memoHTML = memoTxt ? `<div class="memo-box">${mdBold(memoTxt)}</div>` : '';
             document.getElementById('card-area').innerHTML = `
                 <div class="card">
                     <div class="card-tag">${q.category}</div>
@@ -930,8 +1048,8 @@
                         <div class="answer-text">${cleanAnswer}</div>
                         ${shortTipHTML}
                         ${templateHTML}
-                        <div class="explain-box">${q.explanation}</div>
-                        <div class="memo-box">${q.memorization}</div>
+                        ${explainHTML}
+                        ${memoHTML}
                     </div>
                     <div class="actions" id="actions"></div>
                 </div>
