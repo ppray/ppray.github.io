@@ -518,6 +518,29 @@
     </div>
 
     <script>
+        // 音频托管基址（可配置）
+        //  · 留空 ''        = 用仓库内相对路径（本地预览 / 若 mp3 仍在仓库时）
+        //  · 设为下载基址    = 从 GitHub Releases 加载，mp3 不再占用仓库体积
+        const AUDIO_BASE = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        // 中文文件名的 political-science 资产改用 ASCII 别名（GitHub 上传 API 不支持多字节名）
+        const ASSET_MAP = {
+            'podcasts/political-science/名词解释_30题必背.mp3': 'political-science__noun-explanation-30.mp3',
+            'podcasts/political-science/填空题.mp3': 'political-science__fill-in-blank.mp3',
+            'podcasts/political-science/政治学简答题带背第1集_茉莉版.mp3': 'political-science__short-answer-1.mp3',
+            'podcasts/political-science/政治学简答题带背第2集_茉莉版.mp3': 'political-science__short-answer-2.mp3',
+            'podcasts/political-science/政治学简答题带背第3集_茉莉版.mp3': 'political-science__short-answer-3.mp3',
+            'podcasts/political-science/政治学简答题带背补充_第6-8题_茉莉版.mp3': 'political-science__short-answer-suppl-6-8.mp3',
+            'podcasts/political-science/政治学论述题带背第1集.mp3': 'political-science__essay-1.mp3',
+            'podcasts/political-science/政治学论述题带背第2集_mimo.mp3': 'political-science__essay-2.mp3',
+            'podcasts/political-science/简答题极简带背.mp3': 'political-science__short-answer-minimal.mp3',
+        };
+        // 其余文件（ipe / ipcs，纯 ASCII）规则：podcasts/<channel>/<name>.mp3 → <channel>__<name>.mp3
+        function audioUrl(file) {
+            if (!file || !AUDIO_BASE) return file;
+            const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
+            return AUDIO_BASE.replace(/\/$/, '') + '/' + asset;
+        }
+
         // Channel Data
         const channels = {
             'political-science': {
@@ -796,7 +819,7 @@
                             ${ep.file ? `
                                 <div class="audio-player-wrapper">
                                     <audio class="audio-player" controls preload="none">
-                                        <source src="${ep.file}" type="audio/mpeg">
+                                        <source src="${audioUrl(ep.file)}" type="audio/mpeg">
                                         您的浏览器不支持音频播放。
                                     </audio>
                                     <div class="now-playing" id="now-playing-${index}">

@@ -2,88 +2,88 @@
   {
     "title": "国政经名词解释带背 第1集（1-20题）",
     "file": "podcasts/ipe/ipe-term-01.mp3",
-    "duration_seconds": 1106,
-    "size_bytes": 5531876,
+    "duration_seconds": 1336,
+    "size_bytes": 6679916,
     "type": "term",
     "question_count": 20
   },
   {
     "title": "国政经名词解释带背 第2集（21-40题）",
     "file": "podcasts/ipe/ipe-term-02.mp3",
-    "duration_seconds": 1427,
-    "size_bytes": 7136756,
+    "duration_seconds": 1483,
+    "size_bytes": 7415156,
     "type": "term",
     "question_count": 20
   },
   {
     "title": "国政经名词解释带背 第3集（41-60题）",
     "file": "podcasts/ipe/ipe-term-03.mp3",
-    "duration_seconds": 2062,
-    "size_bytes": 10308716,
+    "duration_seconds": 1870,
+    "size_bytes": 9348716,
     "type": "term",
     "question_count": 20
   },
   {
     "title": "国政经名词解释带背 第4集（61-62题）",
     "file": "podcasts/ipe/ipe-term-04.mp3",
-    "duration_seconds": 227,
-    "size_bytes": 1133756,
+    "duration_seconds": 220,
+    "size_bytes": 1100156,
     "type": "term",
     "question_count": 2
   },
   {
     "title": "国政经简答题带背 第1集（1-15题）",
     "file": "podcasts/ipe/ipe-short-01.mp3",
-    "duration_seconds": 1118,
-    "size_bytes": 5588036,
+    "duration_seconds": 1132,
+    "size_bytes": 5659196,
     "type": "short",
     "question_count": 15
   },
   {
     "title": "国政经简答题带背 第2集（16-30题）",
     "file": "podcasts/ipe/ipe-short-02.mp3",
-    "duration_seconds": 1684,
-    "size_bytes": 8420876,
+    "duration_seconds": 1421,
+    "size_bytes": 7103996,
     "type": "short",
     "question_count": 15
   },
   {
     "title": "国政经简答题带背 第3集（31-45题）",
     "file": "podcasts/ipe/ipe-short-03.mp3",
-    "duration_seconds": 1620,
-    "size_bytes": 8099996,
+    "duration_seconds": 1664,
+    "size_bytes": 8322476,
     "type": "short",
     "question_count": 15
   },
   {
     "title": "国政经论述题带背 第1集（1-10题）",
     "file": "podcasts/ipe/ipe-essay-01.mp3",
-    "duration_seconds": 1038,
-    "size_bytes": 5190476,
+    "duration_seconds": 1027,
+    "size_bytes": 5134556,
     "type": "essay",
     "question_count": 10
   },
   {
     "title": "国政经论述题带背 第2集（11-20题）",
     "file": "podcasts/ipe/ipe-essay-02.mp3",
-    "duration_seconds": 1505,
-    "size_bytes": 7525676,
+    "duration_seconds": 1420,
+    "size_bytes": 7102556,
     "type": "essay",
     "question_count": 10
   },
   {
     "title": "国政经论述题带背 第3集（21-30题）",
     "file": "podcasts/ipe/ipe-essay-03.mp3",
-    "duration_seconds": 1801,
-    "size_bytes": 9006476,
+    "duration_seconds": 1897,
+    "size_bytes": 9485756,
     "type": "essay",
     "question_count": 10
   },
   {
     "title": "国政经12位学术人物必背",
     "file": "podcasts/ipe/ipe-scholar-01.mp3",
-    "duration_seconds": 673,
-    "size_bytes": 3365516,
+    "duration_seconds": 675,
+    "size_bytes": 3377516,
     "type": "scholar",
     "question_count": 12
   }

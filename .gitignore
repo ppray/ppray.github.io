@@ -14,3 +14,7 @@ __pycache__/
 
 # 播客 TTS 中间产物（WAV 缓存）
 podcasts/*/.cache/
+
+# 播客 MP3 音频：已迁移至 GitHub Releases（tag: podcast-audio），不再纳入仓库
+# podcast.html 通过 AUDIO_BASE 从 Releases 加载
+podcasts/**/*.mp3

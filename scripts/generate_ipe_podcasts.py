@@ -33,6 +33,14 @@ STYLE = "温柔专业的中文考试带背主播，语速适中，咬字清晰�
 VOICE = "茉莉"
 BITRATE = "40k"
 
+# Quality gate: chars-per-second of synthesized speech. Normal Chinese TTS runs
+# ~3.2-4.2 cps. A stalled/looping generation drags the audio out (cps far below
+# the floor, e.g. 1.0); a truncated one is too short (cps above the ceiling).
+# Either is the "断断续续/拖沓" defect we re-synthesize to fix.
+QC_MIN_CPS = 2.6
+QC_MAX_CPS = 7.0
+QC_MAX_ATTEMPTS = 4
+
 
 def run(cmd: list[str], *, input_text: str | None = None, timeout: int | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
@@ -81,7 +89,7 @@ def clean_for_speech(text: str) -> str:
         "**": "",
         "【": "。", "】": "。",
         "\n": "。", "\r": "。",
-        "→": "到", "×": "乘以",
+        "→": "，", "×": "乘以",
         "（": "，", "）": "，",
         "(": "，", ")": "，",
         "de-coupling": "脱钩断链",
@@ -172,7 +180,7 @@ def generate_mimo_wav(
     last_error = None
     for attempt in range(1, retries + 1):
         try:
-            with urllib.request.urlopen(req, timeout=300) as resp:
+            with urllib.request.urlopen(req, timeout=90) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
             choice = data["choices"][0]
             if choice.get("finish_reason") == "content_filter":
@@ -232,6 +240,45 @@ def make_silence(path: Path, seconds: float) -> None:
         raise RuntimeError(proc.stderr)
 
 
+def probe_duration(path: Path) -> float:
+    probe = run([
+        "ffprobe", "-v", "error",
+        "-show_entries", "format=duration", "-of", "csv=p=0", str(path),
+    ])
+    try:
+        return float(probe.stdout.strip())
+    except (ValueError, AttributeError):
+        return 0.0
+
+
+def qc_check(text: str, path: Path) -> tuple[bool, float, float]:
+    """Return (ok, duration_seconds, chars_per_second) for a synthesized card."""
+    dur = probe_duration(path)
+    if dur <= 0:
+        return False, dur, 0.0
+    cps = len(text) / dur
+    return (QC_MIN_CPS <= cps <= QC_MAX_CPS), dur, cps
+
+
+def tts_with_qc(text: str, wav: Path, *, api_key: str, voice: str, endpoint: str, auth_mode: str, label: str) -> None:
+    """Synthesize a card and re-synthesize if it fails the chars-per-second gate.
+
+    MiMo occasionally stalls and returns audio that is several times too long
+    (the 断断续续 defect). That is not an API error, so the network-level retries
+    in generate_mimo_wav never trigger; this gate catches it by duration.
+    """
+    last_dur = last_cps = 0.0
+    for attempt in range(1, QC_MAX_ATTEMPTS + 1):
+        generate_mimo_wav(text, wav, api_key=api_key, voice=voice, endpoint=endpoint, auth_mode=auth_mode)
+        ok, last_dur, last_cps = qc_check(text, wav)
+        if ok:
+            if attempt > 1:
+                print(f"    QC ok {label} on attempt {attempt} (cps={last_cps:.2f})")
+            return
+        print(f"    QC fail {label} dur={last_dur:.0f}s cps={last_cps:.2f} (attempt {attempt}/{QC_MAX_ATTEMPTS}) -> re-synthesize")
+    print(f"    QC WARN {label} still off after {QC_MAX_ATTEMPTS} attempts (dur={last_dur:.0f}s cps={last_cps:.2f}); keeping best effort")
+
+
 def concat_episode(episode: dict, card_wavs: list[Path], bitrate: str) -> dict:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     silence_short = CACHE_DIR / "silence_1_5s.wav"
@@ -287,9 +334,11 @@ def main() -> int:
     args = parser.parse_args()
 
     load_env_file(Path.home() / ".hermes" / ".env")
-    api_key = os.environ.get("MIMO_KEY")
+    # MIMO_TTS_KEY is the dedicated TTS credential (preferred); MIMO_KEY is a
+    # general key that does NOT authorize the TTS endpoint (returns 401).
+    api_key = os.environ.get("MIMO_TTS_KEY") or os.environ.get("MIMO_KEY")
     if not api_key and not args.dry_run:
-        print("MIMO_KEY is not set. Add it to ~/.hermes/.env", file=sys.stderr)
+        print("No TTS key set. Export MIMO_TTS_KEY (preferred) or MIMO_KEY.", file=sys.stderr)
         return 2
     if args.probe_auth:
         return probe_auth(api_key)
@@ -313,19 +362,26 @@ def main() -> int:
         wavs = []
         for q in ep["questions"]:
             wav = CACHE_DIR / f"{q['id']}.wav"
-            if not wav.exists() or wav.stat().st_size < 1024:
-                text = build_card_text(q, global_no)
+            text = build_card_text(q, global_no)
+            need = not wav.exists() or wav.stat().st_size < 1024
+            if not need:
+                ok, dur, cps = qc_check(text, wav)
+                if not ok:
+                    print(f"  cached-QC-fail {global_no:03d} {q['id']} dur={dur:.0f}s cps={cps:.2f} -> re-synthesize")
+                    need = True
+            if need:
                 print(f"  TTS {global_no:03d} {q['id']} ({len(text)} chars)")
-                generate_mimo_wav(
+                tts_with_qc(
                     text,
                     wav,
                     api_key=api_key,
                     voice=args.voice,
                     endpoint=args.endpoint,
                     auth_mode=args.auth_mode,
+                    label=q["id"],
                 )
             else:
-                print(f"  cached {global_no:03d} {q['id']}")
+                print(f"  cached {global_no:03d} {q['id']} (cps ok)")
             wavs.append(wav)
             global_no += 1
         info = concat_episode(ep, wavs, args.bitrate)
