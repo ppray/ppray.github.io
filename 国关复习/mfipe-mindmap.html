@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《货币与金融的国际政治经济学》模拟题全脑图（带答案）</title>
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --bg-grad: radial-gradient(ellipse 80% 50% at 50% -10%, #eef2f8 0%, #f6f8fb 60%);
+    --panel: #ffffff;
+    --panel-soft: #fafbfd;
+    --text: #0f172a;
+    --text-soft: #334155;
+    --muted: #64748b;
+    --muted-2: #94a3b8;
+    --border: #e5e9f0;
+    --border-strong: #cbd5e0;
+    --accent: #1e3a5f;
+    --accent-2: #2d4a7c;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
+    --shadow-md: 0 4px 12px rgba(15,23,42,.08), 0 2px 4px rgba(15,23,42,.04);
+    --shadow-lg: 0 12px 32px rgba(15,23,42,.12), 0 4px 12px rgba(15,23,42,.06);
+    /* 分支主题色 */
+    --c-must: #d23f3f;
+    --c-hard: #e07a1c;
+    --c-supp: #2576b8;
+    --c-add:  #259a5c;
+    --c-over: #8c4dab;
+    --c-must-soft: #fdecec;
+    --c-hard-soft: #fdf1e3;
+    --c-supp-soft: #e6f0fa;
+    --c-add-soft:  #e3f5ec;
+    --c-over-soft: #f1e9f6;
+    --topbar-h: 56px;
+    --side-w: 480px;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button { font-family: inherit; }
+  a { color: inherit; }
+
+  /* ============ 顶部工具栏 ============ */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--topbar-h);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,0) 50%),
+      linear-gradient(120deg, #15294a 0%, #1e3a5f 45%, #2d4a7c 100%);
+    color: #fff;
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 14px 0 18px;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 4px 16px rgba(15,23,42,.18);
+    backdrop-filter: blur(6px);
+  }
+  #topbar .brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+  #topbar .brand .logo {
+    font-size: 1.1rem;
+    width: 30px; height: 30px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  #topbar .brand .t {
+    font-weight: 600; font-size: .92rem; letter-spacing: .02em;
+    white-space: nowrap;
+  }
+  #topbar .brand .sub {
+    font-size: .68rem; opacity: .65; font-weight: 400; margin-left: 6px;
+    letter-spacing: .05em;
+  }
+  #topbar .search-wrap {
+    flex: 1; max-width: 420px; position: relative;
+  }
+  #search {
+    width: 100%; height: 36px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff; border-radius: 10px;
+    padding: 0 96px 0 36px; font-size: .86rem;
+    outline: none;
+    transition: background .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  #search::placeholder { color: rgba(255,255,255,.55); }
+  #search:hover { background: rgba(255,255,255,.16); }
+  #search:focus {
+    background: rgba(255,255,255,.22);
+    border-color: rgba(255,255,255,.4);
+    box-shadow: 0 0 0 3px rgba(255,255,255,.08);
+  }
+  #search-wrap-icon { position: absolute; left: 12px; top: 9px; opacity: .75; font-size: .9rem; pointer-events: none; }
+  .search-kbd {
+    position: absolute; right: 10px; top: 9px;
+    font-family: "SF Mono", Menlo, monospace; font-size: .68rem;
+    padding: 2px 6px; border-radius: 5px;
+    background: rgba(255,255,255,.16); color: rgba(255,255,255,.85);
+    border: 1px solid rgba(255,255,255,.18);
+    pointer-events: none;
+  }
+  .search-nav {
+    position: absolute; right: 8px; top: 6px;
+    display: none; align-items: center; gap: 2px;
+  }
+  .search-nav.show { display: inline-flex; }
+  .search-nav button {
+    width: 22px; height: 22px; border-radius: 5px;
+    border: 0; background: rgba(255,255,255,.18); color: #fff;
+    cursor: pointer; font-size: .7rem; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .12s var(--ease);
+  }
+  .search-nav button:hover { background: rgba(255,255,255,.32); }
+  .search-nav .count {
+    font-size: .68rem; color: rgba(255,255,255,.85);
+    padding: 0 4px; min-width: 38px; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .btn-group { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+  .tb-btn {
+    background: rgba(255,255,255,.12);
+    color: #fff; border: 1px solid rgba(255,255,255,.18);
+    height: 34px; padding: 0 12px; border-radius: 8px;
+    cursor: pointer; font-size: .8rem; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: background .15s var(--ease), transform .08s var(--ease), border-color .15s var(--ease);
+    white-space: nowrap;
+  }
+  .tb-btn:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.28); }
+  .tb-btn:active { transform: scale(.96); }
+  .tb-btn.active {
+    background: rgba(255,255,255,.28);
+    border-color: rgba(255,255,255,.4);
+  }
+  .tb-btn .ico { font-size: .95rem; opacity: .9; }
+  .tb-btn.home {
+    background: rgba(0,0,0,.18); text-decoration: none;
+    width: 34px; padding: 0; justify-content: center;
+  }
+  .tb-divider { width: 1px; height: 22px; background: rgba(255,255,255,.15); margin: 0 2px; }
+
+  /* ============ 主区域：脑图 + 侧栏 ============ */
+  #main {
+    position: fixed;
+    top: var(--topbar-h); left: 0; right: 0; bottom: 0;
+    display: flex;
+  }
+  #map-wrap {
+    flex: 1; position: relative; overflow: hidden;
+    background: var(--bg-grad);
+  }
+  #mindmap { width: 100%; height: 100%; display: block; }
+
+  /* markmap 节点样式 */
+  #mindmap text { font-family: inherit; }
+  #mindmap .markmap-node > circle {
+    cursor: pointer; stroke-width: 2;
+    transition: r .15s var(--ease), stroke-width .15s var(--ease);
+  }
+  #mindmap .markmap-node:hover > circle {
+    stroke-width: 3.5;
+    filter: drop-shadow(0 0 5px rgba(15,23,42,.25));
+  }
+  #mindmap .markmap-node > text { font-weight: 500; fill: #1f2937; cursor: pointer; }
+  /* 节点高亮(搜索命中) */
+  #mindmap .markmap-node.hl > circle {
+    stroke: #f1c40f; stroke-width: 3.5;
+    filter: drop-shadow(0 0 5px rgba(241,196,15,.75));
+  }
+  #mindmap .markmap-node.hl > text { fill: var(--c-must); font-weight: 700; }
+  #mindmap .markmap-node.hl-current > circle {
+    stroke: #f59e0b; stroke-width: 4.5;
+    filter: drop-shadow(0 0 9px rgba(245,158,11,.95));
+  }
+  /* 富文本节点 */
+  #mindmap .markmap-node div { font-size: 13px; line-height: 1.45; }
+  #mindmap .markmap-node code {
+    background: #fff3cd; padding: 1px 4px; border-radius: 3px;
+    font-family: "SF Mono", Menlo, monospace; font-size: 12px;
+  }
+
+  /* 左下角图例 */
+  .legend {
+    position: absolute; bottom: 14px; left: 14px;
+    background: rgba(255,255,255,.92);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 9px 12px;
+    font-size: .7rem; color: var(--muted);
+    z-index: 5; line-height: 1.7;
+    box-shadow: var(--shadow-md);
+    max-width: 240px;
+    backdrop-filter: blur(8px);
+  }
+  .legend b { color: var(--text); font-size: .72rem; letter-spacing: .02em; }
+  .dot {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    margin-right: 4px; vertical-align: middle;
+    box-shadow: 0 0 0 2px rgba(255,255,255,.7);
+  }
+
+  /* 键盘快捷键提示 */
+  .kbd-hint {
+    position: absolute; bottom: 14px; right: 14px;
+    background: rgba(255,255,255,.92);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 9px 12px;
+    font-size: .68rem; color: var(--muted);
+    z-index: 5; line-height: 1.9;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(8px);
+    transition: opacity .2s var(--ease), transform .2s var(--ease);
+  }
+  .kbd-hint.hidden { opacity: 0; transform: translateY(8px); pointer-events: none; }
+  .kbd-hint kbd {
+    display: inline-block; padding: 1px 6px;
+    background: var(--panel-soft); border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    font-family: "SF Mono", Menlo, monospace; font-size: .66rem;
+    color: var(--text-soft); margin-right: 4px;
+    min-width: 18px; text-align: center;
+  }
+  .kbd-hint .row { white-space: nowrap; }
+  .kbd-hint-close {
+    position: absolute; top: 4px; right: 4px;
+    width: 18px; height: 18px; border: 0; background: transparent;
+    color: var(--muted-2); cursor: pointer; font-size: .7rem;
+    border-radius: 4px;
+  }
+  .kbd-hint-close:hover { background: var(--bg); color: var(--text); }
+
+  /* toast 提示 */
+  #toast {
+    position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+    background: rgba(15,23,42,.94); color: #fff;
+    padding: 10px 20px; border-radius: 22px;
+    font-size: .8rem; z-index: 50;
+    box-shadow: var(--shadow-lg);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s var(--ease), top .25s var(--ease);
+    backdrop-filter: blur(8px);
+    max-width: 80%;
+  }
+  #toast.show { opacity: 1; top: 20px; }
+
+  /* ============ 右侧详情侧栏 ============ */
+  #sidebar {
+    width: var(--side-w); flex-shrink: 0;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    transition: margin-right .3s var(--ease), width .3s var(--ease);
+    box-shadow: -1px 0 0 var(--border) inset;
+  }
+  #sidebar.collapsed { margin-right: calc(-1 * var(--side-w)); }
+
+  #side-head {
+    padding: 14px 18px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--panel-soft), #fff);
+    flex-shrink: 0;
+    position: relative;
+  }
+  #side-head .side-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 28px; height: 28px;
+    border: 0; background: transparent; cursor: pointer;
+    border-radius: 7px; color: var(--muted);
+    font-size: .9rem; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .12s var(--ease), color .12s var(--ease);
+  }
+  #side-head .side-close:hover { background: var(--bg); color: var(--text); }
+  #side-crumbs { font-size: .72rem; color: var(--muted); margin-bottom: 8px; padding-right: 34px; }
+  #side-crumbs .crumb-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 11px;
+    font-size: .68rem; font-weight: 600; color: #fff; margin-right: 5px;
+    letter-spacing: .03em;
+  }
+  #side-crumbs .crumb-tag.subtle {
+    background: var(--panel-soft) !important;
+    color: var(--muted) !important;
+    border: 1px solid var(--border);
+  }
+  #side-title {
+    font-size: 1.04rem; font-weight: 700; color: var(--text);
+    line-height: 1.45; margin: 0; padding-right: 34px;
+  }
+
+  /* 侧栏操作条 */
+  #side-actions {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-soft);
+    flex-shrink: 0;
+  }
+  #side-actions.hidden { display: none; }
+  .side-act {
+    height: 28px; padding: 0 10px;
+    border: 1px solid var(--border); background: #fff;
+    border-radius: 6px; cursor: pointer;
+    font-size: .74rem; color: var(--text-soft);
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: background .12s var(--ease), border-color .12s var(--ease), color .12s var(--ease);
+  }
+  .side-act:hover { background: var(--bg); border-color: var(--border-strong); color: var(--text); }
+  .side-act:disabled { opacity: .4; cursor: not-allowed; }
+  .side-act .ico { font-size: .82rem; }
+  #side-nav-info {
+    margin-left: auto; font-size: .7rem; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  #side-body {
+    flex: 1; overflow-y: auto; padding: 18px 22px 30px;
+    font-size: .87rem; line-height: 1.78; color: var(--text-soft);
+  }
+  #side-body .empty {
+    color: var(--muted); text-align: center; margin-top: 50px;
+    font-size: .85rem; line-height: 2;
+  }
+  #side-body .empty .big {
+    font-size: 2.6rem; display: block; margin-bottom: 14px;
+    opacity: .35;
+  }
+  #side-body .empty .tip-list {
+    margin-top: 18px; padding: 14px 18px;
+    background: var(--panel-soft); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); text-align: left;
+    font-size: .78rem; line-height: 1.8;
+  }
+  #side-body .empty .tip-list b { color: var(--text); }
+
+  /* 答案排版 */
+  #side-body ul { padding-left: 22px; margin: 6px 0; }
+  #side-body ul ul { margin: 4px 0; }
+  #side-body li { margin-bottom: 6px; }
+  #side-body li::marker { color: var(--muted-2); }
+  #side-body strong { color: var(--c-must); font-weight: 700; }
+  #side-body code {
+    background: #fff3cd; padding: 1px 6px; border-radius: 4px;
+    font-family: "SF Mono", Menlo, monospace; font-size: .8rem; color: #744210;
+    border: 1px solid rgba(116,66,16,.12);
+  }
+  #side-body table {
+    width: 100%; border-collapse: collapse; margin: 12px 0;
+    font-size: .8rem; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  #side-body th, #side-body td {
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 7px 10px; text-align: left; vertical-align: top;
+  }
+  #side-body th:last-child, #side-body td:last-child { border-right: 0; }
+  #side-body tr:last-child td { border-bottom: 0; }
+  #side-body th { background: #eef2f8; font-weight: 600; color: var(--text); }
+  #side-body tr:nth-child(even) td { background: #fafbfd; }
+  #side-body p { margin: 7px 0; }
+  /* 高亮口诀/金句框 */
+  #side-body .formula-box {
+    background: linear-gradient(135deg, #fff8e1, #fff3cd);
+    border-left: 4px solid var(--c-hard);
+    padding: 10px 14px 10px 38px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0; font-size: .85rem;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  #side-body .formula-box::before {
+    content: "💡"; position: absolute; left: 12px; top: 9px;
+    font-size: .95rem;
+  }
+  /* 侧栏滚动条 */
+  #side-body::-webkit-scrollbar { width: 10px; }
+  #side-body::-webkit-scrollbar-thumb {
+    background: #cbd5e0; border-radius: 5px;
+    border: 2px solid var(--panel);
+  }
+  #side-body::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  #side-body::-webkit-scrollbar-track { background: transparent; }
+
+  /* 复制成功反馈 */
+  .side-act.copied {
+    background: var(--c-add-soft); border-color: var(--c-add); color: var(--c-add);
+  }
+
+  /* 响应式：窄屏侧栏改全屏覆盖 */
+  @media (max-width: 880px) {
+    :root { --side-w: 92%; --topbar-h: 52px; }
+    #topbar { padding: 0 10px 0 12px; gap: 8px; }
+    #topbar .brand .t { display: none; }
+    #topbar .brand .sub { display: none; }
+    #topbar .search-wrap { max-width: none; }
+    #sidebar {
+      position: absolute; top: 0; right: 0; bottom: 0; z-index: 60;
+      box-shadow: -8px 0 32px rgba(0,0,0,.2);
+    }
+    #sidebar.collapsed { margin-right: -100%; }
+    .kbd-hint { display: none; }
+    .legend { font-size: .65rem; padding: 7px 10px; }
+    .tb-btn span:not(.ico) { display: none; }
+    .tb-btn { padding: 0 10px; }
+  }
+  @media (max-width: 480px) {
+    :root { --side-w: 100%; }
+    .search-kbd { display: none; }
+    #search { padding-right: 36px; }
+  }
+
+  /* 打印样式 */
+  @media print {
+    #topbar, .legend, .kbd-hint, #toast, #side-actions, #side-head .side-close { display: none !important; }
+    #main { position: static; }
+    #sidebar { width: 100%; border: 0; box-shadow: none; }
+    #map-wrap { display: none; }
+    #side-body { overflow: visible; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18"></script>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">
+    <span class="logo">🧠</span>
+    <span class="t">货币与金融的国际政治经济学</span>
+    <span class="sub">全题脑图</span>
+  </div>
+  <div class="search-wrap">
+    <span id="search-wrap-icon">🔍</span>
+    <input id="search" type="text" placeholder="搜索考点，如「特里芬」「外汇储备」…" autocomplete="off" spellcheck="false">
+    <span id="search-kbd" class="search-kbd">/</span>
+    <span id="search-nav" class="search-nav">
+      <span id="search-count" class="count"></span>
+      <button id="search-prev" title="上一个 (Shift+Enter)">↑</button>
+      <button id="search-next" title="下一个 (Enter)">↓</button>
+      <button id="search-clear" title="清除 (Esc)">✕</button>
+    </span>
+  </div>
+  <div class="btn-group">
+    <button class="tb-btn" onclick="fitMap()" title="适配窗口 (F)"><span class="ico">⊡</span><span>适配</span></button>
+    <button class="tb-btn" onclick="collapseAll()" title="折叠到专题层 (1)"><span class="ico">⊙</span><span>折叠</span></button>
+    <button class="tb-btn" onclick="expandToQuestions()" title="展开到题目层 (2)"><span class="ico">⊕</span><span>展开</span></button>
+    <span class="tb-divider"></span>
+    <button class="tb-btn" id="side-toggle" onclick="toggleSidebar()" title="开关侧栏 (\\)"><span class="ico">▣</span><span>答案</span></button>
+    <a class="tb-btn home" href="../index.html" title="返回首页">←</a>
+  </div>
+</div>
+
+<div id="main">
+  <div id="map-wrap">
+    <svg id="mindmap"></svg>
+    <div id="toast">滚轮缩放 · 拖拽平移 · 点击题目节点查看完整答案</div>
+    <div class="legend">
+      <b>配色 · 优先级</b><br>
+      <span class="dot" style="background:var(--c-must)"></span>必背(高频≥6次)
+      <span class="dot" style="background:var(--c-hard)"></span>重难点<br>
+      <span class="dot" style="background:var(--c-supp)"></span>补充
+      <span class="dot" style="background:var(--c-add)"></span>补遗
+      <span class="dot" style="background:var(--c-over)"></span>总览
+    </div>
+    <div class="kbd-hint" id="kbd-hint">
+      <button class="kbd-hint-close" id="kbd-hint-close" title="隐藏">✕</button>
+      <div class="row"><kbd>/</kbd>搜索</div>
+      <div class="row"><kbd>1</kbd><kbd>2</kbd>折叠/展开</div>
+      <div class="row"><kbd>F</kbd>适配 <kbd>\</kbd>答案栏</div>
+      <div class="row"><kbd>J</kbd><kbd>K</kbd>切换题目</div>
+    </div>
+  </div>
+
+  <aside id="sidebar">
+    <div id="side-head">
+      <button class="side-close" id="side-close" title="关闭 (Esc / \)">✕</button>
+      <div id="side-crumbs"></div>
+      <h2 id="side-title">点击脑图中的题目节点查看答案</h2>
+    </div>
+    <div id="side-actions" class="hidden">
+      <button class="side-act" id="side-prev" title="上一题 (K / ↑)"><span class="ico">◀</span>上一题</button>
+      <button class="side-act" id="side-next" title="下一题 (J / ↓)">下一题<span class="ico">▶</span></button>
+      <button class="side-act" id="side-copy" title="复制答案"><span class="ico">📋</span>复制</button>
+      <span id="side-nav-info"></span>
+    </div>
+    <div id="side-body">
+      <div class="empty">
+        <span class="big">📚</span>
+        共 <b>16</b> 个专题分支 · <b>101</b> 道题<br>
+        点击 <b>[名]/[简]/[论]</b> 题目节点查看完整答案
+        <div class="tip-list">
+          <b>快捷键</b><br>
+          <kbd style="font-family:inherit;background:#fff;border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.7rem">/</kbd> 聚焦搜索 ·
+          <kbd style="font-family:inherit;background:#fff;border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.7rem">Enter</kbd> 下一个匹配<br>
+          <kbd style="font-family:inherit;background:#fff;border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.7rem">J</kbd>/<kbd style="font-family:inherit;background:#fff;border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.7rem">K</kbd> 切换题目 ·
+          <kbd style="font-family:inherit;background:#fff;border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.7rem">\</kbd> 开关本栏
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ 数据：专题 + 题目 + 答案 ============ -->
+<script src="mfipe-data.js"></script>
+
+<!-- ============ 渲染与交互逻辑 ============ -->
+<script>
+(function(){
+  "use strict";
+  const { Transformer } = markmap;
+  const { Markmap } = markmap;
+
+  // ---------- 1. 由 TOPICS 生成脑图 markdown ----------
+  function buildMarkdown() {
+    let md = "# 货币与金融的国际政治经济学 · 全题脑图\n";
+    TOPICS.forEach(t => {
+      md += `\n## ${t.title}\n`;
+      t.sections.forEach(s => {
+        md += `\n### ${s.title}\n`;
+        s.questions.forEach(q => {
+          md += `#### [${q.tag}] ${q.title}\n`;
+        });
+      });
+    });
+    return md;
+  }
+
+  // ---------- 2. 建立 question 查找索引 ----------
+  const Q_INDEX = {};      // key -> {topic, section, question, idx}
+  const Q_LINEAR = [];     // 顺序索引，用于 prev/next 题目导航
+  TOPICS.forEach(t => {
+    t.sections.forEach(s => {
+      s.questions.forEach(q => {
+        const entry = { topic: t, section: s, question: q, idx: Q_LINEAR.length };
+        Q_INDEX[norm(q.title)] = entry;
+        Q_LINEAR.push(entry);
+      });
+    });
+  });
+  function norm(s){ return String(s).replace(/\s+/g,'').trim(); }
+
+  // ---------- 3. 配色 ----------
+  const TYPE_COLOR = {
+    must: getCss('--c-must'),
+    hard: getCss('--c-hard'),
+    supp: getCss('--c-supp'),
+    add:  getCss('--c-add'),
+    over: getCss('--c-over'),
+  };
+  const TOPIC_COLOR = {};
+  TOPICS.forEach(t => { TOPIC_COLOR[norm(t.title)] = TYPE_COLOR[t.type] || '#64748b'; });
+
+  function getCss(v){
+    return getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  }
+
+  function colorFn(node){
+    const state = node && node.state;
+    if (!state) return null;
+    if (state.depth === 1) {
+      const key = norm(node.content || '');
+      return TOPIC_COLOR[key] || '#4a5568';
+    }
+    return null;
+  }
+
+  // ---------- 4. 创建 markmap ----------
+  const transformer = new Transformer();
+  const { root } = transformer.transform(buildMarkdown());
+
+  function nodeTopicColor(text){
+    const k = norm(text);
+    if (!k) return null;
+    for (const t of TOPICS) {
+      const core = norm(t.title).replace(/[🟢🟠🔵📘📌]/g,'').replace(/【[^】]*】/g,'').replace(/[（(][^)）]*[)）]/g,'');
+      if (core && k.includes(core)) return TYPE_COLOR[t.type] || '#64748b';
+    }
+    return null;
+  }
+  function applyColors(){
+    const svg = document.getElementById('mindmap');
+    const fors = svg.querySelectorAll('foreignObject.markmap-foreign');
+    fors.forEach(f => {
+      const g = f.closest('g.markmap-node');
+      if (!g) return;
+      const circle = g.querySelector('circle');
+      if (!circle) return;
+      const txt = (f.textContent || '').trim();
+      const color = nodeTopicColor(txt);
+      if (color) {
+        circle.setAttribute('fill', color);
+        circle.setAttribute('stroke', color);
+      } else {
+        circle.setAttribute('fill', '#1e3a5f');
+        circle.setAttribute('stroke', '#1e3a5f');
+      }
+    });
+  }
+  function applyColorsSoon(){ setTimeout(applyColors, 30); setTimeout(applyColors, 200); }
+
+  function fitMap(){ if(mm) mm.fit(); applyColorsSoon(); setTimeout(()=>{ if(mm) mm.fit(); }, 60); }
+  window.fitMap = fitMap;
+
+  // ---------- 5. 折叠/展开（重建实例方案） ----------
+  let mm = Markmap.create('#mindmap', {
+    maxWidth: 240,
+    duration: 280,
+    spacingHorizontal: 80,
+    spacingVertical: 10,
+    paddingX: 10,
+    autoFit: true,
+    initialExpandLevel: 2,
+    colorFreezeLevel: 2,
+    color: colorFn,
+    zoom: true,
+    pan: true,
+  }, root);
+  window.__mm = mm;
+
+  const MM_OPTS = {
+    maxWidth: 240, duration: 280, spacingHorizontal: 80, spacingVertical: 10,
+    paddingX: 10, autoFit: true, colorFreezeLevel: 2,
+    color: colorFn, zoom: true, pan: true,
+  };
+
+  function rebuild(expandLevel){
+    try { mm.destroy(); } catch(e){}
+    const { root: r } = transformer.transform(buildMarkdown());
+    mm = Markmap.create('#mindmap', Object.assign({}, MM_OPTS, { initialExpandLevel: expandLevel }), r);
+    window.__mm = mm;
+    applyColorsSoon();
+    setTimeout(fitMap, 120);
+  }
+  window.collapseAll = function(){
+    rebuild(2);
+    showToast('已折叠到专题层');
+  };
+  window.expandToQuestions = function(){
+    rebuild(4);
+    showToast('已展开到题目层');
+  };
+
+  // ---------- 6. 侧栏：渲染题目答案 ----------
+  const sideBody = document.getElementById('side-body');
+  const sideTitle = document.getElementById('side-title');
+  const sideCrumbs = document.getElementById('side-crumbs');
+  const sideActions = document.getElementById('side-actions');
+  const sideNavInfo = document.getElementById('side-nav-info');
+  const sidePrevBtn = document.getElementById('side-prev');
+  const sideNextBtn = document.getElementById('side-next');
+  const sideCopyBtn = document.getElementById('side-copy');
+  const sideCloseBtn = document.getElementById('side-close');
+  const sidebar = document.getElementById('sidebar');
+  const sideToggleBtn = document.getElementById('side-toggle');
+  const TYPE_LABEL = { must:'必背', hard:'重难点', supp:'补充', add:'补遗', over:'总览' };
+  const TAG_LABEL = { '名':'名词解释', '简':'简答题', '论':'论述题', '节':'应试要点' };
+
+  let currentEntry = null; // 当前显示的题目 entry（来自 Q_LINEAR）
+
+  // 极简 markdown -> HTML
+  function mdToHtml(md){
+    const lines = md.replace(/\r/g,'').split('\n');
+    let html = ''; let inUl = false; let inOl = false;
+    let tableRows = []; let tableHasHeader = false;
+    function closeList(){ if(inUl){html+='</ul>';inUl=false;} if(inOl){html+='</ol>';inOl=false;} }
+    function flushTable(){
+      if(!tableRows.length) return;
+      let t = '<table>';
+      tableRows.forEach((row,i)=>{
+        t += '<tr>';
+        row.forEach(cell=>{ t += (i===0&&tableHasHeader?'<th>':'<td>') + inline(cell) + (i===0&&tableHasHeader?'</th>':'</td>'); });
+        t += '</tr>';
+      });
+      t += '</table>';
+      html += t; tableRows = []; tableHasHeader = false;
+    }
+    function inline(s){
+      return s
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+        .replace(/`([^`]+)`/g,'<code>$1</code>');
+    }
+    for (let raw of lines){
+      const line = raw.trimEnd();
+      if (!line.trim()){ closeList(); flushTable(); continue; }
+      if (/^\|.*\|$/.test(line.trim())){
+        closeList();
+        const cells = line.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+        if (cells.every(c=>/^:?-+:?$/.test(c))) { tableHasHeader = true; continue; }
+        tableRows.push(cells);
+        continue;
+      } else { flushTable(); }
+      const olm = line.match(/^(\d+)\.\s+(.*)$/);
+      if (olm){
+        if (inUl){ html+='</ul>'; inUl=false; }
+        if (!inOl){ html+='<ol>'; inOl=true; }
+        html += '<li>' + inline(olm[2]) + '</li>';
+        continue;
+      }
+      const ulm = line.match(/^(\s*)[-*]\s+(.*)$/);
+      if (ulm){
+        if (inOl){ html+='</ol>'; inOl=false; }
+        if (!inUl){ html+='<ul>'; inUl=true; }
+        html += '<li>' + inline(ulm[2]) + '</li>';
+        continue;
+      }
+      closeList(); flushTable();
+      if (/口诀|公式|速记|核心判断|核心论断|翟东升一句话|翟东升核心判断/.test(line) && line.length < 80) {
+        html += '<div class="formula-box">' + inline(line) + '</div>';
+        continue;
+      }
+      html += '<p>' + inline(line) + '</p>';
+    }
+    closeList(); flushTable();
+    return html;
+  }
+
+  function showQuestion(qTitle){
+    const key = norm(qTitle);
+    const hit = Q_INDEX[key];
+    if (!hit) return false;
+    currentEntry = hit;
+    const { topic, section, question, idx } = hit;
+    const tcolor = TYPE_COLOR[topic.type] || '#64748b';
+    const tlabel = TYPE_LABEL[topic.type] || topic.type;
+    const qtag = TAG_LABEL[question.tag] || question.tag;
+    sideCrumbs.innerHTML =
+      `<span class="crumb-tag" style="background:${tcolor}">${tlabel}</span>` +
+      `<span class="crumb-tag subtle">${escapeHtml(section.title)}</span>` +
+      `<span class="crumb-tag" style="background:#64748b">${qtag}</span>`;
+    sideTitle.textContent = question.title;
+    sideBody.innerHTML = mdToHtml(question.answer || '');
+    sideBody.scrollTop = 0;
+    sideActions.classList.remove('hidden');
+    sideNavInfo.textContent = `${idx+1} / ${Q_LINEAR.length}`;
+    sidePrevBtn.disabled = idx === 0;
+    sideNextBtn.disabled = idx === Q_LINEAR.length - 1;
+    if (sidebar.classList.contains('collapsed')) toggleSidebar(true);
+    return true;
+  }
+  function escapeHtml(s){ return String(s).replace(/[&<>]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c])); }
+  window.__showQuestion = showQuestion;
+
+  // 上一题 / 下一题
+  function gotoQuestion(delta){
+    if (!currentEntry) {
+      if (Q_LINEAR.length) showQuestion(Q_LINEAR[0].question.title);
+      return;
+    }
+    const newIdx = currentEntry.idx + delta;
+    if (newIdx < 0 || newIdx >= Q_LINEAR.length) return;
+    showQuestion(Q_LINEAR[newIdx].question.title);
+  }
+  sidePrevBtn.addEventListener('click', ()=>gotoQuestion(-1));
+  sideNextBtn.addEventListener('click', ()=>gotoQuestion(1));
+
+  // 复制答案
+  sideCopyBtn.addEventListener('click', async ()=>{
+    if (!currentEntry) return;
+    const q = currentEntry.question;
+    const text = `${q.title}\n\n${q.answer || ''}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      sideCopyBtn.classList.add('copied');
+      sideCopyBtn.innerHTML = '<span class="ico">✓</span>已复制';
+      setTimeout(()=>{
+        sideCopyBtn.classList.remove('copied');
+        sideCopyBtn.innerHTML = '<span class="ico">📋</span>复制';
+      }, 1400);
+    } catch(e){
+      showToast('复制失败，请手动选择');
+    }
+  });
+
+  sideCloseBtn.addEventListener('click', ()=>toggleSidebar(false));
+
+  // ---------- 7. 节点点击 ----------
+  const svgEl = document.getElementById('mindmap');
+  svgEl.addEventListener('click', function(e){
+    const nodeEl = e.target.closest('.markmap-node');
+    if (!nodeEl) return;
+    const fo = nodeEl.querySelector('foreignObject');
+    const txtEl = nodeEl.querySelector('text');
+    const raw = fo ? (fo.textContent||'') : (txtEl ? (txtEl.textContent||'') : '');
+    let content = raw.trim();
+    content = content.replace(/^\[[名简论节]\]\s*/, '');
+    if (Q_INDEX[norm(content)]) {
+      showQuestion(content);
+    }
+  });
+
+  // ---------- 8. 搜索 ----------
+  const searchInput = document.getElementById('search');
+  const searchClear = document.getElementById('search-clear');
+  const searchCount = document.getElementById('search-count');
+  const searchNav = document.getElementById('search-nav');
+  const searchKbd = document.getElementById('search-kbd');
+  const searchPrev = document.getElementById('search-prev');
+  const searchNext = document.getElementById('search-next');
+  let matchList = [];
+  let matchIdx = -1;
+
+  function clearHl(){
+    svgEl.querySelectorAll('.markmap-node.hl').forEach(n=>n.classList.remove('hl'));
+    svgEl.querySelectorAll('.markmap-node.hl-current').forEach(n=>n.classList.remove('hl-current'));
+  }
+
+  function findNodeByText(title){
+    const key = norm(title);
+    const fors = svgEl.querySelectorAll('foreignObject.markmap-foreign');
+    for (const f of fors){
+      const raw = (f.textContent || '').trim().replace(/^\[[名简论节]\]\s*/, '');
+      if (norm(raw) === key) return f.closest('g.markmap-node');
+    }
+    const texts = svgEl.querySelectorAll('.markmap-node text');
+    for (const t of texts){
+      const raw = (t.textContent || '').trim().replace(/^\[[名简论节]\]\s*/, '');
+      if (norm(raw) === key) return t.closest('g.markmap-node');
+    }
+    return null;
+  }
+
+  function expandPathTo(cb){
+    rebuild(4);
+    setTimeout(()=>{ if (cb) cb(); }, 350);
+  }
+
+  function updateSearchUiVisibility(){
+    const hasValue = searchInput.value.trim().length > 0;
+    searchNav.classList.toggle('show', hasValue);
+    searchKbd.style.display = hasValue ? 'none' : '';
+  }
+
+  function doSearch(){
+    const q = searchInput.value.trim();
+    clearHl();
+    matchList = []; matchIdx = -1;
+    updateSearchUiVisibility();
+    if (!q){
+      searchCount.textContent = '';
+      return;
+    }
+    const ql = q.toLowerCase();
+    const titleHits = [], bodyHits = [];
+    TOPICS.forEach(t=>{
+      t.sections.forEach(s=>{
+        s.questions.forEach(qn=>{
+          const inTitle = qn.title.toLowerCase().includes(ql);
+          const inBody = (' ' + qn.answer).toLowerCase().includes(ql);
+          if (inTitle) titleHits.push(qn.title);
+          else if (inBody) bodyHits.push(qn.title);
+        });
+      });
+    });
+    matchList = titleHits.concat(bodyHits);
+    if (matchList.length === 0){
+      searchCount.textContent = '0';
+      return;
+    }
+    expandPathTo(()=>{
+      matchList.forEach(title=>{
+        const n = findNodeByText(title);
+        if (n) n.classList.add('hl');
+      });
+      matchIdx = 0;
+      focusMatch();
+    });
+  }
+
+  function focusMatch(){
+    if (matchIdx < 0 || matchIdx >= matchList.length) return;
+    const title = matchList[matchIdx];
+    const node = findNodeByText(title);
+    svgEl.querySelectorAll('.markmap-node.hl-current').forEach(n=>n.classList.remove('hl-current'));
+    if (node){
+      node.classList.add('hl-current');
+      showQuestion(title);
+      searchCount.textContent = (matchIdx+1) + '/' + matchList.length;
+    }
+  }
+
+  function gotoMatch(delta){
+    if (!matchList.length) return;
+    matchIdx = (matchIdx + delta + matchList.length) % matchList.length;
+    focusMatch();
+  }
+
+  let searchTimer = null;
+  searchInput.addEventListener('input', function(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(doSearch, 220);
+  });
+  searchInput.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){
+      e.preventDefault();
+      if (matchList.length){
+        gotoMatch(e.shiftKey ? -1 : 1);
+      } else {
+        doSearch();
+      }
+    } else if (e.key === 'Escape'){
+      if (searchInput.value){
+        searchInput.value = ''; doSearch();
+      } else {
+        searchInput.blur();
+      }
+    }
+  });
+  searchClear.addEventListener('click', function(){
+    searchInput.value = ''; doSearch(); searchInput.focus();
+  });
+  searchPrev.addEventListener('click', ()=>gotoMatch(-1));
+  searchNext.addEventListener('click', ()=>gotoMatch(1));
+
+  // ---------- 9. 侧栏开关 ----------
+  function setSideBtnState(){
+    const open = !sidebar.classList.contains('collapsed');
+    sideToggleBtn.classList.toggle('active', open);
+  }
+  window.toggleSidebar = function(force){
+    if (typeof force === 'boolean'){
+      sidebar.classList.toggle('collapsed', !force);
+    } else {
+      sidebar.classList.toggle('collapsed');
+    }
+    setSideBtnState();
+  };
+  setSideBtnState();
+
+  // ---------- 10. toast ----------
+  const toast = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove('show'), 2200);
+  }
+  window.__toast = showToast;
+
+  setTimeout(()=>{
+    showToast('滚轮缩放 · 拖拽平移 · 点击题目查看答案');
+  }, 700);
+
+  // ---------- 11. 键盘快捷键提示 ----------
+  const kbdHint = document.getElementById('kbd-hint');
+  const kbdHintClose = document.getElementById('kbd-hint-close');
+  try {
+    if (localStorage.getItem('mfipe-kbd-hint-hidden') === '1') kbdHint.classList.add('hidden');
+  } catch(e){}
+  kbdHintClose.addEventListener('click', ()=>{
+    kbdHint.classList.add('hidden');
+    try { localStorage.setItem('mfipe-kbd-hint-hidden', '1'); } catch(e){}
+  });
+
+  // ---------- 12. 全局键盘快捷键 ----------
+  function isTyping(target){
+    if (!target) return false;
+    const tag = (target.tagName || '').toLowerCase();
+    return tag === 'input' || tag === 'textarea' || target.isContentEditable;
+  }
+  document.addEventListener('keydown', function(e){
+    // 当焦点在输入框中时，让搜索框自己处理
+    if (isTyping(e.target)) return;
+    // Cmd/Ctrl 不拦截
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    switch (e.key) {
+      case '/':
+        e.preventDefault();
+        searchInput.focus(); searchInput.select();
+        break;
+      case 'Escape':
+        if (!sidebar.classList.contains('collapsed')) {
+          toggleSidebar(false);
+        } else if (searchInput.value){
+          searchInput.value = ''; doSearch();
+        }
+        break;
+      case '1':
+        e.preventDefault(); collapseAll();
+        break;
+      case '2':
+        e.preventDefault(); expandToQuestions();
+        break;
+      case 'f':
+      case 'F':
+        e.preventDefault(); fitMap();
+        break;
+      case '\\':
+        e.preventDefault(); toggleSidebar();
+        break;
+      case 'j':
+      case 'J':
+      case 'ArrowDown':
+        if (currentEntry || matchList.length){
+          e.preventDefault();
+          if (matchList.length) gotoMatch(1);
+          else gotoQuestion(1);
+        }
+        break;
+      case 'k':
+      case 'K':
+      case 'ArrowUp':
+        if (currentEntry || matchList.length){
+          e.preventDefault();
+          if (matchList.length) gotoMatch(-1);
+          else gotoQuestion(-1);
+        }
+        break;
+      case '?':
+        e.preventDefault();
+        kbdHint.classList.toggle('hidden');
+        break;
+    }
+  });
+
+  // ---------- 13. 初始化与防抖 resize ----------
+  window.addEventListener('load', ()=>{ setTimeout(fitMap, 200); });
+  let rzTimer = null;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(rzTimer);
+    rzTimer = setTimeout(fitMap, 200);
+  });
+
+})();
+</script>
+
+</body>
+</html>

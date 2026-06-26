@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《论文写作》嵇先白老师讲座纪要</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+  body { font-family: 'Noto Sans SC', system-ui, sans-serif; background: #f1f5f9; }
+  .lecture-card { transition: transform 0.15s, box-shadow 0.15s; }
+  .lecture-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .highlight-box { border-left: 4px solid; }
+  .keyword { @apply bg-amber-50 text-amber-800 px-1.5 py-0.5 rounded font-medium; }
+  .danger { @apply bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-medium; }
+  .tip { @apply bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-medium; }
+  .quote { @apply text-slate-500 italic text-sm border-l-2 border-slate-300 pl-4 my-2; }
+  .section-link { scroll-margin-top: 80px; }
+
+  @media print {
+    body { background: #fff !important; font-size: 10pt; }
+    .lecture-card { box-shadow: none !important; border: 1px solid #ddd; break-inside: avoid; }
+    .no-print { display: none !important; }
+    @page { size: A4; margin: 12mm 10mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="max-w-4xl mx-auto px-4 py-6 md:py-10">
+
+  <!-- Header -->
+  <header class="mb-8 no-print">
+    <div class="bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl p-6 md:p-10 text-white shadow-lg">
+      <div class="flex items-center gap-2 text-amber-300 text-sm mb-3">
+        <span class="bg-amber-400/20 px-3 py-1 rounded-full">讲座纪要</span>
+        <span class="bg-white/10 px-3 py-1 rounded-full">中国人民大学 · 国际关系学院</span>
+      </div>
+      <h1 class="text-2xl md:text-4xl font-bold mb-2">《论文写作》专题讲座</h1>
+      <p class="text-slate-300 text-base md:text-lg">嵇先白 副教授 · 元宝会议助手整理</p>
+      <div class="flex flex-wrap gap-3 mt-4 text-sm text-slate-400">
+        <span>📅 周日讲座</span>
+        <span>⏱ 全文约 7.5 小时</span>
+        <span>📖 涵盖选题 / 文献 / 写作 / 规范</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <nav class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-6 no-print">
+    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">📑 目录</h2>
+    <div class="grid md:grid-cols-2 gap-2 text-sm">
+      <a href="#s1" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">一、论文选题与研究问题</a>
+      <a href="#s2" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">二、文献阅读与研究方法</a>
+      <a href="#s3" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">三、论文写作规范</a>
+      <a href="#s4" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">四、参考文献与学术伦理</a>
+      <a href="#s5" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">五、开题报告准备</a>
+      <a href="#s6" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">六、论文结构与逻辑框架</a>
+      <a href="#s7" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">七、学术语言与AI使用</a>
+      <a href="#s8" class="text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded transition">八、内参写作与文体辨析</a>
+    </div>
+  </nav>
+
+  <!-- 小结卡片 -->
+  <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
+    <h2 class="text-lg font-bold text-amber-900 mb-3">📌 核心要点速览</h2>
+    <ul class="space-y-2 text-sm text-amber-800">
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>选题四避</strong>：避热点、避行业、避立场、避人物传记</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>创新四维</strong>：概念 / 理论 / 方法 / 数据，任一维度即可</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>研究问题必须有"问号"</strong>，前两页必须出现</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>文献三必备</strong>：经典文献 + 近3年前沿 + 外文/小语种</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>标题要求</strong>：≤20字，忌情绪化，忌AI味</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>只能用一个理论框架</strong>，不能混用新自由主义和新现实主义</span></li>
+      <li class="flex gap-2"><span class="text-amber-600 mt-0.5">✦</span> <span><strong>摘要500字内</strong>，斩钉截铁的陈述句，一页纸</span></li>
+    </ul>
+  </div>
+
+  <!-- ========== 第一节 ========== -->
+  <section id="s1" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">01</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">论文选题与研究问题</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-blue-500 rounded-full inline-block"></span>
+        选题基本原则
+      </h3>
+      <ul class="space-y-2.5 text-sm text-slate-700 ml-3">
+        <li class="flex gap-2"><span class="text-red-500 mt-1">✗</span> <span><span class="danger">避免</span>研究正在进行中的热点事件（如俄乌冲突），以防研究对象变动导致结论失效</span></li>
+        <li class="flex gap-2"><span class="text-red-500 mt-1">✗</span> <span><span class="danger">避免</span>与所在行业或公司距离过近，以防数据获取困难、利益冲突及立场偏颇</span></li>
+        <li class="flex gap-2"><span class="text-red-500 mt-1">✗</span> <span><span class="danger">避免</span>政治人物传记性研究（如安倍、普京），存在政治敏感性和客观性双重风险</span></li>
+        <li class="flex gap-2"><span class="text-red-500 mt-1">✗</span> <span><span class="danger">避免</span>在硕士论文中加入政策建议，学术论文与政策咨询存在本质区别</span></li>
+        <li class="flex gap-2"><span class="text-green-600 mt-1">✓</span> <span><span class="keyword">研究问题应带"问号"</span>，并具备创新性：新框架、新数据或新解释</span></li>
+        <li class="flex gap-2"><span class="text-green-600 mt-1">✓</span> <span>选题应符合<span class="keyword">学科定位</span>，区域国别学聚焦具体国家，国际关系侧重议题导向</span></li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-blue-500 rounded-full inline-block"></span>
+        "T型"选题法
+      </h3>
+      <div class="highlight-box border-l-blue-500 bg-blue-50/50 pl-4 py-2 text-sm text-slate-700 rounded-r">
+        <p><strong>横向锁定</strong>兴趣领域（如关键矿产、数字经济）→ <strong>纵向深挖</strong>具体问题</p>
+        <p class="mt-1">领域只是起点，真正的学术价值在于<span class="keyword">垂直挖掘出一个让人夜不能寐的具体问题</span></p>
+      </div>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-blue-500 rounded-full inline-block"></span>
+        案例选取标准
+      </h3>
+      <ul class="space-y-1.5 text-sm text-slate-700 ml-3 list-disc">
+        <li>案例必须同时满足<span class="keyword">可比性</span>和<span class="keyword">代表性</span>两个核心标准</li>
+        <li>仅凭熟悉度不足以支撑选择依据</li>
+        <li>中日韩因地缘文化相似性是理想样本，但中国-埃塞俄比亚-澳大利亚随意组合则缺乏逻辑链条</li>
+        <li>建议通过典型国家（如巴西）推演区域共性来增强论证</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第二节 ========== -->
+  <section id="s2" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">02</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">文献阅读与研究方法</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-indigo-500 rounded-full inline-block"></span>
+        批判性阅读
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>带着问题意识进行阅读，<span class="keyword">不断质疑现有研究</span></li>
+        <li>从研究问题、方法、结论三个维度评估文章的论证逻辑</li>
+        <li>即使是同行评议的论文也可能存在不足，<span class="keyword">灵感往往来自对现有文献的质疑</span></li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-indigo-500 rounded-full inline-block"></span>
+        阅读方法
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>学术阅读需要<span class="keyword">高强度专注投入</span>，预留大块时间闭门谢客</li>
+        <li>精读期刊论文是学习写作方法的最佳范本——完整呈现研究过程</li>
+        <li>阅读量积累到临界点会产生强烈表达欲——发现文献观点重复并形成自己更优见解时，就是最佳动笔时机</li>
+      </ul>
+      <div class="quote mt-3">"课程虽名'写作'，实质根基在于阅读。"</div>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-indigo-500 rounded-full inline-block"></span>
+        研究方法论
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li><span class="keyword">定量+定性结合</span>：大N研究与小N研究互补</li>
+        <li><span class="keyword">证据优先于立场</span>，数据来源可多样化（调研、档案、计量分析等）</li>
+        <li>创新方向在于<span class="keyword">方法突破</span>（如博弈论应用）或<span class="keyword">新数据获取</span>（如解密档案）</li>
+        <li><span class="tip">TIP</span> 硕士生避免过度追求理论突破，概念创新比理论创新更实际可行</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第三节 ========== -->
+  <section id="s3" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full">03</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">论文写作规范</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block"></span>
+        标题规范
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li><span class="keyword">简洁规范</span>，总字数不超过20字</li>
+        <li>避免情绪化、文学化语言，如"中国为什么有前途"不适合学位论文</li>
+        <li>大标题与小标题用冒号分隔，副标题用破折号，但避免三者同时出现</li>
+        <li>标题与研究内容必须<span class="keyword">高度匹配</span>，研究内容变更后需同步修改标题</li>
+        <li>设计3-5个备选题目，每个附带背景说明和核心问题</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block"></span>
+        摘要规范
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li><span class="keyword">500字内</span>，中英对照，一页纸</li>
+        <li>用<span class="keyword">斩钉截铁的陈述句</span>，避免模糊表述（"或许""一定程度上"）</li>
+        <li>结构：首句点明研究背景与方法 → 核心结论 → 隐含启示</li>
+        <li>反对写研究意义和文章结构，反对将引言或结论直接移植</li>
+        <li>英文摘要 300-400字，一般现在时或过去时，避免未来时和进行时</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block"></span>
+        论文结构
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>硕士论文<span class="keyword">3-5万字</span>较合适，3万字显单薄，超5万不建议</li>
+        <li><span class="keyword">5-7个章节</span>（导论+结论+3-5个主体章节），反对过度碎片化的9章结构</li>
+        <li>平行章节必须保持对称性和均衡性——统一划分标准</li>
+        <li>递进式结构（如按时间划分）可不对称，但章节长度和信息密度需均衡</li>
+        <li><span class="danger">禁止超过三级标题</span>，四级标题必须有充分理由</li>
+        <li>一级标题3-8个，二级标题至少2个，"只有一个二级标题等于没有"</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block"></span>
+        图表规范
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>图表必须<span class="keyword">自制</span>并规范标注来源，直接截图会模糊</li>
+        <li>同时标注<span class="keyword">图表来源</span>和<span class="keyword">数据来源</span></li>
+        <li>图注在下、表头在上；黑白打印状态下也需保持可读性</li>
+        <li>风格统一，颜色字体一致</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-emerald-500 rounded-full inline-block"></span>
+        修改四步流程
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+        <div class="bg-blue-50 rounded-lg p-3 text-center">
+          <div class="text-blue-600 font-bold text-lg">1</div>
+          <div class="text-slate-700">首轮</div>
+          <div class="text-xs text-slate-500">检查结构完整性和论述逻辑</div>
+        </div>
+        <div class="bg-indigo-50 rounded-lg p-3 text-center">
+          <div class="text-indigo-600 font-bold text-lg">2</div>
+          <div class="text-slate-700">二轮</div>
+          <div class="text-xs text-slate-500">优化表述清晰度</div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-3 text-center">
+          <div class="text-purple-600 font-bold text-lg">3</div>
+          <div class="text-slate-700">三轮</div>
+          <div class="text-xs text-slate-500">精修表达精准度</div>
+        </div>
+        <div class="bg-rose-50 rounded-lg p-3 text-center">
+          <div class="text-rose-600 font-bold text-lg">4</div>
+          <div class="text-slate-700">终轮</div>
+          <div class="text-xs text-slate-500">核对格式规范</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 第四节 ========== -->
+  <section id="s4" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-violet-600 text-white text-xs font-bold px-3 py-1 rounded-full">04</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">参考文献与学术伦理</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-violet-500 rounded-full inline-block"></span>
+        三类必备文献
+      </h3>
+      <div class="grid md:grid-cols-3 gap-3 text-sm">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+          <div class="font-bold text-yellow-800 mb-1">📚 经典文献</div>
+          <div class="text-slate-600 text-xs">反映学术功底，如约瑟夫·奈、米尔斯海默</div>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+          <div class="font-bold text-blue-800 mb-1">📰 近3年前沿</div>
+          <div class="text-slate-600 text-xs">2026年开题需包含24-26年文献，显示研究时效性</div>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+          <div class="font-bold text-green-800 mb-1">🌐 外文/小语种</div>
+          <div class="text-slate-600 text-xs">直接参考目标国家原语言文献，凸显专业深度</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-violet-500 rounded-full inline-block"></span>
+        引用规范
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>区分<span class="keyword">直接引用</span>（引号+页码）、<span class="keyword">间接引用</span>（来源无页码）、<span class="keyword">概括性引用</span>（可省略页码）</li>
+        <li><span class="danger">严禁虚假引用</span>——AI时代虚假文献泛滥，评审会随机抽查真实性</li>
+        <li><span class="danger">严禁"改写式抄袭"</span>，改写必须彻底且不能曲解原意</li>
+        <li>优先引用原始文献，避免转引；社科优先推荐<span class="keyword">下标引</span></li>
+        <li><span class="danger">禁止百度百科</span>，禁止教科书作为论文引用</li>
+        <li>参考文献 50-150 篇，中外文献分开列示，按姓氏拼音排序</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-violet-500 rounded-full inline-block"></span>
+        数据来源的可靠性
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>权威数据源：联合国贸发会、全球价值链数据库、国家统计局GEL数据库</li>
+        <li><span class="keyword">智库报告需谨慎甄别</span>：中文世界辨别权威性，英文世界关注立场倾向</li>
+        <li>警惕"野鸡智库"和反华倾向的研究报告</li>
+        <li>引用西方数据和报告需附加<span class="tip">免责声明</span>：明确仅用于学术目的且无替代来源</li>
+        <li>注意统计口径一致性和及时更新</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第五节 ========== -->
+  <section id="s5" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">05</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">开题报告准备</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-orange-500 rounded-full inline-block"></span>
+        开题报告核心要求
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>必须提出<span class="keyword">明确具体的研究问题</span>而非宽泛领域，前两页清晰呈现</li>
+        <li>评审最关注<span class="keyword">创新性</span>和<span class="keyword">可行性</span>两个维度</li>
+        <li>开题需同时满足学术价值、实践意义和可行性三要素</li>
+        <li><span class="keyword">文献综述</span>不是背景介绍，而是论文合法性和创新性的关键依据</li>
+        <li>文献综述应分主题组织，围绕研究问题展开</li>
+        <li>研究问题分两类：<span class="keyword">描述型</span>（how类）和<span class="keyword">解释型</span>（因果关系），排除预测型</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-orange-500 rounded-full inline-block"></span>
+        时间节点与实操
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>论文答辩截止日期是整个流程中<span class="danger">唯一不可变动的硬性节点</span></li>
+        <li>开题不顺是常态，最终学位授予取决于论文终稿质量</li>
+        <li>开题报告需包含：选题动机、背景、理论/实际意义</li>
+        <li>建议用<span class="keyword">表格形式</span>清晰列出研究内容、方法、进度、数据来源</li>
+        <li>尽快联系心仪导师，建立指导关系</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第六节 ========== -->
+  <section id="s6" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full">06</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">论文结构与逻辑框架</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-rose-500 rounded-full inline-block"></span>
+        框架设计要点
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li><span class="keyword">总分总</span>是基础模板：开篇说明现象、问题和观点</li>
+        <li>平行关系章节需统一划分标准（按时间、党派或历史节点），不能混用</li>
+        <li>递进关系章节（策论→博弈推演→现实印证）不需要严格对称</li>
+        <li>必须在导论部分阐明研究路径和框架设计</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-rose-500 rounded-full inline-block"></span>
+        理论框架选择
+      </h3>
+      <div class="highlight-box border-l-red-500 bg-red-50/50 pl-4 py-3 text-sm text-slate-700 rounded-r">
+        <p class="font-bold text-red-800">⚡ 硕士论文只能使用单一理论框架</p>
+        <p class="mt-1">混合新自由主义与新现实主义会导致逻辑矛盾——前者主张国际合作，后者强调权力竞争。3.5万字的篇幅难以实现多理论整合的逻辑自洽。</p>
+      </div>
+      <ul class="space-y-1.5 text-sm text-slate-700 ml-3 mt-3">
+        <li>理论选择决定了研究视角的排他性</li>
+        <li>构建主义与新现实主义存在根本假设冲突</li>
+        <li>成熟理论能快速定位研究立场</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第七节 ========== -->
+  <section id="s7" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-cyan-600 text-white text-xs font-bold px-3 py-1 rounded-full">07</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">学术语言与AI使用</h2>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-cyan-500 rounded-full inline-block"></span>
+        学术表达规范
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li>避免错别字、标点错误和<span class="danger">"翻译腔"</span></li>
+        <li>使用行业公认术语，不需冗余的"概念界定"章节</li>
+        <li><span class="keyword">避免AI味</span>——生硬的"A杠B杠C"框架、滥用数学符号的表达方式</li>
+        <li>建议参考2015年前的学术专著来统一文风</li>
+        <li>摘要中避免模糊或自省性表述，展现学术自信</li>
+      </ul>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-cyan-500 rounded-full inline-block"></span>
+        AI辅助的边界
+      </h3>
+      <div class="highlight-box border-l-cyan-500 bg-cyan-50/50 pl-4 py-3 text-sm text-slate-700 rounded-r">
+        <p><span class="danger">AI存在严重幻觉</span>，会一本正经输出错误结论（如中老铁路与马六甲海峡的荒谬关联）</p>
+        <p class="mt-1">可以使用AI辅助<span class="keyword">总结和翻译</span>，但<span class="danger">反对整段AI输出</span>——导师期望看到真实的学术思考过程，而非AI包装的成品</p>
+      </div>
+      <ul class="space-y-1.5 text-sm text-slate-700 ml-3 mt-3">
+        <li>AI生成内容存在严重碎片化问题，导致多篇论文被驳回</li>
+        <li>必须核实AI输出的关键数据和信息</li>
+        <li>段落过短、标题层级过多是AI产出典型特征</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 第八节 ========== -->
+  <section id="s8" class="section-link mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="bg-teal-600 text-white text-xs font-bold px-3 py-1 rounded-full">08</span>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-800">文体辨析：内参·期刊·学位论文</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 text-sm mb-4">
+      <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="font-bold text-rose-700 mb-2">📝 学位论文</div>
+        <ul class="space-y-1.5 text-slate-600">
+          <li>3-5万字，深入研究</li>
+          <li>基于历史事实学理分析</li>
+          <li>结构完整、论证严谨</li>
+          <li>保持学术中立性</li>
+          <li>禁止政策建议</li>
+        </ul>
+      </div>
+      <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="font-bold text-blue-700 mb-2">📰 期刊论文</div>
+        <ul class="space-y-1.5 text-slate-600">
+          <li>1-2万字，双盲审</li>
+          <li>完整呈现研究过程</li>
+          <li>引用规范要求最高</li>
+          <li>可耗时数年完成</li>
+          <li>学习写作方法的最佳范本</li>
+        </ul>
+      </div>
+      <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div class="font-bold text-amber-700 mb-2">📋 内参写作</div>
+        <ul class="space-y-1.5 text-slate-600">
+          <li>三段论结构，每段1000-1500字</li>
+          <li>事实→分析→对策</li>
+          <li>1-3天内完成全流程</li>
+          <li>直达高层决策圈</li>
+          <li>高时效性+政治敏锐度</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lecture-card bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+      <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+        <span class="w-1.5 h-5 bg-teal-500 rounded-full inline-block"></span>
+        论文类型三分类
+      </h3>
+      <ul class="space-y-2 text-sm text-slate-700 ml-3">
+        <li><span class="keyword">研究型论文</span>：以社交媒体对青年政治参与影响为例，实证特点，追求知识增量</li>
+        <li><span class="keyword">应用型论文</span>：遵循政策导向，侧重政策建议（但硕士论文不建议写政策建议）</li>
+        <li><span class="keyword">综述型论文</span>：精选文献索引，适合初学者构建知识图谱（但学位论文排除综述型）</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="text-center text-xs text-slate-400 py-6 border-t border-slate-200 mt-4">
+    <p>本纪要根据嵇先白老师讲座录音整理，由元宝会议助手生成</p>
+    <p class="mt-1">内容仅供学习参考，如有疑问请以课堂讲授为准</p>
+  </div>
+
+  <!-- Scroll to top button -->
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="no-print fixed bottom-6 right-6 bg-slate-800 text-white w-10 h-10 rounded-full shadow-lg hover:bg-slate-700 transition text-lg flex items-center justify-center">↑</button>
+
+</div>
+
+<script>
+// Highlight active nav on scroll
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => {
+          l.classList.remove('bg-blue-50', 'text-blue-600');
+          if (l.getAttribute('href') === '#' + e.target.id) {
+            l.classList.add('bg-blue-50', 'text-blue-600');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+});
+</script>
+
+</body>
+</html>
