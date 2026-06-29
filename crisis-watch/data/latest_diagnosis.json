@@ -1,18 +1,19 @@
 {
- "generated": "2026-06-26 21:53",
- "drawdown": -0.0378,
+ "generated": "2026-06-29 21:56",
+ "drawdown": -0.0219,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
-  "financial": 0.0,
+  "financial": 0.14,
   "rates_debt": 0.33,
   "services": 0.17,
   "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -3.8%(高点 2026-06-02)",
+  "SPY 距高点回撤 -2.2%(高点 2026-06-02)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
+  "[financial +1] 资金避险涌入国债(TLT +2.1%)",
   "[rates_debt +2] 股债相关性转正(0.46),债券失去避险功能",
-  "[services +1] 油价暴跌,需求停摆信号(USO -23.2%)"
+  "[services +1] 油价暴跌,需求停摆信号(USO -22.0%)"
  ]
 }
