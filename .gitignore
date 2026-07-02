@@ -18,3 +18,18 @@ podcasts/*/.cache/
 # 播客 MP3 音频：已迁移至 GitHub Releases（tag: podcast-audio），不再纳入仓库
 # podcast.html 通过 AUDIO_BASE 从 Releases 加载
 podcasts/**/*.mp3
+
+# 大模型文件（历史上误提交过 98MB resnet.onnx）
+*.onnx
+
+# 依赖目录
+node_modules/
+
+# Playwright CLI 产物
+.playwright-cli/
+
+# 独立 Vite 子项目，不纳入本仓库（2026-07-02 决定）
+child/
+
+# 虚拟机镜像
+*.vmdk
