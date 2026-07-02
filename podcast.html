@@ -238,11 +238,13 @@
 
         .speed-group {
             display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 6px;
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 50px;
+            border-radius: 24px;
             padding: 5px;
             box-shadow: var(--shadow);
         }
@@ -618,6 +620,8 @@
         <div class="toolbar">
             <span class="toolbar-label">播放速度</span>
             <div class="speed-group" id="speedGroup">
+                <button class="speed-btn" data-rate="0.5">0.5x</button>
+                <button class="speed-btn" data-rate="0.75">0.75x</button>
                 <button class="speed-btn" data-rate="1">1x</button>
                 <button class="speed-btn" data-rate="1.25">1.25x</button>
                 <button class="speed-btn" data-rate="1.5">1.5x</button>
