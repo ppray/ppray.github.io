@@ -10,27 +10,35 @@ category-based podcast episodes.
 from __future__ import annotations
 
 import argparse
-import base64
 import json
 import os
 import re
-import subprocess
 import sys
-import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from podcast_common import (  # noqa: E402
+    ROOT,
+    MIMO_ENDPOINT,
+    STYLE,
+    VOICE_DEFAULT,
+    run,
+    load_env_file,
+    build_request,
+    synthesize_wav,
+    probe_duration,
+    merge_wavs_to_mp3,
+)
 
-ROOT = Path(__file__).resolve().parents[1]
+
 QUESTIONS_JS = ROOT / "quiz-questions.js"
 OUT_DIR = ROOT / "podcasts" / "ipe"
 CACHE_DIR = OUT_DIR / ".cache"
 MANIFEST = OUT_DIR / "episodes.json"
-MIMO_ENDPOINT = "https://api.xiaomimimo.com/v1/chat/completions"
 
-STYLE = "温柔专业的中文考试带背主播，语速适中，咬字清晰，停顿自然，适合通勤复习。"
-VOICE = "茉莉"
+VOICE = VOICE_DEFAULT
 BITRATE = "40k"
 
 # Quality gate: chars-per-second of synthesized speech. Normal Chinese TTS runs
@@ -40,29 +48,6 @@ BITRATE = "40k"
 QC_MIN_CPS = 2.6
 QC_MAX_CPS = 7.0
 QC_MAX_ATTEMPTS = 4
-
-
-def run(cmd: list[str], *, input_text: str | None = None, timeout: int | None = None) -> subprocess.CompletedProcess:
-    return subprocess.run(
-        cmd,
-        input=input_text,
-        text=True,
-        cwd=ROOT,
-        capture_output=True,
-        timeout=timeout,
-        check=False,
-    )
-
-
-def load_env_file(path: Path) -> None:
-    if not path.exists():
-        return
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
 def load_ipe_questions() -> list[dict]:
@@ -145,56 +130,6 @@ def episode_plan(questions: list[dict]) -> list[dict]:
     return episodes
 
 
-def build_request(endpoint: str, api_key: str, auth_mode: str, body: bytes) -> urllib.request.Request:
-    headers = {"Content-Type": "application/json"}
-    if auth_mode == "api-key":
-        headers["api-key"] = api_key
-    elif auth_mode == "bearer":
-        headers["Authorization"] = f"Bearer {api_key}"
-    else:
-        raise ValueError(f"unknown auth mode: {auth_mode}")
-    return urllib.request.Request(endpoint, data=body, headers=headers, method="POST")
-
-
-def generate_mimo_wav(
-    text: str,
-    output: Path,
-    *,
-    api_key: str,
-    voice: str,
-    endpoint: str,
-    auth_mode: str,
-    retries: int = 5,
-) -> None:
-    payload = {
-        "model": "mimo-v2.5-tts",
-        "messages": [
-            {"role": "user", "content": STYLE},
-            {"role": "assistant", "content": text},
-        ],
-        "audio": {"format": "wav", "voice": voice},
-    }
-    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    req = build_request(endpoint, api_key, auth_mode, body)
-
-    last_error = None
-    for attempt in range(1, retries + 1):
-        try:
-            with urllib.request.urlopen(req, timeout=90) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-            choice = data["choices"][0]
-            if choice.get("finish_reason") == "content_filter":
-                raise RuntimeError("MiMo content_filter")
-            audio_b64 = choice["message"]["audio"]["data"]
-            output.write_bytes(base64.b64decode(audio_b64))
-            return
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError, KeyError, RuntimeError, json.JSONDecodeError) as exc:
-            last_error = exc
-            if attempt < retries:
-                time.sleep(2 * attempt)
-    raise RuntimeError(f"MiMo TTS failed for {output.name}: {last_error}")
-
-
 def probe_auth(api_key: str) -> int:
     endpoints = [
         "https://api.xiaomimimo.com/v1/chat/completions",
@@ -212,7 +147,7 @@ def probe_auth(api_key: str) -> int:
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     for endpoint in endpoints:
         for auth_mode in auth_modes:
-            req = build_request(endpoint, api_key, auth_mode, body)
+            req = build_request(endpoint, api_key, body, auth_mode=auth_mode)
             label = f"{endpoint} [{auth_mode}]"
             try:
                 with urllib.request.urlopen(req, timeout=60) as resp:
@@ -224,31 +159,6 @@ def probe_auth(api_key: str) -> int:
             except Exception as exc:
                 print(f"FAIL {label}: {type(exc).__name__}")
     return 0
-
-
-def make_silence(path: Path, seconds: float) -> None:
-    if path.exists():
-        return
-    proc = run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono",
-        "-t", str(seconds),
-        "-ar", "24000", "-ac", "1",
-        str(path),
-    ])
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stderr)
-
-
-def probe_duration(path: Path) -> float:
-    probe = run([
-        "ffprobe", "-v", "error",
-        "-show_entries", "format=duration", "-of", "csv=p=0", str(path),
-    ])
-    try:
-        return float(probe.stdout.strip())
-    except (ValueError, AttributeError):
-        return 0.0
 
 
 def qc_check(text: str, path: Path) -> tuple[bool, float, float]:
@@ -265,11 +175,11 @@ def tts_with_qc(text: str, wav: Path, *, api_key: str, voice: str, endpoint: str
 
     MiMo occasionally stalls and returns audio that is several times too long
     (the 断断续续 defect). That is not an API error, so the network-level retries
-    in generate_mimo_wav never trigger; this gate catches it by duration.
+    in synthesize_wav never trigger; this gate catches it by duration.
     """
     last_dur = last_cps = 0.0
     for attempt in range(1, QC_MAX_ATTEMPTS + 1):
-        generate_mimo_wav(text, wav, api_key=api_key, voice=voice, endpoint=endpoint, auth_mode=auth_mode)
+        synthesize_wav(text, wav, api_key=api_key, voice=voice, endpoint=endpoint, auth_mode=auth_mode)
         ok, last_dur, last_cps = qc_check(text, wav)
         if ok:
             if attempt > 1:
@@ -280,38 +190,10 @@ def tts_with_qc(text: str, wav: Path, *, api_key: str, voice: str, endpoint: str
 
 
 def concat_episode(episode: dict, card_wavs: list[Path], bitrate: str) -> dict:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    silence_short = CACHE_DIR / "silence_1_5s.wav"
-    silence_long = CACHE_DIR / "silence_3s.wav"
-    make_silence(silence_short, 1.5)
-    make_silence(silence_long, 3)
-
-    concat_file = CACHE_DIR / f"{episode['slug']}.concat.txt"
-    with concat_file.open("w", encoding="utf-8") as f:
-        for wav in card_wavs:
-            f.write(f"file '{wav}'\n")
-            f.write(f"file '{silence_short}'\n")
-        f.write(f"file '{silence_long}'\n")
-
-    mp3 = OUT_DIR / f"{episode['slug']}.mp3"
-    proc = run([
-        "ffmpeg", "-y",
-        "-f", "concat", "-safe", "0", "-i", str(concat_file),
-        "-ar", "24000", "-ac", "1",
-        "-codec:a", "libmp3lame", "-b:a", bitrate,
-        str(mp3),
-    ])
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stderr)
-
-    probe = run([
-        "ffprobe", "-v", "error",
-        "-show_entries", "format=duration,size",
-        "-of", "json", str(mp3),
-    ])
-    meta = json.loads(probe.stdout) if probe.returncode == 0 else {"format": {}}
-    duration = float(meta.get("format", {}).get("duration", 0) or 0)
-    size = int(meta.get("format", {}).get("size", mp3.stat().st_size) or mp3.stat().st_size)
+    mp3, duration, size = merge_wavs_to_mp3(
+        episode["slug"], card_wavs,
+        out_dir=OUT_DIR, cache_dir=CACHE_DIR, bitrate=bitrate,
+    )
     return {
         "title": episode["title"],
         "file": str(mp3.relative_to(ROOT)),

@@ -219,6 +219,109 @@
             background: var(--bg-blur);
         }
 
+        /* Playback speed control (global) */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.35s backwards;
+        }
+
+        .toolbar-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .speed-group {
+            display: inline-flex;
+            gap: 6px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .speed-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .speed-btn:hover {
+            color: var(--primary);
+        }
+
+        .speed-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        /* Resume banner ("上次收听") */
+        .resume-banner {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .resume-banner.active {
+            display: flex;
+        }
+
+        .resume-banner .resume-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .resume-banner .resume-text b {
+            color: var(--primary);
+        }
+
+        .resume-btn {
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 9px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+
+        /* Resume hint on a card that has saved progress */
+        .resume-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
         .episode-notes {
             margin-top: 14px;
             padding: 14px 16px;
@@ -511,6 +614,24 @@
             </div>
         </div>
 
+        <!-- Playback speed toolbar -->
+        <div class="toolbar">
+            <span class="toolbar-label">播放速度</span>
+            <div class="speed-group" id="speedGroup">
+                <button class="speed-btn" data-rate="1">1x</button>
+                <button class="speed-btn" data-rate="1.25">1.25x</button>
+                <button class="speed-btn" data-rate="1.5">1.5x</button>
+                <button class="speed-btn" data-rate="1.75">1.75x</button>
+                <button class="speed-btn" data-rate="2">2x</button>
+            </div>
+        </div>
+
+        <!-- Resume last-listened banner -->
+        <div class="resume-banner" id="resumeBanner">
+            <div class="resume-text" id="resumeText"></div>
+            <button class="resume-btn" id="resumeBtn">继续收听 →</button>
+        </div>
+
         <!-- Episodes List -->
         <div class="episodes-section" id="episodesList">
             <!-- Episodes will be loaded here -->
@@ -756,15 +877,105 @@
         let currentChannel = 'political-science';
         let currentAudio = null;
 
+        // ---- Playback speed + resume (localStorage) ----
+        const RATE_KEY = 'podcast_rate_v1';       // 播放倍速
+        const PROGRESS_KEY = 'podcast_progress_v1'; // { [file]: seconds }
+        const LAST_KEY = 'podcast_last_v1';        // 最近收听的一集
+
+        function loadJSON(key, fallback) {
+            try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+            catch { return fallback; }
+        }
+        function saveJSON(key, val) {
+            try { localStorage.setItem(key, JSON.stringify(val)); } catch { }
+        }
+
+        let playbackRate = parseFloat(localStorage.getItem(RATE_KEY)) || 1;
+        let progress = loadJSON(PROGRESS_KEY, {});
+
+        function getProgress(file) {
+            const s = progress[file];
+            return (typeof s === 'number' && s > 0) ? s : 0;
+        }
+        function setProgress(file, seconds) {
+            progress[file] = seconds;
+            saveJSON(PROGRESS_KEY, progress);
+        }
+        function clearProgress(file) {
+            delete progress[file];
+            saveJSON(PROGRESS_KEY, progress);
+        }
+        function fmtTime(sec) {
+            sec = Math.max(0, Math.floor(sec || 0));
+            const m = Math.floor(sec / 60), s = sec % 60;
+            return `${m}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Find episode meta by file across all channels
+        function findEpisode(file) {
+            for (const [cid, ch] of Object.entries(channels)) {
+                const ep = ch.episodes.find(e => e.file === file);
+                if (ep) return { channelId: cid, channel: ch, episode: ep };
+            }
+            return null;
+        }
+
         // Initialize
         function init() {
+            setupSpeedControl();
             renderChannel(currentChannel);
             setupTabs();
+            renderResumeBanner();
 
             // Dark mode
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.body.setAttribute('data-theme', 'dark');
             }
+        }
+
+        // ---- Speed control ----
+        function setupSpeedControl() {
+            const group = document.getElementById('speedGroup');
+            group.querySelectorAll('.speed-btn').forEach(btn => {
+                const rate = parseFloat(btn.dataset.rate);
+                btn.classList.toggle('active', rate === playbackRate);
+                btn.addEventListener('click', () => {
+                    playbackRate = rate;
+                    localStorage.setItem(RATE_KEY, String(rate));
+                    group.querySelectorAll('.speed-btn').forEach(b =>
+                        b.classList.toggle('active', b === btn));
+                    // Apply to every audio element on the page immediately
+                    document.querySelectorAll('.audio-player').forEach(a => { a.playbackRate = rate; });
+                });
+            });
+        }
+
+        // ---- Resume banner (last-listened, cross-channel) ----
+        function renderResumeBanner() {
+            const banner = document.getElementById('resumeBanner');
+            const last = loadJSON(LAST_KEY, null);
+            const saved = last && last.file ? getProgress(last.file) : 0;
+            const found = last && last.file ? findEpisode(last.file) : null;
+            if (!last || !found || saved <= 5) {
+                banner.classList.remove('active');
+                return;
+            }
+            document.getElementById('resumeText').innerHTML =
+                `上次收听 <b>${found.channel.name}</b> · ${found.episode.title}，播放到 <b>${fmtTime(saved)}</b>`;
+            const btn = document.getElementById('resumeBtn');
+            btn.onclick = () => {
+                // Switch to the channel, then play that episode from saved position
+                document.querySelectorAll('.channel-tab').forEach(t =>
+                    t.classList.toggle('active', t.dataset.channel === found.channelId));
+                currentChannel = found.channelId;
+                renderChannel(currentChannel);
+                const audio = document.querySelector(`.audio-player[data-file="${CSS.escape(last.file)}"]`);
+                if (audio) {
+                    audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    audio.play().catch(() => { });
+                }
+            };
+            banner.classList.add('active');
         }
 
         // Setup tabs
@@ -818,10 +1029,15 @@
                             </div>
                             ${ep.file ? `
                                 <div class="audio-player-wrapper">
-                                    <audio class="audio-player" controls preload="none">
+                                    <audio class="audio-player" controls preload="none"
+                                        data-file="${ep.file}" data-index="${index}">
                                         <source src="${audioUrl(ep.file)}" type="audio/mpeg">
                                         您的浏览器不支持音频播放。
                                     </audio>
+                                    <div class="resume-hint" id="resume-hint-${index}"
+                                        style="${getProgress(ep.file) > 5 ? '' : 'display:none'}">
+                                        ⏸️ 上次听到 ${fmtTime(getProgress(ep.file))}，播放即从此处继续
+                                    </div>
                                     <div class="now-playing" id="now-playing-${index}">
                                         <span></span> 正在播放...
                                     </div>
@@ -847,23 +1063,58 @@
         // Setup audio events
         function setupAudioEvents() {
             document.querySelectorAll('.audio-player').forEach((audio, index) => {
+                const file = audio.dataset.file;
+                let lastSaved = 0;
+
+                // Apply the current global speed to this player
+                audio.playbackRate = playbackRate;
+
+                // Restore saved position once metadata is available (preload=none
+                // ⇒ this fires right after the first play, so we seek then)
+                audio.addEventListener('loadedmetadata', () => {
+                    if (audio.dataset.resumed) return;
+                    const saved = getProgress(file);
+                    if (saved > 5 && (!audio.duration || saved < audio.duration - 5)) {
+                        audio.currentTime = saved;
+                    }
+                    audio.dataset.resumed = '1';
+                });
+
                 audio.addEventListener('play', () => {
+                    audio.playbackRate = playbackRate;
                     // Pause other audios
                     document.querySelectorAll('.audio-player').forEach((a, i) => {
-                        if (i !== index && !a.paused) {
+                        if (a !== audio && !a.paused) {
                             a.pause();
                             document.getElementById(`now-playing-${i}`).classList.remove('active');
                         }
                     });
                     document.getElementById(`now-playing-${index}`).classList.add('active');
+                    // Remember this as the last-listened episode
+                    saveJSON(LAST_KEY, { channel: currentChannel, file });
+                });
+
+                // Persist progress at most every ~5s while playing
+                audio.addEventListener('timeupdate', () => {
+                    const t = audio.currentTime;
+                    if (Math.abs(t - lastSaved) >= 5 && t > 0) {
+                        lastSaved = t;
+                        setProgress(file, Math.floor(t));
+                    }
                 });
 
                 audio.addEventListener('pause', () => {
                     document.getElementById(`now-playing-${index}`).classList.remove('active');
+                    if (audio.currentTime > 5 && !audio.ended) {
+                        setProgress(file, Math.floor(audio.currentTime));
+                    }
                 });
 
                 audio.addEventListener('ended', () => {
                     document.getElementById(`now-playing-${index}`).classList.remove('active');
+                    clearProgress(file);           // finished ⇒ next time starts fresh
+                    const hint = document.getElementById(`resume-hint-${index}`);
+                    if (hint) hint.style.display = 'none';
                 });
             });
         }

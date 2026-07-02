@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国关复习资料目录 | Review Index</title>
+    <meta name="description" content="政治学、国际关系、国际政治经济学（IPE）与通识课程复习资料总目录">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --glass-border: rgba(255, 255, 255, 0.35);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --card-bg: rgba(30, 41, 59, 0.72);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            color: var(--text-main);
+            padding: 40px 20px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 42%),
+                radial-gradient(circle at 85% 75%, rgba(168, 85, 247, 0.12) 0%, transparent 42%),
+                #eef1f8;
+        }
+
+        [data-theme="dark"] body {
+            background:
+                radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 42%),
+                radial-gradient(circle at 85% 75%, rgba(168, 85, 247, 0.18) 0%, transparent 42%),
+                #0f172a;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .search-box {
+            display: block;
+            width: 100%;
+            max-width: 440px;
+            margin: 24px auto 0;
+            padding: 12px 18px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-family: inherit;
+            box-shadow: var(--shadow);
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary);
+        }
+
+        .category {
+            margin-bottom: 34px;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            返回首页
+        </a>
+
+        <header>
+            <h1>📚 国关复习资料目录</h1>
+            <p class="subtitle">政治学 · 国际关系 · 国际政治经济学 · 通识 —— 全部专题一览</p>
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 搜索资料标题…">
+        </header>
+
+        <main id="content">
+            <!-- 国际政治经济学 (IPE) -->
+            <section class="category" data-cat>
+                <h2 class="category-title">💱 国际政治经济学 (IPE)</h2>
+                <div class="grid">
+                    <a class="card" href="《国际与比较政治经济学研究》模拟卷答案.html">
+                        <div class="card-icon">🆕</div>
+                        <div>
+                            <div class="card-title">《国际与比较政治经济学研究》15套模拟卷答案</div>
+                            <div class="card-desc">60名词+39简答+28论述全题去重整理，含套卷索引与高频考点热度图。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="翟东升《货币与金融的国际政治经济学》复习笔记.html">
+                        <div class="card-icon">💱</div>
+                        <div>
+                            <div class="card-title">翟东升《货币与金融的国际政治经济学》复习笔记</div>
+                            <div class="card-desc">14 个专题：金本位、布雷顿森林、美元霸权、人民币国际化等，三级标签+目录跳转。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="mfipe-mindmap.html">
+                        <div class="card-icon">🧠</div>
+                        <div>
+                            <div class="card-title">货币金融 IPE 模拟题全脑图</div>
+                            <div class="card-desc">《货币与金融的国际政治经济学》模拟题考点脑图化呈现，带答案，考前一图串联。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="exam-analysis-icpe.html">
+                        <div class="card-icon">📈</div>
+                        <div>
+                            <div class="card-title">《国际与比较政治经济学研究》应试分析</div>
+                            <div class="card-desc">题型分值结构、高频考点与命题风格拆解。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="exam-analysis-mfipe.html">
+                        <div class="card-icon">📉</div>
+                        <div>
+                            <div class="card-title">《货币与金融的国际政治经济学》应试分析</div>
+                            <div class="card-desc">货币金融 IPE 题型分值结构、高频考点与命题风格拆解。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="exam-comparison.html">
+                        <div class="card-icon">📊</div>
+                        <div>
+                            <div class="card-title">两科 IPE 考试难度对比</div>
+                            <div class="card-desc">从题型分值、命题风格、备考效率横向对比，给出选课与时间分配建议。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《产业发展的政治经济学》复习题.html">
+                        <div class="card-icon">🏭</div>
+                        <div>
+                            <div class="card-title">产业发展的政治经济学</div>
+                            <div class="card-desc">产业政策、国家竞争优势及相关考点。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《全球周期分析》复习资料.html">
+                        <div class="card-icon">🔄</div>
+                        <div>
+                            <div class="card-title">全球周期分析</div>
+                            <div class="card-desc">长波理论、经济周期与全球格局演变。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《国际与经济学文献导读》复习指南.html">
+                        <div class="card-icon">📖</div>
+                        <div>
+                            <div class="card-title">国际与经济学文献导读</div>
+                            <div class="card-desc">经典文献脉络梳理与核心思想总结。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《能源与环境政治经济学研究》复习指南.html">
+                        <div class="card-icon">🌱</div>
+                        <div>
+                            <div class="card-title">能源与环境政治经济学</div>
+                            <div class="card-desc">双碳目标、能源安全与环境政治前沿。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 政治学与国际关系 -->
+            <section class="category" data-cat>
+                <h2 class="category-title">📊 政治学与国际关系</h2>
+                <div class="grid">
+                    <a class="card" href="Political Science Exam Topics Card View with Fixed Grid Layout (2004-2022).html">
+                        <div class="card-icon">📊</div>
+                        <div>
+                            <div class="card-title">政治学题库 · 固定网格视图 (2004-2025)</div>
+                            <div class="card-desc">按年份与分值排列的考题全览。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="Political Science Exam Topics Card View with Question Types (2004-2022).html">
+                        <div class="card-icon">📂</div>
+                        <div>
+                            <div class="card-title">政治学题库 · 题型分类视图 (2004-2025)</div>
+                            <div class="card-desc">按简答、论述等题型分类的复习资料。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="国际关系史.html">
+                        <div class="card-icon">📜</div>
+                        <div>
+                            <div class="card-title">现当代国际关系史时间线</div>
+                            <div class="card-desc">重点历史事件与理论节点梳理。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《国际关系的制度分析方法》_复习题答案.html">
+                        <div class="card-icon">🏛️</div>
+                        <div>
+                            <div class="card-title">国际关系的制度分析方法（答案）</div>
+                            <div class="card-desc">全面涵盖制度分析核心知识点与习题解答。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="《国际关系的制度分析方法》复习指南_gemini.html">
+                        <div class="card-icon">✨</div>
+                        <div>
+                            <div class="card-title">国际关系的制度分析方法（Gemini 指南）</div>
+                            <div class="card-desc">AI 辅助生成的重点精要与知识点提炼。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="论述题答案汇总.html">
+                        <div class="card-icon">📝</div>
+                        <div>
+                            <div class="card-title">论述题答案汇总</div>
+                            <div class="card-desc">核心论述题完整答案集中汇总，附答题模板速查。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="简答题答案汇总.html">
+                        <div class="card-icon">✏️</div>
+                        <div>
+                            <div class="card-title">简答题答案汇总</div>
+                            <div class="card-desc">核心简答题答案集中汇总，快速过高频考点。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="六门课程核心复习题汇总.html">
+                        <div class="card-icon">📚</div>
+                        <div>
+                            <div class="card-title">六门课程核心复习题汇总</div>
+                            <div class="card-desc">跨课程核心考点集中汇编。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 通识与学术写作 -->
+            <section class="category" data-cat>
+                <h2 class="category-title">🧠 通识与学术写作</h2>
+                <div class="grid">
+                    <a class="card" href="《自然辩证法》期末复习全攻略.html">
+                        <div class="card-icon">🧠</div>
+                        <div>
+                            <div class="card-title">自然辩证法 · 期末复习全攻略</div>
+                            <div class="card-desc">科学技术观、方法论与辩证思维要点。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="自然辩证法复习题答案.html">
+                        <div class="card-icon">💡</div>
+                        <div>
+                            <div class="card-title">自然辩证法 · 复习题答案库</div>
+                            <div class="card-desc">详尽的习题解答，助力快速掌握核心内容。</div>
+                        </div>
+                    </a>
+                    <a class="card" href="论文写作讲座纪要-嵇先白老师.html">
+                        <div class="card-icon">🖋️</div>
+                        <div>
+                            <div class="card-title">《论文写作》讲座纪要（嵇先白老师）</div>
+                            <div class="card-desc">论文选题、结构与写作规范的专题讲座整理。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <div class="empty" id="emptyState">没有匹配的资料，换个关键词试试～</div>
+        </main>
+
+        <footer>
+            共 21 份复习资料 · 按主题归类<br>
+            &copy; 2025 | 国关复习资料目录
+        </footer>
+    </div>
+
+    <script>
+        // Dark mode follows system
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Live search over card titles/descriptions
+        const searchBox = document.getElementById('searchBox');
+        const cards = Array.from(document.querySelectorAll('.card'));
+        const sections = Array.from(document.querySelectorAll('[data-cat]'));
+        const emptyState = document.getElementById('emptyState');
+
+        searchBox.addEventListener('input', () => {
+            const q = searchBox.value.trim().toLowerCase();
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+            let anyVisible = false;
+            sections.forEach(sec => {
+                const visible = sec.querySelectorAll('.card:not([style*="display: none"])').length > 0;
+                sec.style.display = visible ? '' : 'none';
+                if (visible) anyVisible = true;
+            });
+            emptyState.style.display = anyVisible ? 'none' : 'block';
+        });
+    </script>
+</body>
+
+</html>

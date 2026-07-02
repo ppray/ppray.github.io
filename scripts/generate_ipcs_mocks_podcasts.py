@@ -11,44 +11,31 @@ TTS'd once and cached so cross-set overlap costs nothing extra.
 from __future__ import annotations
 
 import argparse
-import base64
 import json
 import os
 import re
-import subprocess
 import sys
-import time
-import urllib.error
-import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from podcast_common import (  # noqa: E402
+    ROOT,
+    MIMO_ENDPOINT,
+    VOICE_DEFAULT,
+    load_env_file,
+    synthesize_wav,
+    merge_wavs_to_mp3,
+)
 
-ROOT = Path(__file__).resolve().parents[1]
+
 SRC_HTML = ROOT / "国关复习" / "《国际与比较政治经济学研究》模拟卷答案.html"
 OUT_DIR = ROOT / "podcasts" / "ipcs-mocks"
 CACHE_DIR = OUT_DIR / ".cache"
 MANIFEST = OUT_DIR / "episodes.json"
-MIMO_ENDPOINT = "https://api.xiaomimimo.com/v1/chat/completions"
 
-STYLE = "温柔专业的中文考试带背主播，语速适中，咬字清晰，停顿自然，适合通勤复习。"
-VOICE = "茉莉"
+VOICE = VOICE_DEFAULT
 BITRATE = "32k"
-
-
-def run(cmd: list[str], *, timeout: int | None = None) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, text=True, cwd=ROOT, capture_output=True,
-                          timeout=timeout, check=False)
-
-
-def load_env_file(path: Path) -> None:
-    if not path.exists():
-        return
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        os.environ[k.strip()] = v.strip().strip('"').strip("'")
+TTS_TIMEOUT = 300  # ipcs answers are long; allow a generous per-call timeout
 
 
 def extract_markdown(path: Path) -> str:
@@ -184,85 +171,6 @@ def build_outro(set_no: int) -> str:
     return clean_for_speech(f"第{set_no}集结束。")
 
 
-def build_request(endpoint: str, api_key: str, body: bytes) -> urllib.request.Request:
-    return urllib.request.Request(
-        endpoint, data=body, method="POST",
-        headers={"Content-Type": "application/json", "api-key": api_key},
-    )
-
-
-def tts(text: str, output: Path, *, api_key: str, voice: str, endpoint: str,
-        retries: int = 5) -> None:
-    payload = {
-        "model": "mimo-v2.5-tts",
-        "messages": [
-            {"role": "user", "content": STYLE},
-            {"role": "assistant", "content": text},
-        ],
-        "audio": {"format": "wav", "voice": voice},
-    }
-    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    last = None
-    for attempt in range(1, retries + 1):
-        try:
-            req = build_request(endpoint, api_key, body)
-            with urllib.request.urlopen(req, timeout=300) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-            choice = data["choices"][0]
-            if choice.get("finish_reason") == "content_filter":
-                raise RuntimeError("content_filter")
-            output.write_bytes(base64.b64decode(choice["message"]["audio"]["data"]))
-            return
-        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError,
-                KeyError, RuntimeError, json.JSONDecodeError) as exc:
-            last = exc
-            if attempt < retries:
-                time.sleep(2 * attempt)
-    raise RuntimeError(f"TTS failed for {output.name}: {last}")
-
-
-def make_silence(path: Path, seconds: float) -> None:
-    if path.exists():
-        return
-    proc = run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono",
-        "-t", str(seconds), "-ar", "24000", "-ac", "1", str(path),
-    ])
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stderr)
-
-
-def concat_episode(slug: str, wavs: list[Path], bitrate: str) -> tuple[Path, float, int]:
-    silence_short = CACHE_DIR / "silence_1_5s.wav"
-    silence_long = CACHE_DIR / "silence_3s.wav"
-    make_silence(silence_short, 1.5)
-    make_silence(silence_long, 3)
-    concat_file = CACHE_DIR / f"{slug}.concat.txt"
-    with concat_file.open("w", encoding="utf-8") as f:
-        for w in wavs:
-            f.write(f"file '{w}'\n")
-            f.write(f"file '{silence_short}'\n")
-        f.write(f"file '{silence_long}'\n")
-    mp3 = OUT_DIR / f"{slug}.mp3"
-    proc = run([
-        "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
-        "-ar", "24000", "-ac", "1",
-        "-codec:a", "libmp3lame", "-b:a", bitrate,
-        str(mp3),
-    ])
-    if proc.returncode != 0:
-        raise RuntimeError(proc.stderr)
-    probe = run([
-        "ffprobe", "-v", "error", "-show_entries", "format=duration,size",
-        "-of", "json", str(mp3),
-    ])
-    meta = json.loads(probe.stdout) if probe.returncode == 0 else {"format": {}}
-    duration = float(meta.get("format", {}).get("duration", 0) or 0)
-    size = int(meta.get("format", {}).get("size", mp3.stat().st_size) or mp3.stat().st_size)
-    return mp3, duration, size
-
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--voice", default=VOICE)
@@ -272,7 +180,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    load_env_file(Path.home() / ".hermes" / ".env")
+    load_env_file(Path.home() / ".hermes" / ".env", override=True)
     api_key = os.environ.get("MIMO_KEY")
     if not api_key and not args.dry_run:
         print("MIMO_KEY not set; add to ~/.hermes/.env", file=sys.stderr)
@@ -325,7 +233,8 @@ def main() -> int:
         if not intro_wav.exists() or intro_wav.stat().st_size < 1024:
             text = build_intro(s["set"], s["items"])
             print(f"  TTS intro ({len(text)} chars)")
-            tts(text, intro_wav, api_key=api_key, voice=args.voice, endpoint=args.endpoint)
+            synthesize_wav(text, intro_wav, api_key=api_key, voice=args.voice,
+                           endpoint=args.endpoint, timeout=TTS_TIMEOUT)
 
         wavs = [intro_wav]
         for i, it in enumerate(s["items"], 1):
@@ -334,7 +243,8 @@ def main() -> int:
             if not wav.exists() or wav.stat().st_size < 1024:
                 text = build_card(it, qmap, i)
                 print(f"  TTS {i:02d} {qid} ({len(text)} chars)")
-                tts(text, wav, api_key=api_key, voice=args.voice, endpoint=args.endpoint)
+                synthesize_wav(text, wav, api_key=api_key, voice=args.voice,
+                               endpoint=args.endpoint, timeout=TTS_TIMEOUT)
             else:
                 print(f"  cached {i:02d} {qid}")
             wavs.append(wav)
@@ -342,10 +252,12 @@ def main() -> int:
         outro_wav = CACHE_DIR / f"{slug}-outro.wav"
         if not outro_wav.exists() or outro_wav.stat().st_size < 1024:
             text = build_outro(s["set"])
-            tts(text, outro_wav, api_key=api_key, voice=args.voice, endpoint=args.endpoint)
+            synthesize_wav(text, outro_wav, api_key=api_key, voice=args.voice,
+                           endpoint=args.endpoint, timeout=TTS_TIMEOUT)
         wavs.append(outro_wav)
 
-        mp3, dur, sz = concat_episode(slug, wavs, args.bitrate)
+        mp3, dur, sz = merge_wavs_to_mp3(slug, wavs, out_dir=OUT_DIR,
+                                         cache_dir=CACHE_DIR, bitrate=args.bitrate)
         print(f"  MP3 {mp3.name} {dur:.0f}s {sz / 1024 / 1024:.2f}MB")
 
         manifest.append({
