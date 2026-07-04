@@ -1,0 +1,74 @@
+[
+  {
+    "title": "名词解释30题必背",
+    "file": "podcasts/political-science/名词解释_30题必背.mp3",
+    "duration_seconds": 377,
+    "size_bytes": 3019798,
+    "type": "term",
+    "question_count": 30
+  },
+  {
+    "title": "填空题专项",
+    "file": "podcasts/political-science/填空题.mp3",
+    "duration_seconds": 763,
+    "size_bytes": 6102665,
+    "type": "fill",
+    "question_count": null
+  },
+  {
+    "title": "简答题带背 第1集 (茉莉版)",
+    "file": "podcasts/political-science/政治学简答题带背第1集_茉莉版.mp3",
+    "duration_seconds": 360,
+    "size_bytes": 2883334,
+    "type": "short",
+    "question_count": null
+  },
+  {
+    "title": "简答题带背 第2集 (茉莉版)",
+    "file": "podcasts/political-science/政治学简答题带背第2集_茉莉版.mp3",
+    "duration_seconds": 583,
+    "size_bytes": 4665094,
+    "type": "short",
+    "question_count": null
+  },
+  {
+    "title": "简答题带背 第3集 (茉莉版)",
+    "file": "podcasts/political-science/政治学简答题带背第3集_茉莉版.mp3",
+    "duration_seconds": 286,
+    "size_bytes": 2290668,
+    "type": "short",
+    "question_count": null
+  },
+  {
+    "title": "简答题带背 第6-8题补充 (茉莉版)",
+    "file": "podcasts/political-science/政治学简答题带背补充_第6-8题_茉莉版.mp3",
+    "duration_seconds": 201,
+    "size_bytes": 1607096,
+    "type": "short",
+    "question_count": 3
+  },
+  {
+    "title": "论述题带背 第1集",
+    "file": "podcasts/political-science/政治学论述题带背第1集.mp3",
+    "duration_seconds": 572,
+    "size_bytes": 4572934,
+    "type": "essay",
+    "question_count": null
+  },
+  {
+    "title": "论述题带背 第2集 (MIMO版)",
+    "file": "podcasts/political-science/政治学论述题带背第2集_mimo.mp3",
+    "duration_seconds": 527,
+    "size_bytes": 4218296,
+    "type": "essay",
+    "question_count": null
+  },
+  {
+    "title": "简答题极简带背 (茉莉版)",
+    "file": "podcasts/political-science/简答题极简带背.mp3",
+    "duration_seconds": 571,
+    "size_bytes": 4570426,
+    "type": "short",
+    "question_count": null
+  }
+]

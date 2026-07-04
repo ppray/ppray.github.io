@@ -115,6 +115,7 @@
         }
 
         .channel-tab {
+            font: inherit;
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
@@ -128,6 +129,12 @@
             align-items: center;
             gap: 8px;
             box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .channel-tab:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
         }
 
         .channel-tab:hover {
@@ -139,6 +146,26 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-color: transparent;
+        }
+
+        /* 敬请期待频道：灰显 + 角标 */
+        .channel-tab.coming {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .channel-tab.coming:hover {
+            border-color: var(--glass-border);
+            transform: none;
+        }
+        .coming-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: var(--text-muted);
+            color: #fff;
+            margin-left: 2px;
+            line-height: 1.4;
         }
 
         /* Episode List */
@@ -584,22 +611,29 @@
         </header>
 
         <!-- Channel Tabs -->
-        <div class="channel-tabs" id="channelTabs">
-            <div class="channel-tab active" data-channel="political-science">
+        <div class="channel-tabs" id="channelTabs" role="tablist">
+            <button type="button" class="channel-tab active" data-channel="political-science"
+                role="tab" aria-selected="true">
                 <span>📚</span> 国考政治学
-            </div>
-            <div class="channel-tab" data-channel="ipe">
+            </button>
+            <button type="button" class="channel-tab" data-channel="ipe"
+                role="tab" aria-selected="false">
                 <span>💹</span> 国政经
-            </div>
-            <div class="channel-tab" data-channel="ipcs-mocks">
+            </button>
+            <button type="button" class="channel-tab" data-channel="ipcs-mocks"
+                role="tab" aria-selected="false">
                 <span>🌐</span> 国比政经
-            </div>
-            <div class="channel-tab" data-channel="international-relations">
+            </button>
+            <button type="button" class="channel-tab coming" data-channel="international-relations"
+                role="tab" aria-selected="false" aria-disabled="true" disabled>
                 <span>🌍</span> 国际关系
-            </div>
-            <div class="channel-tab" data-channel="dialectics">
+                <span class="coming-badge">敬请期待</span>
+            </button>
+            <button type="button" class="channel-tab coming" data-channel="dialectics"
+                role="tab" aria-selected="false" aria-disabled="true" disabled>
                 <span>🔬</span> 自然辩证法
-            </div>
+                <span class="coming-badge">敬请期待</span>
+            </button>
         </div>
 
         <!-- Channel Info -->
@@ -667,194 +701,37 @@
         }
 
         // Channel Data
+        // 频道元信息（稳定、不漂移）：name / icon / desc / audience 仍硬编码。
+        // episodes 与 duration 由对应 JSON 在启动时 fetch 后填充，避免数据双轨漂移。
         const channels = {
             'political-science': {
                 name: '国考政治学',
                 icon: '📚',
                 desc: '政治学核心考点带背，包含简答题、论述题、名词解释等题型，帮助你高效掌握重点知识。',
-                duration: '总时长约 4 小时',
                 audience: '适合考研/国考复习',
-                episodes: [
-                    {
-                        title: '名词解释30题必背',
-                        file: 'podcasts/political-science/名词解释_30题必背.mp3',
-                        duration: '约15分钟',
-                        type: 'term',
-                        date: '2024-04-13'
-                    },
-                    {
-                        title: '填空题专项',
-                        file: 'podcasts/political-science/填空题.mp3',
-                        duration: '约10分钟',
-                        type: 'fill',
-                        date: '2024-04-13'
-                    },
-                    {
-                        title: '简答题带背 第1集 (茉莉版)',
-                        file: 'podcasts/political-science/政治学简答题带背第1集_茉莉版.mp3',
-                        duration: '约25分钟',
-                        type: 'short',
-                        date: '2024-05-05'
-                    },
-                    {
-                        title: '简答题带背 第2集 (茉莉版)',
-                        file: 'podcasts/political-science/政治学简答题带背第2集_茉莉版.mp3',
-                        duration: '约30分钟',
-                        type: 'short',
-                        date: '2024-05-05'
-                    },
-                    {
-                        title: '简答题带背 第3集 (茉莉版)',
-                        file: 'podcasts/political-science/政治学简答题带背第3集_茉莉版.mp3',
-                        duration: '约20分钟',
-                        type: 'short',
-                        date: '2024-05-05'
-                    },
-                    {
-                        title: '简答题带背 第6-8题补充 (茉莉版)',
-                        file: 'podcasts/political-science/政治学简答题带背补充_第6-8题_茉莉版.mp3',
-                        duration: '约3分钟',
-                        type: 'short',
-                        date: '2024-05-06'
-                    },
-                    {
-                        title: '论述题带背 第1集',
-                        file: 'podcasts/political-science/政治学论述题带背第1集.mp3',
-                        duration: '约35分钟',
-                        type: 'essay',
-                        date: '2024-05-06'
-                    },
-                    {
-                        title: '论述题带背 第2集 (MIMO版)',
-                        file: 'podcasts/political-science/政治学论述题带背第2集_mimo.mp3',
-                        duration: '约15分钟',
-                        type: 'essay',
-                        date: '2024-05-05'
-                    },
-                    {
-                        title: '简答题极简带背 (茉莉版)',
-                        file: 'podcasts/political-science/简答题极简带背.mp3',
-                        duration: '约10分钟',
-                        type: 'short',
-                        date: '2025-05-11'
-                    }
-                ]
+                jsonUrl: 'podcasts/political-science/episodes.json',
+                episodes: []
             },
             'ipe': {
                 name: '国政经',
                 icon: '💹',
                 desc: '国政经（翟东升·货币金融）题库 137 题全量带背，按名词解释 / 简答 / 论述分集，茉莉中文 TTS。',
-                duration: '总时长约 4 小时',
                 audience: '适合国政经专题复习',
-                episodes: [
-                    {
-                        title: '名词解释带背 第1集（1-20题）',
-                        file: 'podcasts/ipe/ipe-term-01.mp3',
-                        duration: '约18分钟',
-                        type: 'term',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '名词解释带背 第2集（21-40题）',
-                        file: 'podcasts/ipe/ipe-term-02.mp3',
-                        duration: '约24分钟',
-                        type: 'term',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '名词解释带背 第3集（41-60题）',
-                        file: 'podcasts/ipe/ipe-term-03.mp3',
-                        duration: '约34分钟',
-                        type: 'term',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '名词解释带背 第4集（61-62题）',
-                        file: 'podcasts/ipe/ipe-term-04.mp3',
-                        duration: '约4分钟',
-                        type: 'term',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '简答题带背 第1集（1-15题）',
-                        file: 'podcasts/ipe/ipe-short-01.mp3',
-                        duration: '约19分钟',
-                        type: 'short',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '简答题带背 第2集（16-30题）',
-                        file: 'podcasts/ipe/ipe-short-02.mp3',
-                        duration: '约28分钟',
-                        type: 'short',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '简答题带背 第3集（31-45题）',
-                        file: 'podcasts/ipe/ipe-short-03.mp3',
-                        duration: '约27分钟',
-                        type: 'short',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '论述题带背 第1集（1-10题）',
-                        file: 'podcasts/ipe/ipe-essay-01.mp3',
-                        duration: '约17分钟',
-                        type: 'essay',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '论述题带背 第2集（11-20题）',
-                        file: 'podcasts/ipe/ipe-essay-02.mp3',
-                        duration: '约25分钟',
-                        type: 'essay',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '论述题带背 第3集（21-30题）',
-                        file: 'podcasts/ipe/ipe-essay-03.mp3',
-                        duration: '约30分钟',
-                        type: 'essay',
-                        date: '2026-06-02'
-                    },
-                    {
-                        title: '12位学术人物必背',
-                        file: 'podcasts/ipe/ipe-scholar-01.mp3',
-                        duration: '约11分钟',
-                        type: 'scholar',
-                        date: '2026-06-03'
-                    }
-                ]
+                jsonUrl: 'podcasts/ipe/episodes.json',
+                episodes: []
             },
             'ipcs-mocks': {
                 name: '国比政经模拟卷',
                 icon: '🌐',
                 desc: '《国际与比较政治经济学研究》15 套模拟卷全量带背，每集一套：5 名词 + 3 简答 + 2 论述。参考田野、宋新宁/陈岳、吉尔平、基欧汉、斯特兰奇、考克斯、沃勒斯坦等。',
-                duration: '总时长约 7 小时',
                 audience: '适合考前一周冲刺',
-                episodes: [
-                    { title: '模拟卷 01 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-01.mp3', duration: '约21分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 02 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-02.mp3', duration: '约23分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 03 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-03.mp3', duration: '约24分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 04 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-04.mp3', duration: '约25分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 05 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-05.mp3', duration: '约29分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 06 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-06.mp3', duration: '约44分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 07 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-07.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 08 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-08.mp3', duration: '约30分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 09 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-09.mp3', duration: '约24分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 10 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-10.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 11 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-11.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 12 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-12.mp3', duration: '约36分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 13 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-13.mp3', duration: '约36分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 14 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-14.mp3', duration: '约23分钟', type: 'mock', date: '2026-06-03' },
-                    { title: '模拟卷 15 带背', file: 'podcasts/ipcs-mocks/ipcs-mock-15.mp3', duration: '约27分钟', type: 'mock', date: '2026-06-03' }
-                ]
+                jsonUrl: 'podcasts/ipcs-mocks/episodes.json',
+                episodes: []
             },
             'international-relations': {
                 name: '国际关系',
                 icon: '🌍',
                 desc: '国际关系史、制度分析方法等核心内容带背，涵盖理论框架与重点案例。',
-                duration: '待更新',
                 audience: '适合国关课程复习',
                 episodes: []
             },
@@ -862,7 +739,6 @@
                 name: '自然辩证法',
                 icon: '🔬',
                 desc: '科学技术观、方法论与辩证思维要点带背，助力快速掌握核心概念。',
-                duration: '待更新',
                 audience: '适合自然辩证法复习',
                 episodes: []
             }
@@ -915,26 +791,88 @@
             return `${m}:${String(s).padStart(2, '0')}`;
         }
 
-        // Find episode meta by file across all channels
-        function findEpisode(file) {
-            for (const [cid, ch] of Object.entries(channels)) {
-                const ep = ch.episodes.find(e => e.file === file);
-                if (ep) return { channelId: cid, channel: ch, episode: ep };
+        // 把秒数格式化为"约 X 分钟" / "约 X.X 小时"，用于单集展示
+        function fmtDurationMin(sec) {
+            sec = Math.max(0, Math.floor(sec || 0));
+            if (sec < 60) return `约 ${sec} 秒`;
+            const m = Math.round(sec / 60);
+            if (m < 60) return `约 ${m} 分钟`;
+            const h = (sec / 3600).toFixed(1);
+            return `约 ${h} 小时`;
+        }
+
+        // 频道总时长：累加各集 duration_seconds，格式化为"约 X 小时" / "约 X 分钟"
+        function fmtChannelDuration(episodes) {
+            const total = episodes.reduce((s, e) => s + (e.duration_seconds || 0), 0);
+            if (!total) return '—';
+            const h = total / 3600;
+            if (h >= 1) return `总时长约 ${h.toFixed(1)} 小时`;
+            return `总时长约 ${Math.round(total / 60)} 分钟`;
+        }
+
+        // 把 JSON 里的一条集数归一化为页面渲染所需的结构
+        // · duration_seconds → 派生展示用 duration 字符串
+        // · file 字段保持原样（audioUrl 会进一步映射到 Releases）
+        function normalizeEpisode(ep) {
+            return {
+                title: ep.title,
+                file: ep.file,
+                type: ep.type,
+                duration: fmtDurationMin(ep.duration_seconds),
+                duration_seconds: ep.duration_seconds || 0
+            };
+        }
+
+        // 按需加载单个频道的 episodes（懒加载）。
+        // · 用 ch._loaded 标记避免重复 fetch；已加载直接返回
+        // · JSON 几乎不变，用 force-cache 走浏览器磁盘缓存，命中时零网络
+        // · 失败时降级为空列表 + loadError 标记，渲染层会显示占位
+        async function loadChannel(channelId) {
+            const ch = channels[channelId];
+            if (!ch || !ch.jsonUrl || ch._loaded) return;
+            try {
+                const res = await fetch(ch.jsonUrl, { cache: 'force-cache' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                ch.episodes = (Array.isArray(data) ? data : []).map(normalizeEpisode);
+                ch.loadError = false;
+            } catch (e) {
+                console.error(`[podcast] 加载 ${ch.jsonUrl} 失败:`, e);
+                ch.episodes = [];
+                ch.loadError = true;
+            } finally {
+                ch._loaded = true;
             }
-            return null;
+        }
+
+        // 空闲时预取其它频道的 JSON，切 Tab 时秒开（命中缓存则零网络）
+        function prefetchOtherChannels(currentId) {
+            const doPrefetch = (id, ch) => {
+                if (ch._loaded) return;
+                fetch(ch.jsonUrl, { cache: 'force-cache' })
+                    .then(() => { ch._loaded = true; })
+                    .catch(() => { /* 预取失败不影响主流程 */ });
+            };
+            // requestIdleCallback 不支持时降级为 setTimeout
+            const sched = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+            Object.entries(channels).forEach(([id, ch]) => {
+                if (id !== currentId && ch.jsonUrl && !ch._loaded) sched(() => doPrefetch(id, ch));
+            });
         }
 
         // Initialize
-        function init() {
+        async function init() {
             setupSpeedControl();
-            renderChannel(currentChannel);
-            setupTabs();
-            renderResumeBanner();
-
-            // Dark mode
+            // 暗色模式先应用，避免渲染时闪一下
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.body.setAttribute('data-theme', 'dark');
             }
+            // 只加载默认频道即可首屏渲染，其余空闲时预取
+            await loadChannel(currentChannel);
+            renderChannel(currentChannel);
+            setupTabs();
+            renderResumeBanner();
+            prefetchOtherChannels(currentChannel);
         }
 
         // ---- Speed control ----
@@ -942,12 +880,17 @@
             const group = document.getElementById('speedGroup');
             group.querySelectorAll('.speed-btn').forEach(btn => {
                 const rate = parseFloat(btn.dataset.rate);
-                btn.classList.toggle('active', rate === playbackRate);
+                const active = rate === playbackRate;
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
                 btn.addEventListener('click', () => {
                     playbackRate = rate;
                     localStorage.setItem(RATE_KEY, String(rate));
-                    group.querySelectorAll('.speed-btn').forEach(b =>
-                        b.classList.toggle('active', b === btn));
+                    group.querySelectorAll('.speed-btn').forEach(b => {
+                        const on = b === btn;
+                        b.classList.toggle('active', on);
+                        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+                    });
                     // Apply to every audio element on the page immediately
                     document.querySelectorAll('.audio-player').forEach(a => { a.playbackRate = rate; });
                 });
@@ -955,41 +898,81 @@
         }
 
         // ---- Resume banner (last-listened, cross-channel) ----
+        // 懒加载后，上一集可能在尚未加载的频道里。
+        // 因此 LAST_KEY 同时存了 channelName / episodeTitle / file，横幅不再依赖 episodes 是否已加载。
         function renderResumeBanner() {
             const banner = document.getElementById('resumeBanner');
             const last = loadJSON(LAST_KEY, null);
             const saved = last && last.file ? getProgress(last.file) : 0;
-            const found = last && last.file ? findEpisode(last.file) : null;
-            if (!last || !found || saved <= 5) {
+            if (!last || !last.file || !last.channelName || !last.episodeTitle || saved <= 5) {
                 banner.classList.remove('active');
                 return;
             }
             document.getElementById('resumeText').innerHTML =
-                `上次收听 <b>${found.channel.name}</b> · ${found.episode.title}，播放到 <b>${fmtTime(saved)}</b>`;
+                `上次收听 <b>${last.channelName}</b> · ${last.episodeTitle}，播放到 <b>${fmtTime(saved)}</b>`;
             const btn = document.getElementById('resumeBtn');
-            btn.onclick = () => {
-                // Switch to the channel, then play that episode from saved position
-                document.querySelectorAll('.channel-tab').forEach(t =>
-                    t.classList.toggle('active', t.dataset.channel === found.channelId));
-                currentChannel = found.channelId;
-                renderChannel(currentChannel);
-                const audio = document.querySelector(`.audio-player[data-file="${CSS.escape(last.file)}"]`);
-                if (audio) {
-                    audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    audio.play().catch(() => { });
-                }
+            btn.setAttribute('aria-label',
+                `继续收听 ${last.channelName} 的 ${last.episodeTitle}，从 ${fmtTime(saved)} 开始`);
+            btn.onclick = async () => {
+                // 切到对应频道（会触发懒加载），就绪后再定位音频并播放
+                await selectChannel(last.channelId, { scrollToFile: last.file, playFrom: saved });
             };
             banner.classList.add('active');
+        }
+
+        // 切换频道：同步 active 类、aria-selected，并跳过 disabled 的"敬请期待"频道
+        // options.scrollToFile / playFrom：由"继续收听"按钮传入，切完后滚动定位并自动播放
+        async function selectChannel(channelId, options = {}) {
+            currentChannel = channelId;
+            document.querySelectorAll('.channel-tab').forEach(t => {
+                const on = t.dataset.channel === channelId;
+                t.classList.toggle('active', on);
+                if (t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            // 未命中缓存时先显示 loading，避免页面停在旧频道内容上
+            const ch = channels[channelId];
+            if (ch && ch.jsonUrl && !ch._loaded) {
+                renderChannelLoading(channelId);
+            }
+            await loadChannel(channelId);
+            renderChannel(channelId);
+            // 续听：渲染完成后再定位 audio 元素（此时 DOM 已就绪）
+            if (options.scrollToFile) {
+                const audio = document.querySelector(
+                    `.audio-player[data-file="${CSS.escape(options.scrollToFile)}"]`);
+                if (audio) {
+                    audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (options.playFrom) {
+                        audio.play().catch(() => { });
+                    }
+                }
+            }
+        }
+
+        // 频道数据加载中：先更新频道信息卡，列表区给 loading 占位
+        function renderChannelLoading(channelId) {
+            const ch = channels[channelId];
+            if (!ch) return;
+            document.getElementById('channelName').textContent = ch.name;
+            document.getElementById('channelDesc').textContent = ch.desc;
+            document.getElementById('channelAudience').textContent = ch.audience;
+            document.querySelector('.channel-icon').textContent = ch.icon;
+            document.getElementById('episodeCount').textContent = '…';
+            document.getElementById('channelDuration').textContent = '…';
+            document.getElementById('episodesList').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">⏳</div>
+                    <h3>加载中…</h3>
+                </div>
+            `;
         }
 
         // Setup tabs
         function setupTabs() {
             document.querySelectorAll('.channel-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
-                    document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    currentChannel = tab.dataset.channel;
-                    renderChannel(currentChannel);
+                    if (tab.disabled || tab.classList.contains('coming')) return;
+                    selectChannel(tab.dataset.channel);
                 });
             });
         }
@@ -1000,18 +983,30 @@
             document.getElementById('channelName').textContent = channel.name;
             document.getElementById('channelDesc').textContent = channel.desc;
             document.getElementById('episodeCount').textContent = channel.episodes.length;
-            document.getElementById('channelDuration').textContent = channel.duration;
+            document.getElementById('channelDuration').textContent = fmtChannelDuration(channel.episodes);
             document.getElementById('channelAudience').textContent = channel.audience;
             document.querySelector('.channel-icon').textContent = channel.icon;
 
             const episodesList = document.getElementById('episodesList');
 
+            // 加载失败：明确提示，而不是静默空白
+            if (channel.loadError) {
+                episodesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>音频列表加载失败</h3>
+                        <p>请检查网络后刷新页面重试。</p>
+                    </div>
+                `;
+                return;
+            }
+
             if (channel.episodes.length === 0) {
                 episodesList.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📭</div>
-                        <h3>暂无内容</h3>
-                        <p>该频道正在准备中，敬请期待...</p>
+                        <h3>该频道暂未上线</h3>
+                        <p>内容正在准备中，敬请期待...</p>
                     </div>
                 `;
                 return;
@@ -1027,13 +1022,12 @@
                                 <span class="tag ${tagLabels[ep.type]?.class || 'tag-short'}">${tagLabels[ep.type]?.text || '音频'}</span>
                             </div>
                             <div class="episode-meta">
-                                <span>📅 ${ep.date}</span>
                                 <span>⏱️ ${ep.duration}</span>
                                 <span>${ep.file ? `🎵 ${ep.file.split('.').pop().toUpperCase()}` : '📝 文字带背'}</span>
                             </div>
                             ${ep.file ? `
                                 <div class="audio-player-wrapper">
-                                    <audio class="audio-player" controls preload="none"
+                                    <audio class="audio-player" controls preload="metadata"
                                         data-file="${ep.file}" data-index="${index}">
                                         <source src="${audioUrl(ep.file)}" type="audio/mpeg">
                                         您的浏览器不支持音频播放。
@@ -1073,8 +1067,9 @@
                 // Apply the current global speed to this player
                 audio.playbackRate = playbackRate;
 
-                // Restore saved position once metadata is available (preload=none
-                // ⇒ this fires right after the first play, so we seek then)
+                // Restore saved position once metadata is available.
+                // preload="metadata" 让 loadedmetadata 在用户点播放之前就触发，
+                // 因此 seek 完成后才进入播放，不会出现"先播一秒再跳回"。
                 audio.addEventListener('loadedmetadata', () => {
                     if (audio.dataset.resumed) return;
                     const saved = getProgress(file);
@@ -1094,8 +1089,16 @@
                         }
                     });
                     document.getElementById(`now-playing-${index}`).classList.add('active');
-                    // Remember this as the last-listened episode
-                    saveJSON(LAST_KEY, { channel: currentChannel, file });
+                    // 记住最近收听的一集。懒加载后横幅可能在频道未加载时渲染，
+                    // 因此同时缓存频道名/标题，横幅不再依赖 episodes 是否已就绪。
+                    const ch = channels[currentChannel];
+                    const ep = ch && ch.episodes[index];
+                    saveJSON(LAST_KEY, {
+                        channelId: currentChannel,
+                        channelName: ch ? ch.name : '',
+                        episodeTitle: ep ? ep.title : '',
+                        file
+                    });
                 });
 
                 // Persist progress at most every ~5s while playing
