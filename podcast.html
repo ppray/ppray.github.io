@@ -845,18 +845,18 @@
             }
         }
 
-        // 空闲时预取其它频道的 JSON，切 Tab 时秒开（命中缓存则零网络）
+        // 空闲时预取其它频道的 JSON，切 Tab 时秒开（命中 HTTP 缓存则零网络）。
+        // 注意：预取只 warm up 浏览器磁盘缓存，不标记 _loaded、不填充 episodes。
+        // 数据填充永远走 loadChannel，避免"预取过 ⇒ loadChannel 跳过 ⇒ episodes 仍为空"的竞态。
         function prefetchOtherChannels(currentId) {
-            const doPrefetch = (id, ch) => {
-                if (ch._loaded) return;
+            const doPrefetch = (ch) => {
                 fetch(ch.jsonUrl, { cache: 'force-cache' })
-                    .then(() => { ch._loaded = true; })
                     .catch(() => { /* 预取失败不影响主流程 */ });
             };
             // requestIdleCallback 不支持时降级为 setTimeout
             const sched = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
             Object.entries(channels).forEach(([id, ch]) => {
-                if (id !== currentId && ch.jsonUrl && !ch._loaded) sched(() => doPrefetch(id, ch));
+                if (id !== currentId && ch.jsonUrl && !ch._loaded) sched(() => doPrefetch(ch));
             });
         }
 
