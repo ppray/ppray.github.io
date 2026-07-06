@@ -1,90 +1,90 @@
 [
   {
-    "title": "国政经名词解释带背 第1集（1-20题）",
-    "file": "podcasts/ipe/ipe-term-01.mp3",
-    "duration_seconds": 1336,
-    "size_bytes": 6679916,
+    "title": "国政经 · ① 货币体系演变·金本位到牙买加体系",
+    "file": "podcasts/ipe/ipe-ep01-history.mp3",
+    "duration_seconds": 1357,
+    "size_bytes": 6787196,
     "type": "term",
-    "question_count": 20
-  },
-  {
-    "title": "国政经名词解释带背 第2集（21-40题）",
-    "file": "podcasts/ipe/ipe-term-02.mp3",
-    "duration_seconds": 1483,
-    "size_bytes": 7415156,
-    "type": "term",
-    "question_count": 20
-  },
-  {
-    "title": "国政经名词解释带背 第3集（41-60题）",
-    "file": "podcasts/ipe/ipe-term-03.mp3",
-    "duration_seconds": 1870,
-    "size_bytes": 9348716,
-    "type": "term",
-    "question_count": 20
-  },
-  {
-    "title": "国政经名词解释带背 第4集（61-62题）",
-    "file": "podcasts/ipe/ipe-term-04.mp3",
-    "duration_seconds": 220,
-    "size_bytes": 1100156,
-    "type": "term",
-    "question_count": 2
-  },
-  {
-    "title": "国政经简答题带背 第1集（1-15题）",
-    "file": "podcasts/ipe/ipe-short-01.mp3",
-    "duration_seconds": 1132,
-    "size_bytes": 5659196,
-    "type": "short",
     "question_count": 15
   },
   {
-    "title": "国政经简答题带背 第2集（16-30题）",
-    "file": "podcasts/ipe/ipe-short-02.mp3",
-    "duration_seconds": 1421,
-    "size_bytes": 7103996,
+    "title": "国政经 · ② 现实结构(上)·美元霸权机制",
+    "file": "podcasts/ipe/ipe-ep02-hegemony.mp3",
+    "duration_seconds": 1156,
+    "size_bytes": 5782676,
+    "type": "term",
+    "question_count": 13
+  },
+  {
+    "title": "国政经 · ② 现实结构(下)·中心-外围体系",
+    "file": "podcasts/ipe/ipe-ep03-structure.mp3",
+    "duration_seconds": 1012,
+    "size_bytes": 5061356,
+    "type": "term",
+    "question_count": 14
+  },
+  {
+    "title": "国政经 · ③ 中国处境·外汇储备",
+    "file": "podcasts/ipe/ipe-ep04-reserves.mp3",
+    "duration_seconds": 1349,
+    "size_bytes": 6744236,
     "type": "short",
+    "question_count": 13
+  },
+  {
+    "title": "国政经 · ③ 中国处境·人民币汇率",
+    "file": "podcasts/ipe/ipe-ep05-fx.mp3",
+    "duration_seconds": 1609,
+    "size_bytes": 8047436,
+    "type": "term",
+    "question_count": 13
+  },
+  {
+    "title": "国政经 · ③ 中国处境·货币政策工具",
+    "file": "podcasts/ipe/ipe-ep06-monetary.mp3",
+    "duration_seconds": 854,
+    "size_bytes": 4270076,
+    "type": "term",
+    "question_count": 11
+  },
+  {
+    "title": "国政经 · ③ 中国处境·货币政策的政治维度与央行独立性",
+    "file": "podcasts/ipe/ipe-ep07-monetary2.mp3",
+    "duration_seconds": 688,
+    "size_bytes": 3441596,
+    "type": "short",
+    "question_count": 7
+  },
+  {
+    "title": "国政经 · ③ 中国处境·金融危机史镜鉴",
+    "file": "podcasts/ipe/ipe-ep08-crisis.mp3",
+    "duration_seconds": 1660,
+    "size_bytes": 8298236,
+    "type": "term",
+    "question_count": 17
+  },
+  {
+    "title": "国政经 · ④ 破局之路(上)·产业升级与FDI",
+    "file": "podcasts/ipe/ipe-ep09-industry.mp3",
+    "duration_seconds": 1352,
+    "size_bytes": 6758396,
+    "type": "term",
     "question_count": 15
   },
   {
-    "title": "国政经简答题带背 第3集（31-45题）",
-    "file": "podcasts/ipe/ipe-short-03.mp3",
-    "duration_seconds": 1664,
-    "size_bytes": 8322476,
+    "title": "国政经 · ④ 破局之路(下)·人民币国际化与全球化重构",
+    "file": "podcasts/ipe/ipe-ep10-rmb-intl.mp3",
+    "duration_seconds": 1739,
+    "size_bytes": 8693396,
     "type": "short",
-    "question_count": 15
+    "question_count": 17
   },
   {
-    "title": "国政经论述题带背 第1集（1-10题）",
-    "file": "podcasts/ipe/ipe-essay-01.mp3",
-    "duration_seconds": 1027,
-    "size_bytes": 5134556,
-    "type": "essay",
-    "question_count": 10
-  },
-  {
-    "title": "国政经论述题带背 第2集（11-20题）",
-    "file": "podcasts/ipe/ipe-essay-02.mp3",
-    "duration_seconds": 1420,
-    "size_bytes": 7102556,
-    "type": "essay",
-    "question_count": 10
-  },
-  {
-    "title": "国政经论述题带背 第3集（21-30题）",
-    "file": "podcasts/ipe/ipe-essay-03.mp3",
-    "duration_seconds": 1897,
-    "size_bytes": 9485756,
-    "type": "essay",
-    "question_count": 10
-  },
-  {
-    "title": "国政经12位学术人物必背",
-    "file": "podcasts/ipe/ipe-scholar-01.mp3",
-    "duration_seconds": 675,
-    "size_bytes": 3377516,
-    "type": "scholar",
-    "question_count": 12
+    "title": "国政经 · 工具概念箱·跨主题理论概念",
+    "file": "podcasts/ipe/ipe-ep11-tools.mp3",
+    "duration_seconds": 1369,
+    "size_bytes": 6845276,
+    "type": "short",
+    "question_count": 14
   }
 ]

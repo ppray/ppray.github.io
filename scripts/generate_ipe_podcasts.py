@@ -103,30 +103,99 @@ def build_card_text(question: dict, number: int) -> str:
     return clean_for_speech("。".join(parts))
 
 
-def episode_plan(questions: list[dict]) -> list[dict]:
-    specs = [
-        ("term", "名词解释", 20),
-        ("short", "简答题", 15),
-        ("essay", "论述题", 10),
-        ("scholar", "学术人物", 12),
+def classify_theme(question: dict) -> str:
+    """把一道题归到 12 个主题集之一。
+
+    基于翟东升《货币与金融的国际政治经济学》四层理论框架:
+      ①历史演变(金本位/布雷顿/牙买加) ②现实结构(美元霸权/中心-外围)
+      ③中国处境(外汇储备/汇率/货币工具/金融危机) ④破局之路(FDI/人民币国际化)
+    学术人物按其理论领域打散到对应主题集。
+    """
+    # 只用题干匹配(更精确),避免答案里的关联词污染分类
+    qt = question.get("question", "")
+    qid = question["id"]
+
+    # 学术人物按理论领域打散
+    if question["category"] == "学术人物":
+        scholar_map = {
+            "ipe-scholar-03": "hegemony",   # 基欧汉 霸权后合作
+            "ipe-scholar-09": "hegemony",   # 金德尔伯格 霸权稳定论
+            "ipe-scholar-11": "structure",  # 沃勒斯坦 世界体系
+            "ipe-scholar-12": "structure",  # 卡多佐 依附理论
+            "ipe-scholar-02": "structure",  # 斯特兰奇 结构性权力
+            "ipe-scholar-10": "structure",  # 克拉斯纳 国际机制
+            "ipe-scholar-06": "monetary",   # 库珀 相互依存
+            "ipe-scholar-07": "monetary",   # 科斯 制度/交易成本
+            "ipe-scholar-08": "monetary2",  # 诺思 制度变迁
+            "ipe-scholar-04": "monetary2",  # 奥斯特罗姆 多中心治理
+            "ipe-scholar-05": "industry",   # 卡赞斯坦 国际化
+            "ipe-scholar-01": "rmb-intl",   # 考克斯 批判理论/新自由主义批判
+        }
+        return scholar_map.get(qid, "tools")
+
+    # 关键词归层。规则顺序经过精心排列以避免误判:
+    # 更具体/更窄的主题放前面,通用词放后面。
+    rules = [
+        # ③层细分(最具体,优先判断)
+        ("reserves", r"外汇储备|外汇占款|强制结售汇|双顺差|持有美债|持有美国国债|货币地租|持有巨额美债"),
+        ("crisis", r"金融危机|次贷|欧债|拉美.*危机|亚洲金融|主权债务|债务违约|违约|华盛顿共识|金融自由化|进口替代|资产泡沫|系统性.*金融危机|历次.*危机|发展中国家主权"),
+        ("monetary2", r"公开市场操作.*困境|央行.*池子|货币政策.*政治考量|央行独立|利息节省"),
+        ("monetary", r"存款准备金|公开市场|基础货币|货币乘数|央票|MLF|SLF|冲销|货币创造机制|国债收益率|预算软约束"),
+        ("fx", r"人民币汇率|汇率操纵|汇率.*阶段|固定汇率|浮动汇率|汇率套利|大幅贬值|渐进升值|高估|低估|购买力平价|一价定律|利率平价|可贸易品|老龄化.*汇率|技术进步.*汇率"),
+        # ④层
+        ("industry", r"外商直接投资|FDI|三外路线|雁行|微笑曲线|产业链编辑|CICE|产业转移|产业升级|全球供应链|友岸外包|加工贸易|资源诅咒|去工业化|出口导向|荷兰病"),
+        ("rmb-intl", r"人民币国际化|货币互换|一带一路|RCEP|去风险|脱钩|CIPS|日元国际化|新自由主义|逆全球化|搭便车|拜登经济学|新华盛顿共识|经济安全|人民币的锚|工业产能"),
+        # ②层
+        ("structure", r"中心.?外围|依附理论|世界市场体系|全球货币市场份额|国际货币含义|原罪|巴拉萨|贸易溢出|中央国家的代价"),
+        ("hegemony", r"美元霸权|石油美元|SWIFT|美元指数|铸币税|美元潮汐|债务上限|特朗普减税|美元结算|金融核弹|金融制裁|美国.*量化宽松|QE.*美元"),
+        # ①层(①两集合并为history,题量太少)
+        ("history", r"金本位|金汇兑|黄金输送|金块本位|布雷顿|牙买加|特里芬|SDR|特别提款权|最优货币区|国际收支|全球货币体系.*特点"),
+        # 兜底
+        ("tools", r"康德拉|康波|通胀|债务.*观|债务经济学|滞涨"),
     ]
+    for theme, pat in rules:
+        if re.search(pat, qt):
+            return theme
+    return "tools"
+
+
+# 11 个主题集定义(按四层主线排列):slug → (层标签, 集标题)
+# ①层金本位与布雷顿题量都偏少,合并为一集
+THEME_EPISODES = [
+    ("history",   "①历史", "① 货币体系演变·金本位到牙买加体系"),
+    ("hegemony",  "②结构", "② 现实结构(上)·美元霸权机制"),
+    ("structure", "②结构", "② 现实结构(下)·中心-外围体系"),
+    ("reserves",  "③处境", "③ 中国处境·外汇储备"),
+    ("fx",        "③处境", "③ 中国处境·人民币汇率"),
+    ("monetary",  "③处境", "③ 中国处境·货币政策工具"),
+    ("monetary2", "③处境", "③ 中国处境·货币政策的政治维度与央行独立性"),
+    ("crisis",    "③处境", "③ 中国处境·金融危机史镜鉴"),
+    ("industry",  "④破局", "④ 破局之路(上)·产业升级与FDI"),
+    ("rmb-intl",  "④破局", "④ 破局之路(下)·人民币国际化与全球化重构"),
+    ("tools",     "工具",  "工具概念箱·跨主题理论概念"),
+]
+
+
+def episode_plan(questions: list[dict]) -> list[dict]:
+    # 排除填空题(名词解释的镜像,音频叙事冗余)
+    items = [q for q in questions if q["category"] != "填空题"]
+    by_theme: dict[str, list[dict]] = {slug: [] for slug, _, _ in THEME_EPISODES}
+    for q in items:
+        theme = classify_theme(q)
+        by_theme[theme].append(q)
+
     episodes: list[dict] = []
-    for prefix, category, chunk_size in specs:
-        items = [q for q in questions if q["category"] == category]
-        for idx in range(0, len(items), chunk_size):
-            chunk = items[idx : idx + chunk_size]
-            ep_no = len(episodes) + 1
-            start = idx + 1
-            end = idx + len(chunk)
-            label = "12位学术人物必背" if category == "学术人物" else f"{category}带背 第{idx // chunk_size + 1}集（{start}-{end}题）"
-            title = f"国政经{label}"
-            episodes.append({
-                "episode": ep_no,
-                "slug": f"ipe-{prefix}-{idx // chunk_size + 1:02d}",
-                "title": title,
-                "category": category,
-                "questions": chunk,
-            })
+    for ep_no, (slug, layer, title) in enumerate(THEME_EPISODES, start=1):
+        chunk = by_theme.get(slug, [])
+        if not chunk:
+            continue
+        episodes.append({
+            "episode": ep_no,
+            "slug": f"ipe-ep{ep_no:02d}-{slug}",
+            "title": f"国政经 · {title}",
+            "category": layer,
+            "questions": chunk,
+        })
     return episodes
 
 
@@ -194,12 +263,17 @@ def concat_episode(episode: dict, card_wavs: list[Path], bitrate: str) -> dict:
         episode["slug"], card_wavs,
         out_dir=OUT_DIR, cache_dir=CACHE_DIR, bitrate=bitrate,
     )
+    # type 字段:用每集内占比最大的题型,反映该集主要题型
+    from collections import Counter
+    cat_count = Counter(q["category"] for q in episode["questions"])
+    type_map = {"名词解释": "term", "简答题": "short", "论述题": "essay", "学术人物": "scholar"}
+    main_cat = cat_count.most_common(1)[0][0]
     return {
         "title": episode["title"],
         "file": str(mp3.relative_to(ROOT)),
         "duration_seconds": round(duration),
         "size_bytes": size,
-        "type": {"名词解释": "term", "简答题": "short", "论述题": "essay", "学术人物": "scholar"}[episode["category"]],
+        "type": type_map.get(main_cat, "mixed"),
         "question_count": len(episode["questions"]),
     }
 
@@ -212,6 +286,8 @@ def main() -> int:
     parser.add_argument("--auth-mode", choices=["api-key", "bearer"], default=os.environ.get("MIMO_TTS_AUTH_MODE", "api-key"))
     parser.add_argument("--limit-episodes", type=int, default=0)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--concat-only", action="store_true",
+                        help="只重新拼接分集(复用缓存wav),不TTS不QC。用于纯重组分集。")
     parser.add_argument("--probe-auth", action="store_true")
     args = parser.parse_args()
 
@@ -219,7 +295,7 @@ def main() -> int:
     # MIMO_TTS_KEY is the dedicated TTS credential (preferred); MIMO_KEY is a
     # general key that does NOT authorize the TTS endpoint (returns 401).
     api_key = os.environ.get("MIMO_TTS_KEY") or os.environ.get("MIMO_KEY")
-    if not api_key and not args.dry_run:
+    if not api_key and not args.dry_run and not args.concat_only:
         print("No TTS key set. Export MIMO_TTS_KEY (preferred) or MIMO_KEY.", file=sys.stderr)
         return 2
     if args.probe_auth:
@@ -244,26 +320,33 @@ def main() -> int:
         wavs = []
         for q in ep["questions"]:
             wav = CACHE_DIR / f"{q['id']}.wav"
-            text = build_card_text(q, global_no)
-            need = not wav.exists() or wav.stat().st_size < 1024
-            if not need:
-                ok, dur, cps = qc_check(text, wav)
-                if not ok:
-                    print(f"  cached-QC-fail {global_no:03d} {q['id']} dur={dur:.0f}s cps={cps:.2f} -> re-synthesize")
-                    need = True
-            if need:
-                print(f"  TTS {global_no:03d} {q['id']} ({len(text)} chars)")
-                tts_with_qc(
-                    text,
-                    wav,
-                    api_key=api_key,
-                    voice=args.voice,
-                    endpoint=args.endpoint,
-                    auth_mode=args.auth_mode,
-                    label=q["id"],
-                )
+            if args.concat_only:
+                # 纯重组:只检查缓存wav存在,不TTS不QC
+                if not wav.exists() or wav.stat().st_size < 1024:
+                    print(f"  MISSING {q['id']} (缓存wav不存在,--concat-only无法生成)")
+                    return 3
+                print(f"  cached {global_no:03d} {q['id']}")
             else:
-                print(f"  cached {global_no:03d} {q['id']} (cps ok)")
+                text = build_card_text(q, global_no)
+                need = not wav.exists() or wav.stat().st_size < 1024
+                if not need:
+                    ok, dur, cps = qc_check(text, wav)
+                    if not ok:
+                        print(f"  cached-QC-fail {global_no:03d} {q['id']} dur={dur:.0f}s cps={cps:.2f} -> re-synthesize")
+                        need = True
+                if need:
+                    print(f"  TTS {global_no:03d} {q['id']} ({len(text)} chars)")
+                    tts_with_qc(
+                        text,
+                        wav,
+                        api_key=api_key,
+                        voice=args.voice,
+                        endpoint=args.endpoint,
+                        auth_mode=args.auth_mode,
+                        label=q["id"],
+                    )
+                else:
+                    print(f"  cached {global_no:03d} {q['id']} (cps ok)")
             wavs.append(wav)
             global_no += 1
         info = concat_episode(ep, wavs, args.bitrate)
