@@ -825,13 +825,14 @@
 
         // 按需加载单个频道的 episodes（懒加载）。
         // · 用 ch._loaded 标记避免重复 fetch；已加载直接返回
-        // · JSON 几乎不变，用 force-cache 走浏览器磁盘缓存，命中时零网络
+        // · JSON 会随分集重组更新，用 no-cache 走条件请求(304 时仍用缓存，
+        //   服务器有更新时立即拉新)，避免 force-cache 导致旧 JSON 长期滞留
         // · 失败时降级为空列表 + loadError 标记，渲染层会显示占位
         async function loadChannel(channelId) {
             const ch = channels[channelId];
             if (!ch || !ch.jsonUrl || ch._loaded) return;
             try {
-                const res = await fetch(ch.jsonUrl, { cache: 'force-cache' });
+                const res = await fetch(ch.jsonUrl, { cache: 'no-cache' });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 ch.episodes = (Array.isArray(data) ? data : []).map(normalizeEpisode);
@@ -850,7 +851,7 @@
         // 数据填充永远走 loadChannel，避免"预取过 ⇒ loadChannel 跳过 ⇒ episodes 仍为空"的竞态。
         function prefetchOtherChannels(currentId) {
             const doPrefetch = (ch) => {
-                fetch(ch.jsonUrl, { cache: 'force-cache' })
+                fetch(ch.jsonUrl, { cache: 'no-cache' })
                     .catch(() => { /* 预取失败不影响主流程 */ });
             };
             // requestIdleCallback 不支持时降级为 setTimeout
