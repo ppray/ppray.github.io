@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>理论框架与背诵路线图 · 打印版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ 基础与打印设置 ============ */
+  :root {
+    --ink: #1e293b;
+    --ink-soft: #475569;
+    --ink-muted: #64748b;
+    --line: #cbd5e1;
+    --line-soft: #e2e8f0;
+    --purple: #6366f1;
+    --red: #dc2626;
+    --gold: #b89a40;
+    --green: #16a34a;
+    --purple-bg: #eef2ff;
+    --red-bg: #fef2f2;
+    --gold-bg: #fefce8;
+    --green-bg: #f0fdf4;
+    --code-bg: #f1f5f9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
+    color: var(--ink);
+    line-height: 1.7;
+    margin: 0;
+    padding: 28px 24px;
+    font-size: 13px;
+  }
+
+  /* 打印：A4 纵向，合理页边距 */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 12mm 14mm 12mm;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 12px; }
+    .no-print { display: none !important; }
+    .page-break { break-before: page; page-break-before: always; }
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+  }
+
+  /* ============ 顶部工具栏（仅屏幕显示） ============ */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-soft);
+    padding: 10px 16px;
+    margin: -28px -24px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 10;
+  }
+  .toolbar .t-title { font-weight: 600; font-size: 13px; color: var(--ink-soft); }
+  .btn {
+    border: 1px solid var(--purple);
+    background: var(--purple);
+    color: #fff;
+    padding: 7px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn:hover { opacity: .88; }
+  .btn:active { transform: scale(.97); }
+
+  /* ============ 文档版心 ============ */
+  .sheet {
+    max-width: 190mm;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  /* ============ 标题区 ============ */
+  .doc-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+  .doc-sub {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin: 0 0 6px;
+  }
+  .doc-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--red) 35%, var(--gold) 65%, var(--green));
+    border-radius: 2px;
+    margin: 0 0 22px;
+  }
+
+  /* ============ 核心逻辑引语 ============ */
+  .logic-box {
+    background: var(--code-bg);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 13px 16px;
+    margin: 0 0 20px;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .logic-box b { color: var(--ink); }
+  .logic-box .arc { color: var(--purple); font-weight: 600; }
+
+  /* ============ 章节小标题 ============ */
+  h2.section {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 12px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--line-soft);
+  }
+
+  /* ============ SVG 框架图 ============ */
+  .figure {
+    margin: 8px 0 6px;
+    padding: 10px 0 0;
+  }
+  .figure svg {
+    width: 100%;
+    max-width: 185mm;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .figcap {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+  .figcap .lg { font-weight: 600; }
+
+  /* ============ 背诵顺序表格 ============ */
+  table.order {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    margin: 6px 0 4px;
+  }
+  table.order th {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    padding: 7px 8px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: .02em;
+  }
+  table.order th:first-child { width: 36px; text-align: center; }
+  table.order th:nth-child(2) { width: 34px; text-align: center; }
+  table.order th:last-child { width: 44%; }
+  table.order td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  table.order td:nth-child(1) { text-align: center; font-weight: 700; }
+  table.order td:nth-child(2) { text-align: center; font-weight: 700; }
+  table.order tbody tr:nth-child(even) { background: #f8fafc; }
+  table.order tbody tr:hover { background: #eef2ff; }
+
+  /* 层级色标 */
+  .lv1 { color: var(--purple); }
+  .lv2 { color: var(--red); }
+  .lv3 { color: var(--gold); }
+  .lv4 { color: var(--green); }
+  .lv-badge {
+    display: inline-block;
+    width: 20px; height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .lv-badge.b1 { background: var(--purple); }
+  .lv-badge.b2 { background: var(--red); }
+  .lv-badge.b3 { background: var(--gold); }
+  .lv-badge.b4 { background: var(--green); }
+  .topic { font-weight: 600; color: var(--ink); }
+
+  /* ============ 一周计划 ============ */
+  .plan-box {
+    background: var(--green-bg);
+    border: 1px solid #bbf7d0;
+    border-left: 4px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0 6px;
+    font-size: 12px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .plan-box b { color: var(--green); }
+  .plan-day {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #bbf7d0;
+    border-radius: 5px;
+    padding: 1px 7px;
+    margin: 0 2px;
+    font-weight: 600;
+    color: var(--green);
+    font-size: 11px;
+  }
+
+  /* ============ 图例 ============ */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin: 8px 0 4px;
+    font-size: 11px;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; color: var(--ink-soft); }
+  .legend i {
+    display: inline-block;
+    width: 11px; height: 11px;
+    border-radius: 3px;
+  }
+
+  /* ============ 页脚 ============ */
+  .footer {
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- 屏幕工具栏 -->
+<div class="toolbar no-print">
+  <span class="t-title">四层理论框架图 · 打印版</span>
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存为 PDF</button>
+</div>
+
+<div class="sheet">
+
+  <!-- ===== 标题区 ===== -->
+  <h1 class="doc-title">🧭 四层理论框架</h1>
+  <p class="doc-sub">翟东升《货币与金融的国际政治经济学》· 历史演变 → 现实结构 → 中国处境 → 破局之路</p>
+  <div class="doc-rule"></div>
+
+  <!-- ===== 四层理论框架图 ===== -->
+  <div class="figure avoid-break">
+    <svg viewBox="0 0 760 780" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="货币与金融国际政治经济学的四层理论框架与因果递进关系">
+      <defs>
+        <marker id="bigArr" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,10 L10,5 z" fill="#64748b"/>
+        </marker>
+        <marker id="midArr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L8,3 z" fill="#b89a40"/>
+        </marker>
+      </defs>
+
+      <!-- 顶部大标题 -->
+      <text x="380" y="14" font-size="0" fill="none">.</text>
+
+      <!-- ============ 第①层 历史演变 ============ -->
+      <rect x="20" y="20" width="720" height="120" rx="10" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="40" y="45" font-size="14" font-weight="700" fill="#6366f1">① 历史演变 · 怎么来的（背诵顺序 1–2）</text>
+      <rect x="40" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="145" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">金本位制度</text>
+      <text x="145" y="103" font-size="11" fill="#64748b" text-anchor="middle">金币本位→金汇兑</text>
+      <text x="145" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">自动调节 · 崩溃(1931)</text>
+      <rect x="275" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="380" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">布雷顿森林体系</text>
+      <text x="380" y="103" font-size="11" fill="#64748b" text-anchor="middle">黄金美元本位</text>
+      <text x="380" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">特里芬难题 · 崩溃(1971)</text>
+      <rect x="510" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="615" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">牙买加体系</text>
+      <text x="615" y="103" font-size="11" fill="#64748b" text-anchor="middle">信用货币本位(1976至今)</text>
+      <text x="615" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">浮动汇率 · 美元独大</text>
+
+      <!-- 层间箭头 ①→② -->
+      <line x1="380" y1="140" x2="380" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+      <text x="395" y="165" font-size="11" fill="#64748b" font-style="italic">崩溃后留下 →</text>
+
+      <!-- ============ 第②层 现实结构 ============ -->
+      <rect x="20" y="185" width="720" height="135" rx="10" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="40" y="210" font-size="14" font-weight="700" fill="#dc2626">② 现实结构 · 现在怎样（背诵顺序 3–4）</text>
+      <rect x="40" y="225" width="340" height="80" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="210" y="250" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">美元霸权</text>
+      <text x="210" y="270" font-size="11" fill="#64748b" text-anchor="middle">石油美元 · SWIFT · 美债池 · 美联储=全球央行</text>
+      <text x="210" y="288" font-size="11" font-weight="600" fill="#dc2626" text-anchor="middle">两大收割机制 ↓</text>
+      <rect x="400" y="225" width="160" height="80" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="480" y="252" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">铸币税</text>
+      <text x="480" y="272" font-size="10" fill="#64748b" text-anchor="middle">"印纸换资源"</text>
+      <text x="480" y="290" font-size="10" fill="#94a3b8" text-anchor="middle">外围缴货币地租</text>
+      <rect x="580" y="225" width="140" height="80" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="650" y="252" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">美元潮汐</text>
+      <text x="650" y="272" font-size="10" fill="#64748b" text-anchor="middle">宽松→泡沫</text>
+      <text x="650" y="290" font-size="10" fill="#94a3b8" text-anchor="middle">收紧→收割</text>
+      <!-- 中心-外围 标注 -->
+      <text x="210" y="305" font-size="10" fill="#94a3b8" text-anchor="middle">⇒ 形成中心-外围体系：美国(中心) vs 中国等(外围)</text>
+
+      <!-- 层间箭头 ②→③ -->
+      <line x1="380" y1="320" x2="380" y2="360" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+      <text x="395" y="345" font-size="11" fill="#64748b" font-style="italic">外围国处境 →</text>
+
+      <!-- ============ 第③层 中国处境 ============ -->
+      <rect x="20" y="365" width="720" height="170" rx="10" fill="none" stroke="#b89a40" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="40" y="390" font-size="14" font-weight="700" fill="#b89a40">③ 中国处境 · 我付出什么代价（背诵顺序 5–8）</text>
+      <rect x="40" y="405" width="160" height="55" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+      <text x="120" y="427" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">三外路线</text>
+      <text x="120" y="445" font-size="10" fill="#64748b" text-anchor="middle">外贸·外资·外汇</text>
+      <rect x="220" y="405" width="160" height="55" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+      <text x="300" y="427" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">双顺差</text>
+      <text x="300" y="445" font-size="10" fill="#64748b" text-anchor="middle">→ 巨额外汇储备</text>
+      <rect x="400" y="405" width="160" height="55" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+      <text x="480" y="427" font-size="13" font-weight="600" fill="#dc2626" text-anchor="middle">负利差循环</text>
+      <text x="480" y="445" font-size="10" fill="#64748b" text-anchor="middle">FDI高息借入</text>
+      <text x="480" y="458" font-size="10" fill="#64748b" text-anchor="middle">美债低息借出</text>
+      <rect x="580" y="405" width="140" height="55" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+      <text x="650" y="427" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">汇率低估</text>
+      <text x="650" y="445" font-size="10" fill="#64748b" text-anchor="middle">+强制结汇冲销</text>
+      <!-- 第③层横向因果链 -->
+      <line x1="200" y1="432" x2="220" y2="432" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+      <line x1="380" y1="432" x2="400" y2="432" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+      <line x1="560" y1="432" x2="580" y2="432" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+      <!-- 反面镜鉴 -->
+      <rect x="40" y="475" width="680" height="48" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="380" y="495" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">🔍 反面镜鉴：全球金融危机史（拉美/亚洲/欧债）</text>
+      <text x="380" y="513" font-size="11" fill="#64748b" text-anchor="middle">他国照搬美元体系或金融自由化的惨痛教训——金融开放过急 → 资本外逃 → 危机</text>
+
+      <!-- 层间箭头 ③→④ -->
+      <line x1="380" y1="535" x2="380" y2="575" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+      <text x="395" y="560" font-size="11" fill="#64748b" font-style="italic">代价倒逼出路 →</text>
+
+      <!-- ============ 第④层 破局之路 ============ -->
+      <rect x="20" y="580" width="720" height="180" rx="10" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="40" y="605" font-size="14" font-weight="700" fill="#16a34a">④ 破局之路 · 怎么从外围跻身中心（背诵顺序 9–13）</text>
+      <text x="380" y="625" font-size="11" font-weight="600" fill="#16a34a" text-anchor="middle">两条腿走路：对内升级产业链 + 对外推动人民币国际化</text>
+      <rect x="40" y="640" width="340" height="105" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="210" y="664" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">对内：产业升级</text>
+      <text x="210" y="685" font-size="11" fill="#64748b" text-anchor="middle">外资FDI · 中国工业化奇迹</text>
+      <text x="210" y="705" font-size="12" font-weight="600" fill="#16a34a" text-anchor="middle">CICE 产业链编辑能力</text>
+      <text x="210" y="724" font-size="11" fill="#64748b" text-anchor="middle">冲微笑曲线两端 · 守关键节点</text>
+      <rect x="400" y="640" width="320" height="105" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="560" y="664" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">对外：人民币国际化</text>
+      <text x="560" y="685" font-size="11" fill="#64748b" text-anchor="middle">货币互换 · SDR · 资本项目逆差</text>
+      <text x="560" y="705" font-size="12" font-weight="600" fill="#16a34a" text-anchor="middle">一带一路 + CIPS（去SWIFT）</text>
+      <text x="560" y="724" font-size="11" fill="#64748b" text-anchor="middle">减持美债 · 增持黄金</text>
+
+      <!-- ============ 高频必背考点徽章 ============ -->
+      <!-- 金本位制度（①层） box top-right (250,60) -->
+      <g>
+        <rect x="212" y="52" width="38" height="17" rx="8.5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>
+        <text x="231" y="64" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">必背</text>
+      </g>
+      <!-- 双顺差→外汇储备（③层） box top-right (380,405) -->
+      <g>
+        <rect x="342" y="397" width="38" height="17" rx="8.5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>
+        <text x="361" y="409" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">必背</text>
+      </g>
+      <!-- 汇率低估→人民币汇率（③层） box top-right (720,405) -->
+      <g>
+        <rect x="682" y="397" width="38" height="17" rx="8.5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>
+        <text x="701" y="409" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">必背</text>
+      </g>
+      <!-- 对外：人民币国际化（④层） box top-right (720,640) -->
+      <g>
+        <rect x="682" y="632" width="38" height="17" rx="8.5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>
+        <text x="701" y="644" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">必背</text>
+      </g>
+    </svg>
+    <div class="figcap">
+      图：四层理论框架与因果递进——①历史演变产生②美元霸权结构，结构决定③中国处境与代价，代价倒逼④破局之路。<br/>
+      <span class="lg" style="color:#6366f1">紫=历史</span> ·
+      <span class="lg" style="color:#dc2626">红=霸权/收割</span> ·
+      <span class="lg" style="color:#b89a40">金=代价</span> ·
+      <span class="lg" style="color:#16a34a">绿=破局</span>。背诵严格按 ①→②→③→④ 顺序。<br/>
+      <span style="display:inline-block;background:#dc2626;color:#fff;border-radius:8px;padding:1px 7px;font-size:10px;font-weight:700;vertical-align:middle;">必背</span>
+      = 高频必背考点：金本位制度 · 外汇储备 · 人民币汇率 · 人民币国际化
+    </div>
+  </div>
+
+  <!-- ===== 推荐背诵顺序表（已按用户要求移除） ===== -->
+
+  <!-- ===== 一周背诵计划（已按用户要求移除） ===== -->
+
+  <!-- ===== 图例（已移除，颜色说明见图注） ===== -->
+
+  <!-- ===== 页脚 ===== -->
+  <div class="footer">
+    翟东升《货币与金融的国际政治经济学》复习笔记 · 四层理论框架图
+  </div>
+
+</div>
+
+</body>
+</html>

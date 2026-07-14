@@ -36,3 +36,6 @@ child/
 
 # 本地工作缓存（ZCode/WorkBuddy）
 .workbuddy/
+
+# 临时脚本（一次性生成原文佐证/引用来源，不纳入仓库）
+国关复习/add_sources.py
