@@ -1,0 +1,98 @@
+<svg width="100%" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="itemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#eeeeee;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="evalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffe0b2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1000" height="600" fill="#263238" rx="10"/>
+  
+  <!-- 标题卡片 -->
+  <g transform="translate(500,80)">
+    <rect x="-250" y="-40" width="500" height="80" fill="url(#headerGrad)" rx="10" stroke="#1565c0" stroke-width="2"/>
+    <text x="0" y="-10" text-anchor="middle" font-size="24" font-weight="bold" fill="#0d47a1">债务上限 = 巨型信用卡</text>
+    <text x="0" y="20" text-anchor="middle" font-size="16" fill="#1565c0">卡面刻着"国会额度"</text>
+  </g>
+  
+  <!-- 三个分支 -->
+  <!-- 非常措施 -->
+  <g transform="translate(200,200)">
+    <rect x="-120" y="-40" width="240" height="80" fill="url(#itemGrad)" rx="8" stroke="#78909c" stroke-width="1.5"/>
+    <text x="0" y="-15" text-anchor="middle" font-size="18" font-weight="bold" fill="#37474f">非常措施</text>
+    <text x="0" y="15" text-anchor="middle" font-size="14" fill="#546e7a">刷爆掏急救包</text>
+  </g>
+  
+  <!-- 停摆·技术性违约 -->
+  <g transform="translate(500,200)">
+    <rect x="-120" y="-40" width="240" height="80" fill="url(#itemGrad)" rx="8" stroke="#78909c" stroke-width="1.5"/>
+    <text x="0" y="-15" text-anchor="middle" font-size="18" font-weight="bold" fill="#37474f">停摆·技术性违约</text>
+    <text x="0" y="15" text-anchor="middle" font-size="14" fill="#546e7a">拉闸熄灯·支票弹回</text>
+  </g>
+  
+  <!-- 上调100+次 -->
+  <g transform="translate(800,200)">
+    <rect x="-120" y="-40" width="240" height="80" fill="url(#itemGrad)" rx="8" stroke="#78909c" stroke-width="1.5"/>
+    <text x="0" y="-15" text-anchor="middle" font-size="18" font-weight="bold" fill="#37474f">上调100+次</text>
+    <text x="0" y="15" text-anchor="middle" font-size="14" fill="#546e7a">卡边贴满提额贴</text>
+  </g>
+  
+  <!-- 连接线 -->
+  <line x1="500" y1="120" x2="200" y2="160" stroke="#78909c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="500" y1="120" x2="500" y2="160" stroke="#78909c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="500" y1="120" x2="800" y2="160" stroke="#78909c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 账单批注：四重评价 -->
+  <g transform="translate(500,400)">
+    <rect x="-450" y="-120" width="900" height="240" fill="none" stroke="#ff9800" stroke-width="2" stroke-dasharray="10,5" rx="15"/>
+    <text x="0" y="-100" text-anchor="middle" font-size="20" font-weight="bold" fill="#ff9800">账单批注：四重评价</text>
+    
+    <!-- ①伪问题本质 -->
+    <g transform="translate(-350,-30)">
+      <rect x="-100" y="-40" width="200" height="80" fill="url(#evalGrad)" rx="8" stroke="#ff9800" stroke-width="1.5"/>
+      <text x="0" y="-15" text-anchor="middle" font-size="16" font-weight="bold" fill="#e65100">①伪问题本质</text>
+      <text x="0" y="10" text-anchor="middle" font-size="12" fill="#bf360c">教授翻牌写"伪"</text>
+      <text x="0" y="25" text-anchor="middle" font-size="12" fill="#bf360c">选票福利·负利率</text>
+    </g>
+    
+    <!-- ②政治筹码 -->
+    <g transform="translate(-120,-30)">
+      <rect x="-100" y="-40" width="200" height="80" fill="url(#evalGrad)" rx="8" stroke="#ff9800" stroke-width="1.5"/>
+      <text x="0" y="-15" text-anchor="middle" font-size="16" font-weight="bold" fill="#e65100">②政治筹码</text>
+      <text x="0" y="10" text-anchor="middle" font-size="12" fill="#bf360c">驴象拔河</text>
+      <text x="0" y="25" text-anchor="middle" font-size="12" fill="#bf360c">吊着关门炸弹</text>
+    </g>
+    
+    <!-- ③信誉损耗 -->
+    <g transform="translate(120,-30)">
+      <rect x="-100" y="-40" width="200" height="80" fill="url(#evalGrad)" rx="8" stroke="#ff9800" stroke-width="1.5"/>
+      <text x="0" y="-15" text-anchor="middle" font-size="16" font-weight="bold" fill="#e65100">③信誉损耗</text>
+      <text x="0" y="10" text-anchor="middle" font-size="12" fill="#bf360c">标普刻痕</text>
+      <text x="0" y="25" text-anchor="middle" font-size="12" fill="#bf360c">2011 AA+</text>
+    </g>
+    
+    <!-- ④矛盾未解 -->
+    <g transform="translate(350,-30)">
+      <rect x="-100" y="-40" width="200" height="80" fill="url(#evalGrad)" rx="8" stroke="#ff9800" stroke-width="1.5"/>
+      <text x="0" y="-15" text-anchor="middle" font-size="16" font-weight="bold" fill="#e65100">④矛盾未解</text>
+      <text x="0" y="10" text-anchor="middle" font-size="12" fill="#bf360c">三座大山压卡底</text>
+      <text x="0" y="25" text-anchor="middle" font-size="12" fill="#bf360c">盖布≠移山</text>
+    </g>
+  </g>
+  
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#78909c"/>
+    </marker>
+  </defs>
+</svg>

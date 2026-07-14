@@ -1,0 +1,145 @@
+<svg width="100%" viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fff59d;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#ffd700;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#ffd700;stop-opacity:0" />
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <clipPath id="towerClip">
+      <polygon points="-22,-70 22,-70 40,60 -40,60"/>
+    </clipPath>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="900" height="640" fill="#f5f5f5" rx="10"/>
+
+  <!-- 标题 -->
+  <text x="450" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a237e">美元指数逆涨：暴风雨中的「美元灯塔」</text>
+  <text x="450" y="54" text-anchor="middle" font-size="12" fill="#546e7a">QE 印钞本该贬值，美元为何反涨？——1 悖论 + 4 原因 + 1 结论</text>
+
+  <!-- ===== 顶部：悖论云（QE 暴雨） ===== -->
+  <g transform="translate(450,95)" filter="url(#shadow)">
+    <ellipse cx="-45" cy="6" rx="34" ry="26" fill="#90a4ae"/>
+    <ellipse cx="10" cy="-4" rx="46" ry="32" fill="#78909c"/>
+    <ellipse cx="55" cy="8" rx="34" ry="24" fill="#90a4ae"/>
+    <ellipse cx="0" cy="14" rx="70" ry="22" fill="#78909c"/>
+    <text x="0" y="-2" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">QE 暴雨</text>
+    <text x="0" y="15" text-anchor="middle" font-size="10" fill="#eceff1">印钞 → 本该贬值</text>
+  </g>
+  <!-- 雨滴 $ -->
+  <g fill="#ffd700" font-size="14" font-weight="bold" text-anchor="middle">
+    <text x="395" y="145">$</text>
+    <text x="430" y="170">$</text>
+    <text x="465" y="150">$</text>
+    <text x="500" y="178">$</text>
+    <text x="415" y="200">$</text>
+    <text x="485" y="205">$</text>
+  </g>
+  <!-- 悖论标注箭头：雨下得多，灯塔却最高 -->
+  <text x="450" y="225" text-anchor="middle" font-size="11" fill="#c62828" font-style="italic">悖论：水漫金山，灯塔反而最高 ↑</text>
+
+  <!-- ===== 中心：美元灯塔 ===== -->
+  <g transform="translate(450,330)">
+    <!-- 光束（危机中更亮） -->
+    <polygon points="0,-79 -130,-165 130,-165" fill="#ffd700" opacity="0.13"/>
+    <polygon points="0,-79 -90,-150 90,-150" fill="#ffd700" opacity="0.15"/>
+
+    <!-- 灯笼室光晕 -->
+    <circle cx="0" cy="-79" r="26" fill="url(#lanternGlow)"/>
+    <!-- 灯笼室 -->
+    <rect x="-16" y="-92" width="32" height="18" rx="2" fill="#263238"/>
+    <rect x="-20" y="-96" width="40" height="5" rx="2" fill="#37474f"/>
+    <circle cx="0" cy="-83" r="5" fill="#fff59d"/>
+
+    <!-- 塔身（红白条纹，clip 到锥形） -->
+    <g clip-path="url(#towerClip)">
+      <rect x="-50" y="-70" width="100" height="130" fill="#fafafa"/>
+      <!-- 红条纹 -->
+      <rect x="-50" y="-70" width="100" height="13" fill="#e53935"/>
+      <rect x="-50" y="-44" width="100" height="13" fill="#e53935"/>
+      <rect x="-50" y="-18" width="100" height="13" fill="#e53935"/>
+      <rect x="-50" y="8"   width="100" height="13" fill="#e53935"/>
+      <rect x="-50" y="34"  width="100" height="13" fill="#e53935"/>
+      <!-- 窗户 -->
+      <rect x="-5" y="-5" width="10" height="12" rx="2" fill="#263238"/>
+    </g>
+    <!-- 塔身轮廓 -->
+    <polygon points="-22,-70 22,-70 40,60 -40,60" fill="none" stroke="#37474f" stroke-width="1.5"/>
+    <text x="0" y="48" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">$ 灯塔</text>
+
+    <!-- 钢筋混凝土地基（基本面优势） -->
+    <polygon points="-44,60 44,60 58,92 -58,92" fill="#546e7a" stroke="#37474f" stroke-width="1.5"/>
+    <line x1="-50" y1="72" x2="50" y2="72" stroke="#37474f" stroke-width="1" opacity="0.6"/>
+    <line x1="-54" y1="82" x2="54" y2="82" stroke="#37474f" stroke-width="1" opacity="0.6"/>
+    <!-- 钢筋刻痕 -->
+    <g stroke="#cfd8dc" stroke-width="1" opacity="0.7">
+      <line x1="-30" y1="62" x2="-30" y2="90"/>
+      <line x1="-10" y1="62" x2="-10" y2="90"/>
+      <line x1="10" y1="62" x2="10" y2="90"/>
+      <line x1="30" y1="62" x2="30" y2="90"/>
+    </g>
+    <text x="0" y="106" text-anchor="middle" font-size="10" fill="#546e7a">钢筋混凝土地基</text>
+  </g>
+
+  <!-- ===== 四角：四原因徽章 ===== -->
+  <!-- ① 避险需求（左上） -->
+  <g transform="translate(150,215)" filter="url(#shadow)">
+    <line x1="80" y1="15" x2="265" y2="40" stroke="#1976d2" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="-80" y="-28" width="160" height="56" rx="10" fill="#1976d2"/>
+    <circle cx="-58" cy="0" r="16" fill="#fff"/>
+    <text x="-58" y="5" text-anchor="middle" font-size="16" font-weight="bold" fill="#1976d2">逃</text>
+    <text x="-34" y="-6" font-size="13" font-weight="bold" fill="#fff">① 避险需求</text>
+    <text x="-34" y="13" font-size="10" fill="#e3f2fd">抛风险资产·抢美元美债</text>
+  </g>
+
+  <!-- ④ 基本面优势（右上） -->
+  <g transform="translate(750,215)" filter="url(#shadow)">
+    <line x1="-80" y1="15" x2="-265" y2="40" stroke="#4caf50" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="-80" y="-28" width="160" height="56" rx="10" fill="#4caf50"/>
+    <circle cx="-58" cy="0" r="16" fill="#fff"/>
+    <text x="-58" y="5" text-anchor="middle" font-size="16" font-weight="bold" fill="#4caf50">强</text>
+    <text x="-34" y="-6" font-size="13" font-weight="bold" fill="#fff">④ 基本面优势</text>
+    <text x="-34" y="13" font-size="10" fill="#e8f5e9">钢筋地基·率先复苏</text>
+  </g>
+
+  <!-- ② 美元荒（左下） -->
+  <g transform="translate(150,465)" filter="url(#shadow)">
+    <line x1="80" y1="-15" x2="262" y2="-58" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="-80" y="-28" width="160" height="56" rx="10" fill="#ff9800"/>
+    <circle cx="-58" cy="0" r="16" fill="#fff"/>
+    <text x="-58" y="5" text-anchor="middle" font-size="16" font-weight="bold" fill="#ff9800">渴</text>
+    <text x="-34" y="-6" font-size="13" font-weight="bold" fill="#fff">② 美元荒</text>
+    <text x="-34" y="13" font-size="10" fill="#fff3e0">水缸见底·央行互换补水</text>
+  </g>
+
+  <!-- ③ 非美更弱（右下） -->
+  <g transform="translate(750,465)" filter="url(#shadow)">
+    <line x1="-80" y1="-15" x2="-262" y2="-58" stroke="#9c27b0" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="-80" y="-28" width="160" height="56" rx="10" fill="#9c27b0"/>
+    <circle cx="-58" cy="0" r="16" fill="#fff"/>
+    <text x="-58" y="5" text-anchor="middle" font-size="16" font-weight="bold" fill="#9c27b0">弱</text>
+    <text x="-34" y="-6" font-size="13" font-weight="bold" fill="#fff">③ 非美更弱</text>
+    <text x="-34" y="13" font-size="10" fill="#f3e5f5">欧/日灯塔更矮更破</text>
+  </g>
+
+  <!-- ===== 结论光束标签 ===== -->
+  <g transform="translate(450,500)">
+    <rect x="-160" y="-17" width="320" height="34" rx="17" fill="#ffd700" filter="url(#shadow)"/>
+    <text x="0" y="5" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a237e">结论：危机溢价 + 安全资产陷阱 → 霸权越危机越强</text>
+  </g>
+
+  <!-- ===== 记忆口诀 ===== -->
+  <rect x="130" y="548" width="640" height="44" rx="22" fill="#e3f2fd"/>
+  <text x="450" y="568" text-anchor="middle" font-size="13" fill="#1565c0" font-weight="bold">口诀：QE 暴雨漫天涯，四塔唯它最挺拔</text>
+  <text x="450" y="584" text-anchor="middle" font-size="11" fill="#1565c0">人涌 · 水荒 · 他灯矮 · 地基最稳 → 霸权夸</text>
+
+  <!-- 路径提示（回忆顺序） -->
+  <text x="450" y="618" text-anchor="middle" font-size="10" fill="#90a4ae" font-style="italic">回忆路径：抬头看暴雨 → 环顾人涌 → 低头水荒 → 转头他塔矮 → 看地基 → 抬头灯更亮</text>
+</svg>

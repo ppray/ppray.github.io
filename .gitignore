@@ -33,3 +33,6 @@ child/
 
 # 虚拟机镜像
 *.vmdk
+
+# 本地工作缓存（ZCode/WorkBuddy）
+.workbuddy/
