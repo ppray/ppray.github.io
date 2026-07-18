@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《国际与比较政治经济学研究》理论框架与背诵路线图 · 打印版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#1e293b; --ink-soft:#475569; --ink-muted:#64748b;
+    --line:#cbd5e1; --line-soft:#e2e8f0;
+    --purple:#6366f1; --blue:#2563eb; --red:#dc2626; --gold:#b89a40; --green:#16a34a;
+    --blue-bg:#eff6ff; --green-bg:#f0fdf4; --red-bg:#fef2f2; --gold-bg:#fefce8;
+    --purple-bg:#eef2ff; --code-bg:#f1f5f9;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body {
+    font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:#fff; color:var(--ink); line-height:1.7; margin:0;
+    padding:28px 24px; font-size:13px;
+  }
+  @page { size:A4 portrait; margin:11mm 11mm 13mm 11mm; }
+  @media print {
+    body { padding:0; font-size:12px; }
+    .no-print { display:none !important; }
+    .page-break { break-before:page; page-break-before:always; }
+    .avoid-break { break-inside:avoid; page-break-inside:avoid; }
+  }
+
+  .toolbar {
+    position:sticky; top:0; background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line-soft);
+    padding:10px 16px; margin:-28px -24px 22px; display:flex;
+    align-items:center; justify-content:space-between; gap:12px; z-index:10;
+  }
+  .toolbar .t-title { font-weight:600; font-size:13px; color:var(--ink-soft); }
+  .toolbar .t-left { display:flex; align-items:center; gap:14px; }
+  .backlink { color:var(--purple); text-decoration:none; font-size:12.5px; font-weight:500; }
+  .backlink:hover { text-decoration:underline; }
+  .btn {
+    border:1px solid var(--purple); background:var(--purple); color:#fff;
+    padding:7px 18px; border-radius:8px; font-size:13px; font-weight:500;
+    cursor:pointer; font-family:inherit; transition:opacity .2s,transform .1s;
+  }
+  .btn:hover { opacity:.88; } .btn:active { transform:scale(.97); }
+
+  .sheet { max-width:190mm; margin:0 auto; background:#fff; }
+
+  .doc-title {
+    font-family:'Noto Serif SC',serif; font-size:22px; font-weight:700;
+    color:var(--ink); margin:0 0 4px; line-height:1.3;
+  }
+  .doc-sub { font-size:12px; color:var(--ink-muted); margin:0 0 6px; }
+  .doc-rule {
+    height:3px; border-radius:2px; margin:0 0 20px;
+    background:linear-gradient(90deg,var(--blue),var(--green) 40%,var(--gold) 68%,var(--red));
+  }
+
+  .logic-box {
+    background:var(--code-bg); border-left:4px solid var(--purple);
+    border-radius:0 8px 8px 0; padding:13px 16px; margin:0 0 18px;
+    font-size:12.3px; line-height:1.75; color:var(--ink-soft);
+  }
+  .logic-box b { color:var(--ink); }
+  .logic-box .k1 { color:var(--blue); font-weight:600; }
+  .logic-box .k2 { color:var(--green); font-weight:600; }
+  .logic-box .k3 { color:var(--red); font-weight:600; }
+
+  h2.section {
+    font-family:'Noto Serif SC',serif; font-size:15.5px; font-weight:700;
+    color:var(--ink); margin:22px 0 12px; padding-bottom:5px;
+    border-bottom:2px solid var(--line-soft);
+  }
+
+  .figure { margin:8px 0 6px; padding:6px 0 0; }
+  .figure svg { width:100%; max-width:186mm; height:auto; display:block; margin:0 auto; }
+  .figcap { text-align:center; font-size:11px; color:var(--ink-muted); margin-top:8px; line-height:1.65; }
+  .figcap .lg { font-weight:600; }
+  .b-hint { display:inline-block; background:var(--red); color:#fff; border-radius:8px;
+    padding:1px 7px; font-size:10px; font-weight:700; vertical-align:middle; }
+
+  /* 背诵链 */
+  .chain {
+    border:1px solid var(--line-soft); border-left:4px solid var(--cc);
+    border-radius:0 8px 8px 0; padding:9px 13px; margin:9px 0;
+    background:#fff;
+  }
+  .chain-head { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+  .chain-badge {
+    display:inline-block; width:20px; height:20px; line-height:20px; text-align:center;
+    border-radius:50%; background:var(--cc); color:#fff; font-size:12px; font-weight:700;
+  }
+  .chain-name { font-weight:700; color:var(--ink); font-size:13px; }
+  .chain-flow { display:flex; flex-wrap:wrap; align-items:center; gap:5px 4px; padding-left:28px; }
+  .chain-node {
+    background:var(--code-bg); border:1px solid var(--line-soft); border-radius:6px;
+    padding:2px 9px; font-size:11.5px; color:var(--ink-soft); font-weight:500;
+  }
+  .chain-arrow { color:var(--cc); font-weight:700; }
+
+  /* 方法论工具箱 */
+  .tools { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:6px 0; }
+  .tool { border:1px solid var(--line-soft); border-top:3px solid var(--purple);
+    border-radius:8px; padding:9px 12px; background:#fff; }
+  .tool-t { font-weight:700; color:var(--ink); font-size:12.5px; }
+  .tool-a { font-size:11px; color:var(--purple); font-weight:600; margin:1px 0 4px; }
+  .tool-d { font-size:11px; color:var(--ink-muted); line-height:1.55; }
+
+  /* 概念辨析 & 优先级表 */
+  table.grid { width:100%; border-collapse:collapse; font-size:11.6px; margin:6px 0 4px; }
+  table.grid th { background:var(--ink); color:#fff; font-weight:600; padding:7px 9px;
+    text-align:left; font-size:11px; }
+  table.grid td { padding:6px 9px; border-bottom:1px solid var(--line-soft);
+    vertical-align:top; line-height:1.55; }
+  table.grid tbody tr:nth-child(even) { background:#f8fafc; }
+  table.grid .pk { font-weight:700; color:var(--ink); width:34%; }
+  table.prio th:nth-child(2) { width:64px; text-align:center; }
+  table.prio th:nth-child(3) { width:96px; }
+  table.prio td:nth-child(2) { text-align:center; font-weight:700; color:var(--red); }
+
+  .footer {
+    margin-top:18px; padding-top:10px; border-top:1px solid var(--line-soft);
+    font-size:10.5px; color:var(--ink-muted); text-align:center; line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <div class="t-left">
+    <a class="backlink" href="《国际与比较政治经济学研究》模拟卷答案.html">← 返回模拟卷答案</a>
+    <span class="t-title">三大范式理论框架 · 背诵路线图</span>
+  </div>
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存为 PDF</button>
+</div>
+
+<div class="sheet">
+
+  <h1 class="doc-title">🧭 国际与比较政治经济学 · 三大范式理论框架</h1>
+  <p class="doc-sub">《国际与比较政治经济学研究》复习 · 范式地图 → 五大必背理论链 → 方法论工具箱 → 概念辨析 → 高频优先级</p>
+  <div class="doc-rule"></div>
+
+  <div class="logic-box">
+    <b>一句话抓总：</b>IPE 研究<b>政治与经济、国家与市场、权力与财富</b>如何互相塑造。全部理论可归入
+    <span class="k1">①重商主义/国家主义（经济服务国家权力）</span>、
+    <span class="k2">②自由主义/制度主义（市场互利、制度促合作）</span>、
+    <span class="k3">③马克思/结构主义（世界经济的不平等结构与剥削）</span> 三大范式；
+    再叠加<b>霸权秩序</b>这条跨范式主线、<b>层次分析</b>（第二意象 ⇄ 颠倒第二意象）与<b>议题领域</b>两个维度，
+    最终落到<b>中国议题</b>的论述应用。背诵按 <span class="k1">①</span>→<span class="k2">②</span>→<span class="k3">③</span>→④→⑤→⑥ 展开。
+  </div>
+
+  <div class="figure avoid-break">
+    <svg viewBox="0 0 760 892" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="国际与比较政治经济学三大范式理论框架图">
+<defs><marker id="va" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L0,9 L8,4.5 z" fill="#94a3b8"/></marker></defs>
+<rect x="12" y="8" width="736" height="58" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+<text x="380" y="31" font-size="13.5" font-weight="700" fill="#1e293b" text-anchor="middle">国际政治经济学（IPE）的核心问题：政治与经济、国家与市场、权力与财富如何互动？</text>
+<text x="380" y="51" font-size="10.5" fill="#64748b" text-anchor="middle">三大范式＝三种回答　▪ 蓝：重商主义／国家主义（权力）　▪ 绿：自由主义／制度主义（市场）　▪ 红：马克思／结构主义（阶级）</text>
+<rect x="12" y="76" width="236" height="458" rx="10" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.55"/>
+<rect x="262" y="76" width="236" height="458" rx="10" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.55"/>
+<rect x="512" y="76" width="236" height="458" rx="10" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.55"/>
+<rect x="22" y="88" width="216" height="44" rx="8" fill="#2563eb" stroke="#2563eb" stroke-width="1"/><text x="130.0" y="107" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">① 重商主义 / 国家主义</text><text x="130.0" y="123" font-size="9.4" fill="#e5e7eb" text-anchor="middle">经济服务于国家权力 · 相对收益 · 财富即权力</text>
+<rect x="272" y="88" width="216" height="44" rx="8" fill="#16a34a" stroke="#16a34a" stroke-width="1"/><text x="380.0" y="107" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">② 自由主义 / 制度主义</text><text x="380.0" y="123" font-size="9.4" fill="#e5e7eb" text-anchor="middle">市场互利 · 绝对收益 · 制度促成合作</text>
+<rect x="522" y="88" width="216" height="44" rx="8" fill="#dc2626" stroke="#dc2626" stroke-width="1"/><text x="630.0" y="107" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">③ 马克思 / 结构主义</text><text x="630.0" y="123" font-size="9.4" fill="#e5e7eb" text-anchor="middle">资本主义世界经济 · 剥削 · 中心—外围</text>
+<rect x="22" y="147" width="216" height="40" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="165" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">古典重商主义</text><text x="130.0" y="180" font-size="9.4" fill="#64748b" text-anchor="middle">托马斯·孟：奖出限入 · 顺差聚金</text><line x1="130.0" y1="187" x2="130.0" y2="202" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="22" y="202" width="216" height="40" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="220" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">汉密尔顿 · 李斯特</text><text x="130.0" y="235" font-size="9.4" fill="#64748b" text-anchor="middle">新重商主义 · 幼稚产业保护论</text><line x1="130.0" y1="242" x2="130.0" y2="257" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="22" y="257" width="216" height="40" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="275" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">凯恩斯：超贸易保护主义</text><text x="130.0" y="290" font-size="9.4" fill="#64748b" text-anchor="middle">保护就业与有效需求</text><line x1="130.0" y1="297" x2="130.0" y2="312" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="22" y="312" width="216" height="54" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="330" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">国家自主性 / 国家能力</text><text x="130.0" y="345" font-size="9.4" fill="#64748b" text-anchor="middle">斯考切波 · 埃文斯（发展型国家）</text><text x="130.0" y="358" font-size="9.4" fill="#64748b" text-anchor="middle">卡赞斯坦：国内结构</text><line x1="130.0" y1="366" x2="130.0" y2="381" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="22" y="381" width="216" height="40" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="399" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">诺思：国家理论 · 诺思悖论</text><text x="130.0" y="414" font-size="9.4" fill="#64748b" text-anchor="middle">国家界定产权 ⇄ 增长/衰退悖论</text><line x1="130.0" y1="421" x2="130.0" y2="436" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="22" y="436" width="216" height="40" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/><text x="130.0" y="454" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">斯特兰奇：结构性权力</text><text x="130.0" y="469" font-size="9.4" fill="#64748b" text-anchor="middle">安全·生产·金融·知识 四结构</text>
+<rect x="272" y="147" width="216" height="40" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="165" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">自由贸易与比较优势</text><text x="380.0" y="180" font-size="9.4" fill="#64748b" text-anchor="middle">斯密 · 李嘉图 · H-O 要素禀赋</text><line x1="380.0" y1="187" x2="380.0" y2="202" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="272" y="202" width="216" height="54" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="220" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">复合相互依赖</text><text x="380.0" y="235" font-size="9.4" fill="#64748b" text-anchor="middle">基欧汉 & 奈：敏感性 / 脆弱性</text><text x="380.0" y="248" font-size="9.4" fill="#64748b" text-anchor="middle">多渠道·军事非唯一手段</text><line x1="380.0" y1="256" x2="380.0" y2="271" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="272" y="271" width="216" height="54" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="289" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">贸易和平论</text><text x="380.0" y="304" font-size="9.4" fill="#64748b" text-anchor="middle">波拉切克 · 罗斯克兰斯（贸易国）</text><text x="380.0" y="317" font-size="9.4" fill="#64748b" text-anchor="middle">三角和平 Russett-Oneal · Copeland</text><line x1="380.0" y1="325" x2="380.0" y2="340" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="272" y="340" width="216" height="54" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="358" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">新制度经济学</text><text x="380.0" y="373" font-size="9.4" fill="#64748b" text-anchor="middle">科斯定理 · 交易成本</text><text x="380.0" y="386" font-size="9.4" fill="#64748b" text-anchor="middle">理性选择 / 历史制度主义 · 路径依赖</text><line x1="380.0" y1="394" x2="380.0" y2="409" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="272" y="409" width="216" height="40" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="427" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">新自由制度主义</text><text x="380.0" y="442" font-size="9.4" fill="#64748b" text-anchor="middle">基欧汉《霸权之后》：制度→合作可持续</text><line x1="380.0" y1="449" x2="380.0" y2="464" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="272" y="464" width="216" height="54" rx="7" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/><text x="380.0" y="482" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">公共选择 · 集体行动</text><text x="380.0" y="497" font-size="9.4" fill="#64748b" text-anchor="middle">公共物品·搭便车·奥尔森</text><text x="380.0" y="510" font-size="9.4" fill="#64748b" text-anchor="middle">公共池塘 Ostrom·公地悲剧·寻租</text>
+<rect x="522" y="147" width="216" height="40" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="630.0" y="165" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">列宁：帝国主义论</text><text x="630.0" y="180" font-size="9.4" fill="#64748b" text-anchor="middle">垄断资本输出 · 瓜分世界</text><line x1="630.0" y1="187" x2="630.0" y2="202" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="522" y="202" width="216" height="54" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="630.0" y="220" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">依附理论</text><text x="630.0" y="235" font-size="9.4" fill="#64748b" text-anchor="middle">普雷维什/ECLAC · 弗兰克宗主—卫星</text><text x="630.0" y="248" font-size="9.4" fill="#64748b" text-anchor="middle">卡多佐：联系性依附发展</text><line x1="630.0" y1="256" x2="630.0" y2="271" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="522" y="271" width="216" height="54" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="630.0" y="289" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">沃勒斯坦：世界体系</text><text x="630.0" y="304" font-size="9.4" fill="#64748b" text-anchor="middle">中心—半边缘—外围 · 商品链</text><text x="630.0" y="317" font-size="9.4" fill="#64748b" text-anchor="middle">不平等交换</text><line x1="630.0" y1="325" x2="630.0" y2="340" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="522" y="340" width="216" height="54" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="630.0" y="358" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">长波周期</text><text x="630.0" y="373" font-size="9.4" fill="#64748b" text-anchor="middle">康德拉季耶夫周期</text><text x="630.0" y="386" font-size="9.4" fill="#64748b" text-anchor="middle">熊彼特：创新驱动长波</text><line x1="630.0" y1="394" x2="630.0" y2="409" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/><rect x="522" y="409" width="216" height="54" rx="7" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/><text x="630.0" y="427" font-size="12" font-weight="700" fill="#1e293b" text-anchor="middle">考克斯：批判理论</text><text x="630.0" y="442" font-size="9.4" fill="#64748b" text-anchor="middle">『理论总为某人、某目的服务』</text><text x="630.0" y="455" font-size="9.4" fill="#64748b" text-anchor="middle">历史结构 · 反思式霸权（葛兰西）</text>
+<g><rect x="204" y="140" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="221.0" y="151.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="204" y="305" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="221.0" y="316.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="454" y="195" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="471.0" y="206.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="454" y="264" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="471.0" y="275.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="454" y="333" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="471.0" y="344.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="704" y="195" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="721.0" y="206.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="704" y="264" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="721.0" y="275.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<rect x="12" y="548" width="736" height="118" rx="10" fill="none" stroke="#b89a40" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+<text x="24" y="568" font-size="12.5" font-weight="700" fill="#b89a40">④ 跨范式主线 · 霸权稳定理论与国际秩序（现实主义 ⇄ 自由主义之争）</text>
+<rect x="22" y="580" width="166" height="54" rx="7" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/><text x="105.0" y="598" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">金德尔伯格</text><text x="105.0" y="613" font-size="9.4" fill="#64748b" text-anchor="middle">霸权供给公共物品</text><text x="105.0" y="626" font-size="9.4" fill="#64748b" text-anchor="middle">1929：无领导→崩溃</text>
+<line x1="188" y1="607" x2="210" y2="607" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/>
+<rect x="210" y="580" width="166" height="54" rx="7" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/><text x="293.0" y="598" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">克拉斯纳</text><text x="293.0" y="613" font-size="9.4" fill="#64748b" text-anchor="middle">国家利益＋实力→机制</text><text x="293.0" y="626" font-size="9.4" fill="#64748b" text-anchor="middle">霸权稳定（现实主义）</text>
+<line x1="376" y1="607" x2="398" y2="607" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/>
+<rect x="398" y="580" width="166" height="54" rx="7" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/><text x="481.0" y="598" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">基欧汉《霸权之后》</text><text x="481.0" y="613" font-size="9.4" fill="#64748b" text-anchor="middle">制度使合作在霸权</text><text x="481.0" y="626" font-size="9.4" fill="#64748b" text-anchor="middle">衰落后延续（制度主义）</text>
+<line x1="564" y1="607" x2="586" y2="607" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#va)"/>
+<rect x="586" y="580" width="150" height="54" rx="7" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/><text x="661.0" y="598" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">伊肯伯里</text><text x="661.0" y="613" font-size="9.4" fill="#64748b" text-anchor="middle">自由主义制度秩序</text><text x="661.0" y="626" font-size="9.4" fill="#64748b" text-anchor="middle">霸权自我约束 · 战后</text>
+<g><rect x="154" y="574" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="171.0" y="585.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<g><rect x="530" y="574" width="34" height="15" rx="7.5" fill="#dc2626" stroke="#fff" stroke-width="1.2"/><text x="547.0" y="585.3" font-size="9.3" font-weight="700" fill="#fff" text-anchor="middle">高频</text></g>
+<text x="380" y="654" font-size="9.6" fill="#94a3b8" text-anchor="middle">领导的两种模型：英国霸权（自由放任·较少制度供给） vs 美国霸权（制度霸权·联盟供给公共物品）</text>
+<rect x="12" y="680" width="736" height="110" rx="10" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+<text x="24" y="700" font-size="12.5" font-weight="700" fill="#6366f1">⑤ 分析维度 · 层次分析 × 议题领域（横切三大范式）</text>
+<rect x="22" y="714" width="210" height="62" rx="7" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><text x="127.0" y="732" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">国内 → 国际（第二意象）</text><text x="127.0" y="747" font-size="9.4" fill="#64748b" text-anchor="middle">Rogowski 要素 · Hiscox 产业</text><text x="127.0" y="760" font-size="9.4" fill="#64748b" text-anchor="middle">保护待售 · 社会联盟</text>
+<rect x="260" y="714" width="210" height="62" rx="7" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/><text x="365.0" y="732" font-size="11.5" font-weight="700" fill="#1e293b" text-anchor="middle">国际 → 国内（颠倒第二意象）</text><text x="365.0" y="747" font-size="9.4" fill="#64748b" text-anchor="middle">古勒维奇 · 卡赞斯坦</text><text x="365.0" y="760" font-size="9.4" fill="#64748b" text-anchor="middle">国际压力重塑国内联盟</text>
+<line x1="232" y1="745" x2="260" y2="745" stroke="#94a3b8" stroke-width="1.6" marker-start="url(#va)" marker-end="url(#va)"/>
+<rect x="490" y="714" width="246" height="62" rx="7" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/><text x="613.0" y="732" font-size="11.5" font-weight="700" fill="#475569" text-anchor="middle">议题领域（横切）</text><text x="613.0" y="747" font-size="9.4" fill="#64748b" text-anchor="middle">贸易政治 · 货币与汇率制度</text><text x="613.0" y="760" font-size="9.4" fill="#64748b" text-anchor="middle">金本位/布雷顿森林/蒙代尔-弗莱明</text><text x="613.0" y="773" font-size="9.4" fill="#64748b" text-anchor="middle">经济发展 · 全球治理 WTO/IMF/G20/金砖</text>
+<rect x="12" y="804" width="736" height="76" rx="10" fill="#f5f3ff" stroke="#6366f1" stroke-width="1.5"/>
+<text x="380" y="825" font-size="12.5" font-weight="700" fill="#6366f1" text-anchor="middle">⑥ 中国议题应用（论述题主战场）· 用「三大范式 ＋ 方法论」组合作答</text>
+<text x="380" y="847" font-size="11" fill="#475569" text-anchor="middle">入世原因 · 人民币国际化 · 自主创新政策 · 能源安全 · 粮食安全</text>
+<text x="380" y="866" font-size="11" fill="#475569" text-anchor="middle">企业「走出去」困境 · 汇率制度选择 · 与国际经济组织的关系</text>
+</svg>
+    <div class="figcap">
+      图：IPE 三大范式框架与横切维度——上部三列为<span class="lg" style="color:#2563eb">蓝＝重商/国家主义</span> ·
+      <span class="lg" style="color:#16a34a">绿＝自由/制度主义</span> ·
+      <span class="lg" style="color:#dc2626">红＝马克思/结构主义</span>；
+      <span class="lg" style="color:#b89a40">金＝霸权秩序（跨范式）</span>；<span class="lg" style="color:#6366f1">紫＝分析维度与中国应用</span>。
+      <br/><span class="b-hint">高频</span> = 综合 15 套卷统计的高频必背考点。
+    </div>
+  </div>
+
+  <h2 class="section">🔗 五大必背理论链（背诵路线图）</h2>
+  <div class="chain avoid-break" style="--cc:#2563eb"><div class="chain-head"><span class="chain-badge">1</span><span class="chain-name">重商主义演化链</span></div><div class="chain-flow"><span class="chain-node">托马斯·孟（重商信条）</span><span class="chain-arrow">→</span><span class="chain-node">汉密尔顿（新重商）</span><span class="chain-arrow">→</span><span class="chain-node">李斯特（幼稚产业保护）</span><span class="chain-arrow">→</span><span class="chain-node">凯恩斯（超贸易保护）</span></div></div>
+<div class="chain avoid-break" style="--cc:#b89a40"><div class="chain-head"><span class="chain-badge">2</span><span class="chain-name">霸权与国际秩序链</span></div><div class="chain-flow"><span class="chain-node">霸权稳定论</span><span class="chain-arrow">→</span><span class="chain-node">金德尔伯格（公共物品）</span><span class="chain-arrow">→</span><span class="chain-node">克拉斯纳（利益+实力）</span><span class="chain-arrow">→</span><span class="chain-node">基欧汉《霸权之后》</span><span class="chain-arrow">→</span><span class="chain-node">伊肯伯里（制度秩序）</span></div></div>
+<div class="chain avoid-break" style="--cc:#16a34a"><div class="chain-head"><span class="chain-badge">3</span><span class="chain-name">贸易的国内政治链</span></div><div class="chain-flow"><span class="chain-node">H-O 要素禀赋</span><span class="chain-arrow">→</span><span class="chain-node">李嘉图-维纳（特定要素）</span><span class="chain-arrow">→</span><span class="chain-node">保护待售</span><span class="chain-arrow">→</span><span class="chain-node">Rogowski/Hiscox 社会联盟</span></div></div>
+<div class="chain avoid-break" style="--cc:#16a34a"><div class="chain-head"><span class="chain-badge">4</span><span class="chain-name">相互依赖与和平链</span></div><div class="chain-flow"><span class="chain-node">复合相互依赖（敏感/脆弱）</span><span class="chain-arrow">→</span><span class="chain-node">波拉切克 · 罗斯克兰斯</span><span class="chain-arrow">→</span><span class="chain-node">三角和平 Russett-Oneal</span><span class="chain-arrow">→</span><span class="chain-node">Copeland 预期理论</span></div></div>
+<div class="chain avoid-break" style="--cc:#dc2626"><div class="chain-head"><span class="chain-badge">5</span><span class="chain-name">结构主义 / 世界体系链</span></div><div class="chain-flow"><span class="chain-node">列宁 帝国主义论</span><span class="chain-arrow">→</span><span class="chain-node">依附论（弗兰克/卡多佐）</span><span class="chain-arrow">→</span><span class="chain-node">世界体系（中心-外围）</span><span class="chain-arrow">→</span><span class="chain-node">康德拉季耶夫/熊彼特 长波</span></div></div>
+
+  <div class="page-break"></div>
+
+  <h2 class="section">🧰 方法论工具箱（论述题「亮方法」必备）</h2>
+  <div class="tools">
+    <div class="tool avoid-break"><div class="tool-t">制度自由主义</div><div class="tool-a">基欧汉</div><div class="tool-d">国际制度降低交易成本、提供信息，使合作在无政府下可持续</div></div>
+<div class="tool avoid-break"><div class="tool-t">国家主义</div><div class="tool-a">斯考切波 / 埃文斯</div><div class="tool-d">国家自主性与能力；嵌入式自主的发展型国家</div></div>
+<div class="tool avoid-break"><div class="tool-t">结构性权力</div><div class="tool-a">斯特兰奇</div><div class="tool-d">安全·生产·金融·知识四大结构塑造他者选择空间</div></div>
+<div class="tool avoid-break"><div class="tool-t">颠倒第二意象</div><div class="tool-a">古勒维奇</div><div class="tool-d">国际体系（危机、市场）反向重塑国内政治联盟与制度</div></div>
+<div class="tool avoid-break"><div class="tool-t">批判理论</div><div class="tool-a">考克斯</div><div class="tool-d">理论总为某人、某目的服务；揭示历史结构与霸权生产</div></div>
+  </div>
+
+  <h2 class="section">⚖️ 高频概念辨析（必须能区分）</h2>
+  <table class="grid avoid-break">
+    <thead><tr><th>概念对</th><th>区分要点</th></tr></thead>
+    <tbody>
+      <tr><td class="pk">敏感性 vs 脆弱性</td><td>受影响速度/程度 vs 调整替代的成本高低（有无替代方案）</td></tr>
+<tr><td class="pk">协作型 vs 协调型博弈</td><td>有背叛激励（囚徒困境）vs 无背叛激励、只需选同一均衡</td></tr>
+<tr><td class="pk">科斯第一 vs 第二定理</td><td>零交易成本→产权配置不影响效率 vs 正交易成本→产权界定至关重要</td></tr>
+<tr><td class="pk">国家自主性 vs 能力</td><td>偏好独立于社会集团 vs 将偏好转化为政策结果的执行力</td></tr>
+<tr><td class="pk">H-O vs 李嘉图-维纳</td><td>长期要素可流动（阶级分野）vs 短期要素专用（行业分野）</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section">🔥 高频考点优先级（综合 15 套卷统计）</h2>
+  <table class="grid prio avoid-break">
+    <thead><tr><th>主题</th><th>次数</th><th>优先级</th><th>关键人物 / 概念</th></tr></thead>
+    <tbody>
+      <tr><td>复合相互依赖（敏感性/脆弱性）</td><td>6 次</td><td>⭐⭐⭐⭐⭐</td><td>基欧汉 & 奈</td></tr>
+<tr><td>霸权稳定理论</td><td>5 次</td><td>⭐⭐⭐⭐⭐</td><td>金德尔伯格 · 克拉斯纳 · 基欧汉</td></tr>
+<tr><td>贸易和平理论</td><td>5 次</td><td>⭐⭐⭐⭐⭐</td><td>波拉切克 · 罗斯克兰斯 · Russett-Oneal · Copeland</td></tr>
+<tr><td>国家自主性 / 能力 / 国家主义</td><td>5 次</td><td>⭐⭐⭐⭐⭐</td><td>斯考切波 · 埃文斯 · 诺思</td></tr>
+<tr><td>交易成本 / 科斯定理 / 制度主义</td><td>5 次</td><td>⭐⭐⭐⭐⭐</td><td>科斯 · 诺思</td></tr>
+<tr><td>重商主义谱系</td><td>5 次</td><td>⭐⭐⭐⭐⭐</td><td>汉密尔顿 · 李斯特 · 凯恩斯</td></tr>
+<tr><td>世界体系 / 依附 / 中心-外围</td><td>6 次</td><td>⭐⭐⭐⭐⭐</td><td>沃勒斯坦 · 弗兰克 · 卡多佐</td></tr>
+<tr><td>中国主题（入世/人民币/能源等）</td><td>6 次</td><td>⭐⭐⭐⭐⭐</td><td>范式＋方法论组合应用</td></tr>
+<tr><td>公共物品 / 集体行动 / 搭便车</td><td>5 次</td><td>⭐⭐⭐⭐</td><td>奥尔森 · 奥斯特罗姆</td></tr>
+<tr><td>WTO / 多哈 / IMF / 入世</td><td>4 次</td><td>⭐⭐⭐⭐</td><td>制度自由主义</td></tr>
+<tr><td>长波周期（康德拉季耶夫/熊彼特）</td><td>4 次</td><td>⭐⭐⭐⭐</td><td>熊彼特 · 创新</td></tr>
+<tr><td>贸易与国内政治（Rogowski 等）</td><td>4 次</td><td>⭐⭐⭐⭐</td><td>Rogowski · Hiscox · 保护待售</td></tr>
+<tr><td>汇率制度政治 / 选举制度影响</td><td>3 次</td><td>⭐⭐⭐⭐</td><td>蒙代尔-弗莱明 · 不可能三角</td></tr>
+<tr><td>路径依赖 + 历史制度主义</td><td>3 次</td><td>⭐⭐⭐</td><td>皮尔逊 · 诺思</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    《国际与比较政治经济学研究》理论框架与背诵路线图 · 打印版　|　配套《模拟卷答案》（名词59 · 简答39 · 论述28）复习使用
+  </div>
+
+</div>
+
+</body>
+</html>
