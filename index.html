@@ -3,141 +3,318 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>考试复习资源索引 | Exam Review Index</title>
     <meta name="description" content="个人考试复习资料库 - 政治学、国际关系、政治经济学与自然辩证法">
-    <!-- Favicon -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <!-- Google Fonts (non-blocking: never stalls first paint if Google is unreachable) -->
+
+    <!-- 关键主题脚本：首帧渲染前确定深浅色，避免闪烁 -->
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.dataset.theme = t;
+            } catch (e) { }
+        })();
+    </script>
+
+    <!-- 背景图预加载，避免长时间白底 -->
+    <link rel="preload" as="image" href="assets/bg.png">
+
+    <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" media="print" onload="this.media='all'"
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap">
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
     </noscript>
+
     <style>
+        /* ============ 设计变量 ============ */
         :root {
             --primary: #6366f1;
             --secondary: #a855f7;
             --accent: #3b82f6;
-            --bg-blur: rgba(255, 255, 255, 0.1);
-            --card-bg: rgba(255, 255, 255, 0.82);
-            --text-main: #1e293b;
-            --text-muted: #475569;
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            --scrim: rgba(255, 255, 255, 0.35);
+
+            --bg: #e9edf6;
+            --scrim: rgba(238, 241, 248, 0.55);
+            --aurora-1: rgba(99, 102, 241, 0.16);
+            --aurora-2: rgba(168, 85, 247, 0.14);
+            --aurora-3: rgba(59, 130, 246, 0.12);
+
+            --card-bg: rgba(255, 255, 255, 0.78);
+            --card-bg-hover: rgba(255, 255, 255, 0.92);
+            --toolbar-bg: rgba(255, 255, 255, 0.78);
+            --border: rgba(15, 23, 42, 0.09);
+            --border-strong: rgba(15, 23, 42, 0.16);
+
+            --text-main: #0f172a;
+            --text-muted: #55617a;
+
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 6px 20px -10px rgba(15, 23, 42, 0.14);
+            --shadow-lg: 0 4px 8px rgba(15, 23, 42, 0.05), 0 20px 44px -16px rgba(15, 23, 42, 0.24);
+            --mark: rgba(99, 102, 241, 0.30);
+
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            color-scheme: light;
         }
 
-        [data-theme="dark"] {
-            --bg-blur: rgba(15, 23, 42, 0.4);
-            --card-bg: rgba(30, 41, 59, 0.82);
-            --text-main: #f1f5f9;
-            --text-muted: #cbd5e1;
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --scrim: rgba(15, 23, 42, 0.5);
+        :root[data-theme="dark"] {
+            --bg: #0a0f1f;
+            --scrim: rgba(7, 10, 22, 0.66);
+            --aurora-1: rgba(99, 102, 241, 0.20);
+            --aurora-2: rgba(168, 85, 247, 0.16);
+            --aurora-3: rgba(59, 130, 246, 0.14);
+
+            --card-bg: rgba(22, 30, 53, 0.62);
+            --card-bg-hover: rgba(30, 40, 68, 0.78);
+            --toolbar-bg: rgba(14, 20, 38, 0.80);
+            --border: rgba(148, 163, 184, 0.16);
+            --border-strong: rgba(148, 163, 184, 0.28);
+
+            --text-main: #e8edf7;
+            --text-muted: #97a4bf;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px -10px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.35), 0 22px 46px -16px rgba(0, 0, 0, 0.6);
+            --mark: rgba(129, 140, 248, 0.45);
+            color-scheme: dark;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        [hidden] { display: none !important; }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: clip;
         }
 
         body {
             font-family: 'Outfit', 'Noto Sans SC', sans-serif;
-            background: url('assets/bg.png') no-repeat center center fixed;
-            background-size: cover;
+            background: var(--bg);
             min-height: 100vh;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
-            overflow-x: hidden;
+            padding: 0 20px 40px;
+            overflow-x: clip;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Ambient Background Blur */
+        /* 背景图层 1：照片（失败时露出下层渐变兜底） */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
-                var(--scrim);
+            inset: 0;
+            z-index: -2;
+            background:
+                url('assets/bg.png') no-repeat center center / cover,
+                linear-gradient(160deg, #dfe5f2 0%, #cdd6ea 45%, #b9c6e2 100%);
+        }
+
+        :root[data-theme="dark"] body::before {
+            background:
+                url('assets/bg.png') no-repeat center center / cover,
+                linear-gradient(160deg, #141b30 0%, #0d1326 50%, #090e1d 100%);
+        }
+
+        /* 背景图层 2：柔光罩 + 极光色晕染，保证内容可读 */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
             z-index: -1;
-            backdrop-filter: blur(5px);
+            background:
+                radial-gradient(circle at 18% 22%, var(--aurora-1) 0%, transparent 42%),
+                radial-gradient(circle at 82% 72%, var(--aurora-2) 0%, transparent 42%),
+                radial-gradient(circle at 55% 100%, var(--aurora-3) 0%, transparent 46%),
+                var(--scrim);
+            backdrop-filter: blur(6px) saturate(1.05);
+            -webkit-backdrop-filter: blur(6px) saturate(1.05);
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1120px;
             width: 100%;
             z-index: 1;
         }
 
+        /* ============ 页头 ============ */
         header {
             text-align: center;
-            margin-bottom: 50px;
-            animation: fadeInDown 0.8s ease-out;
+            padding: clamp(56px, 9vh, 96px) 0 34px;
+            animation: fadeInDown 0.7s ease-out;
+        }
+
+        .kicker {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 3.5px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
             font-weight: 700;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             letter-spacing: -1px;
         }
 
-        p.subtitle {
-            font-size: 1.1rem;
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+        }
+
+        .stats {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Search Section */
-        .search-container {
-            margin: 0 auto 24px;
-            max-width: 600px;
+        .stats b { color: var(--primary); font-weight: 700; }
+        .stats .dot { opacity: 0.45; }
+
+        /* ============ 吸顶工具栏（搜索 + 分类） ============ */
+        .sticky-sentinel { height: 1px; }
+
+        .toolbar {
+            position: sticky;
+            top: 10px;
+            z-index: 50;
+            background: var(--toolbar-bg);
+            backdrop-filter: blur(18px) saturate(1.2);
+            -webkit-backdrop-filter: blur(18px) saturate(1.2);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 36px;
+            transition: box-shadow 0.25s ease, border-color 0.25s ease;
+            animation: fadeInUp 0.7s ease-out 0.15s backwards;
+        }
+
+        .toolbar.is-stuck {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-strong);
+        }
+
+        .search-box {
             position: relative;
-            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+            max-width: 620px;
+            margin: 0 auto 10px;
         }
 
-        /* Tab Bar */
+        .search-box svg.search-ico {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 74px 12px 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-input::placeholder { color: var(--text-muted); opacity: 0.75; }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 26px;
+            height: 26px;
+            border: none;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .search-clear:hover { background: var(--border-strong); color: var(--text-main); }
+        .search-clear.show { display: inline-flex; }
+
+        .search-kbd {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: inherit;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            padding: 2px 7px;
+            pointer-events: none;
+        }
+
+        @media (hover: none) { .search-kbd { display: none; } }
+
+        /* Tab 栏 */
         .tab-bar {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 0 auto 50px;
-            max-width: 900px;
-            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+            gap: 8px;
         }
 
         .tab-btn {
-            padding: 10px 18px;
+            padding: 8px 14px;
             border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            background: transparent;
             color: var(--text-main);
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
+            transition: all 0.22s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -145,688 +322,1177 @@
         }
 
         .tab-btn:hover {
-            transform: translateY(-2px);
             border-color: var(--primary);
+            transform: translateY(-1px);
         }
 
         .tab-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            color: #fff;
             border-color: transparent;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 38%, transparent);
         }
 
         .tab-count {
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            background: rgba(0, 0, 0, 0.08);
-            padding: 2px 7px;
+            background: var(--border);
+            color: var(--text-muted);
+            padding: 1px 7px;
             border-radius: 20px;
+            min-width: 20px;
+            text-align: center;
         }
 
         .tab-btn.active .tab-count {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.26);
+            color: #fff;
         }
 
-        .search-input {
-            width: 100%;
-            padding: 15px 25px 15px 50px;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            color: var(--text-main);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-        }
-
-        .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1.2rem;
-        }
-
-        /* Categories */
-        .category-section {
-            margin-bottom: 60px;
-            animation: fadeInUp 0.8s ease-out 0.4s backwards;
-        }
-
-        .category-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 25px;
+        /* 搜索结果提示条 */
+        .result-info {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
-            position: relative;
-            padding-left: 15px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: -18px 0 26px;
+            animation: fadeInUp 0.3s ease-out;
         }
 
-        .category-title::before {
+        .result-info b { color: var(--primary); }
+
+        .result-reset {
+            border: 1px solid var(--border-strong);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .result-reset:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ============ 分区 ============ */
+        .category-section { margin-bottom: 46px; }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .section-head::before {
             content: '';
             position: absolute;
             left: 0;
             top: 50%;
             transform: translateY(-50%);
             width: 4px;
-            height: 24px;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            height: 22px;
+            background: linear-gradient(to bottom, var(--sec, var(--primary)), color-mix(in srgb, var(--sec, var(--primary)) 45%, transparent));
             border-radius: 10px;
         }
 
+        .section-head .sec-emoji { font-size: 1.25rem; }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .section-count {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--sec, var(--primary));
+            background: color-mix(in srgb, var(--sec, var(--primary)) 12%, transparent);
+            padding: 2px 9px;
+            border-radius: 20px;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--border-strong), transparent);
+        }
+
+        /* ============ 卡片网格 ============ */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
         }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 24px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-sm);
             position: relative;
-            overflow: hidden;
-        }
-
-        .card::after {
-            content: 'VIEW ↗';
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--primary);
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.3s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease,
+                border-color 0.25s ease, background 0.25s ease;
         }
 
         .card:hover {
-            transform: scale(1.03) translateY(-5px);
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-4px);
+            border-color: color-mix(in srgb, var(--sec, var(--primary)) 55%, transparent);
+            background: var(--card-bg-hover);
+            box-shadow: var(--shadow-lg);
         }
 
-        [data-theme="dark"] .card:hover {
-            background: rgba(30, 41, 59, 0.85);
+        .card:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
         }
 
-        .card:hover::after {
-            opacity: 1;
-            transform: translateX(0);
+        /* 高亮卡片（替代原 inline style） */
+        .card.hl {
+            border-color: color-mix(in srgb, var(--hl, var(--primary)) 42%, transparent);
+            background:
+                linear-gradient(color-mix(in srgb, var(--hl, var(--primary)) 7%, transparent),
+                    color-mix(in srgb, var(--hl, var(--primary)) 7%, transparent)),
+                var(--card-bg);
         }
 
         .card-icon {
             width: 44px;
             height: 44px;
             border-radius: 12px;
-            background: rgba(99, 102, 241, 0.1);
+            background: color-mix(in srgb, var(--sec, var(--primary)) 12%, transparent);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 1.4rem;
+            margin-bottom: 16px;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .card.hl .card-icon {
+            background: var(--hl, var(--primary));
+            color: #fff;
         }
 
         .card-title {
-            font-size: 1.15rem;
+            font-size: 1.08rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            margin-bottom: 8px;
+            line-height: 1.45;
             color: var(--text-main);
         }
 
         .card-desc {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 15px;
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .card-foot {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .card-tag {
             font-size: 0.7rem;
             font-weight: 600;
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 6px;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            display: inline-block;
-            align-self: flex-start;
+            background: color-mix(in srgb, var(--sec, var(--primary)) 11%, transparent);
+            color: var(--sec, var(--primary));
+            white-space: nowrap;
         }
 
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
+        .card-go {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .card:hover .card-go {
+            color: var(--sec, var(--primary));
+            transform: translateX(3px);
+        }
+
+        mark {
+            background: var(--mark);
+            color: inherit;
+            border-radius: 3px;
+            padding: 0 1px;
+        }
+
+        /* 精选横幅卡（播客） */
+        .card--featured {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            align-items: center;
+            gap: 22px;
+            padding: 26px 30px;
+            background:
+                linear-gradient(135deg,
+                    color-mix(in srgb, var(--sec, var(--primary)) 13%, transparent),
+                    color-mix(in srgb, var(--secondary) 10%, transparent)),
+                var(--card-bg);
+            border-color: color-mix(in srgb, var(--sec, var(--primary)) 45%, transparent);
+        }
+
+        .card--featured .card-icon {
+            width: 62px;
+            height: 62px;
+            font-size: 1.9rem;
+            margin-bottom: 0;
+            background: linear-gradient(135deg, var(--sec, var(--primary)), var(--secondary));
+            color: #fff;
+        }
+
+        .card--featured .card-title { font-size: 1.3rem; }
+        .card--featured .card-body { flex: 1; }
+        .card--featured .card-desc { margin-bottom: 12px; }
+
+        .badge {
+            display: inline-block;
+            vertical-align: 2px;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--sec, var(--primary)), var(--secondary));
+            padding: 3px 9px;
+            border-radius: 6px;
+            margin-left: 8px;
+        }
+
+        /* ============ 空状态 ============ */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 70px 20px;
+            animation: fadeInUp 0.35s ease-out;
+        }
+
+        .empty-state.show { display: block; }
+        .empty-state .emo { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 1.15rem; margin-bottom: 8px; }
+        .empty-state p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+        .empty-state button {
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 26px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .empty-state button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 40%, transparent);
+        }
+
+        /* ============ 页脚 ============ */
+        footer {
+            margin-top: 56px;
+            padding: 34px 0 8px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            border-top: 1px solid var(--border);
+            width: 100%;
+            max-width: 1120px;
+            line-height: 2;
+        }
+
+        footer .motto {
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover { text-decoration: underline; }
+
+        #busuanzi_container {
+            font-size: 0.76rem;
+            opacity: 0.75;
+        }
+
+        /* ============ 悬浮控件 ============ */
+        .theme-toggle,
+        .to-top {
+            position: fixed;
+            z-index: 100;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--toolbar-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            color: var(--text-main);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+        }
+
+        .theme-toggle {
+            top: max(16px, env(safe-area-inset-top));
+            right: max(16px, env(safe-area-inset-right));
+        }
+
+        .theme-toggle:hover,
+        .to-top:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+        .theme-toggle svg { width: 19px; height: 19px; }
+        .theme-toggle .ico-sun { display: none; }
+        [data-theme="dark"] .theme-toggle .ico-sun { display: block; }
+        [data-theme="dark"] .theme-toggle .ico-moon { display: none; }
+
+        .to-top {
+            right: max(16px, env(safe-area-inset-right));
+            bottom: max(20px, env(safe-area-inset-bottom));
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+        }
+
+        .to-top.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .to-top svg { width: 18px; height: 18px; }
+
+        .theme-toggle:focus-visible,
+        .to-top:focus-visible,
+        .tab-btn:focus-visible,
+        .result-reset:focus-visible,
+        .search-clear:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* ============ 动画 ============ */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-26px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(26px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Featured podcast card */
-        .featured-card {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 24px;
-            padding: 28px 32px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
-            border-color: var(--primary);
+        /* 滚动入场 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
         }
 
-        .featured-card .card-icon {
-            width: 64px;
-            height: 64px;
-            font-size: 2rem;
-            margin-bottom: 0;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
 
-        .featured-card .card-title {
-            font-size: 1.4rem;
-        }
-
-        .featured-card > div {
-            flex: 1;
-        }
-
-        /* Responsive */
+        /* ============ 响应式 ============ */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
+            body { padding: 0 14px 30px; }
 
-            .grid {
-                grid-template-columns: 1fr;
-            }
+            header { padding-top: 48px; }
 
-            body {
-                padding: 20px 15px;
-            }
+            .toolbar { top: 8px; padding: 10px; }
 
             .tab-bar {
                 justify-content: flex-start;
                 overflow-x: auto;
                 flex-wrap: nowrap;
-                padding-bottom: 10px;
-                margin-bottom: 30px;
+                padding-bottom: 4px;
+                margin: 0 -4px;
+                padding-left: 4px;
+                padding-right: 4px;
+                scrollbar-width: none;
                 -webkit-overflow-scrolling: touch;
+                mask-image: linear-gradient(to right, #000 92%, transparent);
+                -webkit-mask-image: linear-gradient(to right, #000 92%, transparent);
             }
 
-            .tab-btn {
-                flex-shrink: 0;
-                font-size: 0.85rem;
-                padding: 9px 14px;
-            }
+            .tab-bar::-webkit-scrollbar { display: none; }
+            .tab-btn { flex-shrink: 0; }
 
-            .featured-card {
+            .grid { grid-template-columns: 1fr; }
+
+            .card--featured {
                 flex-direction: column;
                 text-align: center;
                 padding: 24px;
             }
+
+            .card--featured .card-foot { justify-content: center; gap: 14px; }
+            .section-line { display: none; }
         }
 
-        footer {
-            margin-top: 80px;
-            padding: 40px 0;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--glass-border);
-            width: 100%;
-            max-width: 1100px;
-        }
+        /* ============ 减少动态偏好 ============ */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
 
-        /* Theme Toggle placeholder if needed */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            color: var(--text-main);
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .reveal { opacity: 1; transform: none; }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- 主题切换 -->
+    <button class="theme-toggle" id="themeToggle" aria-label="切换深浅色模式" title="切换深浅色模式">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+
     <div class="container">
         <header>
+            <p class="kicker">EXAM REVIEW · KNOWLEDGE BASE</p>
             <h1>Academic Hub</h1>
-            <p class="subtitle">Exam Review Resources & Knowledge Base</p>
+            <p class="subtitle">考试复习资源 · 知识库索引</p>
+            <div class="stats">
+                <span><b id="statTotal">–</b> 份资源</span>
+                <span class="dot">·</span>
+                <span><b id="statCats">–</b> 大分类</span>
+                <span class="dot">·</span>
+                <span>持续更新</span>
+            </div>
         </header>
 
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="搜索资源文件名或关键词...">
+        <div class="sticky-sentinel" aria-hidden="true"></div>
+
+        <!-- 吸顶工具栏：搜索 + 分类筛选 -->
+        <div class="toolbar" id="toolbar">
+            <div class="search-box">
+                <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <label for="searchInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">搜索资源</label>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索资源名称、关键词或标签…"
+                    autocomplete="off">
+                <button class="search-clear" id="searchClear" aria-label="清除搜索">✕</button>
+                <kbd class="search-kbd" aria-hidden="true">/</kbd>
+            </div>
+            <div class="tab-bar" id="tabBar" role="tablist" aria-label="资源分类筛选">
+                <button class="tab-btn active" data-tab="all" role="tab" aria-selected="true">全部 <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="podcast" role="tab" aria-selected="false">🎙️ 播客 <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="quickreview" role="tab" aria-selected="false">🚀 速记工具 <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="guokao" role="tab" aria-selected="false">🎯 国考冲刺 <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="ir" role="tab" aria-selected="false">📊 政治学·国关 <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="ipe" role="tab" aria-selected="false">💱 IPE <span
+                        class="tab-count"></span></button>
+                <button class="tab-btn" data-tab="philosophy" role="tab" aria-selected="false">🧠 哲学通识 <span
+                        class="tab-count"></span></button>
+            </div>
         </div>
 
-        <!-- Tab Bar -->
-        <div class="tab-bar" id="tabBar">
-            <button class="tab-btn active" data-tab="all">全部</button>
-            <button class="tab-btn" data-tab="podcast">🎙️ 播客</button>
-            <button class="tab-btn" data-tab="quickreview">🚀 速记工具</button>
-            <button class="tab-btn" data-tab="guokao">🎯 国考冲刺</button>
-            <button class="tab-btn" data-tab="ir">📊 政治学·国关</button>
-            <button class="tab-btn" data-tab="ipe">💱 IPE</button>
-            <button class="tab-btn" data-tab="philosophy">🧠 哲学通识</button>
+        <!-- 搜索结果提示 -->
+        <div class="result-info" id="resultInfo" hidden>
+            <span>找到 <b id="resultCount">0</b> 个匹配「<span id="resultTerm"></span>」的资源</span>
+            <button class="result-reset" id="resultReset">清除搜索</button>
         </div>
 
         <!-- 播客频道（精选） -->
-        <div class="category-section" data-tab="podcast">
-            <h2 class="category-title">🎙️ 播客频道</h2>
+        <div class="category-section reveal" data-tab="podcast" style="--sec:#8b5cf6">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">🎙️</span>
+                <h2 class="category-title">播客频道</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
-                <a href="podcast.html" class="card resource featured-card">
-                    <div class="card-icon">🎙️</div>
-                    <div>
-                        <div class="card-title">播客频道 · 复习带背</div>
+                <a href="podcast.html" class="card resource card--featured">
+                    <div class="card-icon" aria-hidden="true">🎙️</div>
+                    <div class="card-body">
+                        <div class="card-title">播客频道 · 复习带背<span class="badge">精选</span></div>
                         <div class="card-desc">政治学音频、国政经专题与 IPE 必背人物分频道整理，支持后台播放。通勤、走路、做家务时听一段，碎片时间也能稳定推进复习。</div>
-                        <span class="card-tag">Audio · 多频道</span>
+                        <div class="card-foot">
+                            <span class="card-tag">Audio · 多频道</span>
+                            <span class="card-go">进入频道 →</span>
+                        </div>
                     </div>
                 </a>
             </div>
         </div>
 
         <!-- 速记工具 -->
-        <div class="category-section" data-tab="quickreview">
-            <h2 class="category-title">🚀 速记工具</h2>
+        <div class="category-section reveal" data-tab="quickreview" style="--sec:#6366f1">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">🚀</span>
+                <h2 class="category-title">速记工具</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
-                <a href="review_ppt.html" class="card resource"
-                    style="border-color: var(--primary); background: rgba(99, 102, 241, 0.05);">
-                    <div class="card-icon" style="background: var(--primary); color: white;">⚡</div>
-                    <div>
-                        <div class="card-title">六门课程核心考点 (H5 PPT)</div>
-                        <div class="card-desc">全屏卡片式背诵，重点图解 + 逐条动效，适合手机端突击记忆。</div>
+                <a href="review_ppt.html" class="card resource hl" style="--hl:#6366f1">
+                    <div class="card-icon" aria-hidden="true">⚡</div>
+                    <div class="card-title">六门课程核心考点 (H5 PPT)</div>
+                    <div class="card-desc">全屏卡片式背诵，重点图解 + 逐条动效，适合手机端突击记忆。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">H5 APP</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">H5 APP</span>
                 </a>
-                <a href="quiz.html" class="card resource"
-                    style="border-color: var(--secondary); background: rgba(168, 85, 247, 0.05);">
-                    <div class="card-icon" style="background: var(--secondary); color: white;">🎴</div>
-                    <div>
-                        <div class="card-title">考点背诵助手</div>
-                        <div class="card-desc">随机抽题、自评会/不会、错题库、正确率统计。手机端优先，适合碎片时间刷题。</div>
+                <a href="quiz.html" class="card resource hl" style="--hl:#a855f7">
+                    <div class="card-icon" aria-hidden="true">🎴</div>
+                    <div class="card-title">考点背诵助手</div>
+                    <div class="card-desc">随机抽题、自评会/不会、错题库、正确率统计。手机端优先，适合碎片时间刷题。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">H5 APP</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">H5 APP</span>
                 </a>
                 <a href="mindmap.html" class="card resource">
-                    <div class="card-icon">🧠</div>
-                    <div>
-                        <div class="card-title">核心复习脑图 (v3.0)</div>
-                        <div class="card-desc">高亮关键词记忆，支持自测挑战模式与径向布局切换，强化逻辑关联。</div>
+                    <div class="card-icon" aria-hidden="true">🧠</div>
+                    <div class="card-title">核心复习脑图 (v3.0)</div>
+                    <div class="card-desc">高亮关键词记忆，支持自测挑战模式与径向布局切换，强化逻辑关联。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">Interactive</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">Interactive</span>
                 </a>
                 <a href="国关复习/六门课程核心复习题汇总.html" class="card resource">
-                    <div class="card-icon">📄</div>
-                    <div>
-                        <div class="card-title">六门课程核心复习题汇总 (原文)</div>
-                        <div class="card-desc">原始打印版文档，适合纸质阅读。</div>
+                    <div class="card-icon" aria-hidden="true">📄</div>
+                    <div class="card-title">六门课程核心复习题汇总 (原文)</div>
+                    <div class="card-desc">原始打印版文档，适合纸质阅读。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
             </div>
         </div>
 
         <!-- 国考政治冲刺 -->
-        <div class="category-section" data-tab="guokao">
-            <h2 class="category-title">🎯 国考政治冲刺</h2>
+        <div class="category-section reveal" data-tab="guokao" style="--sec:#d97706">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">🎯</span>
+                <h2 class="category-title">国考政治冲刺</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
-                <a href="quiz-analysis.html" class="card resource"
-                    style="border-color: #c8973a; background: rgba(200, 151, 58, 0.05);">
-                    <div class="card-icon" style="background: #c8973a; color: white;">📊</div>
-                    <div>
-                        <div class="card-title">题目深度分析面板</div>
-                        <div class="card-desc">138题高频词、答题套路、词族速查、题目关联图谱，七大维度全景分析。</div>
+                <a href="quiz-analysis.html" class="card resource hl" style="--hl:#c8973a">
+                    <div class="card-icon" aria-hidden="true">📊</div>
+                    <div class="card-title">题目深度分析面板</div>
+                    <div class="card-desc">138题高频词、答题套路、词族速查、题目关联图谱，七大维度全景分析。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">Analysis</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">Analysis</span>
                 </a>
                 <a href="名词解释.html" class="card resource">
-                    <div class="card-icon">📝</div>
-                    <div>
-                        <div class="card-title">名词解释 · 可打印版</div>
-                        <div class="card-desc">30个核心概念按政治学/科社/国关分类，含答案、举例、记忆要点，支持打印。</div>
+                    <div class="card-icon" aria-hidden="true">📝</div>
+                    <div class="card-title">名词解释 · 可打印版</div>
+                    <div class="card-desc">30个核心概念按政治学/科社/国关分类，含答案、举例、记忆要点，支持打印。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">Print</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">Print</span>
                 </a>
             </div>
         </div>
 
         <!-- 政治学与国际关系 -->
-        <div class="category-section" data-tab="ir">
-            <h2 class="category-title">📊 政治学与国际关系</h2>
+        <div class="category-section reveal" data-tab="ir" style="--sec:#3b82f6">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">📊</span>
+                <h2 class="category-title">政治学与国际关系</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
-                <a href="国关复习/index.html" class="card resource"
-                    style="border-color: var(--primary); background: rgba(99, 102, 241, 0.06);">
-                    <div class="card-icon" style="background: var(--primary); color: white;">🗂️</div>
-                    <div>
-                        <div class="card-title">国关复习资料总目录</div>
-                        <div class="card-desc">21 份复习资料按主题归类的一站式索引，支持标题搜索，快速定位到任意专题文档。</div>
+                <a href="国关复习/index.html" class="card resource hl" style="--hl:#6366f1">
+                    <div class="card-icon" aria-hidden="true">🗂️</div>
+                    <div class="card-title">国关复习资料总目录</div>
+                    <div class="card-desc">21 份复习资料按主题归类的一站式索引，支持标题搜索，快速定位到任意专题文档。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">目录索引</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">目录索引</span>
                 </a>
                 <a href="国关复习/Political Science Exam Topics Card View with Fixed Grid Layout (2004-2022).html"
                     class="card resource">
-                    <div class="card-icon">📊</div>
-                    <div>
-                        <div class="card-title">政治学题库 - 固定网格视图 (2004-2022)</div>
-                        <div class="card-desc">按年份与分值排列的考题全览。</div>
+                    <div class="card-icon" aria-hidden="true">📊</div>
+                    <div class="card-title">政治学题库 - 固定网格视图 (2004-2022)</div>
+                    <div class="card-desc">按年份与分值排列的考题全览。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/Political Science Exam Topics Card View with Question Types (2004-2022).html"
                     class="card resource">
-                    <div class="card-icon">📂</div>
-                    <div>
-                        <div class="card-title">政治学题库 - 题型分类视图 (2004-2022)</div>
-                        <div class="card-desc">按简答、论述等题型分类的复习资料。</div>
+                    <div class="card-icon" aria-hidden="true">📂</div>
+                    <div class="card-title">政治学题库 - 题型分类视图 (2004-2022)</div>
+                    <div class="card-desc">按简答、论述等题型分类的复习资料。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/国际关系史.html" class="card resource">
-                    <div class="card-icon">📜</div>
-                    <div>
-                        <div class="card-title">国际关系史</div>
-                        <div class="card-desc">重点历史事件与理论节点梳理。</div>
+                    <div class="card-icon" aria-hidden="true">📜</div>
+                    <div class="card-title">国际关系史</div>
+                    <div class="card-desc">重点历史事件与理论节点梳理。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/《国际关系的制度分析方法》_复习题答案.html" class="card resource">
-                    <div class="card-icon">🏛️</div>
-                    <div>
-                        <div class="card-title">国际关系的制度分析方法 (答案)</div>
-                        <div class="card-desc">全面涵盖制度分析核心知识点与习题解答。</div>
+                    <div class="card-icon" aria-hidden="true">🏛️</div>
+                    <div class="card-title">国际关系的制度分析方法 (答案)</div>
+                    <div class="card-desc">全面涵盖制度分析核心知识点与习题解答。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/《国际关系的制度分析方法》复习指南_gemini.html" class="card resource">
-                    <div class="card-icon">✨</div>
-                    <div>
-                        <div class="card-title">国际关系的制度分析方法 (Gemini 指南)</div>
-                        <div class="card-desc">AI 辅助生成的重点精要与知识点提炼。</div>
+                    <div class="card-icon" aria-hidden="true">✨</div>
+                    <div class="card-title">国际关系的制度分析方法 (Gemini 指南)</div>
+                    <div class="card-desc">AI 辅助生成的重点精要与知识点提炼。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/论述题答案汇总.html" class="card resource">
-                    <div class="card-icon">📝</div>
-                    <div>
-                        <div class="card-title">论述题答案汇总</div>
-                        <div class="card-desc">10 道核心论述题完整答案集中汇总，附答题模板速查，便于考前集中背诵。</div>
+                    <div class="card-icon" aria-hidden="true">📝</div>
+                    <div class="card-title">论述题答案汇总</div>
+                    <div class="card-desc">10 道核心论述题完整答案集中汇总，附答题模板速查，便于考前集中背诵。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/简答题答案汇总.html" class="card resource">
-                    <div class="card-icon">✏️</div>
-                    <div>
-                        <div class="card-title">简答题答案汇总</div>
-                        <div class="card-desc">核心简答题答案集中汇总，短平快过一遍高频考点。</div>
+                    <div class="card-icon" aria-hidden="true">✏️</div>
+                    <div class="card-title">简答题答案汇总</div>
+                    <div class="card-desc">核心简答题答案集中汇总，短平快过一遍高频考点。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/论文写作讲座纪要-嵇先白老师.html" class="card resource">
-                    <div class="card-icon">🖋️</div>
-                    <div>
-                        <div class="card-title">《论文写作》讲座纪要（嵇先白老师）</div>
-                        <div class="card-desc">论文选题、结构与写作规范的专题讲座整理，学术写作入门参考。</div>
+                    <div class="card-icon" aria-hidden="true">🖋️</div>
+                    <div class="card-title">《论文写作》讲座纪要（嵇先白老师）</div>
+                    <div class="card-desc">论文选题、结构与写作规范的专题讲座整理，学术写作入门参考。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">讲座纪要</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">讲座纪要</span>
                 </a>
             </div>
         </div>
 
-        <!-- 政治经济学与环境 -->
-        <div class="category-section" data-tab="ipe">
-            <h2 class="category-title">💱 国际政治经济学 (IPE)</h2>
+        <!-- 国际政治经济学 (IPE) -->
+        <div class="category-section reveal" data-tab="ipe" style="--sec:#10b981">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">💱</span>
+                <h2 class="category-title">国际政治经济学 (IPE)</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
                 <a href="%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/%E3%80%8A%E5%9B%BD%E9%99%85%E4%B8%8E%E6%AF%94%E8%BE%83%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E7%A0%94%E7%A9%B6%E3%80%8B%E6%A8%A1%E6%8B%9F%E5%8D%B7%E7%AD%94%E6%A1%88.html"
-                    class="card resource"
-                    style="border-color: var(--primary); background: rgba(99, 102, 241, 0.05);">
-                    <div class="card-icon" style="background: var(--primary); color: white;">🆕</div>
-                    <div>
-                        <div class="card-title">《国际与比较政治经济学研究》15套模拟卷答案</div>
-                        <div class="card-desc">15套模拟题全题去重整理：60名词 + 39简答 + 28论述，含按套卷索引与高频考点热度图。参考人大教材（田野/宋新宁/樊勇明）+ 吉尔平/基欧汉/斯特兰奇等英文原典。</div>
+                    class="card resource hl" style="--hl:#6366f1">
+                    <div class="card-icon" aria-hidden="true">🆕</div>
+                    <div class="card-title">《国际与比较政治经济学研究》15套模拟卷答案</div>
+                    <div class="card-desc">15套模拟题全题去重整理：60名词 + 39简答 + 28论述，含按套卷索引与高频考点热度图。参考人大教材（田野/宋新宁/樊勇明）+ 吉尔平/基欧汉/斯特兰奇等英文原典。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">考试可背版</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">考试可背版</span>
                 </a>
                 <a href="%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/%E7%BF%9F%E4%B8%9C%E5%8D%87%E3%80%8A%E8%B4%A7%E5%B8%81%E4%B8%8E%E9%87%91%E8%9E%8D%E7%9A%84%E5%9B%BD%E9%99%85%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E3%80%8B%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0.html"
-                    class="card resource"
-                    style="border-color: var(--secondary); background: rgba(168, 85, 247, 0.05);">
-                    <div class="card-icon" style="background: var(--secondary); color: white;">💱</div>
-                    <div>
-                        <div class="card-title">翟东升《货币与金融的国际政治经济学》</div>
-                        <div class="card-desc">14 个专题复习笔记：金本位、布雷顿森林、美元霸权、中心-外围、人民币国际化、外汇储备等。含必背/重难点/补充三级标签与目录跳转。</div>
+                    class="card resource hl" style="--hl:#a855f7">
+                    <div class="card-icon" aria-hidden="true">💱</div>
+                    <div class="card-title">翟东升《货币与金融的国际政治经济学》</div>
+                    <div class="card-desc">14 个专题复习笔记：金本位、布雷顿森林、美元霸权、中心-外围、人民币国际化、外汇储备等。含必背/重难点/补充三级标签与目录跳转。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">考试可背版</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">考试可背版</span>
                 </a>
-                <a href="%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/exam-comparison.html" class="card resource"
-                    style="border-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
-                    <div class="card-icon" style="background: #f59e0b; color: white;">📊</div>
-                    <div>
-                        <div class="card-title">两科 IPE 考试难度对比</div>
-                        <div class="card-desc">基于两科模拟卷应试分析报告，从题型分值、命题风格、备考效率等维度横向对比，给出选课与备考时间分配建议。</div>
+                <a href="%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/exam-comparison.html" class="card resource hl"
+                    style="--hl:#f59e0b">
+                    <div class="card-icon" aria-hidden="true">📊</div>
+                    <div class="card-title">两科 IPE 考试难度对比</div>
+                    <div class="card-desc">基于两科模拟卷应试分析报告，从题型分值、命题风格、备考效率等维度横向对比，给出选课与备考时间分配建议。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">选课/备考指南</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">选课/备考指南</span>
                 </a>
                 <a href="国关复习/mfipe-mindmap.html" class="card resource">
-                    <div class="card-icon">🧠</div>
-                    <div>
-                        <div class="card-title">货币金融 IPE 模拟题全脑图</div>
-                        <div class="card-desc">《货币与金融的国际政治经济学》模拟题考点脑图化呈现，带答案，适合考前一图串联全部知识点。</div>
+                    <div class="card-icon" aria-hidden="true">🧠</div>
+                    <div class="card-title">货币金融 IPE 模拟题全脑图</div>
+                    <div class="card-desc">《货币与金融的国际政治经济学》模拟题考点脑图化呈现，带答案，适合考前一图串联全部知识点。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">脑图</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">脑图</span>
                 </a>
                 <a href="国关复习/exam-analysis-icpe.html" class="card resource">
-                    <div class="card-icon">📈</div>
-                    <div>
-                        <div class="card-title">《国际与比较政治经济学研究》应试分析</div>
-                        <div class="card-desc">基于模拟卷的应试分析报告：题型分值结构、高频考点与命题风格拆解。</div>
+                    <div class="card-icon" aria-hidden="true">📈</div>
+                    <div class="card-title">《国际与比较政治经济学研究》应试分析</div>
+                    <div class="card-desc">基于模拟卷的应试分析报告：题型分值结构、高频考点与命题风格拆解。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">应试分析</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">应试分析</span>
                 </a>
                 <a href="国关复习/exam-analysis-mfipe.html" class="card resource">
-                    <div class="card-icon">📉</div>
-                    <div>
-                        <div class="card-title">《货币与金融的国际政治经济学》应试分析</div>
-                        <div class="card-desc">货币金融 IPE 应试分析报告：题型分值结构、高频考点与命题风格拆解。</div>
+                    <div class="card-icon" aria-hidden="true">📉</div>
+                    <div class="card-title">《货币与金融的国际政治经济学》应试分析</div>
+                    <div class="card-desc">货币金融 IPE 应试分析报告：题型分值结构、高频考点与命题风格拆解。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">应试分析</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">应试分析</span>
                 </a>
-                <a href="us-debt/%E7%BE%8E%E5%80%BA%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%9C%8B%E6%9D%BF.html" class="card resource"
-                    style="border-color: #ef4444; background: rgba(239, 68, 68, 0.05);">
-                    <div class="card-icon" style="background: #ef4444; color: white;">💸</div>
-                    <div>
-                        <div class="card-title">美债实时监控看板</div>
-                        <div class="card-desc">美国国债总额、利息燃烧速度与趣味对比的实时滚动看板，可作为 IPE 货币与霸权章节的直观素材。中英双语切换。</div>
+                <a href="us-debt/%E7%BE%8E%E5%80%BA%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%9C%8B%E6%9D%BF.html"
+                    class="card resource hl" style="--hl:#ef4444">
+                    <div class="card-icon" aria-hidden="true">💸</div>
+                    <div class="card-title">美债实时监控看板</div>
+                    <div class="card-desc">美国国债总额、利息燃烧速度与趣味对比的实时滚动看板，可作为 IPE 货币与霸权章节的直观素材。中英双语切换。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">Live Dashboard</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">Live Dashboard</span>
                 </a>
-                <a href="crisis-watch/%E5%8D%B1%E6%9C%BA%E7%9B%91%E6%B5%8B%E4%BD%9C%E6%88%98%E5%8F%B0.html" class="card resource"
-                    style="border-color: #f97316; background: rgba(249, 115, 22, 0.05);">
-                    <div class="card-icon" style="background: #f97316; color: white;">🚨</div>
-                    <div>
-                        <div class="card-title">危机监测作战台</div>
-                        <div class="card-desc">四类危机指纹（信贷 / 利率 / 服务停摆 / 滞胀）的逐日显影，叠加 SPY 回撤地震仪与"幸存者排序"剧本。GitHub Actions 每日收盘后自动诊断。</div>
+                <a href="crisis-watch/%E5%8D%B1%E6%9C%BA%E7%9B%91%E6%B5%8B%E4%BD%9C%E6%88%98%E5%8F%B0.html"
+                    class="card resource hl" style="--hl:#f97316">
+                    <div class="card-icon" aria-hidden="true">🚨</div>
+                    <div class="card-title">危机监测作战台</div>
+                    <div class="card-desc">四类危机指纹（信贷 / 利率 / 服务停摆 / 滞胀）的逐日显影，叠加 SPY 回撤地震仪与"幸存者排序"剧本。GitHub Actions 每日收盘后自动诊断。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">Live Dashboard</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">Live Dashboard</span>
                 </a>
                 <a href="国关复习/《产业发展的政治经济学》复习题.html" class="card resource">
-                    <div class="card-icon">🏭</div>
-                    <div>
-                        <div class="card-title">产业发展的政治经济学</div>
-                        <div class="card-desc">产业政策、国家竞争优势及相关考点。</div>
+                    <div class="card-icon" aria-hidden="true">🏭</div>
+                    <div class="card-title">产业发展的政治经济学</div>
+                    <div class="card-desc">产业政策、国家竞争优势及相关考点。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/《全球周期分析》复习资料.html" class="card resource">
-                    <div class="card-icon">🔄</div>
-                    <div>
-                        <div class="card-title">全球周期分析</div>
-                        <div class="card-desc">长波理论、经济周期与全球格局演变。</div>
+                    <div class="card-icon" aria-hidden="true">🔄</div>
+                    <div class="card-title">全球周期分析</div>
+                    <div class="card-desc">长波理论、经济周期与全球格局演变。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/《国际与经济学文献导读》复习指南.html" class="card resource">
-                    <div class="card-icon">📖</div>
-                    <div>
-                        <div class="card-title">国际与经济学文献导读</div>
-                        <div class="card-desc">经典文献脉络梳理与核心思想总结。</div>
+                    <div class="card-icon" aria-hidden="true">📖</div>
+                    <div class="card-title">国际与经济学文献导读</div>
+                    <div class="card-desc">经典文献脉络梳理与核心思想总结。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/《能源与环境政治经济学研究》复习指南.html" class="card resource">
-                    <div class="card-icon">🌱</div>
-                    <div>
-                        <div class="card-title">能源与环境政治经济学</div>
-                        <div class="card-desc">双碳目标、能源安全与环境政治前沿。</div>
+                    <div class="card-icon" aria-hidden="true">🌱</div>
+                    <div class="card-title">能源与环境政治经济学</div>
+                    <div class="card-desc">双碳目标、能源安全与环境政治前沿。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
             </div>
         </div>
 
         <!-- 哲学与通识 -->
-        <div class="category-section" data-tab="philosophy">
-            <h2 class="category-title">🧠 哲学与通识</h2>
+        <div class="category-section reveal" data-tab="philosophy" style="--sec:#e11d48">
+            <div class="section-head">
+                <span class="sec-emoji" aria-hidden="true">🧠</span>
+                <h2 class="category-title">哲学与通识</h2>
+                <span class="section-count"></span>
+                <span class="section-line" aria-hidden="true"></span>
+            </div>
             <div class="grid">
                 <a href="国关复习/《自然辩证法》期末复习全攻略.html" class="card resource">
-                    <div class="card-icon">🧠</div>
-                    <div>
-                        <div class="card-title">自然辩证法 - 期末复习全攻略</div>
-                        <div class="card-desc">科学技术观、方法论与辩证思维要点。</div>
+                    <div class="card-icon" aria-hidden="true">🧠</div>
+                    <div class="card-title">自然辩证法 - 期末复习全攻略</div>
+                    <div class="card-desc">科学技术观、方法论与辩证思维要点。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
                 <a href="国关复习/自然辩证法复习题答案.html" class="card resource">
-                    <div class="card-icon">💡</div>
-                    <div>
-                        <div class="card-title">自然辩证法 - 复习题答案库</div>
-                        <div class="card-desc">详尽的习题解答，助力快速掌握核心内容。</div>
+                    <div class="card-icon" aria-hidden="true">💡</div>
+                    <div class="card-title">自然辩证法 - 复习题答案库</div>
+                    <div class="card-desc">详尽的习题解答，助力快速掌握核心内容。</div>
+                    <div class="card-foot">
+                        <span class="card-tag">HTML</span>
+                        <span class="card-go">查看 →</span>
                     </div>
-                    <span class="card-tag">HTML</span>
                 </a>
             </div>
         </div>
 
+        <!-- 空状态 -->
+        <div class="empty-state" id="emptyState">
+            <div class="emo" aria-hidden="true">🔍</div>
+            <h3>没有找到匹配的资源</h3>
+            <p>换个关键词试试，或者清除筛选条件浏览全部资源</p>
+            <button id="emptyReset">清除筛选条件</button>
+        </div>
+
         <footer>
-            <div style="font-weight: 600; color: var(--text-main); margin-bottom: 10px;">STUDY SMARTER, NOT HARDER</div>
-            <div style="margin-bottom: 12px;">
-                <span style="color: var(--text-muted); margin-right: 8px;">友情链接:</span>
-                <a href="https://zhengzhixue-tongshi.vercel.app/" target="_blank" rel="noopener"
-                    style="color: var(--primary); text-decoration: none; font-weight: 600;">政治学通识 (by 黎川)</a>
+            <div class="motto">STUDY SMARTER, NOT HARDER</div>
+            <div>
+                <span style="margin-right: 6px;">友情链接:</span>
+                <a href="https://zhengzhixue-tongshi.vercel.app/" target="_blank" rel="noopener">政治学通识 (by 黎川)</a>
             </div>
-            &copy; 2025 | 考试复习资源管理面板<br>
-            Powered by Premium Design Framework
+            <div>&copy; 2025 考试复习资源管理面板</div>
+            <!-- 不蒜子站点访问统计 -->
+            <div id="busuanzi_container">
+                本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
+            </div>
         </footer>
     </div>
 
-    <!-- Search & Tab Script -->
+    <!-- 回到顶部 -->
+    <button class="to-top" id="toTop" aria-label="回到顶部" title="回到顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </button>
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <!-- 交互脚本 -->
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const sections = document.querySelectorAll('.category-section');
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        let activeTab = 'all';
+        (function () {
+            'use strict';
 
-        function applyFilters() {
-            const term = searchInput.value.trim().toLowerCase();
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var searchInput = document.getElementById('searchInput');
+            var searchClear = document.getElementById('searchClear');
+            var sections = Array.prototype.slice.call(document.querySelectorAll('.category-section'));
+            var tabButtons = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+            var resultInfo = document.getElementById('resultInfo');
+            var resultCount = document.getElementById('resultCount');
+            var resultTerm = document.getElementById('resultTerm');
+            var resultReset = document.getElementById('resultReset');
+            var emptyState = document.getElementById('emptyState');
+            var emptyReset = document.getElementById('emptyReset');
+            var toolbar = document.getElementById('toolbar');
+            var activeTab = 'all';
 
-            sections.forEach(section => {
-                const sectionTab = section.dataset.tab;
-                const tabMatches = (activeTab === 'all' || activeTab === sectionTab);
+            /* ---------- 统计与计数 ---------- */
+            var totalCards = document.querySelectorAll('.card.resource').length;
+            document.getElementById('statTotal').textContent = totalCards;
+            document.getElementById('statCats').textContent = sections.length;
 
-                let anyVisible = false;
-                section.querySelectorAll('.resource').forEach(card => {
-                    const title = card.querySelector('.card-title').textContent.toLowerCase();
-                    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
-                    const termMatch = term === '' || title.includes(term) || desc.includes(term);
+            tabButtons.forEach(function (btn) {
+                var tab = btn.dataset.tab;
+                var n = 0;
+                if (tab === 'all') {
+                    n = totalCards;
+                } else {
+                    sections.forEach(function (s) {
+                        if (s.dataset.tab === tab) n += s.querySelectorAll('.resource').length;
+                    });
+                }
+                var c = btn.querySelector('.tab-count');
+                if (c) c.textContent = n;
+            });
 
-                    if (tabMatches && termMatch) {
-                        card.style.display = 'flex';
-                        anyVisible = true;
-                    } else {
-                        card.style.display = 'none';
+            sections.forEach(function (s) {
+                var chip = s.querySelector('.section-count');
+                if (chip) chip.textContent = s.querySelectorAll('.resource').length + ' 个';
+            });
+
+            /* ---------- 搜索高亮 ---------- */
+            function escapeRegExp(str) {
+                return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            }
+
+            function highlightIn(el, term) {
+                if (!el.dataset.orig) el.dataset.orig = el.innerHTML;
+                el.innerHTML = el.dataset.orig;
+                if (!term) return;
+                var rx = new RegExp('(' + escapeRegExp(term) + ')', 'gi');
+                var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function (node) {
+                    if (!rx.test(node.nodeValue)) return;
+                    rx.lastIndex = 0;
+                    var span = document.createElement('span');
+                    span.innerHTML = node.nodeValue.replace(rx, '<mark>$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                });
+            }
+
+            function clearHighlights(card) {
+                card.querySelectorAll('.card-title, .card-desc').forEach(function (el) {
+                    if (el.dataset.orig) {
+                        el.innerHTML = el.dataset.orig;
                     }
                 });
+            }
 
-                section.style.display = (tabMatches && anyVisible) ? 'block' : 'none';
-            });
-        }
+            /* ---------- 筛选 ---------- */
+            function applyFilters() {
+                var rawTerm = searchInput.value.trim();
+                var term = rawTerm.toLowerCase();
+                var visibleTotal = 0;
 
-        searchInput.addEventListener('input', applyFilters);
+                sections.forEach(function (section) {
+                    var tabMatches = (activeTab === 'all' || activeTab === section.dataset.tab);
+                    var anyVisible = false;
 
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeTab = btn.dataset.tab;
+                    section.querySelectorAll('.resource').forEach(function (card) {
+                        var titleEl = card.querySelector('.card-title');
+                        var descEl = card.querySelector('.card-desc');
+                        var tagEl = card.querySelector('.card-tag');
+                        var haystack = (titleEl.textContent + ' ' + descEl.textContent + ' ' +
+                            (tagEl ? tagEl.textContent : '')).toLowerCase();
+                        var termMatch = term === '' || haystack.indexOf(term) !== -1;
+                        var show = tabMatches && termMatch;
+
+                        card.style.display = show ? '' : 'none';
+                        if (show) {
+                            anyVisible = true;
+                            visibleTotal++;
+                            clearHighlights(card);
+                            if (term) {
+                                highlightIn(titleEl, rawTerm);
+                                highlightIn(descEl, rawTerm);
+                            }
+                        }
+                    });
+
+                    section.style.display = (tabMatches && anyVisible) ? '' : 'none';
+                });
+
+                // 清除按钮与快捷键提示互斥显示
+                searchClear.classList.toggle('show', rawTerm.length > 0);
+                var kbd = document.querySelector('.search-kbd');
+                if (kbd) kbd.style.visibility = rawTerm.length > 0 ? 'hidden' : '';
+
+                // 结果提示条（仅搜索时显示）
+                if (rawTerm.length > 0) {
+                    resultCount.textContent = visibleTotal;
+                    resultTerm.textContent = rawTerm;
+                    resultInfo.hidden = false;
+                } else {
+                    resultInfo.hidden = true;
+                }
+
+                // 空状态
+                emptyState.classList.toggle('show', visibleTotal === 0);
+            }
+
+            function resetAll() {
+                searchInput.value = '';
+                activeTab = 'all';
+                tabButtons.forEach(function (b) {
+                    var on = b.dataset.tab === 'all';
+                    b.classList.toggle('active', on);
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
                 applyFilters();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            searchInput.addEventListener('input', applyFilters);
+
+            searchClear.addEventListener('click', function () {
+                searchInput.value = '';
+                applyFilters();
+                searchInput.focus();
             });
-        });
 
-        // Dark mode preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.setAttribute('data-theme', 'dark');
-        }
+            resultReset.addEventListener('click', function () {
+                searchInput.value = '';
+                applyFilters();
+                searchInput.focus();
+            });
+
+            emptyReset.addEventListener('click', function () {
+                resetAll();
+                searchInput.focus();
+            });
+
+            tabButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    tabButtons.forEach(function (b) {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-selected', 'false');
+                    });
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+                    activeTab = btn.dataset.tab;
+                    applyFilters();
+
+                    // 滚动到工具栏吸附位置，让筛选结果立即可见
+                    var y = toolbar.getBoundingClientRect().top + window.pageYOffset - 12;
+                    window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+                });
+            });
+
+            /* ---------- 键盘快捷键 ---------- */
+            document.addEventListener('keydown', function (e) {
+                var tag = (e.target.tagName || '').toLowerCase();
+                var typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+
+                if (e.key === '/' && !typing) {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                } else if (e.key === 'Escape' && e.target === searchInput) {
+                    if (searchInput.value) {
+                        searchInput.value = '';
+                        applyFilters();
+                    } else {
+                        searchInput.blur();
+                    }
+                }
+            });
+
+            /* ---------- 主题切换（含记忆） ---------- */
+            var themeToggle = document.getElementById('themeToggle');
+            var mediaDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+            themeToggle.addEventListener('click', function () {
+                var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.dataset.theme = next;
+                try { localStorage.setItem('theme', next); } catch (e) { }
+            });
+
+            mediaDark.addEventListener('change', function (e) {
+                var stored = null;
+                try { stored = localStorage.getItem('theme'); } catch (err) { }
+                if (!stored) document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
+            });
+
+            /* ---------- 吸顶阴影 ---------- */
+            if ('IntersectionObserver' in window) {
+                var sentinel = document.querySelector('.sticky-sentinel');
+                new IntersectionObserver(function (entries) {
+                    toolbar.classList.toggle('is-stuck', !entries[0].isIntersecting);
+                }, { rootMargin: '-10px 0px 0px 0px' }).observe(sentinel);
+            }
+
+            /* ---------- 滚动入场 ---------- */
+            if ('IntersectionObserver' in window && !reduceMotion) {
+                var revealEls = document.querySelectorAll('.reveal');
+                revealEls.forEach(function (el, i) {
+                    el.style.transitionDelay = Math.min((i % 3) * 70, 210) + 'ms';
+                });
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+                revealEls.forEach(function (el) { io.observe(el); });
+            } else {
+                document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+            }
+
+            /* ---------- 回到顶部 ---------- */
+            var toTop = document.getElementById('toTop');
+            var ticking = false;
+
+            function onScroll() {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(function () {
+                    toTop.classList.toggle('show', window.pageYOffset > 600);
+                    ticking = false;
+                });
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            toTop.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+            });
+
+            applyFilters();
+        })();
     </script>
-
-<!-- 不蒜子站点访问统计 -->
-<div id="busuanzi_container" style="text-align:center;font-size:11px;color:#999;padding:6px 0 10px;opacity:.85;line-height:1.6;">
-  本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
-</div>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 
 </html>
