@@ -606,6 +606,16 @@
             background: rgba(236, 72, 153, 0.1);
             color: #ec4899;
         }
+
+        /* Playback stats badges (per-episode) */
+        .play-stat {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .play-stat.done {
+            color: #22c55e;
+        }
     </style>
 </head>
 
@@ -660,6 +670,7 @@
                     <div class="stat">📢 <span id="episodeCount">9</span> 集</div>
                     <div class="stat">⏱️ <span id="channelDuration">总时长约 4 小时</span></div>
                     <div class="stat">🎓 <span id="channelAudience">适合考研/国考复习</span></div>
+                    <div class="stat">📊 <span id="channelPlayStats">—</span></div>
                 </div>
             </div>
         </div>
@@ -775,6 +786,8 @@
         const RATE_KEY = 'podcast_rate_v1';       // 播放倍速
         const PROGRESS_KEY = 'podcast_progress_v1'; // { [file]: seconds }
         const LAST_KEY = 'podcast_last_v1';        // 最近收听的一集
+        const CHANNEL_KEY = 'podcast_channel_v1';  // 最近选择的频道（分类记忆）
+        const STATS_KEY = 'podcast_stats_v1';      // { [file]: { plays, completes, seconds } }
 
         function loadJSON(key, fallback) {
             try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
@@ -786,6 +799,61 @@
 
         let playbackRate = parseFloat(localStorage.getItem(RATE_KEY)) || 1;
         let progress = loadJSON(PROGRESS_KEY, {});
+        let playStats = loadJSON(STATS_KEY, {});
+
+        // ---- 播放统计 ----
+        function getStat(file) {
+            const s = playStats[file];
+            return {
+                plays: (s && s.plays) || 0,
+                completes: (s && s.completes) || 0,
+                seconds: (s && s.seconds) || 0
+            };
+        }
+        function bumpStat(file, fn) {
+            const s = getStat(file);
+            fn(s);
+            playStats[file] = s;
+            saveJSON(STATS_KEY, playStats);
+        }
+        // 累计收听时长：秒 → "X 秒 / X 分钟 / X.X 小时"
+        function fmtListened(sec) {
+            sec = Math.max(0, Math.round(sec || 0));
+            if (sec < 60) return `${sec} 秒`;
+            if (sec < 3600) return `${Math.round(sec / 60)} 分钟`;
+            return `${(sec / 3600).toFixed(1)} 小时`;
+        }
+        // 频道级汇总：已播次数 · 累计收听 · 听完进度
+        function channelStatsSummary(channel) {
+            let plays = 0, seconds = 0, done = 0, total = 0;
+            (channel.episodes || []).forEach(ep => {
+                if (!ep.file) return;
+                total++;
+                const s = getStat(ep.file);
+                plays += s.plays;
+                seconds += s.seconds;
+                if (s.completes > 0) done++;
+            });
+            if (!total) return '暂无音频';
+            if (!plays && !done) return '还没有收听记录';
+            return `已播 ${plays} 次 · 累计收听 ${fmtListened(seconds)} · 听完 ${done}/${total} 集`;
+        }
+        // 播放中实时刷新统计展示（不重渲染列表，避免打断播放）
+        function updateStatsLive(index, file) {
+            const s = getStat(file);
+            const playEl = document.getElementById(`play-stat-${index}`);
+            if (playEl) {
+                playEl.style.display = s.plays ? '' : 'none';
+                playEl.textContent = `▶️ 播放 ${s.plays} 次 · 累计 ${fmtListened(s.seconds)}`;
+            }
+            const doneEl = document.getElementById(`done-stat-${index}`);
+            if (doneEl) {
+                doneEl.style.display = s.completes ? '' : 'none';
+                doneEl.textContent = `✅ 已听完${s.completes > 1 ? ' ' + s.completes + ' 次' : ''}`;
+            }
+            const sumEl = document.getElementById('channelPlayStats');
+            if (sumEl) sumEl.textContent = channelStatsSummary(channels[currentChannel]);
+        }
 
         function getProgress(file) {
             const s = progress[file];
@@ -882,6 +950,17 @@
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.body.setAttribute('data-theme', 'dark');
             }
+            // 分类记忆：恢复上次选择的频道（仅限已上线频道，跳过"敬请期待"）
+            const savedChannel = localStorage.getItem(CHANNEL_KEY);
+            if (savedChannel && channels[savedChannel] && channels[savedChannel].jsonUrl
+                && savedChannel !== currentChannel) {
+                currentChannel = savedChannel;
+                document.querySelectorAll('.channel-tab').forEach(t => {
+                    const on = t.dataset.channel === currentChannel;
+                    t.classList.toggle('active', on);
+                    if (t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+            }
             // 只加载默认频道即可首屏渲染，其余空闲时预取
             await loadChannel(currentChannel);
             renderChannel(currentChannel);
@@ -939,6 +1018,7 @@
         // options.scrollToFile / playFrom：由"继续收听"按钮传入，切完后滚动定位并自动播放
         async function selectChannel(channelId, options = {}) {
             currentChannel = channelId;
+            try { localStorage.setItem(CHANNEL_KEY, channelId); } catch { }
             document.querySelectorAll('.channel-tab').forEach(t => {
                 const on = t.dataset.channel === channelId;
                 t.classList.toggle('active', on);
@@ -974,6 +1054,7 @@
             document.querySelector('.channel-icon').textContent = ch.icon;
             document.getElementById('episodeCount').textContent = '…';
             document.getElementById('channelDuration').textContent = '…';
+            document.getElementById('channelPlayStats').textContent = '…';
             document.getElementById('episodesList').innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state-icon">⏳</div>
@@ -1001,6 +1082,7 @@
             document.getElementById('channelDuration').textContent = fmtChannelDuration(channel.episodes);
             document.getElementById('channelAudience').textContent = channel.audience;
             document.querySelector('.channel-icon').textContent = channel.icon;
+            document.getElementById('channelPlayStats').textContent = channelStatsSummary(channel);
 
             const episodesList = document.getElementById('episodesList');
 
@@ -1027,7 +1109,9 @@
                 return;
             }
 
-            episodesList.innerHTML = channel.episodes.map((ep, index) => `
+            episodesList.innerHTML = channel.episodes.map((ep, index) => {
+                const st = ep.file ? getStat(ep.file) : { plays: 0, completes: 0, seconds: 0 };
+                return `
                 <div class="episode-card">
                     <div class="episode-header">
                         <div class="episode-number">${index + 1}</div>
@@ -1039,6 +1123,10 @@
                             <div class="episode-meta">
                                 <span>⏱️ ${ep.duration}</span>
                                 <span>${ep.file ? `🎵 ${ep.file.split('.').pop().toUpperCase()}` : '📝 文字带背'}</span>
+                                ${ep.file ? `
+                                <span class="play-stat" id="play-stat-${index}" style="${st.plays ? '' : 'display:none'}">▶️ 播放 ${st.plays} 次 · 累计 ${fmtListened(st.seconds)}</span>
+                                <span class="play-stat done" id="done-stat-${index}" style="${st.completes ? '' : 'display:none'}">✅ 已听完${st.completes > 1 ? ' ' + st.completes + ' 次' : ''}</span>
+                                ` : ''}
                             </div>
                             ${ep.file ? `
                                 <div class="audio-player-wrapper">
@@ -1067,7 +1155,8 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             // Setup audio events
             setupAudioEvents();
@@ -1078,6 +1167,20 @@
             document.querySelectorAll('.audio-player').forEach((audio, index) => {
                 const file = audio.dataset.file;
                 let lastSaved = 0;
+                let counted = false;     // 本次播放会话是否已计 1 次播放（ended 后重置）
+                let lastTick = null;     // 上次 timeupdate 的 currentTime，用于累计收听时长
+                let pendingSec = 0;      // 未落盘的收听秒数，攒够或暂停/结束时写盘
+
+                const flushListened = () => {
+                    if (pendingSec >= 1) {
+                        const add = Math.round(pendingSec);
+                        pendingSec = 0;
+                        bumpStat(file, s => { s.seconds += add; });
+                        updateStatsLive(index, file);
+                    }
+                };
+                // 关闭/刷新页面前把未落盘的收听时长存下来
+                window.addEventListener('pagehide', flushListened);
 
                 // Apply the current global speed to this player
                 audio.playbackRate = playbackRate;
@@ -1096,6 +1199,13 @@
 
                 audio.addEventListener('play', () => {
                     audio.playbackRate = playbackRate;
+                    // 统计：每个播放会话只计 1 次播放（暂停后继续不重复计）
+                    if (!counted) {
+                        counted = true;
+                        bumpStat(file, s => { s.plays += 1; });
+                        updateStatsLive(index, file);
+                    }
+                    lastTick = audio.currentTime;
                     // Pause other audios
                     document.querySelectorAll('.audio-player').forEach((a, i) => {
                         if (a !== audio && !a.paused) {
@@ -1119,17 +1229,29 @@
                 // Persist progress at most every ~5s while playing
                 audio.addEventListener('timeupdate', () => {
                     const t = audio.currentTime;
+                    // 统计：只累计正常播放的前进增量，排除拖动进度条造成的跳变
+                    if (lastTick !== null) {
+                        const delta = t - lastTick;
+                        if (delta > 0 && delta < 3) pendingSec += delta;
+                    }
+                    lastTick = t;
+                    if (pendingSec >= 10) flushListened();
                     if (Math.abs(t - lastSaved) >= 5 && t > 0) {
                         lastSaved = t;
                         setProgress(file, Math.floor(t));
                     }
                 });
 
+                // 拖动进度条后重置计时基准，避免把跳转距离计入收听时长
+                audio.addEventListener('seeking', () => { lastTick = audio.currentTime; });
+
                 audio.addEventListener('pause', () => {
                     document.getElementById(`now-playing-${index}`).classList.remove('active');
                     if (audio.currentTime > 5 && !audio.ended) {
                         setProgress(file, Math.floor(audio.currentTime));
                     }
+                    lastTick = null;
+                    flushListened();
                 });
 
                 audio.addEventListener('ended', () => {
@@ -1137,6 +1259,11 @@
                     clearProgress(file);           // finished ⇒ next time starts fresh
                     const hint = document.getElementById(`resume-hint-${index}`);
                     if (hint) hint.style.display = 'none';
+                    lastTick = null;
+                    flushListened();
+                    counted = false;               // 播完后再播计为新一次播放
+                    bumpStat(file, s => { s.completes += 1; });
+                    updateStatsLive(index, file);
                 });
             });
         }
