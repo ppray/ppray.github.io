@@ -2358,17 +2358,93 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 翟东升教授提出，分析一国在世界市场体系中的位置，<span class="hl">**核心标准是看该国向整个体系出口何种东西以交换它所需的商品与服务**</span>。基于此，他将世界体系内的国家和地区分为四类，并形象地概括了其生存方式：
 
 <div class="dgm">
-<div class="dgm-h">🌐 套叠型中心—外围结构 · 四类国家</div>
-<div class="flow col">
-  <div class="node"><div class="t">中央国家 · 美国</div><div class="s">出口美元 / 无形资产 · <b>靠信心生活</b></div></div>
-  <div style="text-align:center;color:var(--secondary);font-weight:700;padding:2px 0;">▲ 向上爬升</div>
-  <div class="node"><div class="t">准中央 · 西欧 / 日本</div><div class="s">高附加值工业品 · <b>靠理性生存</b></div></div>
-  <div style="text-align:center;color:var(--secondary);font-weight:700;padding:2px 0;">▲</div>
-  <div class="node"><div class="t">外围工业国 · 中国 / 印度</div><div class="s">劳动密集工业品 · <b>靠勤劳谋生</b></div></div>
-  <div style="text-align:center;color:var(--secondary);font-weight:700;padding:2px 0;">▲</div>
-  <div class="node"><div class="t">原料国 · 中东 / 拉美 / 非洲</div><div class="s">能源原材料 · <b>靠运气生存</b></div></div>
-</div>
-<div class="dgm-cap">判断一国位置的<b>核心标准 ＝ 它向体系出口什么换取所需</b>。中国正从"外围工业国"向"准中央"艰难爬升，推动体系向"中心—准中心—外围"多层演变。</div>
+<div class="dgm-h">🌐 套叠型中心—外围结构同心圆模型 & 俄罗斯套娃嵌套</div>
+<figure style="margin:0;">
+<svg viewBox="0 0 840 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:840px;display:block;margin:10px auto;font-family:inherit;" role="img" aria-label="套叠型中心外围结构同心圆与嵌套同构图">
+  <defs>
+    <linearGradient id="gradCoreSvg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="840" height="500" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Title -->
+  <text x="420" y="32" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">🌐 世界市场体系：套叠型中心—外围同心圆模型</text>
+  <text x="420" y="52" font-size="11.5" fill="#64748b" text-anchor="middle">横向：四层等级划分与财富流向 · 纵向：全球 ➔ 区域 ➔ 国内的“俄罗斯套娃”嵌套</text>
+
+  <!-- LEFT: CONCENTRIC CIRCLE MODEL -->
+  <g transform="translate(250, 265)">
+    <!-- Layer 4: Raw Material Countries -->
+    <circle cx="0" cy="0" r="190" fill="#fef9c3" stroke="#ca8a04" stroke-width="2" stroke-dasharray="6 4" opacity="0.95"/>
+    <text x="0" y="-168" font-size="11.5" font-weight="700" fill="#854d0e" text-anchor="middle">④ 最外围·原料国（中东/拉美/非洲）</text>
+    <text x="0" y="-153" font-size="10" fill="#a16207" text-anchor="middle">出口能源矿产 · 靠“运气”生存</text>
+
+    <!-- Layer 3: Peripheral Industrial Countries -->
+    <circle cx="0" cy="0" r="138" fill="#dbeafe" stroke="#2563eb" stroke-width="2" opacity="0.95"/>
+    <text x="0" y="-118" font-size="11.5" font-weight="700" fill="#1e40af" text-anchor="middle">③ 外围工业国（中国/印度/东亚）</text>
+    <text x="0" y="-103" font-size="10" fill="#1d4ed8" text-anchor="middle">出口制造工业品 · 靠“勤劳”谋生</text>
+
+    <!-- Layer 2: Semi-Core Countries -->
+    <circle cx="0" cy="0" r="88" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2" opacity="0.95"/>
+    <text x="0" y="-68" font-size="11.5" font-weight="700" fill="#5b21b6" text-anchor="middle">② 准中央（西欧/日本）</text>
+    <text x="0" y="-53" font-size="10" fill="#6d28d9" text-anchor="middle">高附加值工业/技术 · 靠“理性”生存</text>
+
+    <!-- Layer 1: Core Center -->
+    <circle cx="0" cy="0" r="42" fill="url(#gradCoreSvg)" stroke="#991b1b" stroke-width="2"/>
+    <text x="0" y="-8" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">① 中央内核</text>
+    <text x="0" y="8" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">美国</text>
+    <text x="0" y="22" font-size="9" fill="#fecaca" text-anchor="middle">美元·靠“信心”</text>
+
+    <!-- Wealth Extraction Arrows (Upwards inward) -->
+    <path d="M 0 142 L 0 92" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+    <text x="-12" y="120" font-size="9.5" font-weight="700" fill="#dc2626" text-anchor="end">实物财富向上抽吸 ➔</text>
+
+    <!-- Currency / Seigniorage Flow (Outward) -->
+    <path d="M 0 -44 L 0 -134" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+    <text x="12" y="-90" font-size="9.5" font-weight="700" fill="#16a34a" text-anchor="start">↵ 法币/铸币税向下注入</text>
+  </g>
+
+  <!-- RIGHT: NESTED "RUSSIAN DOLL" HOMOMORPHISM PANEL -->
+  <g transform="translate(485, 75)">
+    <rect width="335" height="395" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="167" y="28" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="middle">🪆 什么是“套叠”？自相似嵌套同构</text>
+    <text x="167" y="45" font-size="10.5" fill="#64748b" text-anchor="middle">同心圆逻辑在三个地理尺度上层层嵌套</text>
+
+    <!-- Card 1: Global Level -->
+    <g transform="translate(14, 60)">
+      <rect width="307" height="90" rx="8" fill="#f8fafc" stroke="#6366f1" stroke-width="1.5"/>
+      <text x="12" y="22" font-size="12" font-weight="700" fill="#4338ca">1. 全球大套娃（Global Scale）</text>
+      <text x="12" y="42" font-size="11" fill="#334155">• <b>核心</b>：美国（美元/规则庄家）</text>
+      <text x="12" y="60" font-size="11" fill="#334155">• <b>外围</b>：中国/印度/中东（实体生产/资源）</text>
+      <text x="12" y="78" font-size="10" fill="#64748b">➔ 全球范围内的铸币税抽吸与分工</text>
+    </g>
+
+    <!-- Card 2: Regional Level -->
+    <g transform="translate(14, 165)">
+      <rect width="307" height="90" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="12" y="22" font-size="12" font-weight="700" fill="#6d28d9">2. 区域中套娃（Regional Scale · 东亚）</text>
+      <text x="12" y="42" font-size="11" fill="#334155">• <b>区域中心</b>：日韩（高阶零部件/专利）</text>
+      <text x="12" y="60" font-size="11" fill="#334155">• <b>区域外围</b>：中国组装 ➔ 东南亚原材料</text>
+      <text x="12" y="78" font-size="10" fill="#64748b">➔ 雁阵模型/东亚生产网络内部嵌套</text>
+    </g>
+
+    <!-- Card 3: National Level -->
+    <g transform="translate(14, 270)">
+      <rect width="307" height="105" rx="8" fill="#f8fafc" stroke="#059669" stroke-width="1.5"/>
+      <text x="12" y="22" font-size="12" font-weight="700" fill="#047857">3. 国内小套娃（National Scale · 中国）</text>
+      <text x="12" y="42" font-size="11" fill="#334155">• <b>国内中心</b>：长三角/珠三角（研发/金融）</text>
+      <text x="12" y="60" font-size="11" fill="#334155">• <b>国内外围</b>：中西部（能源/劳动力输送）</text>
+      <text x="12" y="80" font-size="10.5" font-weight="700" fill="#d97706">💡 中国爬升趋势：从外围工业国升向准中央</text>
+    </g>
+  </g>
+</svg>
+<figcaption style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.6;">
+图：<b>套叠型中心—外围同心圆模型</b>（左：四层生存方式与财富抽吸；右：全球/区域/国内三级自相似“套娃”嵌套）。
+</figcaption>
+</figure>
 </div>
 
 
