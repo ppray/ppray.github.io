@@ -389,15 +389,35 @@ def score(df: pd.DataFrame, pillar_weights=None, crisis="generic") -> pd.DataFra
 
     df = df.copy()
 
-    # 压力盈利收益率:正常化收益率 × (1 - 折扣)
-    # 折扣 = 剧本基准折扣 × (1 + 历史利润回撤倾向),封顶 75%。
-    # 周期股在危机中利润塌得更狠,折扣自动放大——这就是"表面PE失真"的修正。
+    # ── 多因子压力折扣 ──
+    # 4 因子合成"危机中盈利脆弱度"(替代单因子 ni_max_drawdown):
+    #   ni_dd       (30%) 历史净利润最大回撤
+    #   rev_vol     (25%) 营收波动性 (rev_stability 反转)
+    #   debt_stress (25%) 杠杆压力 (debt_to_ebitda, 净现金公司豁免)
+    #   fcf_weak    (20%) FCF 利润率 (越低越脆弱)
+    # 输出 [base_haircut, 0.75];地板不变,用财务结构自然区分。
     base_h = playbook["base_haircut"]
+    # 因子 1: 历史利润回撤, 缺数据默认 0.3
     ni_dd = pd.to_numeric(df.get("ni_max_drawdown"), errors="coerce").fillna(0.3)
-    haircut = (base_h * (1 + ni_dd)).clip(upper=0.75)
+    # 因子 2: 营收波动性, rev_stability=1/(std+0.01) → 反转归一化
+    rev_stab = pd.to_numeric(df.get("rev_stability"), errors="coerce")
+    rev_vol = (1.0 - rev_stab / (rev_stab + 5.0)).clip(0, 1).fillna(0.5)
+    # 因子 3: 杠杆压力, 净现金公司豁免
+    d2e = pd.to_numeric(df.get("debt_to_ebitda"), errors="coerce")
+    net_cash = pd.to_numeric(df.get("net_cash"), errors="coerce")
+    debt_stress = (d2e.clip(lower=0) / 6.0).clip(0, 1).fillna(0.3)
+    debt_stress = debt_stress.where(net_cash.fillna(-1) < 0, 0.0)
+    # 因子 4: FCF 质量, fcf_margin 越低越脆弱
+    fcf_mc = pd.to_numeric(df.get("fcf_margin"), errors="coerce")
+    fcf_weak = (1.0 - fcf_mc.clip(lower=0, upper=0.3) / 0.3).fillna(0.5)
+    # 合成
+    comp_vol = (0.30 * ni_dd + 0.25 * rev_vol +
+                0.25 * debt_stress + 0.20 * fcf_weak)
+    haircut = (base_h + comp_vol * (0.75 - base_h)).clip(upper=0.75)
     df["stress_haircut"] = haircut.round(2)
-    ney = pd.to_numeric(df.get("norm_earnings_yield"), errors="coerce")
-    df["stressed_earnings_yield"] = ney * (1 - haircut)
+
+    net_earnings_yield = pd.to_numeric(df.get("norm_earnings_yield"), errors="coerce")
+    df["stressed_earnings_yield"] = net_earnings_yield * (1 - haircut)
 
     # 算法折扣 vs 市场已隐含折扣的 gap:
     #   gap > 0 → 算法说该折,市场没折 → 风险被低估
@@ -436,6 +456,18 @@ def score(df: pd.DataFrame, pillar_weights=None, crisis="generic") -> pd.DataFra
 
     # 数据缺失太多的降权提示
     df["data_coverage"] = df[[c for c in METRIC_SPEC if c in df.columns]].notna().mean(axis=1).round(2)
+
+    # ── 超卖买入机会得分 (buy_score) ──
+    # gap = market_dd - stress_haircut (正值→市场比算法更悲观→潜在错杀)
+    # buy_score = gap_signal × quality × confidence × 100
+    # quality = 0.25×P1 + 0.50×P2 + 0.25×P4 (P2 生存权重最高)
+    _gap = (market_dd - haircut).fillna(0)
+    _gs = ((_gap + 0.10).clip(0, 0.40) / 0.40).fillna(0)  # gap>-10pp 开始计分
+    _q = (0.25 * df.get("P1_resilience", pd.Series(50, index=df.index)).fillna(50) +
+          0.50 * df.get("P2_survival",   pd.Series(50, index=df.index)).fillna(50) +
+          0.25 * df.get("P4_toll_model", pd.Series(50, index=df.index)).fillna(50)) / 100
+    _conf = 0.6 + 0.4 * df["data_coverage"].fillna(0.5)
+    df["buy_score"] = (_gs * _q * _conf * 100).round(1)
     return df.sort_values("composite_score", ascending=False)
 
 
@@ -765,6 +797,7 @@ def main():
         survivors = score(survivors, weights, crisis=crisis)
 
     show_cols = ["ticker", "name", "sector", "composite_score",
+                 "buy_score",
                  "P1_resilience", "P2_survival", "P3_offense",
                  "P4_toll_model", "P5_secular", "P6_valuation",
                  "crisis_sector_penalty", "stress_haircut",

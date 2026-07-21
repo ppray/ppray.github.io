@@ -142,6 +142,13 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
 .empty{padding:26px;text-align:center;color:var(--ink-faint);font-size:13px;
   border:1px dashed var(--line);border-radius:12px}
 .score.s-hi{color:var(--safe)} .score.s-lo{color:var(--danger)}
+/* 买入机会分徽章 */
+.buy-badge{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:5px;
+  font-weight:700;border:1px solid transparent;margin-left:6px}
+.buy-badge.b-hi{background:rgba(61,214,140,.15);color:var(--safe);border-color:rgba(61,214,140,.4)}
+.buy-badge.b-mid{background:rgba(255,209,102,.12);color:var(--warn);border-color:rgba(255,209,102,.35)}
+.buy-badge.b-lo{background:rgba(111,168,255,.10);color:var(--sig-rate);border-color:rgba(111,168,255,.25)}
+.buy-badge.b-dim{background:var(--panel-2);color:var(--ink-faint)}
 .readout b.r-danger{color:var(--danger)} .readout b.r-warn{color:var(--warn)}
 .markstats{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
 
@@ -246,6 +253,7 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
         <option value="sey">压力盈利收益率</option>
         <option value="pdd">市场已跌（52w）</option>
         <option value="gap">折扣缺口（机会优先）</option>
+        <option value="buy">买入机会分</option>
       </select>
       <span class="markstats" id="markStats"></span>
     </div>
@@ -497,11 +505,12 @@ function renderCards(){
      所以 gap 按升序排,机会候选浮到最上。缺数据的项用 -Infinity 沉底。 */
   const list = [...state.survivors].sort((a,b)=>{
     const get = r => sortKey==="score" ? (r.score??-Infinity)
-                  : sortKey==="p2"  ? (r.p?.[1]??-Infinity)
-                  : sortKey==="p6"  ? (r.p?.[5]??-Infinity)
-                  : sortKey==="sey" ? (r.sey??-Infinity)
-                  : sortKey==="pdd" ? (r.pdd??-Infinity)
-                  : sortKey==="gap" ? -(r.gap??Infinity)   /* 取负→升序 */
+                  : sortKey==="buy"  ? (r.buy_score??-Infinity)
+                  : sortKey==="p2"   ? (r.p?.[1]??-Infinity)
+                  : sortKey==="p6"   ? (r.p?.[5]??-Infinity)
+                  : sortKey==="sey"  ? (r.sey??-Infinity)
+                  : sortKey==="pdd"  ? (r.pdd??-Infinity)
+                  : sortKey==="gap"  ? -(r.gap??Infinity)   /* 取负→升序 */
                   : (r.score??-Infinity);
     return get(b)-get(a);
   });
@@ -563,6 +572,9 @@ function renderCards(){
         <button class="mark ${reviewed?"rev-on":""}" data-act="rev" data-tk="${esc(r.ticker)}"
           title="标记已复核(本地保存)">✓</button>
         <span class="score ${scoreCls}">${r.score==null?"—":r.score.toFixed(1)}<small> /100</small></span>
+        ${r.buy_score!=null && r.buy_score >= 5 ? 
+          `<span class="buy-badge ${r.buy_score>=50?'b-hi':r.buy_score>=25?'b-mid':r.buy_score>=10?'b-lo':'b-dim'}">${r.buy_score>=25?'★':''}买入 ${r.buy_score.toFixed(0)}</span>` 
+          : ''}
       </div>
       <div class="pillars">${pillars}</div>
       ${gapStrip}
@@ -657,7 +669,7 @@ function applyScreenCSV(text, srcLabel){
         ney:num(r.norm_earnings_yield), sey:num(r.stressed_earnings_yield),
         nc:num(r.net_cash_to_mcap), ic:num(r.interest_coverage),
         sm:num(r.survival_months), cagr:num(r.revenue_cagr),
-        cov:num(r.data_coverage)});
+        cov:num(r.data_coverage), buy_score:num(r.buy_score)});
     }
   });
   surv.sort((a,b)=>(b.score??-1)-(a.score??-1));
