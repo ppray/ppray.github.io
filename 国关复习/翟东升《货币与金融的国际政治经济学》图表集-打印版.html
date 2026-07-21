@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>翟东升《货币与金融的国际政治经济学》图表集 · 打印版</title>
+<meta name="description" content="翟东升《货币与金融的国际政治经济学》复习笔记中全部 12 张 SVG 图表的打印版，按原文章节顺序整理，配读图要点速记，A4 打印优化。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ 基础与打印设置 ============ */
+  :root {
+    --ink: #1e293b;
+    --ink-soft: #475569;
+    --ink-muted: #64748b;
+    --line: #cbd5e1;
+    --line-soft: #e2e8f0;
+    --purple: #6366f1;
+    --red: #dc2626;
+    --gold: #b89a40;
+    --green: #16a34a;
+    --purple-bg: #eef2ff;
+    --red-bg: #fef2f2;
+    --gold-bg: #fefce8;
+    --green-bg: #f0fdf4;
+    --code-bg: #f1f5f9;
+    --card-bg: #ffffff;
+    --bg-screen: #f4f5fb;
+  }
+  html.dark {
+    --ink: #e4e8f2;
+    --ink-soft: #b8c2d6;
+    --ink-muted: #8b96ad;
+    --line: #2a3350;
+    --line-soft: #1e2640;
+    --bg-screen: #0e1322;
+    --card-bg: #171e33;
+    --code-bg: #121830;
+    --purple-bg: rgba(99,102,241,0.16);
+    --red-bg: rgba(220,38,38,0.14);
+    --gold-bg: rgba(184,154,64,0.14);
+    --green-bg: rgba(22,163,74,0.14);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-screen);
+    color: var(--ink);
+    line-height: 1.7;
+    margin: 0;
+    padding: 28px 24px 60px;
+    font-size: 13px;
+  }
+
+  /* 打印：A4 纵向 */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 12mm 14mm 12mm;
+  }
+  @media print {
+    body { padding: 0; background: #fff; font-size: 12px; }
+    .no-print { display: none !important; }
+    .page-break { break-before: page; page-break-before: always; }
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+    /* 打印时强制白底，确保 SVG 彩色可读 */
+    .sheet, .fig-card { background: #fff !important; color: #1e293b !important; }
+    .fig-card .fig-head .q-chip { border-color: #cbd5e1 !important; }
+    html.dark .fig-card svg { background: #fff; }
+  }
+
+  /* ============ 顶部工具栏（仅屏幕显示） ============ */
+  .toolbar {
+    position: sticky; top: 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-soft);
+    padding: 10px 16px;
+    margin: -28px -24px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; z-index: 10;
+  }
+  html.dark .toolbar { background: rgba(23,30,51,0.92); }
+  .toolbar .t-title { font-weight: 600; font-size: 13px; color: var(--ink-soft); }
+  .toolbar .t-actions { display: flex; gap: 8px; }
+  .btn {
+    border: 1px solid var(--purple);
+    background: var(--purple);
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn:hover { opacity: .88; }
+  .btn:active { transform: scale(.97); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--purple);
+  }
+  html.dark .btn.ghost { color: var(--ink); border-color: var(--line); }
+
+  /* ============ 文档版心 ============ */
+  .sheet {
+    max-width: 190mm;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 22px 26px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px rgba(31,38,135,0.06);
+  }
+  @media print { .sheet { max-width: none; box-shadow: none; padding: 0; } }
+
+  /* ============ 标题区 ============ */
+  .doc-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+  .doc-sub {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin: 0 0 6px;
+  }
+  .doc-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--red) 35%, var(--gold) 65%, var(--green));
+    border-radius: 2px;
+    margin: 0 0 18px;
+  }
+
+  /* ============ 导语 ============ */
+  .intro {
+    background: var(--code-bg);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .intro b { color: var(--ink); }
+
+  /* ============ 章节小标题 ============ */
+  h2.section {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 12px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--line-soft);
+  }
+  h2.section .count {
+    float: right;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+
+  /* ============ 目录表 ============ */
+  table.toc {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    margin: 6px 0 4px;
+  }
+  table.toc th {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    padding: 7px 8px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: .02em;
+  }
+  html.dark table.toc th { background: #2a3350; }
+  table.toc th:first-child { width: 36px; text-align: center; }
+  table.toc th:nth-child(3) { width: 24%; }
+  table.toc th:nth-child(4) { width: 56px; text-align: center; }
+  table.toc td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+    line-height: 1.5;
+  }
+  table.toc td:nth-child(1) { text-align: center; font-weight: 700; color: var(--purple); }
+  table.toc td:nth-child(4) { text-align: center; }
+  table.toc tbody tr:nth-child(even) { background: var(--purple-bg); }
+  table.toc tbody tr:hover { background: var(--purple-bg); }
+  table.toc a { color: var(--ink); text-decoration: none; }
+  table.toc a:hover { color: var(--purple); text-decoration: underline; }
+  .sec-cell { color: var(--ink-muted); font-size: 11px; }
+
+  /* ============ 图表卡片 ============ */
+  .fig-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 14px 16px 12px;
+    margin: 14px 0 18px;
+    box-shadow: 0 1px 4px rgba(31,38,135,0.04);
+  }
+  .fig-card .fig-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; flex-wrap: wrap;
+    margin-bottom: 8px;
+    padding-bottom: 7px;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .fig-card .fig-head .fig-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .fig-card .fig-head .fig-num {
+    display: inline-block;
+    min-width: 26px; height: 22px; line-height: 22px;
+    text-align: center;
+    background: var(--purple);
+    color: #fff;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-right: 7px;
+    font-family: 'Noto Sans SC', sans-serif;
+    vertical-align: 1px;
+  }
+  .fig-card .fig-head .q-chip {
+    font-size: 11px;
+    color: var(--ink-muted);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 2px 9px;
+    background: var(--code-bg);
+    white-space: nowrap;
+  }
+  .fig-card .fig-head .q-chip b { color: var(--purple); font-weight: 600; }
+  .fig-card .svg-wrap {
+    background: #fff;
+    border-radius: 6px;
+    padding: 6px 4px 2px;
+    text-align: center;
+  }
+  html.dark .fig-card .svg-wrap { background: #fff; } /* SVG 始终白底，保证彩色可读 */
+  .fig-card .svg-wrap svg {
+    max-width: 172mm;
+    width: 100%;
+    height: auto;
+  }
+  .fig-card .figcap {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.65;
+    padding: 0 4px;
+  }
+  .fig-card .points {
+    margin-top: 10px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px 10px 16px;
+  }
+  .fig-card .points .plabel {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--purple);
+    letter-spacing: .03em;
+    margin-bottom: 4px;
+  }
+  .fig-card .points ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .fig-card .points li { margin-bottom: 3px; }
+  .fig-card .points li b { color: var(--ink); font-weight: 600; }
+  .fig-card .points li:last-child { margin-bottom: 0; }
+
+  /* 大图前主动换页（仅打印） */
+  @media print {
+    .fig-card.big-fig { page-break-before: always; break-before: page; }
+    .fig-card.first-big { page-break-before: avoid; break-before: avoid; } /* 第一个不分页 */
+  }
+
+  /* ============ 页脚 ============ */
+  .footer {
+    margin-top: 22px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    text-align: center;
+    line-height: 1.7;
+  }
+  .footer a { color: var(--purple); text-decoration: none; }
+
+  /* 深色首屏防闪 */
+  html.dark body { background: var(--bg-screen); }
+</style>
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem('mfipe-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
+
+<!-- ===== 顶部工具栏（屏幕显示） ===== -->
+<div class="toolbar no-print">
+  <span class="t-title">📊 图表集 · 12 张图打印版</span>
+  <div class="t-actions">
+    <button class="btn ghost" id="btnTheme" title="切换深色模式">🌙</button>
+    <button class="btn" onclick="window.print()">🖨️ 打印 / 存为 PDF</button>
+  </div>
+</div>
+
+<div class="sheet">
+
+  <!-- ===== 标题区 ===== -->
+  <h1 class="doc-title">📊 翟东升《货币与金融的国际政治经济学》· 图表集</h1>
+  <p class="doc-sub">全 12 张 SVG 图表 · 按原文章节顺序 · 配读图要点速记 · A4 打印版</p>
+  <div class="doc-rule"></div>
+
+  <div class="intro avoid-break">
+    本页汇总复习笔记中全部 <b>12 张图表</b>，按原文章节顺序整理。每张图配 <b>读图要点速记</b>（核心节点 · 因果链 · 易考角度），
+    便于考前集中过图。建议打印：浏览器「打印 / 另存为 PDF」，纸张 <b>A4 纵向</b>，勾选「<b>背景图形</b>」以保留 SVG 配色。
+  </div>
+
+  <!-- ===== 目录 ===== -->
+  <h2 class="section avoid-break">📑 目录<span class="count">12 图</span></h2>
+  <table class="toc">
+    <thead><tr><th>#</th><th>图名</th><th>所属章节</th><th>对应题</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><a href="#fig1">货币与金融 IPE 四层理论框架</a></td><td class="sec-cell">🧭 理论框架与背诵路线图</td><td>—</td></tr>
+      <tr><td>2</td><td><a href="#fig2">外汇储备规模与自主性的 U 型关系</a></td><td class="sec-cell">外汇储备</td><td>题2</td></tr>
+      <tr><td>3</td><td><a href="#fig3">中国外汇循环的「负利差」</a></td><td class="sec-cell">外汇储备</td><td>题3/4</td></tr>
+      <tr><td>4</td><td><a href="#fig4">中美金融「恐怖平衡」</a></td><td class="sec-cell">外汇储备</td><td>题5</td></tr>
+      <tr><td>5</td><td><a href="#fig5">外汇占款与冲销机制</a></td><td class="sec-cell">外汇储备</td><td>题6</td></tr>
+      <tr><td>6</td><td><a href="#fig6">蒙代尔三元悖论（汇率政策根本约束）</a></td><td class="sec-cell">人民币汇率</td><td>题1</td></tr>
+      <tr><td>7</td><td><a href="#fig7">金本位价格-铸币-流动自动调节机制</a></td><td class="sec-cell">金本位制度</td><td>题1</td></tr>
+      <tr><td>8</td><td><a href="#fig8">三外路线核心框架</a></td><td class="sec-cell">外资(FDI)与中国工业化</td><td>题7</td></tr>
+      <tr><td>9</td><td><a href="#fig9">资金循环机制总览（「大交易」）</a></td><td class="sec-cell">外资(FDI)与中国工业化</td><td>题7</td></tr>
+      <tr><td>10</td><td><a href="#fig10">美元信用大厦</a></td><td class="sec-cell">美元霸权与美国政策</td><td>题2</td></tr>
+      <tr><td>11</td><td><a href="#fig11">美国债务上限「信用卡」</a></td><td class="sec-cell">美元霸权与美国政策</td><td>题3</td></tr>
+      <tr><td>12</td><td><a href="#fig12">特朗普减税论述框架主线</a></td><td class="sec-cell">美元霸权与美国政策</td><td>题5</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== 图表正文 ===== -->
+
+    <h2 class="section avoid-break">🧭 理论框架与背诵路线图<span class="count">1 图</span></h2>
+    <div class="fig-card avoid-break first-big" id="fig1">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">1</span>货币与金融 IPE 四层理论框架</div>
+        <div class="q-chip">🧭 理论框架与背诵路线图 · <b>—</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 760 858" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="货币与金融国际政治经济学的四层理论框架与因果递进关系：历史演变导致现实结构，结构决定中国处境，处境倒逼破局之路" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <!-- ============ 第①层 历史演变 ============ -->
+  <rect x="20" y="20" width="720" height="120" rx="10" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="40" y="45" font-size="14" font-weight="700" fill="#6366f1">① 历史演变 · 怎么来的（背诵顺序 1–2）</text>
+  <rect x="40" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="145" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">金本位制度</text>
+  <text x="145" y="103" font-size="11" fill="#64748b" text-anchor="middle">金币本位→金汇兑</text>
+  <text x="145" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">自动调节 · 崩溃(1931)</text>
+  <rect x="275" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="380" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">布雷顿森林体系</text>
+  <text x="380" y="103" font-size="11" fill="#64748b" text-anchor="middle">黄金美元本位</text>
+  <text x="380" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">特里芬难题 · 崩溃(1971)</text>
+  <rect x="510" y="60" width="210" height="65" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="615" y="84" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">牙买加体系</text>
+  <text x="615" y="103" font-size="11" fill="#64748b" text-anchor="middle">信用货币本位(1976至今)</text>
+  <text x="615" y="118" font-size="10" fill="#94a3b8" text-anchor="middle">浮动汇率 · 美元独大</text>
+  <!-- 层间箭头 ①→② -->
+  <line x1="380" y1="140" x2="380" y2="180" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+  <text x="395" y="165" font-size="11" fill="#64748b" font-style="italic">崩溃后留下 →</text>
+  <!-- ============ 第②层 现实结构 ============ -->
+  <!-- 内部三层递进（上→中→下）：美元霸权(权力) → 中心-外围体系(土壤/结构) → 三利器(镰刀/工具) -->
+  <!-- 注：结构(土壤)先于工具(镰刀)，对齐笔记"结构不平等是土壤→美元潮汐是镰刀"主线 -->
+  <rect x="20" y="185" width="720" height="155" rx="10" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="40" y="206" font-size="14" font-weight="700" fill="#dc2626">② 现实结构 · 现在怎样（背诵顺序 3–4）</text>
+
+  <!-- 顶层：美元霸权（权力本身）—— 三层左右对齐 x=40–720 -->
+  <rect x="40" y="212" width="680" height="30" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="380" y="227" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">美元霸权</text>
+  <text x="380" y="238" font-size="9.5" fill="#64748b" text-anchor="middle">石油美元 · 美债池 · 美联储=全球央行</text>
+
+  <!-- 递进箭头 1：权力 → 结构（土壤先形成） -->
+  <line x1="380" y1="244" x2="380" y2="252" stroke="#64748b" stroke-width="1.5" marker-end="url(#midArr)"/>
+  <text x="392" y="251" font-size="9" fill="#64748b" font-style="italic">↓ 确立结构（土壤）</text>
+
+  <!-- 中层：中心-外围体系（土壤/收割得以发生的结构）—— 与顶层同宽对齐 -->
+  <rect x="40" y="254" width="680" height="28" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="380" y="268" font-size="12" font-weight="700" fill="#dc2626" text-anchor="middle">中心-外围体系</text>
+  <text x="380" y="279" font-size="9.5" fill="#64748b" text-anchor="middle">中心国(美国) ⇄ 外围国(中国等)</text>
+
+  <!-- 递进箭头 2：结构 → 工具（在土壤上挥舞镰刀） -->
+  <line x1="380" y1="284" x2="380" y2="292" stroke="#64748b" stroke-width="1.5" marker-end="url(#midArr)"/>
+  <text x="392" y="291" font-size="9" fill="#64748b" font-style="italic">↓ 挥舞镰刀（收割）</text>
+
+  <!-- 底层：三利器（镰刀/工具）—— 三框等宽 216、间距 16，左右对齐 x=40–720 -->
+  <rect x="40" y="294" width="216" height="42" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="148" y="310" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">铸币税</text>
+  <text x="148" y="323" font-size="9" fill="#64748b" text-anchor="middle">印纸换资源</text>
+  <text x="148" y="333" font-size="8.5" fill="#94a3b8" text-anchor="middle">缴货币地租·广义≈20%GDP</text>
+  <rect x="272" y="294" width="216" height="42" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="380" y="310" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">美元潮汐</text>
+  <text x="380" y="323" font-size="9" fill="#64748b" text-anchor="middle">宽松→泡沫</text>
+  <text x="380" y="333" font-size="9" fill="#94a3b8" text-anchor="middle">收紧→收割</text>
+  <rect x="504" y="294" width="216" height="42" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="612" y="310" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">SWIFT 制裁</text>
+  <text x="612" y="323" font-size="9" fill="#64748b" text-anchor="middle">金融核弹</text>
+  <text x="612" y="333" font-size="8.5" fill="#94a3b8" text-anchor="middle">次级制裁·长臂管辖</text>
+
+  <!-- 层间箭头 ②→③ -->
+  <line x1="380" y1="340" x2="380" y2="360" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+  <text x="395" y="353" font-size="11" fill="#64748b" font-style="italic">收割外围 →</text>
+  <!-- ============ 第③层 中国处境 ============ -->
+  <rect x="20" y="365" width="720" height="250" rx="10" fill="none" stroke="#b89a40" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="40" y="390" font-size="14" font-weight="700" fill="#b89a40">③ 中国处境 · 我付出什么代价（背诵顺序 5–8）</text>
+  <!-- 上排主线：三外路线 → 外汇储备 / 人民币汇率 -->
+  <rect x="40" y="406" width="210" height="50" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+  <text x="145" y="427" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">三外路线</text>
+  <text x="145" y="445" font-size="10" fill="#64748b" text-anchor="middle">外贸·外资·外汇</text>
+  <rect x="270" y="406" width="210" height="50" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+  <text x="375" y="427" font-size="12.5" font-weight="600" fill="#1e293b" text-anchor="middle">双顺差 → 外汇储备</text>
+  <text x="375" y="445" font-size="10" fill="#64748b" text-anchor="middle">巨额储备 · 负利差成本</text>
+  <rect x="510" y="406" width="210" height="50" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="1.5"/>
+  <text x="615" y="427" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">人民币汇率</text>
+  <text x="615" y="445" font-size="10" fill="#64748b" text-anchor="middle">汇率低估 · 强制结汇</text>
+  <line x1="250" y1="431" x2="270" y2="431" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+  <line x1="480" y1="431" x2="510" y2="431" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+  <line x1="615" y1="456" x2="615" y2="474" stroke="#b89a40" stroke-width="1.5" marker-end="url(#midArr)"/>
+  <!-- 下排：货币政策工具与机制（重难点） -->
+  <rect x="40" y="476" width="680" height="60" rx="8" fill="#fefce8" stroke="#b89a40" stroke-width="2"/>
+  <text x="380" y="498" font-size="13" font-weight="700" fill="#1e293b" text-anchor="middle">货币政策工具与机制</text>
+  <text x="380" y="516" font-size="10.5" fill="#64748b" text-anchor="middle">冲销干预（对冲外汇占款）· 存款准备金率 · 公开市场操作 · 再贴现</text>
+  <text x="380" y="531" font-size="10" fill="#dc2626" text-anchor="middle">不可能三角：保汇率稳定 ＋ 资本流动 ⇒ 货币政策独立性受损</text>
+  <!-- 反面镜鉴 -->
+  <rect x="40" y="552" width="680" height="46" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="380" y="571" font-size="12" font-weight="600" fill="#475569" text-anchor="middle">🔍 反面镜鉴：全球金融危机史（拉美/亚洲/欧债）</text>
+  <text x="380" y="589" font-size="10.5" fill="#64748b" text-anchor="middle">他国照搬美元体系或金融自由化的惨痛教训——金融开放过急 → 资本外逃 → 危机</text>
+  <!-- 层间箭头 ③→④ -->
+  <line x1="380" y1="615" x2="380" y2="655" stroke="#64748b" stroke-width="2" marker-end="url(#bigArr)"/>
+  <text x="395" y="640" font-size="11" fill="#64748b" font-style="italic">代价倒逼出路 →</text>
+  <!-- ============ 第④层 破局之路 ============ -->
+  <rect x="20" y="660" width="720" height="180" rx="10" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <text x="40" y="685" font-size="14" font-weight="700" fill="#16a34a">④ 破局之路 · 怎么从外围跻身中心（背诵顺序 9–13）</text>
+  <text x="380" y="705" font-size="11" font-weight="600" fill="#16a34a" text-anchor="middle">两条腿走路：对内升级产业链 + 对外推动人民币国际化</text>
+  <rect x="40" y="720" width="340" height="105" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="210" y="744" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">对内：产业升级</text>
+  <text x="210" y="765" font-size="11" fill="#64748b" text-anchor="middle">外资FDI · 中国工业化奇迹</text>
+  <text x="210" y="785" font-size="12" font-weight="600" fill="#16a34a" text-anchor="middle">CICE 产业链编辑能力</text>
+  <text x="210" y="804" font-size="11" fill="#64748b" text-anchor="middle">冲微笑曲线两端 · 守关键节点</text>
+  <rect x="400" y="720" width="320" height="105" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="560" y="744" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">对外：人民币国际化</text>
+  <text x="560" y="765" font-size="11" fill="#64748b" text-anchor="middle">货币互换 · SDR · 资本项目逆差</text>
+  <text x="560" y="785" font-size="12" font-weight="600" fill="#16a34a" text-anchor="middle">一带一路 + CIPS（去SWIFT）</text>
+  <text x="560" y="804" font-size="11" fill="#64748b" text-anchor="middle">减持美债 · 增持黄金</text>
+  <!-- 顶部大标题 -->
+  <text x="380" y="14" font-size="0" fill="none">.</text>
+  <!-- 箭头标记定义 -->
+  <defs>
+    <marker id="bigArr" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,10 L10,5 z" fill="#64748b"/>
+    </marker>
+    <marker id="midArr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#b89a40"/>
+    </marker>
+  </defs>
+</svg>
+      </div>
+      <div class="figcap">图：四层理论框架与因果递进——①历史演变产生②美元霸权结构，结构决定③中国处境与代价，代价倒逼④破局之路。<br/><span style="color:#dc2626;font-weight:600;">第②层内部三层递进</span>：美元霸权(权力) → 中心-外围体系(土壤) → 三利器(镰刀)。<br/><span style="color:#6366f1">紫=历史</span> · <span style="color:#dc2626">红=霸权/收割</span> · <span style="color:#b89a40">金=代价</span> · <span style="color:#16a34a">绿=破局</span>。</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>四层因果递进：<b>①历史演变 → ②美元霸权结构 → ③中国处境与代价 → ④破局之路</b>，背诵严格按此顺序。</li>
+      <li>第②层内部还有三层递进：<b>美元霸权(权力) → 中心-外围体系(土壤) → 三利器(镰刀)</b>——结构先于收割，土壤先于镰刀。</li>
+      <li>颜色记忆：紫=历史 · 红=霸权/收割 · 金=代价 · 绿=破局。</li>
+      <li>考试角度：这张图是全书骨架，论述题开头点明「按四层框架分析」即可立住结构分。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section avoid-break">外汇储备<span class="count">4 图</span></h2>
+    <div class="fig-card avoid-break" id="fig2">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">2</span>外汇储备规模与自主性的 U 型关系</div>
+        <div class="q-chip">外汇储备 · <b>题2</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="外汇储备规模与自主性的正U型关系：左端储备过少为脆弱、中间储备适中最自主、右端储备过多为依附；真正自主（本币国际化）不在此曲线上" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <!-- 坐标轴 -->
+  <line x1="70" y1="280" x2="600" y2="280" stroke="#5d6879" stroke-width="1.5"/>
+  <line x1="70" y1="40" x2="70" y2="280" stroke="#5d6879" stroke-width="1.5"/>
+  <!-- 箭头 -->
+  <polygon points="600,280 590,276 590,284" fill="#5d6879"/>
+  <polygon points="70,40 66,50 74,50" fill="#5d6879"/>
+  <!-- 轴标签 -->
+  <text x="630" y="285" font-size="13" fill="#5d6879" text-anchor="end">外汇储备规模 →</text>
+  <text x="70" y="30" font-size="13" fill="#5d6879" text-anchor="middle">↑ 自主性</text>
+  <!-- 正 U 型曲线（左端低=脆弱、中间高=自主、右端低=依附）-->
+  <!-- 左端(储备过少)在 x≈110,y≈250(低)；峰顶(适中)在 x≈330,y≈70(高)；右端(储备过多)在 x≈560,y≈220(低) -->
+  <path d="M 110 250 Q 200 250, 240 150 Q 290 60, 330 60 Q 380 60, 430 140 Q 480 230, 560 225" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
+  <!-- 左端点：储备过少（脆弱，自主性低）-->
+  <circle cx="110" cy="250" r="5" fill="#6366f1"/>
+  <text x="120" y="245" font-size="13" fill="#1b2334" font-weight="600">储备过少</text>
+  <text x="120" y="263" font-size="12" fill="#5d6879">“放逐式脆弱”</text>
+  <text x="120" y="279" font-size="11" fill="#5d6879">汇率崩、外债爆、受制于IMF</text>
+  <!-- 峰顶：储备适中（自主性最高）-->
+  <circle cx="330" cy="60" r="6" fill="#6366f1"/>
+  <circle cx="330" cy="60" r="11" fill="none" stroke="#6366f1" stroke-width="1.5" opacity="0.4"/>
+  <text x="330" y="46" font-size="13" fill="#1b2334" font-weight="600" text-anchor="middle">储备适中</text>
+  <text x="330" y="98" font-size="12" fill="#5d6879" text-anchor="middle">最自主：进可干预、退可防守</text>
+  <!-- 右端点：储备过多（依附，自主性低）-->
+  <circle cx="560" cy="225" r="5" fill="#6366f1"/>
+  <text x="470" y="200" font-size="13" fill="#1b2334" font-weight="600" text-anchor="end">储备过多</text>
+  <text x="470" y="218" font-size="12" fill="#5d6879" text-anchor="end">“绑架式依附”</text>
+  <text x="470" y="234" font-size="11" fill="#5d6879" text-anchor="end">交铸币税、买美债当“人质”</text>
+</svg>
+      </div>
+      <div class="figcap">图：外汇储备规模与自主性的 U 型关系——储备过多（依附）与过少（脆弱）两端自主性都低，储备适中处最高；但真正自主（本币国际化）是更高维度，不在此曲线上</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>横轴=储备规模，纵轴=自主性，呈<b>正 U 形</b>：左端「脆弱」、右端「依附」两端都低，中间最高。</li>
+      <li><b>关键反直觉</b>：不是「储备越少越自主」的线性关系；过多过少都不自主。</li>
+      <li>曲线上方还有更高维度——<b>本币国际化</b>（人民币国际化）才是真正自主，不在原 U 型曲线上。</li>
+      <li>易错点：别答成「储备越多越好」或「越少越好」，要强调 U 型 + 本币国际化的跃迁。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break" id="fig3">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">3</span>中国外汇循环的「负利差」</div>
+        <div class="q-chip">外汇储备 · <b>题3/4</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="负利差循环：外资以高成本流入中国，中国再以低收益回流美国，形成向美元中心国持续输血的负利差" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <!-- 左节点：外资FDI流入中国 -->
+  <rect x="20" y="80" width="200" height="100" rx="10" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <text x="120" y="108" font-size="14" fill="#1b2334" font-weight="700" text-anchor="middle">外资 FDI 流入中国</text>
+  <text x="120" y="130" font-size="12" fill="#5d6879" text-anchor="middle">“引进来” · 借入资金+技术</text>
+  <text x="120" y="155" font-size="14" fill="#dc2626" font-weight="700" text-anchor="middle">回报率 ~10–15%</text>
+  <text x="120" y="172" font-size="11" fill="#5d6879" text-anchor="middle">（外资在华高收益）</text>
+  <!-- 右节点：储备买美债回流美国 -->
+  <rect x="420" y="80" width="200" height="100" rx="10" fill="none" stroke="#6366f1" stroke-width="2"/>
+  <text x="520" y="108" font-size="14" fill="#1b2334" font-weight="700" text-anchor="middle">储备买美债回流美国</text>
+  <text x="520" y="130" font-size="12" fill="#5d6879" text-anchor="middle">“投出去” · 借出资金</text>
+  <text x="520" y="155" font-size="14" fill="#16a34a" font-weight="700" text-anchor="middle">收益率 ~3%</text>
+  <text x="520" y="172" font-size="11" fill="#5d6879" text-anchor="middle">（低安全资产收益）</text>
+  <!-- 上方箭头：中国→美国（结汇→储备→买美债）-->
+  <path d="M 220 110 Q 320 60, 420 110" fill="none" stroke="#5d6879" stroke-width="1.8" marker-end="url(#arrEnd)"/>
+  <text x="320" y="55" font-size="12" fill="#5d6879" text-anchor="middle">出口创汇 → 强制结汇 → 央行收储 → 买美债</text>
+  <!-- 下方箭头：美国→中国（资本回流支撑美元/消费，买中国商品）-->
+  <path d="M 420 150 Q 320 200, 220 150" fill="none" stroke="#5d6879" stroke-width="1.8" marker-end="url(#arrEnd)"/>
+  <text x="320" y="218" font-size="12" fill="#5d6879" text-anchor="middle">美元回流支撑美国低利率 + 消费 → 买中国商品</text>
+  <!-- 箭头标记定义 -->
+  <defs>
+    <marker id="arrEnd" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5d6879"/>
+    </marker>
+  </defs>
+  <!-- 负利差标注 -->
+  <text x="320" y="138" font-size="13" fill="#dc2626" font-weight="700" text-anchor="middle">负利差 ≈ 7–12%</text>
+  <text x="320" y="178" font-size="11" fill="#5d6879" text-anchor="middle" font-style="italic">中国向美元中心国持续输血</text>
+</svg>
+      </div>
+      <div class="figcap">图：中国外汇循环的「负利差」——FDI 高成本流入（~10-15%），储备又低成本借出买美债（~3%），差额即向美元体系缴纳的隐形「铸币税」</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>资金流向闭环：<b>外资以高成本流入（FDI 回报 ~10–15%）→ 中国再以低收益借出（买美债 ~3%）</b>。</li>
+      <li>利差 ~7–12 个百分点，即中国向美元体系持续缴纳的隐形「<b>铸币税</b>」。</li>
+      <li>本质：中国用勤劳储蓄补贴美国消费，是「<b>货币地租</b>」的核心机制。</li>
+      <li>考试角度：答「外储代价」必点此负利差闭环；可结合「美元储备=人质」的辩证。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break" id="fig4">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">4</span>中美金融「恐怖平衡」</div>
+        <div class="q-chip">外汇储备 · <b>题5</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="中美金融恐怖平衡：中国生产美国消费、中国储蓄美国借贷的相互依赖战略威慑" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <defs>
+    <marker id="arrBal" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5d6879"/>
+    </marker>
+  </defs>
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="500" fill="#1b2334">中美金融"恐怖平衡"</text>
+  <text x="340" y="46" text-anchor="middle" font-size="12" fill="#5d6879">中国生产美国消费 · 中国储蓄美国借贷 = 相互依赖的战略威慑</text>
+  <rect x="40" y="70" width="280" height="100" rx="10" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="180" y="92" text-anchor="middle" font-size="14" font-weight="500" fill="#16a34a" dominant-baseline="central">中国</text>
+  <text x="55" y="114" font-size="11" fill="#1b2334">• 最大美债持有国（~1万亿+）</text>
+  <text x="55" y="132" font-size="11" fill="#1b2334">• 外储价值与美债稳定绑定</text>
+  <text x="55" y="150" font-size="11" fill="#1b2334">• 威胁：抛售美债→自身资产缩水</text>
+  <rect x="360" y="70" width="280" height="100" rx="10" fill="rgba(245,158,11,0.08)" stroke="#d97706" stroke-width="0.5"/>
+  <text x="500" y="92" text-anchor="middle" font-size="14" font-weight="500" fill="#d97706" dominant-baseline="central">美国</text>
+  <text x="375" y="114" font-size="11" fill="#1b2334">• 依赖中国资金维持低利率</text>
+  <text x="375" y="132" font-size="11" fill="#1b2334">• 依赖中国商品抑制通胀</text>
+  <text x="375" y="150" font-size="11" fill="#1b2334">• 威胁：美元贬值→信用崩塌</text>
+  <line x1="320" y1="110" x2="358" y2="110" stroke="#5d6879" stroke-width="1.5" marker-end="url(#arrBal)"/>
+  <line x1="360" y1="130" x2="322" y2="130" stroke="#5d6879" stroke-width="1.5" marker-end="url(#arrBal)"/>
+  <text x="340" y="103" text-anchor="middle" font-size="10" fill="#5d6879">商品+资金</text>
+  <text x="340" y="146" text-anchor="middle" font-size="10" fill="#5d6879">美债+消费</text>
+  <rect x="40" y="195" width="600" height="80" rx="8" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="340" y="218" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334" dominant-baseline="central">“金融核恐怖平衡”</text>
+  <text x="340" y="240" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">中国抛售美债 → 自身外储缩水 + 全球金融海啸</text>
+  <text x="340" y="258" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">美国冻结中国外储 → 美元信用崩塌 + 失去融资来源</text>
+  <text x="340" y="276" text-anchor="middle" font-size="11" fill="#dc2626" dominant-baseline="central">→ 任何一方激进破坏平衡 = 双输 → 这就是"威慑"</text>
+</svg>
+      </div>
+      <div class="figcap">图：中美金融「恐怖平衡」——双方相互依赖又相互威慑，任何一方激进破坏平衡都会引发全球金融海啸</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>对称结构：<b>中国生产—美国消费 / 中国储蓄—美国借贷</b>，双方相互依赖又相互威慑。</li>
+      <li>中国握有巨额美债（潜在抛售=金融核弹），美国掌握美元清算体系（金融制裁杠杆）——<b>双向威慑</b>。</li>
+      <li>任何一方激进破坏平衡 → 全球金融海啸 → 双输，这就是「恐怖平衡」的稳定性来源。</li>
+      <li>考试角度：答「中美金融平衡」要从相互依赖 + 相互威慑两个维度展开，缺一不可。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break big-fig" id="fig5">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">5</span>外汇占款与冲销机制</div>
+        <div class="q-chip">外汇储备 · <b>题6</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="外汇占款与冲销机制：强制结汇导致央行被动投放基础货币，冲销操作的成本由储蓄者和劳动者承担" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <defs>
+    <marker id="arrSter" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5d6879"/>
+    </marker>
+    <marker id="arrSterR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="500" fill="#1b2334">外汇占款与冲销机制</text>
+  <text x="340" y="46" text-anchor="middle" font-size="12" fill="#5d6879">强制结汇 → 被动投放基础货币 → 央行冲销 → 谁被剥夺？谁被补贴？</text>
+  <text x="40" y="78" font-size="12" font-weight="500" fill="#1b2334">① 被动投放链条</text>
+  <rect x="40" y="90" width="120" height="44" rx="8" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="100" y="112" text-anchor="middle" font-size="11" fill="#1b2334" dominant-baseline="central">企业出口赚美元</text>
+  <rect x="190" y="90" width="120" height="44" rx="8" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="250" y="112" text-anchor="middle" font-size="11" fill="#1b2334" dominant-baseline="central">强制结汇给央行</text>
+  <rect x="340" y="90" width="120" height="44" rx="8" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="400" y="112" text-anchor="middle" font-size="11" fill="#1b2334" dominant-baseline="central">央行收外汇</text>
+  <rect x="490" y="90" width="150" height="44" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+  <text x="565" y="112" text-anchor="middle" font-size="11" fill="#dc2626" dominant-baseline="central">投放人民币（外汇占款）</text>
+  <line x1="160" y1="112" x2="188" y2="112" stroke="#6366f1" stroke-width="1" marker-end="url(#arrSter)"/>
+  <line x1="310" y1="112" x2="338" y2="112" stroke="#6366f1" stroke-width="1" marker-end="url(#arrSter)"/>
+  <line x1="460" y1="112" x2="488" y2="112" stroke="#dc2626" stroke-width="1" marker-end="url(#arrSterR)"/>
+  <text x="40" y="168" font-size="12" font-weight="500" fill="#1b2334">② 央行冲销操作（回收过多流动性）</text>
+  <rect x="40" y="180" width="190" height="50" rx="8" fill="rgba(245,158,11,0.08)" stroke="#d97706" stroke-width="0.5"/>
+  <text x="135" y="198" text-anchor="middle" font-size="12" font-weight="500" fill="#d97706" dominant-baseline="central">提高存款准备金率</text>
+  <text x="135" y="216" text-anchor="middle" font-size="10" fill="#5d6879" dominant-baseline="central">冻结商业银行资金</text>
+  <rect x="255" y="180" width="190" height="50" rx="8" fill="rgba(245,158,11,0.08)" stroke="#d97706" stroke-width="0.5"/>
+  <text x="350" y="198" text-anchor="middle" font-size="12" font-weight="500" fill="#d97706" dominant-baseline="central">发行央行票据</text>
+  <text x="350" y="216" text-anchor="middle" font-size="10" fill="#5d6879" dominant-baseline="central">央票利息支出</text>
+  <rect x="470" y="180" width="170" height="50" rx="8" fill="rgba(245,158,11,0.08)" stroke="#d97706" stroke-width="0.5"/>
+  <text x="555" y="198" text-anchor="middle" font-size="12" font-weight="500" fill="#d97706" dominant-baseline="central">财政存款沉淀央行</text>
+  <text x="555" y="216" text-anchor="middle" font-size="10" fill="#5d6879" dominant-baseline="central">低息冲销（翟东升点名）</text>
+  <text x="40" y="262" font-size="12" font-weight="500" fill="#dc2626">③ "剥夺了谁、补贴了谁"（必用分析框架）</text>
+  <rect x="40" y="274" width="300" height="110" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+  <text x="190" y="294" text-anchor="middle" font-size="13" font-weight="500" fill="#dc2626" dominant-baseline="central">被剥夺的一方</text>
+  <text x="55" y="316" font-size="11" fill="#1b2334">• 国内消费者：购买力被压制</text>
+  <text x="55" y="343" font-size="11" fill="#1b2334">• 商业银行：被冻结资金、利息损失</text>
+  <text x="55" y="370" font-size="11" fill="#1b2334">• 国内储户：低利率补贴出口</text>
+  <rect x="360" y="274" width="280" height="110" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="500" y="294" text-anchor="middle" font-size="13" font-weight="500" fill="#16a34a" dominant-baseline="central">被补贴的一方</text>
+  <text x="375" y="316" font-size="11" fill="#1b2334">• 美国消费者：享受廉价商品</text>
+  <text x="375" y="334" font-size="11" fill="#1b2334">• 美国政府：低利率融资</text>
+  <text x="375" y="352" font-size="11" fill="#1b2334">• 外资企业：汇率红利+廉价劳力</text>
+  <text x="375" y="370" font-size="11" fill="#1b2334">• 出口部门：汇率补贴+退税优惠</text>
+</svg>
+      </div>
+      <div class="figcap">图：外汇占款与冲销机制——被动投放链条 → 冲销操作 → 「剥夺谁补贴谁」分析框架</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>三段传导：<b>强制结汇 → 央行被动投放基础货币（外汇占款）→ 冲销操作（央票/存准/财政存款）</b>。</li>
+      <li>核心问题「剥夺谁补贴谁」：冲销成本由<b>储蓄者（低存款利率）+ 劳动者（汇率压制）</b>承担，补贴了<b>出口部门 + 外资</b>。</li>
+      <li>储蓄者补贴：存款利率被压低 → 实际负利率 → 财富转移给银行/国企/政府。</li>
+      <li>劳动者补贴：人民币低估 → 出口商品便宜 → 实际购买力被压制。</li>
+      <li>考试角度：这是翟东升标志性的「分配视角」题，必须答出「谁买单」的政治经济学拆解。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section avoid-break">人民币汇率<span class="count">1 图</span></h2>
+    <div class="fig-card avoid-break" id="fig6">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">6</span>蒙代尔三元悖论（汇率政策根本约束）</div>
+        <div class="q-chip">人民币汇率 · <b>题1</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg class="tri-svg" viewBox="0 0 380 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <polygon points="190,28 38,212 342,212" fill="rgba(99,102,241,0.07)" stroke="#6366f1" stroke-width="2"/>
+  <circle cx="190" cy="28" r="6" fill="#6366f1"/>
+  <circle cx="38" cy="212" r="6" fill="#a855f7"/>
+  <circle cx="342" cy="212" r="6" fill="#a855f7"/>
+  <text x="190" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#6366f1">货币政策独立</text>
+  <text x="38" y="234" text-anchor="middle" font-size="14" font-weight="700" fill="#a855f7">资本自由流动</text>
+  <text x="342" y="234" text-anchor="middle" font-size="14" font-weight="700" fill="#a855f7">汇率稳定</text>
+  <text x="190" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#e11d48">三者只能取其二</text>
+  <text x="103" y="128" text-anchor="middle" font-size="11" fill="#64748b">浮动汇率制</text>
+  <text x="278" y="128" text-anchor="middle" font-size="11" fill="#64748b">资本管制</text>
+  <text x="190" y="205" text-anchor="middle" font-size="11" fill="#64748b">放弃货币独立(如港币)</text>
+</svg>
+      </div>
+      <div class="figcap"><b>读图：</b>资本自由流动下要钉死汇率，利率必须盯锚，就丧失货币政策独立。<b>中国的选择：保货币政策独立 + 一定汇率稳定，牺牲资本完全自由流动</b>（资本账户审慎管控）。</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>三角三个顶点：<b>货币政策独立 / 资本自由流动 / 汇率稳定</b>，三者只能取其二。</li>
+      <li>三边对应三种制度：浮动汇率（保独立+资本自由）、资本管制（保独立+汇率稳定）、货币局（保汇率稳定+资本自由，放弃独立，如港币）。</li>
+      <li><b>中国的选择</b>：保货币政策独立 + 一定汇率稳定，<b>牺牲资本完全自由流动</b>（资本账户审慎管控）。</li>
+      <li>考试角度：这是汇率题的「母图」，答汇率制度选择/资本账户开放必引此框架。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section avoid-break">金本位制度<span class="count">1 图</span></h2>
+    <div class="fig-card avoid-break big-fig" id="fig7">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">7</span>金本位价格-铸币-流动自动调节机制</div>
+        <div class="q-chip">金本位制度 · <b>题1</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="金本位价格铸币流动机制下，逆差国黄金存量、货币供给、物价水平三个变量依次下凹触底再回升，汇率线全程窄幅波动的动画时序图" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <rect x="80" y="169" width="640" height="52" fill="#a855f7" fill-opacity="0.05"/>
+  <line x1="80" y1="169" x2="720" y2="169" stroke="#a855f7" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+  <line x1="80" y1="221" x2="720" y2="221" stroke="#a855f7" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+  <text x="84" y="164" font-size="10" fill="#a855f7" opacity="0.8">输送点上限</text>
+  <text x="84" y="234" font-size="10" fill="#a855f7" opacity="0.8">输送点下限</text>
+  <line x1="80" y1="195" x2="720" y2="195" stroke="#5d6879" stroke-width="1" stroke-dasharray="2 4" opacity="0.6"/>
+  <text x="724" y="198" font-size="10" fill="#5d6879">均衡</text>
+  <line x1="208" y1="70" x2="208" y2="320" stroke="#e5e7f2" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="323" y1="70" x2="323" y2="320" stroke="#e5e7f2" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="432" y1="70" x2="432" y2="320" stroke="#e5e7f2" stroke-width="1" stroke-dasharray="2 3"/>
+  <line x1="541" y1="70" x2="541" y2="320" stroke="#e5e7f2" stroke-width="1" stroke-dasharray="2 3"/>
+  <path class="gcurve c-gold"  data-len="687" d="M 80.0 195.0 L 102.9 195.0 L 125.7 206.8 L 148.6 220.0 L 171.4 232.8 L 194.3 245.1 L 217.1 256.7 L 240.0 267.3 L 262.9 276.8 L 285.7 285.2 L 308.6 292.2 L 331.4 297.7 L 354.3 301.7 L 377.1 304.2 L 400.0 305.0 L 422.9 304.2 L 445.7 301.7 L 468.6 297.7 L 491.4 292.2 L 514.3 285.2 L 537.1 276.8 L 560.0 267.3 L 582.9 256.7 L 605.7 245.1 L 628.6 232.8 L 651.4 220.0 L 674.3 206.8 L 697.1 195.0 L 720.0 195.0"  fill="none" stroke="#d97706" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="gcurve c-money" data-len="677" d="M 80.0 195.0 L 102.9 195.0 L 125.7 195.0 L 148.6 195.0 L 171.4 202.9 L 194.3 215.1 L 217.1 226.9 L 240.0 238.3 L 262.9 248.8 L 285.7 258.5 L 308.6 267.1 L 331.4 274.4 L 354.3 280.4 L 377.1 285.0 L 400.0 288.0 L 422.9 289.5 L 445.7 289.3 L 468.6 287.5 L 491.4 284.2 L 514.3 279.4 L 537.1 273.1 L 560.0 265.5 L 582.9 256.6 L 605.7 246.8 L 628.6 236.0 L 651.4 224.6 L 674.3 212.7 L 697.1 200.4 L 720.0 195.0" fill="none" stroke="#6366f1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="gcurve c-price" data-len="660" d="M 80.0 195.0 L 102.9 195.0 L 125.7 195.0 L 148.6 195.0 L 171.4 195.0 L 194.3 195.0 L 217.1 195.0 L 240.0 197.7 L 262.9 207.5 L 285.7 216.9 L 308.6 225.8 L 331.4 234.0 L 354.3 241.3 L 377.1 247.5 L 400.0 252.4 L 422.9 256.0 L 445.7 258.1 L 468.6 258.8 L 491.4 258.0 L 514.3 255.6 L 537.1 251.9 L 560.0 246.8 L 582.9 240.5 L 605.7 233.1 L 628.6 224.8 L 651.4 215.8 L 674.3 206.3 L 697.1 196.6 L 720.0 195.0" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="gcurve c-fx"    data-len="650" d="M 80.0 221.4 L 100.0 218.9 L 120.0 214.0 L 140.0 207.5 L 160.0 200.2 L 180.0 192.9 L 200.0 186.5 L 220.0 181.5 L 240.0 178.4 L 260.0 177.4 L 280.0 178.3 L 300.0 180.9 L 320.0 184.9 L 340.0 189.6 L 360.0 194.4 L 380.0 199.0 L 400.0 202.7 L 420.0 205.3 L 440.0 206.6 L 460.0 206.5 L 480.0 205.2 L 500.0 202.9 L 520.0 199.9 L 540.0 196.7 L 560.0 193.6 L 580.0 190.8 L 600.0 188.8 L 620.0 187.6 L 640.0 187.3 L 660.0 187.8 L 680.0 189.1 L 700.0 190.9 L 720.0 193.0"    fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+  <circle cx="106" cy="195" r="3.5" fill="#dc2626"/>
+  <text x="106" y="60" font-size="11" fill="#dc2626" font-weight="700" text-anchor="middle">t₀ 冲击</text>
+  <text class="glbl l-gold"  x="155" y="215" font-size="12" font-weight="700" fill="#d97706">黄金存量</text>
+  <text class="glbl l-money" x="250" y="275" font-size="12" font-weight="700" fill="#6366f1">货币供给</text>
+  <text class="glbl l-price" x="340" y="230" font-size="12" font-weight="700" fill="#16a34a">物价水平</text>
+  <text class="glbl l-fx"    x="130" y="235" font-size="11" font-weight="700" fill="#a855f7">汇率</text>
+  <text x="208" y="345" font-size="11" fill="#5d6879" text-anchor="middle">黄金外流</text>
+  <text x="323" y="345" font-size="11" fill="#5d6879" text-anchor="middle">货币紧缩</text>
+  <text x="432" y="345" font-size="11" fill="#5d6879" text-anchor="middle">物价下跌</text>
+  <text x="541" y="345" font-size="11" fill="#5d6879" text-anchor="middle">出口回升</text>
+  <text x="694" y="345" font-size="11" fill="#5d6879" text-anchor="middle">黄金回流</text>
+  <defs><marker id="arrT" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5d6879"/></marker></defs>
+  <line x1="80" y1="372" x2="715" y2="372" stroke="#5d6879" stroke-width="1.2" marker-end="url(#arrT)"/>
+  <text x="400" y="390" font-size="11" fill="#5d6879" text-anchor="middle">时间 →（看动画：黄金先动 → 货币跟进 → 物价最滞后 → 汇率全程窄带震荡）</text>
+</svg>
+      </div>
+      <div class="figcap"><b>读图：</b>黄金存量最先下降 → 货币供给跟进 → 物价水平最晚（谷也最浅）；三者都呈「下凹→触底→回升」闭环，正是休谟「自动恢复均衡」的视觉化。<b>汇率线</b>（紫）被锁在输送点窄带内小幅震荡=金本位「固定汇率」。翟东升撕开点：顺差国能人为截断自己的半环。</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>四条曲线按相位依次触底回升：<b>黄金存量最先动 → 货币供给跟进 → 物价水平最晚（价格粘性）</b>，三者都呈「下凹→触底→回升」闭环。</li>
+      <li><b>汇率线（紫）</b>被锁在黄金输送点窄带内全程小幅震荡——这就是金本位「固定汇率」的直观含义。</li>
+      <li>休谟机制视觉化：逆差国黄金外流→货币紧缩→物价降→出口恢复→均衡自动回归。</li>
+      <li><b>翟东升撕开点</b>：闭环能否走完取决于逆差国能否扛住谷底紧缩与失业；顺差国（如英国）能对冲黄金流入、人为截断自己的半环。</li>
+      <li>易错：勿把「1925 英国按战前旧汇率回归金本位」当本机制案例——那是人为选错平价，不是自动调节。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section avoid-break">外资(FDI)与中国工业化<span class="count">2 图</span></h2>
+    <div class="fig-card avoid-break" id="fig8">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">8</span>三外路线核心框架</div>
+        <div class="q-chip">外资(FDI)与中国工业化 · <b>题7</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三外路线核心框架：鼓励外贸、吸引外资、控制外汇三根支柱及其代价" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <defs>
+    <marker id="arrSW" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5d6879"/>
+    </marker>
+    <marker id="arrSWr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="500" fill="#1b2334">三外路线核心框架</text>
+  <text x="340" y="46" text-anchor="middle" font-size="12" fill="#5d6879">翟东升 · 中国对外经济战略核心</text>
+  <rect x="40" y="70" width="180" height="60" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="130" y="94" text-anchor="middle" font-size="14" font-weight="500" fill="#1b2334" dominant-baseline="central">鼓励外贸</text>
+  <text x="130" y="114" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">出口导向 · 嵌入全球价值链</text>
+  <rect x="250" y="70" width="180" height="60" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="340" y="94" text-anchor="middle" font-size="14" font-weight="500" fill="#1b2334" dominant-baseline="central">吸引外资</text>
+  <text x="340" y="114" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">税收优惠 · 引入 FDI 和技术</text>
+  <rect x="460" y="70" width="180" height="60" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="550" y="94" text-anchor="middle" font-size="14" font-weight="500" fill="#1b2334" dominant-baseline="central">控制外汇</text>
+  <text x="550" y="114" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">强制结售汇 · 资本管制</text>
+  <line x1="220" y1="100" x2="248" y2="100" stroke="#5d6879" stroke-width="1" marker-end="url(#arrSW)"/>
+  <line x1="430" y1="100" x2="458" y2="100" stroke="#5d6879" stroke-width="1" marker-end="url(#arrSW)"/>
+  <text x="340" y="170" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334">资金循环机制</text>
+  <rect x="100" y="190" width="160" height="44" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="180" y="212" text-anchor="middle" font-size="13" font-weight="500" fill="#16a34a" dominant-baseline="central">FDI 进入中国建厂</text>
+  <rect x="290" y="190" width="160" height="44" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="370" y="212" text-anchor="middle" font-size="13" font-weight="500" fill="#16a34a" dominant-baseline="central">出口赚取外汇</text>
+  <rect x="480" y="190" width="160" height="44" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="560" y="212" text-anchor="middle" font-size="13" font-weight="500" fill="#16a34a" dominant-baseline="central">强制结汇→外储</text>
+  <line x1="260" y1="212" x2="288" y2="212" stroke="#16a34a" stroke-width="1" marker-end="url(#arrSW)"/>
+  <line x1="450" y1="212" x2="478" y2="212" stroke="#16a34a" stroke-width="1" marker-end="url(#arrSW)"/>
+  <line x1="560" y1="234" x2="560" y2="260" stroke="#16a34a" stroke-width="1" marker-end="url(#arrSW)"/>
+  <rect x="460" y="262" width="180" height="44" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="550" y="284" text-anchor="middle" font-size="12" font-weight="500" fill="#16a34a" dominant-baseline="central">外储 ~4万亿 (2014)</text>
+  <text x="340" y="340" text-anchor="middle" font-size="13" font-weight="500" fill="#dc2626">翟东升批判视角：代价与扭曲</text>
+  <rect x="40" y="358" width="190" height="44" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+  <text x="135" y="380" text-anchor="middle" font-size="12" fill="#dc2626" dominant-baseline="central">货币地租：FDI~15% vs 美债~3%</text>
+  <rect x="250" y="358" width="190" height="44" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+  <text x="345" y="380" text-anchor="middle" font-size="12" fill="#dc2626" dominant-baseline="central">勤劳换纸：压制实际购买力</text>
+  <rect x="460" y="358" width="190" height="44" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+  <text x="555" y="380" text-anchor="middle" font-size="12" fill="#dc2626" dominant-baseline="central">货币政策扭曲：冲销困境</text>
+  <line x1="460" y1="306" x2="230" y2="356" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arrSWr)"/>
+  <line x1="640" y1="306" x2="650" y2="356" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arrSWr)"/>
+</svg>
+      </div>
+      <div class="figcap">图：三外路线核心框架——三根支柱（外贸·外资·外汇）构成资金循环，但代价是货币地租与政策扭曲</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>三根支柱：<b>鼓励外贸（出口创汇）+ 吸引外资（FDI）+ 控制外汇（结售汇制）</b>，构成 1990s–2010s 中国增长引擎。</li>
+      <li>三柱协同：外资带来技术+资本 → 出口换外汇 → 央行结汇投放基础货币 → 再循环。</li>
+      <li><b>三大代价（翟东升批判视角）</b>：①货币地租（FDI~15% vs 美债~3%）；②勤劳换纸（压制实际购买力）；③货币政策扭曲（冲销困境）。</li>
+      <li>外储峰值 ~4 万亿美元（2014）是这一路线积累的高水位标志。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break" id="fig9">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">9</span>资金循环机制总览（「大交易」）</div>
+        <div class="q-chip">外资(FDI)与中国工业化 · <b>题7</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="资金循环机制总览：引资-出口-储备-回流的完整资金闭环（大交易）" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <defs>
+    <marker id="arrCirc" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <text x="340" y="28" text-anchor="middle" font-size="15" font-weight="500" fill="#1b2334">资金循环机制总览（大交易）</text>
+  <text x="340" y="46" text-anchor="middle" font-size="12" fill="#5d6879">引资 → 出口 → 储备 → 回流：一个首尾相接的闭环</text>
+  <rect x="40" y="80" width="140" height="64" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="110" y="104" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334" dominant-baseline="central">① 引资</text>
+  <text x="110" y="124" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">FDI 流入中国</text>
+  <rect x="210" y="80" width="140" height="64" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="280" y="104" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334" dominant-baseline="central">② 出口</text>
+  <text x="280" y="124" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">商品出口赚外汇</text>
+  <rect x="380" y="80" width="140" height="64" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="450" y="104" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334" dominant-baseline="central">③ 储备</text>
+  <text x="450" y="124" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">强制结汇→外储</text>
+  <rect x="550" y="80" width="120" height="64" rx="10" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.5"/>
+  <text x="610" y="104" text-anchor="middle" font-size="13" font-weight="500" fill="#1b2334" dominant-baseline="central">④ 回流</text>
+  <text x="610" y="124" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">买美债</text>
+  <line x1="180" y1="112" x2="208" y2="112" stroke="#6366f1" stroke-width="1.2" marker-end="url(#arrCirc)"/>
+  <line x1="350" y1="112" x2="378" y2="112" stroke="#6366f1" stroke-width="1.2" marker-end="url(#arrCirc)"/>
+  <line x1="520" y1="112" x2="548" y2="112" stroke="#6366f1" stroke-width="1.2" marker-end="url(#arrCirc)"/>
+  <path d="M 610 144 Q 610 220, 340 220 Q 110 220, 110 160" fill="none" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arrCirc)"/>
+  <text x="340" y="245" text-anchor="middle" font-size="11" fill="#6366f1" font-style="italic">美元回流支撑美国低利率+消费 → 继续买中国商品 → 循环重启</text>
+  <rect x="40" y="280" width="300" height="60" rx="8" fill="rgba(22,163,74,0.08)" stroke="#16a34a" stroke-width="0.5"/>
+  <text x="190" y="300" text-anchor="middle" font-size="12" font-weight="500" fill="#16a34a" dominant-baseline="central">中国侧：得到资本+技术+就业</text>
+  <text x="190" y="320" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">付出：廉价劳动力 + 环境资源 + 外储"人质"</text>
+  <rect x="360" y="280" width="300" height="60" rx="8" fill="rgba(245,158,11,0.08)" stroke="#d97706" stroke-width="0.5"/>
+  <text x="510" y="300" text-anchor="middle" font-size="12" font-weight="500" fill="#d97706" dominant-baseline="central">美国侧：得到廉价商品+融资</text>
+  <text x="510" y="320" text-anchor="middle" font-size="11" fill="#5d6879" dominant-baseline="central">付出：印美元纸币（铸币税）+ 产业空心化</text>
+</svg>
+      </div>
+      <div class="figcap">图：资金循环机制总览——「引资→出口→储备→回流」的完整闭环，又称「大交易」</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>完整闭环：<b>引资 → 出口 → 储备 → 回流</b>，又称中美「大交易」（Grand Bargain）。</li>
+      <li>中国端付出：勤劳储蓄、环境资源、产业政策补贴；获得：就业、技术、工业化。</li>
+      <li>美国端付出：印美元纸币（铸币税）+ 产业空心化；获得：低通胀、廉价商品、美债买家。</li>
+      <li><b>双向不对称</b>：美国用纸换实物，结构性占优；这是「大交易」迟早被打破的内在张力。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section avoid-break">美元霸权与美国政策<span class="count">3 图</span></h2>
+    <div class="fig-card avoid-break" id="fig10">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">10</span>美元信用大厦</div>
+        <div class="q-chip">美元霸权与美国政策 · <b>题2</b></div>
+      </div>
+      <div class="svg-wrap">
+            <svg viewBox="0 0 680 430" role="img" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+        <title>美元信用大厦记忆图</title>
+        <desc>屋顶为美元信用，四根支柱为地缘控制、货币锚定、市场开放、金融深度，地基为经济科技优势</desc>
+        <g>
+            <rect x="50" y="40" width="580" height="56" rx="8" stroke-width="0.5" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);"/>
+            <text x="340" y="61" text-anchor="middle" dominant-baseline="central" style="fill:rgb(60, 52, 137);font-size:14px;font-weight:500;">美元信用大厦</text>
+            <text x="340" y="81" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);font-size:12px;">屋顶：最终要撑起的东西</text>
+        </g>
+        <g>
+            <rect x="50" y="116" width="130" height="190" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);"/>
+            <text x="115" y="180" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">地缘政治</text>
+            <text x="115" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">控制力</text>
+            <text x="115" y="232" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">①巨手摁地球</text>
+            <text x="115" y="250" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">沙特手链</text>
+        </g>
+        <g>
+            <rect x="200" y="116" width="130" height="190" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);"/>
+            <text x="265" y="180" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">货币锚定</text>
+            <text x="265" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">历史演进</text>
+            <text x="265" y="232" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">②三变之锚</text>
+            <text x="265" y="250" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">金锚剪断换油锚</text>
+        </g>
+        <g>
+            <rect x="350" y="116" width="130" height="190" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);"/>
+            <text x="415" y="180" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">全球市场</text>
+            <text x="415" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">开放吸纳力</text>
+            <text x="415" y="232" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">③敞开旋转门</text>
+            <text x="415" y="250" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">收银台只收美元</text>
+        </g>
+        <g>
+            <rect x="500" y="116" width="130" height="190" rx="8" stroke-width="0.5" style="fill:rgb(225, 245, 238);stroke:rgb(15, 110, 86);"/>
+            <text x="565" y="180" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">金融市场</text>
+            <text x="565" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(8, 80, 65);font-size:14px;font-weight:500;">深度广度</text>
+            <text x="565" y="232" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">④无底深池</text>
+            <text x="565" y="250" text-anchor="middle" dominant-baseline="central" style="fill:rgb(15, 110, 86);font-size:12px;">国债瓷砖·安全池</text>
+        </g>
+        <g>
+            <rect x="50" y="326" width="580" height="64" rx="8" stroke-width="0.5" style="fill:rgb(241, 239, 232);stroke:rgb(95, 94, 90);"/>
+            <text x="340" y="348" text-anchor="middle" dominant-baseline="central" style="fill:rgb(68, 68, 65);font-size:14px;font-weight:500;">经济与科技优势（深层地基）</text>
+            <text x="340" y="370" text-anchor="middle" dominant-baseline="central" style="fill:rgb(95, 94, 90);font-size:12px;">芯片专利浇筑地基·人才当钢筋</text>
+        </g>
+    </svg>
+      </div>
+      <div class="figcap">记忆图示：美元信用大厦——屋顶（美元信用）由四根支柱（地缘控制、货币锚定、市场开放、金融深度）支撑，地基是经济与科技优势</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>建筑隐喻：<b>屋顶=美元信用</b>（最终要撑起的东西），<b>四根支柱</b>撑屋顶，<b>地基</b>是深层实力。</li>
+      <li>四支柱：①地缘政治控制力（沙特手链/巨手摁地球）②货币锚定历史演进（金锚→油锚）③全球市场开放吸纳力（收银台只收美元）④金融市场深度广度（国债安全池）。</li>
+      <li>地基：<b>经济与科技优势</b>（芯片专利浇筑地基、人才当钢筋）——这是美元信用的深层支撑。</li>
+      <li>考试角度：答「美元霸权的条件」必背这五要素（4支柱+1地基）；区别于「美元霸权四项好处」（铸币税/转嫁损失/制裁/防超越）。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break" id="fig11">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">11</span>美国债务上限「信用卡」</div>
+        <div class="q-chip">美元霸权与美国政策 · <b>题3</b></div>
+      </div>
+      <div class="svg-wrap">
+            <svg viewBox="0 0 680 415" role="img" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+        <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">债务上限信用卡记忆图</title>
+        <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">顶部为债务上限即信用卡额度，中间三个机制事实，底部四条评价批注</desc>
+        <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="190" y="36" width="300" height="60" rx="8" stroke-width="0.5" style="fill:rgb(238, 237, 254);stroke:rgb(83, 74, 183);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="340" y="58" text-anchor="middle" dominant-baseline="central" style="fill:rgb(60, 52, 137);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">债务上限 = 巨型信用卡</text>
+            <text x="340" y="80" text-anchor="middle" dominant-baseline="central" style="fill:rgb(83, 74, 183);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">卡面刻着"国会额度"</text>
+        </g>
+        <line x1="290" y1="96" x2="140" y2="132" marker-end="url(#arrow)" style="fill:none;stroke:rgb(137, 135, 129);color:rgb(11, 11, 11);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+        <line x1="340" y1="96" x2="340" y2="132" marker-end="url(#arrow)" style="fill:none;stroke:rgb(137, 135, 129);color:rgb(11, 11, 11);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+        <line x1="390" y1="96" x2="540" y2="132" marker-end="url(#arrow)" style="fill:none;stroke:rgb(137, 135, 129);color:rgb(11, 11, 11);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="40" y="140" width="185" height="56" rx="8" stroke-width="0.5" style="fill:rgb(241, 239, 232);stroke:rgb(95, 94, 90);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="132" y="158" text-anchor="middle" dominant-baseline="central" style="fill:rgb(68, 68, 65);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">非常措施</text>
+            <text x="132" y="178" text-anchor="middle" dominant-baseline="central" style="fill:rgb(95, 94, 90);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">刷爆掏急救包</text>
+        </g>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="248" y="140" width="185" height="56" rx="8" stroke-width="0.5" style="fill:rgb(241, 239, 232);stroke:rgb(95, 94, 90);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="340" y="158" text-anchor="middle" dominant-baseline="central" style="fill:rgb(68, 68, 65);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">停摆·技术性违约</text>
+            <text x="340" y="178" text-anchor="middle" dominant-baseline="central" style="fill:rgb(95, 94, 90);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">拉闸熄灯·支票弹回</text>
+        </g>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="456" y="140" width="185" height="56" rx="8" stroke-width="0.5" style="fill:rgb(241, 239, 232);stroke:rgb(95, 94, 90);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="548" y="158" text-anchor="middle" dominant-baseline="central" style="fill:rgb(68, 68, 65);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">上调100+次</text>
+            <text x="548" y="178" text-anchor="middle" dominant-baseline="central" style="fill:rgb(95, 94, 90);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">卡边贴满提额贴</text>
+        </g>
+        <line x1="340" y1="196" x2="340" y2="220" marker-end="url(#arrow)" style="fill:none;stroke:rgb(137, 135, 129);color:rgb(11, 11, 11);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+        <rect x="32" y="226" width="616" height="152" rx="12" fill="none" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="4 4" style="fill:none;stroke:rgb(137, 135, 129);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-dasharray:4px, 4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+        <text x="48" y="246" style="fill:rgb(82, 81, 78);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:start;dominant-baseline:auto">账单批注：四重评价</text>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="48" y="258" width="140" height="104" rx="8" stroke-width="0.5" style="fill:rgb(250, 236, 231);stroke:rgb(153, 60, 29);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="118" y="288" text-anchor="middle" dominant-baseline="central" style="fill:rgb(113, 43, 19);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">①伪问题本质</text>
+            <text x="118" y="314" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">教授翻牌写"伪"</text>
+            <text x="118" y="334" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">选票福利·负利率</text>
+        </g>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="200" y="258" width="140" height="104" rx="8" stroke-width="0.5" style="fill:rgb(250, 236, 231);stroke:rgb(153, 60, 29);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="270" y="288" text-anchor="middle" dominant-baseline="central" style="fill:rgb(113, 43, 19);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">②政治筹码</text>
+            <text x="270" y="314" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">驴象拔河</text>
+            <text x="270" y="334" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">吊着关门炸弹</text>
+        </g>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="352" y="258" width="140" height="104" rx="8" stroke-width="0.5" style="fill:rgb(250, 236, 231);stroke:rgb(153, 60, 29);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="422" y="288" text-anchor="middle" dominant-baseline="central" style="fill:rgb(113, 43, 19);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">③信誉损耗</text>
+            <text x="422" y="314" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">标普刻痕</text>
+            <text x="422" y="334" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">2011 AA+</text>
+        </g>
+        <g style="fill:rgb(0, 0, 0);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+            <rect x="504" y="258" width="140" height="104" rx="8" stroke-width="0.5" style="fill:rgb(250, 236, 231);stroke:rgb(153, 60, 29);color:rgb(11, 11, 11);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+            <text x="574" y="288" text-anchor="middle" dominant-baseline="central" style="fill:rgb(113, 43, 19);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">④矛盾未解</text>
+            <text x="574" y="314" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">三座大山压卡底</text>
+            <text x="574" y="334" text-anchor="middle" dominant-baseline="central" style="fill:rgb(153, 60, 29);stroke:none;color:rgb(11, 11, 11);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">盖布≠移山</text>
+        </g>
+    </svg>
+      </div>
+      <div class="figcap">图：债务上限信用卡——顶部为债务上限（信用卡额度），中间三个机制事实，底部四条评价批注。</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>核心隐喻：<b>债务上限 = 巨型信用卡</b>（卡面刻着「国会额度」），初衷是约束债务，如今沦为政治博弈工具。</li>
+      <li>三个机制事实：触及上限→非常措施→技术性违约/停摆风险；历史上已上调超 100 次。</li>
+      <li>翟东升评价：<b>本质是「伪问题」</b>——选票民主下福利刚性致赤字刚性；名义负利率时代高杠杆可自动缩减。</li>
+      <li>结构性矛盾未解：福利开支刚性 + 军费高企 + 税收不足，暂停上限只是「寅吃卯粮」。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fig-card avoid-break big-fig" id="fig12">
+      <div class="fig-head">
+        <div class="fig-title"><span class="fig-num">12</span>特朗普减税论述框架主线</div>
+        <div class="q-chip">美元霸权与美国政策 · <b>题5</b></div>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 605" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="特朗普减税政策论述框架主线：美元霸权前提统领政治诱因与经济考量，传导至对华影响，辩证收尾" style="width:100%;height:auto;display:block;margin:0 auto;font-family:inherit;">
+  <defs>
+    <marker id="arrow-tax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <g>
+    <rect x="130" y="40" width="420" height="62" rx="12" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.75"/>
+    <text x="340" y="64" font-size="14" font-weight="500" fill="#412402" text-anchor="middle" dominant-baseline="central">核心前提：美元霸权 = "预算软约束"</text>
+    <text x="340" y="86" font-size="12" fill="#633806" text-anchor="middle" dominant-baseline="central">美国敢大规模减税的结构性底气 · 全球为其赤字融资</text>
+  </g>
+  <line x1="340" y1="102" x2="340" y2="132" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow-tax)"/>
+  <g>
+    <rect x="40" y="138" width="290" height="138" rx="10" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+    <text x="185" y="162" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle" dominant-baseline="central">一、政治诱因（为何减税）</text>
+    <line x1="60" y1="175" x2="310" y2="175" stroke="#85B7EB" stroke-width="0.5"/>
+    <text x="58" y="196" font-size="12" fill="#042C53" dominant-baseline="central">· 意识形态 · 共和党"小政府"传统</text>
+    <text x="58" y="220" font-size="12" fill="#042C53" dominant-baseline="central">· 选举政治 · 兑现承诺巩固基本盘</text>
+    <text x="58" y="244" font-size="12" fill="#042C53" dominant-baseline="central">· 党争策略 · "饿死野兽"倒逼削福利</text>
+  </g>
+  <g>
+    <rect x="350" y="138" width="290" height="138" rx="10" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+    <text x="495" y="162" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle" dominant-baseline="central">二、经济考量（想达何效）</text>
+    <line x1="370" y1="175" x2="620" y2="175" stroke="#85B7EB" stroke-width="0.5"/>
+    <text x="368" y="196" font-size="12" fill="#042C53" dominant-baseline="central">· 供给侧 · 企业税35%→21%、资本回流</text>
+    <text x="368" y="220" font-size="12" font-weight="500" fill="#854F0B" dominant-baseline="central">★ 核心洞察 · 以贸易赤字解财政赤字</text>
+    <text x="368" y="244" font-size="12" fill="#042C53" dominant-baseline="central">· 隐忧 · 赤字激增、贫富分化加剧</text>
+  </g>
+  <line x1="340" y1="276" x2="340" y2="306" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow-tax)"/>
+  <g>
+    <rect x="40" y="312" width="600" height="158" rx="10" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+    <text x="340" y="336" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle" dominant-baseline="central">三、对华影响（传导 + 辩证）</text>
+    <line x1="60" y1="349" x2="620" y2="349" stroke="#85B7EB" stroke-width="0.5"/>
+    <line x1="340" y1="356" x2="340" y2="460" stroke="#85B7EB" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <text x="180" y="372" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle" dominant-baseline="central">短期压力</text>
+    <text x="58" y="394" font-size="12" fill="#042C53" dominant-baseline="central">· 贸易摩擦 · 关税+技术封锁</text>
+    <text x="58" y="416" font-size="12" fill="#042C53" dominant-baseline="central">· 资本外流 · 利润回流+汇率压力</text>
+    <text x="58" y="438" font-size="12" fill="#042C53" dominant-baseline="central">· 政策空间 · 美加息挤压货币空间</text>
+    <text x="500" y="372" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle" dominant-baseline="central">长期倒逼</text>
+    <text x="358" y="394" font-size="12" fill="#042C53" dominant-baseline="central">· 双循环 · 内需驱动转型</text>
+    <text x="358" y="416" font-size="12" fill="#042C53" dominant-baseline="central">· 产业自主 · 卡脖子倒逼创新</text>
+    <text x="358" y="438" font-size="12" fill="#042C53" dominant-baseline="central">· 税制+金融 · 减税降费+人民币国际化</text>
+  </g>
+  <line x1="340" y1="470" x2="340" y2="500" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow-tax)"/>
+  <g>
+    <rect x="110" y="506" width="460" height="68" rx="12" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.75"/>
+    <text x="340" y="530" font-size="14" font-weight="500" fill="#412402" text-anchor="middle" dominant-baseline="central">结论：内政优先 + 美元霸权特权</text>
+    <text x="340" y="552" font-size="12" fill="#633806" text-anchor="middle" dominant-baseline="central">压力 → 倒逼 → 机遇 的辩证统一</text>
+  </g>
+</svg>
+      </div>
+      <div class="figcap">图：特朗普减税论述框架主线——美元霸权（前提）→ 政治诱因 + 经济考量（动机）→ 对华影响（传导+辩证）→ 结论。<br/><span style="color:#BA7517">金色=前提/结论洞察</span> · <span style="color:#378ADD">蓝色=三板块结构</span>。背诵抓住首尾两个金框，中间蓝框自然串起。</div>
+      <div class="points">
+        <div class="plabel">📌 读图要点速记</div>
+        <ul>
+      <li>主线四段：<b>前提（美元霸权）→ 动机（政治诱因+经济考量）→ 传导（对华影响）→ 结论（辩证）</b>。</li>
+      <li><b>金色框=前提/结论洞察</b>（首尾两个金框必背）：减税能搞的前提是美国承担得起赤字（美元霸权兜底）。</li>
+      <li><b>蓝色框=三板块结构</b>（中间串起）：政治诱因（减税讨好选民/资本）+ 经济考量（拉弗曲线/吸引资本回流）+ 对华影响。</li>
+      <li>对华影响辩证：短期资本回流压力 / 长期倒逼中国扩内需+产业升级 = 「压力→倒逼→机遇」辩证统一。</li>
+      <li>背诵抓手：抓住首尾两个金框，中间蓝框自然串起。</li>
+        </ul>
+      </div>
+    </div>
+
+  <!-- ===== 页脚 ===== -->
+  <div class="footer">
+    源自：<a href="翟东升《货币与金融的国际政治经济学》复习笔记.html">翟东升《货币与金融的国际政治经济学》复习笔记.html</a><br/>
+    配套：<a href="理论框架与背诵路线图-打印版.html">理论框架与背诵路线图 · 打印版</a> · 共 12 张图 · 整理日期 2026-07-21
+  </div>
+
+</div>
+
+<script>
+  // 深色切换
+  (function(){
+    var btn=document.getElementById('btnTheme');
+    function sync(){var d=document.documentElement.classList.contains('dark');btn.textContent=d?'☀️':'🌙';}
+    sync();
+    btn.addEventListener('click',function(){
+      var d=document.documentElement.classList.toggle('dark');
+      try{localStorage.setItem('mfipe-theme',d?'dark':'light');}catch(e){}
+      sync();
+    });
+  })();
+</script>
+</body>
+</html>
