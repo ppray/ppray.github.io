@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>危机监测作战台</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230E1116'/%3E%3Cpolyline points='1.5,11.5 5,6 8,9.5 11.5,3.5 14.5,7' fill='none' stroke='%23FF4D5E' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 :root{
   --bg:#0E1116; --panel:#161C26; --panel-2:#1C2330; --line:#28303E;
-  --ink:#E9E6DF; --ink-dim:#8B94A3; --ink-faint:#5A6373;
+  --ink:#E9E6DF; --ink-dim:#8B94A3; --ink-faint:#7C8697;
   --sig-fin:#FF8A5C;   /* 信贷危机 · 余烬橙 */
   --sig-rate:#6FA8FF;  /* 利率危机 · 利率蓝 */
   --sig-svc:#C792EA;   /* 服务停摆 · 停摆紫 */
@@ -20,7 +20,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
   -webkit-font-smoothing:antialiased}
-.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 20px 84px}
 
 /* ---------- 头部 ---------- */
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--ink-faint);
@@ -119,23 +119,90 @@ details summary{cursor:pointer;font-size:13px;color:var(--ink-dim);padding:8px 0
   font-size:12px;color:var(--ink-dim);transition:border-color .15s}
 .loader:hover{border-color:var(--ink-faint)}
 .loader b{display:block;font-family:var(--mono);font-size:12px;color:var(--ink);margin-bottom:4px}
-.loader input{display:none}
+.loader{position:relative}
+.loader input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.loader:focus-within{border-color:var(--ink-dim)}
 .howto{font-size:12px;color:var(--ink-faint);margin-top:10px;line-height:1.8}
 .howto code{font-family:var(--mono);background:var(--panel-2);padding:1px 6px;border-radius:4px;
   font-size:11px;color:var(--ink-dim)}
 
 footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
   font-size:11px;color:var(--ink-faint);line-height:1.8}
+/* ---------- 排行补充 ---------- */
+.cards-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.cards-grid .card{margin-bottom:0}
+.cards-grid .empty{grid-column:1/-1}
+@media(min-width:900px){
+  .cards-grid{grid-template-columns:1fr 1fr}
+  .evidence{columns:2;column-gap:26px}
+  .evidence li{break-inside:avoid}
+}
+.mini-note{font-size:11px;color:var(--ink-faint);margin:-4px 0 10px;font-family:var(--mono)}
+.playbook-desc{font-size:12px;color:var(--ink-dim);margin:0 0 10px;line-height:1.7}
+.empty{padding:26px;text-align:center;color:var(--ink-faint);font-size:13px;
+  border:1px dashed var(--line);border-radius:12px}
+.score.s-hi{color:var(--safe)} .score.s-lo{color:var(--danger)}
+.readout b.r-danger{color:var(--danger)} .readout b.r-warn{color:var(--warn)}
+.markstats{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+
+/* 关注 / 已复核 */
+.mark{background:none;border:1px solid var(--line);border-radius:6px;color:var(--ink-faint);
+  cursor:pointer;font:600 11px var(--mono);padding:3px 8px;transition:all .15s;align-self:center}
+.mark:hover{border-color:var(--ink-faint)}
+.mark.star-on{color:var(--warn);border-color:rgba(255,209,102,.6)}
+.mark.rev-on{color:var(--safe);border-color:rgba(61,214,140,.6)}
+.card.starred{border-color:rgba(255,209,102,.45)}
+.card.reviewed{opacity:.7}
+.pillar .fill.missing{background:repeating-linear-gradient(45deg,transparent 0 3px,rgba(139,148,163,.18) 3px 6px);
+  border-radius:4px}
+.elim .reasons{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.elim .rchip{font-family:var(--mono);font-size:11px;color:var(--danger);
+  background:rgba(255,77,94,.10);padding:2px 8px;border-radius:4px}
+
+/* ---------- 证据汇总 ---------- */
+.esum{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;padding-bottom:10px;
+  border-bottom:1px solid var(--line)}
+.esum .tag{font-size:11px;padding:3px 9px}
+.esum .lead{font-size:11px;color:var(--ink-faint);font-family:var(--mono);align-self:center}
+
+/* ---------- 地震仪交互 ---------- */
+.seismo{position:relative}
+.seismo .hz{touch-action:pan-y}
+.tip{position:absolute;display:none;pointer-events:none;z-index:6;
+  background:rgba(13,17,23,.94);border:1px solid var(--line);border-radius:8px;
+  padding:8px 11px;font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--ink-dim);
+  box-shadow:0 6px 20px rgba(0,0,0,.4);white-space:nowrap}
+.tip b{color:var(--ink)}
+.tip .tt{color:var(--ink);font-weight:700;margin-bottom:2px;display:block}
+.cross{stroke:#8B94A3;stroke-width:.6;stroke-dasharray:2 2;opacity:.7}
+
+/* ---------- 数据接入状态 ---------- */
+.lst{display:block;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--safe)}
+.lst:empty{display:none}
+.reset-btn{margin-top:12px;background:var(--panel-2);color:var(--ink-dim);
+  border:1px solid var(--line);border-radius:8px;padding:7px 14px;
+  font:600 12px var(--sans);cursor:pointer}
+.reset-btn:hover{border-color:var(--ink-faint);color:var(--ink)}
+
+/* ---------- 返回首页 ---------- */
+.home-link{position:fixed;left:16px;bottom:16px;z-index:9999;display:inline-flex;
+  align-items:center;gap:6px;padding:9px 15px;border-radius:999px;
+  background:rgba(28,35,48,.82);color:var(--ink);text-decoration:none;
+  font:600 13px/1 var(--sans);border:1px solid var(--line);
+  box-shadow:0 3px 12px rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.home-link:hover{border-color:var(--ink-faint)}
+
 @media(max-width:480px){
   .pillars{grid-template-columns:repeat(3,1fr)}
   .loaders{grid-template-columns:1fr}
   .score{font-size:19px}
+  .home-link{left:12px;bottom:12px;padding:8px 12px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-    <a href="../index.html" aria-label="返回首页" style="position:fixed;left:16px;bottom:16px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:50px;background:rgba(30,41,59,.78);color:#fff;text-decoration:none;font:600 13px/1 'Noto Sans SC',system-ui,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">← 首页</a>
+    <a href="../index.html" aria-label="返回首页" class="home-link">← 首页</a>
 <div class="wrap">
 
   <div class="eyebrow">CRISIS WATCH STATION</div>
@@ -152,36 +219,40 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
   <section>
     <div class="sec-head"><h2>压力地震仪</h2><span class="note">四类危机指纹的逐日显影</span></div>
     <div class="panel seismo">
+      <div class="tip" id="chartTip"></div>
       <svg id="ddChart" viewBox="0 0 360 56" aria-label="SPY回撤曲线"></svg>
       <svg id="scoreChart" viewBox="0 0 360 168" aria-label="四类危机证据强度曲线"></svg>
       <div class="legend" id="legend"></div>
-      <div class="threshold-note">虚线为宣布阈值 <em>0.40</em>:回撤达-12%且某类证据越线,诊断才成立。越线之前的爬升,就是显影期。</div>
+      <div class="threshold-note">虚线为宣布阈值 <em>0.40</em>：回撤达 -12% 且某类证据越线，诊断才成立。越线之前的爬升，就是显影期。悬停图表可读取每日数值。</div>
     </div>
   </section>
 
   <!-- 诊断证据 -->
   <section>
     <div class="sec-head"><h2>当前诊断证据</h2><span class="note" id="evidenceNote">每一分都有出处 · 演示数据</span></div>
-    <div class="panel"><ul class="evidence" id="evidenceList"></ul></div>
+    <div class="panel"><div class="esum" id="evidenceSummary"></div><ul class="evidence" id="evidenceList"></ul></div>
   </section>
 
   <!-- 筛选排行 -->
   <section>
-    <div class="sec-head"><h2>幸存者排序</h2><span class="note" id="playbookNote">剧本: 信贷危机(2008型) · 演示数据</span></div>
+    <div class="sec-head"><h2>幸存者排序</h2><span class="note" id="playbookNote">剧本：信贷危机（2008 型）· 演示数据</span></div>
+    <div class="playbook-desc" id="playbookDesc"></div>
     <div class="toolbar">
-      <label>排序</label>
+      <label for="sortSel">排序</label>
       <select id="sortSel">
         <option value="score">综合分</option>
-        <option value="p1">P2 生存能力</option>
-        <option value="p5">P6 危机调整估值</option>
+        <option value="p2">P2 生存能力</option>
+        <option value="p6">P6 危机调整估值</option>
         <option value="sey">压力盈利收益率</option>
-        <option value="pdd">市场已跌(52w)</option>
-        <option value="gap">折扣缺口(机会优先)</option>
+        <option value="pdd">市场已跌（52w）</option>
+        <option value="gap">折扣缺口（机会优先）</option>
       </select>
+      <span class="markstats" id="markStats"></span>
     </div>
-    <div id="cards"></div>
+    <div class="mini-note">柱色：≥70 强 · 40–69 中 · &lt;40 弱 · 斜纹＝缺数据</div>
+    <div id="cards" class="cards-grid"></div>
     <details>
-      <summary>被硬性条件淘汰(一票否决) <span id="elimCount"></span></summary>
+      <summary>被硬性条件淘汰（一票否决） <span id="elimCount"></span></summary>
       <div id="elims" style="margin-top:8px"></div>
     </details>
   </section>
@@ -191,20 +262,21 @@ footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;
     <div class="sec-head"><h2>接入真实数据</h2><span class="note">本页离线运行,数据不出本机</span></div>
     <div class="panel">
       <div class="loaders">
-        <label class="loader"><b>crisis_log.csv</b>每日诊断日志 → 更新地震仪<input type="file" id="logFile" accept=".csv"></label>
-        <label class="loader"><b>screen_results.csv</b>筛选结果 → 更新排行<input type="file" id="screenFile" accept=".csv"></label>
+        <label class="loader"><b>crisis_log.csv</b>每日诊断日志 → 更新地震仪<input type="file" id="logFile" accept=".csv"><span class="lst" id="logStatus"></span></label>
+        <label class="loader"><b>screen_results.csv</b>筛选结果 → 更新排行<input type="file" id="screenFile" accept=".csv"><span class="lst" id="scrStatus"></span></label>
       </div>
       <div class="howto">
-        日志由 <code>python crisis_screener.py --detect --log crisis_log.csv</code> 每日定时生成;
+        日志由 <code>python crisis_screener.py --detect --log crisis_log.csv</code> 每日定时生成；
         排行由 <code>python crisis_screener.py --crisis auto --file universe.txt</code> 生成。
         选择文件即可替换演示数据。
       </div>
+      <button class="reset-btn" id="demoReset" hidden>↺ 恢复演示数据</button>
     </div>
   </section>
 
   <footer>
-    方法论:平时维护观察清单 → 指纹诊断危机性质 → 自动切换剧本重排序 → 人工复核"板块被罚但分项极强"的错杀候选。<br>
-    本页为研究工具原型,输出为排序而非买入建议;分数高 ≠ 应该买,它只回答"谁更接近历史幸存者的画像"。
+    方法论：平时维护观察清单 → 指纹诊断危机性质 → 自动切换剧本重排序 → 人工复核“板块被罚但分项极强”的错杀候选。<br>
+    本页为研究工具原型，输出为排序而非买入建议；分数高 ≠ 应该买，它只回答“谁更接近历史幸存者的画像”。
   </footer>
 </div>
 
@@ -220,13 +292,38 @@ const SIG = {
 const PLAYBOOK_CN = {generic:"通用", financial:"信贷危机(2008型)", rates_debt:"利率危机",
   services:"服务停摆(2020型)", inflation_energy:"滞胀冲击", auto:"自动"};
 const PILLAR_LABELS = ["韧性","生存","进攻","收税","趋势","估值"];
+const PLAYBOOK_DESC = {
+  generic:"通用画像：未触发特定危机剧本，六项支柱均衡看待。",
+  financial:"信贷证据主导 → 切换 2008 型剧本：生存能力与杠杆指标从严，收税型现金流优先。",
+  rates_debt:"利率证据主导 → 切换利率剧本：利息覆盖与债务结构从严，长久期敞口折价加深。",
+  services:"停摆证据主导 → 切换 2020 型剧本：现金续航月数与净现金优先，线下敞口从严。",
+  inflation_energy:"滞胀证据主导 → 切换滞胀剧本：定价权（收税能力）与营收稳定性优先。",
+};
+/* HTML 转义:CSV/JSON 字段注入前必过 */
+const esc = s => String(s??"").replace(/[&<>"']/g,
+  c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* 关注 / 已复核标记,localStorage 持久化 */
+const marks = (()=>{ try{
+    const m = JSON.parse(localStorage.getItem("crisisMarks")||"{}");
+    return {star:new Set(m.star||[]), rev:new Set(m.rev||[])};
+  }catch(e){ return {star:new Set(), rev:new Set()}; } })();
+function saveMarks(){ try{
+  localStorage.setItem("crisisMarks", JSON.stringify({star:[...marks.star], rev:[...marks.rev]}));
+}catch(e){} }
 
 let state = {
   log: DEMO.log, evidence: DEMO.evidence,
   diagnosis: DEMO.diagnosis, confidence: DEMO.confidence, drawdown: DEMO.drawdown,
   survivors: DEMO.survivors, eliminated: DEMO.eliminated,
+  playbook: "financial", source: "demo",
   hidden: new Set(),
 };
+function loadDemo(){
+  state.log = structuredClone(DEMO.log); state.evidence = structuredClone(DEMO.evidence);
+  state.diagnosis = DEMO.diagnosis; state.confidence = DEMO.confidence; state.drawdown = DEMO.drawdown;
+  state.survivors = structuredClone(DEMO.survivors); state.eliminated = structuredClone(DEMO.eliminated);
+  state.playbook = "financial"; state.source = "demo";
+}
 
 /* ---------- 头部状态 ---------- */
 function renderStatus(){
@@ -234,52 +331,71 @@ function renderStatus(){
   const sig = SIG[state.diagnosis];
   b.textContent = sig ? ("诊断: " + sig.label) : "诊断: 平静 / generic";
   b.style.color = sig ? sig.hex : "var(--safe)";
-  document.getElementById("ddReadout").textContent =
-    state.drawdown==null ? "—" : (state.drawdown*100).toFixed(1)+"%";
+  const ddEl = document.getElementById("ddReadout");
+  ddEl.textContent = state.drawdown==null ? "—" : (state.drawdown*100).toFixed(1)+"%";
+  ddEl.className = state.drawdown==null ? ""
+    : state.drawdown<=-0.12 ? "r-danger" : state.drawdown<=-0.05 ? "r-warn" : "";
   document.getElementById("confReadout").textContent =
     Math.round((state.confidence||0)*100)+"%";
+  document.getElementById("playbookDesc").textContent = PLAYBOOK_DESC[state.playbook] || "";
 }
 
 /* ---------- 地震仪 ---------- */
 function renderCharts(){
   const log = state.log;
   const n = log.length;
-  const W=360, padL=30, padR=8;
+  const panel = document.querySelector(".seismo");
+  /* 视图宽度跟随容器(钳制),保证缩放比≈1,文字不变形 */
+  const W = Math.round(Math.max(340, Math.min(840, (panel.clientWidth||368) - 28)));
+  const padL=34, padR=10;
   const xw = W-padL-padR;
   const X = i => padL + (n<=1 ? 0 : i/(n-1)*xw);
+  const INKF = "#7C8697";
+  /* 日期刻度:宽屏 5 个,窄屏 3 个;首尾贴边锚定,不再被裁切 */
+  const tickIdx = [...new Set(W>560
+    ? [0, Math.floor(n/4), Math.floor(n/2), Math.floor(3*n/4), n-1]
+    : [0, Math.floor(n/2), n-1])].filter(i=>i>=0 && i<n);
+  const dateTicks = ty => tickIdx.map(i=>{
+    const anchor = i===0 ? "start" : i===n-1 ? "end" : "middle";
+    return `<text x="${X(i).toFixed(1)}" y="${ty}" font-size="8" fill="${INKF}" text-anchor="${anchor}" font-family="monospace">${esc((log[i].date||"").slice(5))}</text>`;
+  }).join("");
 
-  /* 回撤条带(倒挂面积) */
-  const ddH=56, ddTop=6, ddBot=ddH-12;
+  /* ---- 回撤条带(倒挂面积,补纵轴刻度) ---- */
+  const ddH=64, ddTop=16, ddBot=ddH-4;
   const ddMin = Math.min(-0.30, ...log.map(r=>r.dd??0));
   const Yd = v => ddTop + (v/ddMin)*(ddBot-ddTop);
+  let ddG = `<text x="${padL}" y="10" font-size="9" fill="${INKF}" font-family="monospace">SPY DRAWDOWN</text>`;
+  [0,-0.1,-0.2,-0.3].forEach(v=>{
+    if(Yd(v) > ddBot+2) return;
+    ddG += `<line x1="${padL}" y1="${Yd(v)}" x2="${W-padR}" y2="${Yd(v)}" stroke="#28303E" stroke-width="0.6"/>
+            <text x="${padL-5}" y="${Yd(v)+3}" font-size="8" fill="${INKF}" text-anchor="end" font-family="monospace">${Math.round(v*100)}%</text>`;
+  });
   let area = `M ${X(0)} ${Yd(0)}`;
   log.forEach((r,i)=>{area += ` L ${X(i).toFixed(1)} ${Yd(r.dd??0).toFixed(1)}`;});
-  area += ` L ${X(n-1).toFixed(1)} ${ddTop} L ${X(0)} ${ddTop} Z`;
+  area += ` L ${X(n-1).toFixed(1)} ${Yd(0)} L ${X(0)} ${Yd(0)} Z`;
   const crisisY = Yd(-0.12);
-  document.getElementById("ddChart").innerHTML = `
-    <text x="${padL}" y="14" font-size="9" fill="#5A6373" font-family="monospace">SPY DRAWDOWN</text>
-    <path d="${area}" fill="rgba(255,77,94,.16)" stroke="#FF4D5E" stroke-width="1.2"/>
+  ddG += `<path d="${area}" fill="rgba(255,77,94,.16)" stroke="#FF4D5E" stroke-width="1.2"/>
     <line x1="${padL}" y1="${crisisY}" x2="${W-padR}" y2="${crisisY}"
       stroke="#FF4D5E" stroke-width="0.7" stroke-dasharray="3 3" opacity=".6"/>
-    <text x="${W-padR}" y="${crisisY-3}" font-size="8" fill="#FF4D5E" text-anchor="end" font-family="monospace">-12%</text>`;
+    <text x="${W-padR}" y="${crisisY-3}" font-size="8" fill="#FF4D5E" text-anchor="end" font-family="monospace">-12%</text>
+    <line class="cross" id="ddCross" x1="0" y1="${ddTop}" x2="0" y2="${ddBot}" style="display:none"/>
+    <rect class="hz" x="${padL}" y="${ddTop}" width="${xw}" height="${ddBot-ddTop}" fill="transparent"/>`;
+  const ddSvg = document.getElementById("ddChart");
+  ddSvg.setAttribute("viewBox", `0 0 ${W} ${ddH}`);
+  ddSvg.innerHTML = ddG;
 
-  /* 四信号线 */
-  const H=168, top=10, bot=H-22;
+  /* ---- 四信号线 ---- */
+  const H=180, top=10, bot=H-20;
   const Y = v => bot - v*(bot-top);
   let g = "";
-  /* 网格与阈值 */
   [0,0.5,1].forEach(v=>{
     g += `<line x1="${padL}" y1="${Y(v)}" x2="${W-padR}" y2="${Y(v)}" stroke="#28303E" stroke-width="0.6"/>
-          <text x="${padL-5}" y="${Y(v)+3}" font-size="8" fill="#5A6373" text-anchor="end" font-family="monospace">${v.toFixed(1)}</text>`;
+          <text x="${padL-5}" y="${Y(v)+3}" font-size="8" fill="${INKF}" text-anchor="end" font-family="monospace">${v.toFixed(1)}</text>`;
   });
   g += `<line x1="${padL}" y1="${Y(0.4)}" x2="${W-padR}" y2="${Y(0.4)}"
         stroke="#FF4D5E" stroke-width="0.8" stroke-dasharray="4 3"/>
         <text x="${W-padR}" y="${Y(0.4)-3}" font-size="8" fill="#FF4D5E" text-anchor="end" font-family="monospace">0.40</text>`;
-  /* 日期刻度 */
-  [0, Math.floor(n/2), n-1].forEach(i=>{
-    if(i>=0 && log[i]) g += `<text x="${X(i)}" y="${H-6}" font-size="8" fill="#5A6373"
-      text-anchor="middle" font-family="monospace">${(log[i].date||"").slice(5)}</text>`;
-  });
+  g += dateTicks(H-6);
   for(const key in SIG){
     if(state.hidden.has(key)) continue;
     const pts = log.map((r,i)=>`${X(i).toFixed(1)},${Y(r[key]??0).toFixed(1)}`).join(" ");
@@ -287,10 +403,50 @@ function renderCharts(){
           stroke-width="1.6" stroke-linejoin="round"/>`;
     const last = log[n-1] ? (log[n-1][key]??0) : 0;
     g += `<circle cx="${X(n-1)}" cy="${Y(last)}" r="2.4" fill="${SIG[key].hex}"/>`;
+    g += `<circle class="hdot" data-k="${key}" cx="-10" cy="-10" r="3" fill="${SIG[key].hex}" stroke="#0E1116" stroke-width="1.2" style="display:none"/>`;
   }
-  document.getElementById("scoreChart").innerHTML = g;
+  g += `<line class="cross" id="scCross" x1="0" y1="${top}" x2="0" y2="${bot}" style="display:none"/>
+        <rect class="hz" x="${padL}" y="${top}" width="${xw}" height="${bot-top}" fill="transparent"/>`;
+  const scSvg = document.getElementById("scoreChart");
+  scSvg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  scSvg.innerHTML = g;
 
-  /* 图例 */
+  /* ---- 悬停读数:双图联动十字线 + 数值提示框 ---- */
+  const tip = document.getElementById("chartTip");
+  const ddCross = ddSvg.querySelector("#ddCross"), scCross = scSvg.querySelector("#scCross");
+  const hdots = [...scSvg.querySelectorAll(".hdot")];
+  function showAt(i, svg){
+    const cx = X(i);
+    [ddCross, scCross].forEach(c=>{ c.setAttribute("x1",cx); c.setAttribute("x2",cx); c.style.display=""; });
+    hdots.forEach(c=>{ c.setAttribute("cx",cx); c.setAttribute("cy",Y(log[i][c.dataset.k]??0)); c.style.display=""; });
+    const r = log[i];
+    const rows = Object.keys(SIG).map(k=>
+      `<span style="color:${SIG[k].hex}">●</span> ${SIG[k].label} <b>${(r[k]??0).toFixed(2)}</b>`).join("<br>");
+    tip.innerHTML = `<span class="tt">${esc(r.date||"")}</span>回撤 <b>${((r.dd??0)*100).toFixed(1)}%</b><br>${rows}`;
+    const pr = panel.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+    const px = sr.left - pr.left + (cx/W)*sr.width;
+    tip.style.display = "block";
+    const tw = tip.offsetWidth;
+    tip.style.left = Math.max(4, Math.min(pr.width-tw-4, px+14 > pr.width-tw ? px-tw-12 : px+12)) + "px";
+    tip.style.top = Math.max(4, sr.top - pr.top + 6) + "px";
+  }
+  function hideTip(){
+    tip.style.display = "none";
+    [ddCross, scCross].forEach(c=>c.style.display="none");
+    hdots.forEach(c=>c.style.display="none");
+  }
+  [ddSvg, scSvg].forEach(svg=>{
+    const zone = svg.querySelector(".hz");
+    zone.addEventListener("pointermove", e=>{
+      const sr = svg.getBoundingClientRect();
+      const px = (e.clientX - sr.left) * (W/sr.width);
+      const i = Math.max(0, Math.min(n-1, Math.round((px-padL)/xw*(n-1))));
+      showAt(i, svg);
+    });
+    zone.addEventListener("pointerleave", hideTip);
+  });
+
+  /* ---- 图例 ---- */
   const lg = document.getElementById("legend");
   lg.innerHTML = "";
   for(const key in SIG){
@@ -307,19 +463,30 @@ function renderCharts(){
 function renderEvidence(){
   const ul = document.getElementById("evidenceList");
   ul.innerHTML = "";
+  const map={financial:["t-fin","信贷"],rates_debt:["t-rate","利率"],
+             services:["t-svc","停摆"],inflation_energy:["t-inf","滞胀"]};
+  const sum = {}; let sysCount = 0;
   (state.evidence||[]).forEach(e=>{
     const li = document.createElement("li");
-    let cls="t-sys", tag="信号", text=e;
-    const m = e.match(/^\[(\w+) \+(\d)\]\s*(.*)$/);
+    let cls="t-sys", tag="信号", text=String(e);
+    const m = String(e).match(/^\[(\w+) \+(\d)\]\s*(.*)$/);
     if(m){
-      const map={financial:["t-fin","信贷"],rates_debt:["t-rate","利率"],
-                 services:["t-svc","停摆"],inflation_energy:["t-inf","滞胀"]};
       const t = map[m[1]]||["t-sys",m[1]];
       cls=t[0]; tag=`${t[1]} +${m[2]}`; text=m[3];
-    }
-    li.innerHTML = `<span class="tag ${cls}">${tag}</span><span>${text}</span>`;
+      sum[t[1]] = (sum[t[1]]||0) + (+m[2]);
+    }else sysCount++;
+    li.innerHTML = `<span class="tag ${cls}">${esc(tag)}</span><span>${esc(text)}</span>`;
     ul.appendChild(li);
   });
+  /* 构成汇总:让头部置信度的来源可追溯 */
+  const box = document.getElementById("evidenceSummary");
+  const labelCls = {"信贷":"t-fin","利率":"t-rate","停摆":"t-svc","滞胀":"t-inf"};
+  const parts = ["信贷","利率","停摆","滞胀"].filter(k=>sum[k])
+    .map(k=>`<span class="tag ${labelCls[k]}">${k} +${sum[k]}</span>`);
+  ["信贷","利率","停摆","滞胀"].forEach(k=>{ delete sum[k]; });
+  Object.keys(sum).forEach(k=>parts.push(`<span class="tag t-sys">${esc(k)} +${sum[k]}</span>`));
+  if(sysCount) parts.push(`<span class="tag t-sys">基准信号 ${sysCount} 条</span>`);
+  box.innerHTML = parts.length ? `<span class="lead">构成</span>` + parts.join("") : "";
 }
 
 /* ---------- 排行 ---------- */
@@ -330,8 +497,8 @@ function renderCards(){
      所以 gap 按升序排,机会候选浮到最上。缺数据的项用 -Infinity 沉底。 */
   const list = [...state.survivors].sort((a,b)=>{
     const get = r => sortKey==="score" ? (r.score??-Infinity)
-                  : sortKey==="p1"  ? (r.p?.[1]??-Infinity)
-                  : sortKey==="p5"  ? (r.p?.[5]??-Infinity)
+                  : sortKey==="p2"  ? (r.p?.[1]??-Infinity)
+                  : sortKey==="p6"  ? (r.p?.[5]??-Infinity)
                   : sortKey==="sey" ? (r.sey??-Infinity)
                   : sortKey==="pdd" ? (r.pdd??-Infinity)
                   : sortKey==="gap" ? -(r.gap??Infinity)   /* 取负→升序 */
@@ -340,21 +507,30 @@ function renderCards(){
   });
   const box = document.getElementById("cards");
   box.innerHTML = "";
+  if(!list.length){
+    box.innerHTML = `<div class="empty">全部标的被一票否决 —— 展开下方清单查看淘汰原因</div>`;
+  }
   list.forEach((r,idx)=>{
     const card = document.createElement("div");
-    card.className = "card";
+    const starred = marks.star.has(r.ticker), reviewed = marks.rev.has(r.ticker);
+    card.className = "card" + (starred?" starred":"") + (reviewed?" reviewed":"");
     const strongCore = Math.min(r.p?.[0]??0, r.p?.[1]??0, r.p?.[3]??0) >= 60;
     const flags = [];
     if((r.penalty??0) >= 0.05)
       flags.push(`<span class="flag f-penalty">板块惩罚 -${Math.round(r.penalty*100)}%</span>`);
     if((r.penalty??0) >= 0.3 && strongCore)
-      flags.push(`<span class="flag f-review">★ 错杀复核区:核心支柱极强,惩罚来自板块标签</span>`);
+      flags.push(`<span class="flag f-review">★ 错杀复核区：核心支柱极强，惩罚来自板块标签</span>`);
     if((r.nc??-1) > 0.05)
       flags.push(`<span class="flag f-cash">净现金 ${fmtPct(r.nc)} 市值</span>`);
+    if(reviewed)
+      flags.push(`<span class="flag f-cash">✓ 已复核</span>`);
+    /* 缺数据的支柱用斜纹表示,不再被误画成红色弱柱 */
     const pillars = (r.p||[]).map((v,i)=>`
       <div class="pillar">
-        <div class="bar"><div class="fill" style="height:${Math.max(2,Math.round(v??0))}%;
-          background:${(v??0)>=70?"var(--safe)":(v??0)>=40?"var(--ink-dim)":"var(--danger)"}"></div></div>
+        <div class="bar">${v==null
+          ? `<div class="fill missing" style="height:100%"></div>`
+          : `<div class="fill" style="height:${Math.max(2,Math.round(v))}%;
+          background:${v>=70?"var(--safe)":v>=40?"var(--ink-dim)":"var(--danger)"}"></div>`}</div>
         <span class="pl">P${i+1} ${PILLAR_LABELS[i]}</span>
         <span class="pv">${v==null?"—":Math.round(v)}</span>
       </div>`).join("");
@@ -373,15 +549,20 @@ function renderCards(){
         lbl = `⚠ 风险被低估：市场仅折 ${Math.round(r.pdd*100)}%，算法看 ${Math.round(r.haircut*100)}%`; }
       gapStrip = `<div class="gap-strip ${cls}">
         <span class="lbl">${lbl}</span>
-        <span class="nums">市场 <b>-${(r.pdd*100).toFixed(0)}%</b> · 算法 <b>-${(r.haircut*100).toFixed(0)}%</b> · 缺口 <b>${g>=0?"+":""}${(g*100).toFixed(0)}pp</b></span>
+        <span class="nums">市场 <b>-${(r.pdd*100).toFixed(0)}%</b> · 算法 <b>-${((r.haircut??0)*100).toFixed(0)}%</b> · 缺口 <b>${g>=0?"+":""}${(g*100).toFixed(0)}pp</b></span>
       </div>`;
     }
+    const scoreCls = r.score==null ? "" : r.score>=70 ? "s-hi" : r.score<40 ? "s-lo" : "";
     card.innerHTML = `
       <div class="row1">
         <span class="rank">${String(idx+1).padStart(2,"0")}</span>
-        <span class="tk">${r.ticker}</span><span class="nm">${r.name||""}</span>
-        <span class="sector">${r.sector||"—"}</span>
-        <span class="score">${r.score==null?"—":r.score.toFixed(1)}<small> /100</small></span>
+        <span class="tk">${esc(r.ticker)}</span><span class="nm">${esc(r.name||"")}</span>
+        <span class="sector">${esc(r.sector||"—")}</span>
+        <button class="mark ${starred?"star-on":""}" data-act="star" data-tk="${esc(r.ticker)}"
+          title="关注(本地保存)">${starred?"★":"☆"}</button>
+        <button class="mark ${reviewed?"rev-on":""}" data-act="rev" data-tk="${esc(r.ticker)}"
+          title="标记已复核(本地保存)">✓</button>
+        <span class="score ${scoreCls}">${r.score==null?"—":r.score.toFixed(1)}<small> /100</small></span>
       </div>
       <div class="pillars">${pillars}</div>
       ${gapStrip}
@@ -398,10 +579,13 @@ function renderCards(){
     box.appendChild(card);
   });
   document.getElementById("elimCount").textContent = `· ${state.eliminated.length} 家`;
-  const el = document.getElementById("elims");
-  el.innerHTML = state.eliminated.map(r=>`
-    <div class="elim"><span class="tk">${r.ticker}</span> <span class="nm">${r.name||""}</span>
-      <div class="reason">✕ ${r.reason}</div></div>`).join("");
+  document.querySelector("details").style.display = state.eliminated.length ? "" : "none";
+  document.getElementById("elims").innerHTML = state.eliminated.map(r=>`
+    <div class="elim"><span class="tk">${esc(r.ticker)}</span> <span class="nm">${esc(r.name||"")}</span>
+      <div class="reasons">${String(r.reason||"").split(/[;；]/).filter(s=>s.trim())
+        .map(s=>`<span class="rchip">✕ ${esc(s.trim())}</span>`).join("")}</div></div>`).join("");
+  document.getElementById("markStats").textContent =
+    `${list.length} 家在榜 · ★ ${marks.star.size} 关注 · ✓ ${marks.rev.size} 已复核`;
 }
 
 /* ---------- CSV 解析(支持引号字段) ---------- */
@@ -425,7 +609,7 @@ function parseCSV(text){
 const num = v => { const f=parseFloat(v); return isNaN(f)?null:f; };
 
 /* 应用日志数据(文件选择与远程fetch共用) */
-function applyLogCSV(text, srcLabel){
+function applyLogCSV(text, srcLabel, source){
   const recs = parseCSV(text);
   if(!recs.length || !("score_financial" in recs[0])) return false;
   state.log = recs.map(r=>({date:r.date, dd:num(r.spy_drawdown)??0,
@@ -434,7 +618,8 @@ function applyLogCSV(text, srcLabel){
     services:num(r.score_services)??0, inflation_energy:num(r.score_inflation_energy)??0}));
   const last = state.log[state.log.length-1];
   state.diagnosis=last.diagnosis; state.confidence=last.confidence; state.drawdown=last.dd;
-  state.evidence=[`已加载${srcLabel} ${state.log.length} 条(${state.log[0].date} → ${last.date}),证据清单请见当日 --detect 输出`];
+  state.evidence=[`已加载 ${srcLabel} ${state.log.length} 条（${state.log[0].date} → ${last.date}），证据清单请见当日 --detect 输出`];
+  state.source = source || "local";
   document.getElementById("dataSrc").textContent = srcLabel;
   renderStatus(); renderCharts(); renderEvidence();
   return true;
@@ -445,10 +630,13 @@ document.getElementById("logFile").addEventListener("change", e=>{
   const file = e.target.files[0]; if(!file) return;
   const rd = new FileReader();
   rd.onload = ()=>{
-    if(!applyLogCSV(rd.result, "本地日志"))
-      alert("无法识别:请选择 --log 生成的 crisis_log.csv");
+    if(applyLogCSV(rd.result, "本地日志", "local")){
+      document.getElementById("logStatus").textContent = `✓ ${file.name}`;
+      document.getElementById("demoReset").hidden = false;
+    }else alert("无法识别：请选择 --log 生成的 crisis_log.csv");
   };
   rd.readAsText(file);
+  e.target.value = "";
 });
 
 /* 应用筛选数据(文件选择与远程fetch共用) */
@@ -474,11 +662,15 @@ function applyScreenCSV(text, srcLabel){
   });
   surv.sort((a,b)=>(b.score??-1)-(a.score??-1));
   state.survivors=surv; state.eliminated=elim;
+  state.source = srcLabel.includes("远程") ? "remote" : "local";
   /* 用CSV自带元数据标注剧本与生成时间,而非冒用当天诊断结论 */
   const meta = recs.find(r=>(r.playbook||"").trim()) || {};
+  const pb = (meta.playbook||"").trim();
+  if(pb) state.playbook = pb;
   document.getElementById("playbookNote").textContent =
-    "剧本: " + (PLAYBOOK_CN[meta.playbook]||meta.playbook||"未知")
-    + " · " + (meta.generated_at ? ("生成于 "+meta.generated_at) : srcLabel);
+    "剧本：" + esc(PLAYBOOK_CN[pb]||pb||"未知")
+    + " · " + (meta.generated_at ? ("生成于 "+esc(meta.generated_at)) : esc(srcLabel));
+  renderStatus();
   renderCards();
   return true;
 }
@@ -488,13 +680,40 @@ document.getElementById("screenFile").addEventListener("change", e=>{
   const file = e.target.files[0]; if(!file) return;
   const rd = new FileReader();
   rd.onload = ()=>{
-    if(!applyScreenCSV(rd.result, "本地数据"))
-      alert("无法识别:请选择筛选输出的 screen_results.csv");
+    if(applyScreenCSV(rd.result, "本地数据")){
+      document.getElementById("scrStatus").textContent = `✓ ${file.name}`;
+      document.getElementById("demoReset").hidden = false;
+    }else alert("无法识别：请选择筛选输出的 screen_results.csv");
   };
   rd.readAsText(file);
+  e.target.value = "";
 });
 
 document.getElementById("sortSel").addEventListener("change", renderCards);
+
+/* 关注 / 已复核(事件委托,点击卡片上的标记按钮) */
+document.getElementById("cards").addEventListener("click", e=>{
+  const btn = e.target.closest(".mark"); if(!btn) return;
+  const tk = btn.dataset.tk;
+  const set = btn.dataset.act==="star" ? marks.star : marks.rev;
+  set.has(tk) ? set.delete(tk) : set.add(tk);
+  saveMarks(); renderCards();
+});
+
+/* 恢复演示数据 */
+document.getElementById("demoReset").addEventListener("click", ()=>{
+  loadDemo();
+  document.getElementById("dataSrc").textContent = "演示数据";
+  document.getElementById("playbookNote").textContent = "剧本：信贷危机（2008 型）· 演示数据";
+  document.getElementById("evidenceNote").textContent = "每一分都有出处 · 演示数据";
+  document.getElementById("logStatus").textContent = "";
+  document.getElementById("scrStatus").textContent = "";
+  document.getElementById("demoReset").hidden = true;
+  renderStatus(); renderCharts(); renderEvidence(); renderCards();
+});
+
+/* 容器宽度变化时重绘地震仪(防抖) */
+let rsT; window.addEventListener("resize", ()=>{ clearTimeout(rsT); rsT = setTimeout(renderCharts, 160); });
 
 renderStatus(); renderCharts(); renderEvidence(); renderCards();
 
@@ -508,10 +727,14 @@ renderStatus(); renderCharts(); renderEvidence(); renderCards();
       return r.ok ? await r.text() : null;
     }catch(e){ return null; }
   }
-  const logTxt = await tryFetch("data/crisis_log.csv");
-  if(logTxt) applyLogCSV(logTxt, "远程数据(自动同步)");
+  /* 三份数据并行拉取,应用顺序保持:日志 → 诊断详情 → 排行 */
+  const [logTxt, diagTxt, scrTxt] = await Promise.all([
+    tryFetch("data/crisis_log.csv"),
+    tryFetch("data/latest_diagnosis.json"),
+    tryFetch("data/screen_results.csv"),
+  ]);
+  if(logTxt) applyLogCSV(logTxt, "远程数据（自动同步）", "remote");
   /* 拉取最新诊断详情(由 --log 同步导出),用真实证据清单替换占位提示 */
-  const diagTxt = await tryFetch("data/latest_diagnosis.json");
   if(diagTxt){
     try{
       const j = JSON.parse(diagTxt);
@@ -526,15 +749,23 @@ renderStatus(); renderCharts(); renderEvidence(); renderCards();
       }
     }catch(e){ /* JSON损坏则保留占位提示 */ }
   }
-  const scrTxt = await tryFetch("data/screen_results.csv");
-  if(scrTxt) applyScreenCSV(scrTxt, "远程数据(自动同步)");
+  if(scrTxt) applyScreenCSV(scrTxt, "远程数据（自动同步）");
 })();
+
+/* 不蒜子加载失败(本地打开/服务不可达)时隐藏统计条,不留空文案 */
+setTimeout(()=>{
+  const pv = document.getElementById("busuanzi_value_site_pv");
+  const uv = document.getElementById("busuanzi_value_site_uv");
+  if((pv && !pv.textContent.trim()) || (uv && !uv.textContent.trim())){
+    document.getElementById("busuanzi_container").style.display = "none";
+  }
+}, 4000);
 </script>
 
 <!-- 不蒜子站点访问统计 -->
 <div id="busuanzi_container" style="text-align:center;font-size:11px;color:#999;padding:6px 0 10px;opacity:.85;line-height:1.6;">
   本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
 </div>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
