@@ -53,6 +53,91 @@ html.dark {
   --primary-soft: rgba(99, 102, 241, 0.16);
   --done-soft: rgba(22, 163, 74, 0.14);
 }
+
+/* ================= 体系周期更新万能卡片 悬停弹窗样式 ================= */
+.cycle-card-wrapper {
+  display: inline-block;
+  position: relative;
+  margin: 6px 0 10px 0;
+  vertical-align: middle;
+  z-index: 20;
+}
+.cycle-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  color: #ffffff !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.cycle-card-btn:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.45);
+}
+.cycle-card-popover {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 480px;
+  max-width: 88vw;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+  transform: translateY(-6px);
+  pointer-events: none;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-main);
+  text-align: left;
+}
+.cycle-card-wrapper:hover .cycle-card-popover,
+.cycle-card-wrapper:focus-within .cycle-card-popover {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.cycle-card-popover h6 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cycle-card-formula {
+  background: var(--code-bg);
+  border-left: 3.5px solid var(--primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 11.5px;
+  margin: 8px 0 10px 0;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+.cycle-card-popover ul {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+.cycle-card-popover li {
+  margin-bottom: 5px;
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -2057,6 +2142,32 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > *出现 1 次：卷1* 
 
 
+<div class="cycle-card-wrapper" tabindex="0">
+  <div class="cycle-card-btn">💡 知识卡片：体系周期更新万能模型（悬停/点击展开）</div>
+  <div class="cycle-card-popover">
+    <h6>💡 核心万能模型：世界体系周期性自我更新</h6>
+    <div class="cycle-card-formula">
+      <b>万能演化公式：</b><br/>
+      货币霸权/过度特权 ──► 去工业化与代价累积 ──► 资本/技术向外围扩散 ──► 外围赶超与体系周期更新
+    </div>
+    <div style="font-weight:600;margin-top:6px;color:var(--text-main);">四阶段演化机制：</div>
+    <ul>
+      <li><b>1. 中央繁荣期</b>：凭技术与货币霸权吸纳全球财富（自我强化，强者恒强）。</li>
+      <li><b>2. 内耗衰腐期</b>：货币高估致本土产业空心化、铁锈带与债务膨胀（中央代价）。</li>
+      <li><b>3. 外围赶超期</b>：外围国靠“勤劳谋生”承接产业外包，积累资本与技术基础。</li>
+      <li><b>4. 体系更迭期</b>：旧中央国被代价掏空，新生产力中心崛起，推动体系重构。</li>
+    </ul>
+    <div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--text-muted);">
+      <b>🎯 跨题目万能复用指南：</b><br/>
+      ① <b>中央国家的代价</b>：代价累积是触发周期更新的内生引擎。<br/>
+      ② <b>世界市场体系特点</b>：第4点“不确定的长周期更迭”的核心依据。<br/>
+      ③ <b>中国地位与趋势</b>：中国从外围工业国升向准中央国，是当代周期更新的具体表现。<br/>
+      ④ <b>霸权更迭/货币体系演变</b>：金本位/布雷顿森林体系崩塌与新秩序重组的底层逻辑。
+    </div>
+  </div>
+</div>
+
+
 ##### **🎯 考场标准作答（直击采分点 · 可直接背诵）**
 
 > **答：在中央-外围体系下，中央国家（如美国）凭借货币霸权享有巨大收益，但也需承担以下三重结构性代价：**
@@ -2152,6 +2263,32 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > *出现 1 次：卷1* 
 
 
+<div class="cycle-card-wrapper" tabindex="0">
+  <div class="cycle-card-btn">💡 知识卡片：体系周期更新万能模型（悬停/点击展开）</div>
+  <div class="cycle-card-popover">
+    <h6>💡 核心万能模型：世界体系周期性自我更新</h6>
+    <div class="cycle-card-formula">
+      <b>万能演化公式：</b><br/>
+      货币霸权/过度特权 ──► 去工业化与代价累积 ──► 资本/技术向外围扩散 ──► 外围赶超与体系周期更新
+    </div>
+    <div style="font-weight:600;margin-top:6px;color:var(--text-main);">四阶段演化机制：</div>
+    <ul>
+      <li><b>1. 中央繁荣期</b>：凭技术与货币霸权吸纳全球财富（自我强化，强者恒强）。</li>
+      <li><b>2. 内耗衰腐期</b>：货币高估致本土产业空心化、铁锈带与债务膨胀（中央代价）。</li>
+      <li><b>3. 外围赶超期</b>：外围国靠“勤劳谋生”承接产业外包，积累资本与技术基础。</li>
+      <li><b>4. 体系更迭期</b>：旧中央国被代价掏空，新生产力中心崛起，推动体系重构。</li>
+    </ul>
+    <div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--text-muted);">
+      <b>🎯 跨题目万能复用指南：</b><br/>
+      ① <b>中央国家的代价</b>：代价累积是触发周期更新的内生引擎。<br/>
+      ② <b>世界市场体系特点</b>：第4点“不确定的长周期更迭”的核心依据。<br/>
+      ③ <b>中国地位与趋势</b>：中国从外围工业国升向准中央国，是当代周期更新的具体表现。<br/>
+      ④ <b>霸权更迭/货币体系演变</b>：金本位/布雷顿森林体系崩塌与新秩序重组的底层逻辑。
+    </div>
+  </div>
+</div>
+
+
 ##### **🎯 考场标准作答（直击采分点 · 可直接背诵）**
 
 > **答：世界市场体系具有鲜明的结构性特征，翟东升教授将其归纳为以下四个方面：**
@@ -2192,6 +2329,32 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > *出现 1 次：卷4* 
 
 
+<div class="cycle-card-wrapper" tabindex="0">
+  <div class="cycle-card-btn">💡 知识卡片：体系周期更新万能模型（悬停/点击展开）</div>
+  <div class="cycle-card-popover">
+    <h6>💡 核心万能模型：世界体系周期性自我更新</h6>
+    <div class="cycle-card-formula">
+      <b>万能演化公式：</b><br/>
+      货币霸权/过度特权 ──► 去工业化与代价累积 ──► 资本/技术向外围扩散 ──► 外围赶超与体系周期更新
+    </div>
+    <div style="font-weight:600;margin-top:6px;color:var(--text-main);">四阶段演化机制：</div>
+    <ul>
+      <li><b>1. 中央繁荣期</b>：凭技术与货币霸权吸纳全球财富（自我强化，强者恒强）。</li>
+      <li><b>2. 内耗衰腐期</b>：货币高估致本土产业空心化、铁锈带与债务膨胀（中央代价）。</li>
+      <li><b>3. 外围赶超期</b>：外围国靠“勤劳谋生”承接产业外包，积累资本与技术基础。</li>
+      <li><b>4. 体系更迭期</b>：旧中央国被代价掏空，新生产力中心崛起，推动体系重构。</li>
+    </ul>
+    <div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--text-muted);">
+      <b>🎯 跨题目万能复用指南：</b><br/>
+      ① <b>中央国家的代价</b>：代价累积是触发周期更新的内生引擎。<br/>
+      ② <b>世界市场体系特点</b>：第4点“不确定的长周期更迭”的核心依据。<br/>
+      ③ <b>中国地位与趋势</b>：中国从外围工业国升向准中央国，是当代周期更新的具体表现。<br/>
+      ④ <b>霸权更迭/货币体系演变</b>：金本位/布雷顿森林体系崩塌与新秩序重组的底层逻辑。
+    </div>
+  </div>
+</div>
+
+
 翟东升教授提出，分析一国在世界市场体系中的位置，<span class="hl">**核心标准是看该国向整个体系出口何种东西以交换它所需的商品与服务**</span>。基于此，他将世界体系内的国家和地区分为四类，并形象地概括了其生存方式：
 
 <div class="dgm">
@@ -2229,6 +2392,32 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > 📚 **引用来源**：《货币、权力与人》第2章、第5章
 
 > *出现 1 次：卷2* 
+
+
+<div class="cycle-card-wrapper" tabindex="0">
+  <div class="cycle-card-btn">💡 知识卡片：体系周期更新万能模型（悬停/点击展开）</div>
+  <div class="cycle-card-popover">
+    <h6>💡 核心万能模型：世界体系周期性自我更新</h6>
+    <div class="cycle-card-formula">
+      <b>万能演化公式：</b><br/>
+      货币霸权/过度特权 ──► 去工业化与代价累积 ──► 资本/技术向外围扩散 ──► 外围赶超与体系周期更新
+    </div>
+    <div style="font-weight:600;margin-top:6px;color:var(--text-main);">四阶段演化机制：</div>
+    <ul>
+      <li><b>1. 中央繁荣期</b>：凭技术与货币霸权吸纳全球财富（自我强化，强者恒强）。</li>
+      <li><b>2. 内耗衰腐期</b>：货币高估致本土产业空心化、铁锈带与债务膨胀（中央代价）。</li>
+      <li><b>3. 外围赶超期</b>：外围国靠“勤劳谋生”承接产业外包，积累资本与技术基础。</li>
+      <li><b>4. 体系更迭期</b>：旧中央国被代价掏空，新生产力中心崛起，推动体系重构。</li>
+    </ul>
+    <div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:8px;font-size:11.5px;color:var(--text-muted);">
+      <b>🎯 跨题目万能复用指南：</b><br/>
+      ① <b>中央国家的代价</b>：代价累积是触发周期更新的内生引擎。<br/>
+      ② <b>世界市场体系特点</b>：第4点“不确定的长周期更迭”的核心依据。<br/>
+      ③ <b>中国地位与趋势</b>：中国从外围工业国升向准中央国，是当代周期更新的具体表现。<br/>
+      ④ <b>霸权更迭/货币体系演变</b>：金本位/布雷顿森林体系崩塌与新秩序重组的底层逻辑。
+    </div>
+  </div>
+</div>
 
 
 **当前位置**：中国正处于从**外围工业国家**向**准中央国家**过渡的关键阶段，是“依靠勤劳谋生”的国家中实力最突出、最具发展潜力的一员。
