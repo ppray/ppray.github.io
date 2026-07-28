@@ -1,0 +1,49 @@
+# 路径: .github/workflows/update-finra-margin.yml
+# 作用: 每月定时抓取 FINRA 官方最新保证金数据和 S&P 500 指数，自动提交更新 data.js
+# 触发: 每月 26 日凌晨 02:00 UTC (北京时间 10:00) 自动触发，或在 GitHub Actions 手动点击运行
+
+name: update-finra-margin
+
+on:
+  schedule:
+    # 每月 26 日凌晨 02:00 UTC (FINRA 每月中下旬发布上月数据)
+    - cron: "0 2 * 26 *"
+  workflow_dispatch: {}  # 允许手动触发，随时测试更新
+
+permissions:
+  contents: write  # 允许将更新后的 data.js 提交回仓库
+
+concurrency:
+  group: update-finra-margin
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 安装依赖包
+        run: |
+          pip install yfinance requests
+
+      - name: 运行 FINRA 自动更新脚本
+        run: |
+          python finra-margin/update_data.py
+
+      - name: 提交更新到仓库
+        run: |
+          git config user.name "finra-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add finra-margin/data.js
+          git diff --cached --quiet && echo "数据已是最新，无需更新提交" && exit 0
+          git commit -m "data: 自动同步 FINRA 最新保证金与净信用余额数据 [$(date -u +%Y-%m-%d)]"
+          git push

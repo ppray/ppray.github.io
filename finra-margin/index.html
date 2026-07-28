@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINRA 保证金统计 & 投资者净信用余额仪表盘</title>
+    <meta name="description" content="基于 FINRA 官方保证金统计数据，可视化展示美股投资者融资债务、净信用余额与市场杠杆趋势">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <a href="../index.html" class="back-link" title="返回主页">← 首页</a>
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+                        <path d="M8 22V14L12 10L16 16L20 8L24 14V22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#6366f1"/>
+                                <stop offset="1" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1>FINRA 保证金统计仪表盘</h1>
+                    <p class="subtitle">Margin Statistics & Investor Net Credit Balance Dashboard</p>
+                </div>
+            </div>
+            <div class="header-meta">
+                <div class="data-source-badge">
+                    <span class="badge-dot"></span>
+                    数据来源：FINRA Margin Statistics
+                </div>
+                <div class="last-update" id="lastUpdate"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KPI Cards -->
+    <section class="kpi-section">
+        <div class="kpi-grid">
+            <div class="kpi-card" id="kpiMarginDebt">
+                <div class="kpi-header">
+                    <span class="kpi-label">融资债务 (Margin Debt)</span>
+                    <span class="kpi-icon kpi-icon-red">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3v14h14v-2H5V3H3zm4 8l3-3 2 2 4-4v2.5l-4 4-2-2-3 3V11z"/></svg>
+                    </span>
+                </div>
+                <div class="kpi-value" id="kpiMarginDebtValue">--</div>
+                <div class="kpi-change" id="kpiMarginDebtChange"></div>
+            </div>
+            <div class="kpi-card" id="kpiFreeCreditCash">
+                <div class="kpi-header">
+                    <span class="kpi-label">现金账户自由余额 (Free Credit - Cash)</span>
+                    <span class="kpi-icon kpi-icon-green">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/></svg>
+                    </span>
+                </div>
+                <div class="kpi-value" id="kpiFreeCreditCashValue">--</div>
+                <div class="kpi-change" id="kpiFreeCreditCashChange"></div>
+            </div>
+            <div class="kpi-card" id="kpiCreditMargin">
+                <div class="kpi-header">
+                    <span class="kpi-label">保证金账户信用余额 (Credit - Margin)</span>
+                    <span class="kpi-icon kpi-icon-blue">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4h12v2H4V4zm0 4h12v2H4V8zm0 4h8v2H4v-2z"/></svg>
+                    </span>
+                </div>
+                <div class="kpi-value" id="kpiCreditMarginValue">--</div>
+                <div class="kpi-change" id="kpiCreditMarginChange"></div>
+            </div>
+            <div class="kpi-card highlight-card" id="kpiNetCredit">
+                <div class="kpi-header">
+                    <span class="kpi-label">⭐ 净信用余额 (Net Credit Balance)</span>
+                    <span class="kpi-icon kpi-icon-purple">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l2.5 5 5.5.8-4 3.9.9 5.5L10 14.8 5.1 17.2l.9-5.5-4-3.9L7.5 7z"/></svg>
+                    </span>
+                </div>
+                <div class="kpi-value" id="kpiNetCreditValue">--</div>
+                <div class="kpi-change" id="kpiNetCreditChange"></div>
+                <div class="kpi-formula">= (现金余额 + 保证金信用) − 融资债务</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Chart -->
+    <section class="chart-section">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>投资者净信用余额 & 融资债务趋势</h2>
+                <div class="chart-controls">
+                    <button type="button" class="range-btn active" data-range="all" aria-pressed="true">全部</button>
+                    <button type="button" class="range-btn" data-range="10y" aria-pressed="false">10年</button>
+                    <button type="button" class="range-btn" data-range="5y" aria-pressed="false">5年</button>
+                    <button type="button" class="range-btn" data-range="3y" aria-pressed="false">3年</button>
+                    <button type="button" class="range-btn" data-range="1y" aria-pressed="false">1年</button>
+                </div>
+            </div>
+            <div id="mainChart" class="chart-area"></div>
+        </div>
+    </section>
+
+    <!-- S&P 500 vs Net Credit Comparison -->
+    <section class="chart-section">
+        <div class="chart-container comparison-container">
+            <div class="chart-header">
+                <div>
+                    <h2>⭐ 净信用余额 vs S&P 500 对比</h2>
+                    <p class="chart-subtitle">Net Credit Balance vs S&P 500 — 杠杆水平与市场走势的历史共振</p>
+                </div>
+                <div class="chart-legend-hint">
+                    <span class="legend-dot legend-dot-purple"></span> 净信用余额（左轴）
+                    <span class="legend-dot legend-dot-amber"></span> S&P 500（右轴）
+                </div>
+            </div>
+            <div id="comparisonChart" class="chart-area-lg"></div>
+            <div class="insight-bar">
+                <div class="insight-item">
+                    <span class="insight-icon">🔴</span>
+                    <span><strong>红色区域</strong>：净信用余额为负值（杠杆超过现金），区域越深代表杠杆越高</span>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-icon">🟢</span>
+                    <span><strong>绿色区域</strong>：净信用余额为正值（现金充裕），通常出现在恐慌抛售 / 去杠杆阶段</span>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-icon">⚠️</span>
+                    <span><strong>关键规律</strong>：净信用余额创新低时，S&P 500 往往接近阶段性顶部</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breakdown Chart -->
+    <section class="chart-section">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>三项指标拆分视图</h2>
+                <p class="chart-subtitle">融资债务 vs 现金账户余额 vs 保证金账户信用余额</p>
+            </div>
+            <div id="breakdownChart" class="chart-area"></div>
+        </div>
+    </section>
+
+    <!-- YoY Change Chart -->
+    <section class="chart-section">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>融资债务同比变化率 (%)</h2>
+                <p class="chart-subtitle">Year-over-Year Change — 杠杆增长速度的领先指标</p>
+            </div>
+            <div id="yoyChart" class="chart-area-sm"></div>
+        </div>
+    </section>
+
+    <!-- Explanation Panel -->
+    <section class="info-section">
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📊 什么是净信用余额？</h3>
+                <p><strong>净信用余额 = (现金账户自由信用余额 + 保证金账户信用余额) − 融资债务</strong></p>
+                <ul>
+                    <li><strong>正值</strong>：投资者整体持有更多现金储备，市场杠杆较低，通常出现在市场底部或熊市恐慌期。</li>
+                    <li><strong>负值</strong>：投资者整体使用杠杆（借钱炒股）超过现金持有量，市场风险偏好高，牛市后期常见。</li>
+                    <li><strong>负值越深</strong>：市场杠杆越高，泡沫化风险越大。历史上，净信用余额创纪录低位往往与市场顶部高度相关。</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>🔍 如何解读与使用？</h3>
+                <ul>
+                    <li><strong>趋势观察</strong>：关注净信用余额的方向和斜率，而非绝对值。快速转负或加速下行是危险信号。</li>
+                    <li><strong>历史类比</strong>：对比 2000 年互联网泡沫、2007 年金融危机和 2021 年杠杆高峰期的净信用余额水平。</li>
+                    <li><strong>逆向指标</strong>：当净信用余额快速由负转正（投资者集体去杠杆），往往意味着市场已处于极度恐慌、可能接近底部。</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>🤖 自动化更新机制 (GitHub Actions)</h3>
+                <ul>
+                    <li><strong>月度定时更新</strong>：工作流 <code>.github/workflows/update-finra-margin.yml</code> 每月 26 日自动抓取 FINRA 官网最新数据并提交到仓库。</li>
+                    <li><strong>手动立即触发</strong>：进入 GitHub 仓库 ➔ <strong>Actions</strong> ➔ 选中 <code>update-finra-margin</code> ➔ 点击 <strong>Run workflow</strong> 即可一键更新。</li>
+                    <li><strong>本地更新命令</strong>：也可以在本地运行 <code>python3 finra-margin/update_data.py</code> 自动解析更新。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>数据来源：<a href="https://www.finra.org/investors/learn-to-invest/advanced-investing/margin-statistics" target="_blank" rel="noopener">FINRA Margin Statistics</a> | 图表分析参考：<a href="https://www.advisorperspectives.com" target="_blank" rel="noopener">Advisor Perspectives</a></p>
+        <p class="disclaimer">⚠️ 本仪表盘仅供研究与教育用途，不构成任何投资建议。数据可能存在滞后，请以 FINRA 官方最新发布为准。</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

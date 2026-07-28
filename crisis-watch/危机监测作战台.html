@@ -499,13 +499,32 @@ function renderEvidence(){
 
 /* ---------- 排行 ---------- */
 function fmtPct(v){ return v==null ? "—" : (v*100).toFixed(1)+"%"; }
+/* 买入机会分:数据源(新版CSV)带 buy_score 就直接用;缺失(演示数据/旧CSV)则现场计算,
+   公式与 crisis_screener.py 的 score() 逐项对齐:
+     gap = pdd - haircut   (正值→市场比算法更悲观→潜在错杀)
+     gs  = clip(gap+0.10, 0, 0.40) / 0.40   (gap>-10pp 才开始计分)
+     q   = (0.25·P1 + 0.50·P2 + 0.25·P4) / 100   (P2 生存权重最高)
+     conf= 0.6 + 0.4 · (cov ?? 0.5)
+     buy_score = gs · q · conf · 100
+   返回 null 表示数据不足(无法判别机会)。 */
+function deriveBuyScore(r){
+  if(typeof r.buy_score === "number" && !isNaN(r.buy_score)) return r.buy_score;
+  const pdd = r.pdd, haircut = r.haircut ?? r.stress_haircut;
+  if(pdd==null || haircut==null) return null;
+  const gap = pdd - haircut;
+  const gs = Math.min(0.40, Math.max(0, gap + 0.10)) / 0.40;
+  const p = r.p || [];
+  const q = (0.25*(p[0]??50) + 0.50*(p[1]??50) + 0.25*(p[3]??50)) / 100;
+  const conf = 0.6 + 0.4*(r.cov ?? 0.5);
+  return Math.round(gs * q * conf * 1000) / 10;   // 保留 1 位小数 */
+}
 function renderCards(){
   const sortKey = document.getElementById("sortSel").value;
   /* 各排序键都是"越大越靠前",除了 gap:gap 越小(越负)=市场超跌算法=机会越大,
      所以 gap 按升序排,机会候选浮到最上。缺数据的项用 -Infinity 沉底。 */
-  const list = [...state.survivors].sort((a,b)=>{
+  const list = [...state.survivors].map(r=>({...r, buy_score: deriveBuyScore(r)})).sort((a,b)=>{
     const get = r => sortKey==="score" ? (r.score??-Infinity)
-                  : sortKey==="buy"  ? (r.buy_score??-Infinity)
+                  : sortKey==="buy"  ? (r.buy_score ?? -Infinity)
                   : sortKey==="p2"   ? (r.p?.[1]??-Infinity)
                   : sortKey==="p6"   ? (r.p?.[5]??-Infinity)
                   : sortKey==="sey"  ? (r.sey??-Infinity)
