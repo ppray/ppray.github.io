@@ -352,6 +352,61 @@ blockquote {
   font-size: 0.93rem;
 }
 blockquote p { margin: 6px 0; }
+
+/* ================= 考场标准作答 / 深度复习笔记 小节 ================= */
+/* h5 小节标题：胶囊标签风，一眼区分「背诵区」与「拓展区」 */
+.qb-in h5 {
+  margin: 20px 0 8px;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3px;
+}
+.qb-in h5.ans-head,
+.qb-in h5.notes-head {
+  display: inline-flex; align-items: center;
+  border-radius: 8px; padding: 5px 12px;
+}
+.qb-in h5.ans-head {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.qb-in h5.notes-head {
+  color: var(--text-muted);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+}
+/* 标准答案引用块：翡翠绿强调 + 正文色高对比（背诵区要清晰易读） */
+blockquote.ans-block {
+  border-left: 3px solid #10b981;
+  background: rgba(16, 185, 129, 0.06);
+  color: var(--text-main);
+  padding: 13px 18px;
+  font-size: 0.95rem;
+}
+blockquote.ans-block p {
+  margin: 9px 0;
+  line-height: 1.8;
+}
+/* 编号要点的标题（**1. ……**）用主题绿突出，扫读时快速定位采分点 */
+blockquote.ans-block p > strong:first-child {
+  color: #059669;
+}
+/* 斜体小结行弱化，与编号要点拉开层级 */
+blockquote.ans-block p > em:only-child {
+  color: var(--text-muted);
+  font-size: 0.88em;
+}
+html.dark .qb-in h5.ans-head {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+html.dark blockquote.ans-block {
+  background: rgba(16, 185, 129, 0.08);
+}
+html.dark blockquote.ans-block p > strong:first-child {
+  color: #34d399;
+}
+
 /* 首屏导览 note（第一个 h2 之前） */
 blockquote.intro-note {
   background: var(--card-bg); border: 1px solid var(--border);
@@ -1043,7 +1098,7 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > **1. 表层：国家实力的象征**
 > *   体现了中国通过出口导向型经济融入全球化的成功，是”世界工厂”创汇能力的集中体现。
 > **2. 深层（翟东升视角）：更接近附庸地位的体现**
-> *   在美元霸权下，巨额外储<span class=”hl”>与其是大国实力标志，不如说是依附地位的体现</span>——本质是向中心国输送信用、缴纳”铸币税”，储备资产还可能被”武器化”成为”人质”。
+> *   在美元霸权下，巨额外储<span class="hl">与其是大国实力标志，不如说是依附地位的体现</span>——本质是向中心国输送信用、缴纳”铸币税”，储备资产还可能被”武器化”成为”人质”。
 >
 > **二、形成的微观基础**
 > **3. 经常项目顺差（货物贸易）**
@@ -1060,38 +1115,38 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 
 翟东升的核心撕开点在于：外汇储备的”实力象征”只是**表层叙事**，深层要看**中心—外围结构**——美元本位制下，美国是发行储备货币的”中心国”，积累美元储备的外围国本质是在向中心国输送信用、缴纳”铸币税”，地位天然依附。抓住了这个结构，才能理解为什么”储备越多 ≠ 越强大”。
 
-<span class=”hl-q”>**深度辨析（U 型关系）**</span>：储备规模与自主性并非”越少越自主”的线性关系，而是一条 **正 U 形曲线**——储备过多与过少两端自主性都低，储备适中处最高：
+<span class="hl-q">**深度辨析（U 型关系）**</span>：储备规模与自主性并非”越少越自主”的线性关系，而是一条 **正 U 形曲线**——储备过多与过少两端自主性都低，储备适中处最高：
 
-<figure style=”margin:12px 0;padding:8px 16px;border-left:4px solid var(--primary);background:var(--code-bg);border-radius:0 6px 6px 0;”>
-<svg viewBox=”0 0 640 340” xmlns=”http://www.w3.org/2000/svg” style=”width:100%;max-width:640px;display:block;margin:0 auto;font-family:inherit;” role=”img” aria-label=”外汇储备规模与自主性的正U型关系：左端储备过少为脆弱、中间储备适中最自主、右端储备过多为依附；真正自主（本币国际化）不在此曲线上”>
+<figure style="margin:12px 0;padding:8px 16px;border-left:4px solid var(--primary);background:var(--code-bg);border-radius:0 6px 6px 0;">
+<svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:0 auto;font-family:inherit;" role="img" aria-label="外汇储备规模与自主性的正U型关系：左端储备过少为脆弱、中间储备适中最自主、右端储备过多为依附；真正自主（本币国际化）不在此曲线上">
   <!-- 坐标轴 -->
-  <line x1=”70” y1=”280” x2=”600” y2=”280” stroke=”var(--text-muted)” stroke-width=”1.5”/>
-  <line x1=”70” y1=”40” x2=”70” y2=”280” stroke=”var(--text-muted)” stroke-width=”1.5”/>
+  <line x1="70" y1="280" x2="600" y2="280" stroke="var(--text-muted)" stroke-width="1.5"/>
+  <line x1="70" y1="40" x2="70" y2="280" stroke="var(--text-muted)" stroke-width="1.5"/>
   <!-- 箭头 -->
-  <polygon points=”600,280 590,276 590,284” fill=”var(--text-muted)”/>
-  <polygon points=”70,40 66,50 74,50” fill=”var(--text-muted)”/>
+  <polygon points="600,280 590,276 590,284" fill="var(--text-muted)"/>
+  <polygon points="70,40 66,50 74,50" fill="var(--text-muted)"/>
   <!-- 轴标签 -->
-  <text x=”630” y=”285” font-size=”13” fill=”var(--text-muted)” text-anchor=”end”>外汇储备规模 →</text>
-  <text x=”70” y=”30” font-size=”13” fill=”var(--text-muted)” text-anchor=”middle”>↑ 自主性</text>
+  <text x="630" y="285" font-size="13" fill="var(--text-muted)" text-anchor="end">外汇储备规模 →</text>
+  <text x="70" y="30" font-size="13" fill="var(--text-muted)" text-anchor="middle">↑ 自主性</text>
   <!-- 正 U 型曲线（左端低=脆弱、中间高=自主、右端低=依附）-->
-  <path d=”M 110 250 Q 200 250, 240 150 Q 290 60, 330 60 Q 380 60, 430 140 Q 480 230, 560 225” fill=”none” stroke=”var(--primary)” stroke-width=”3” stroke-linecap=”round”/>
+  <path d="M 110 250 Q 200 250, 240 150 Q 290 60, 330 60 Q 380 60, 430 140 Q 480 230, 560 225" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round"/>
   <!-- 左端点：储备过少（脆弱，自主性低）-->
-  <circle cx=”110” cy=”250” r=”5” fill=”var(--primary)”/>
-  <text x=”120” y=”245” font-size=”13” fill=”var(--text-main)” font-weight=”600”>储备过少</text>
-  <text x=”120” y=”263” font-size=”12” fill=”var(--text-muted)”>“放逐式脆弱”</text>
-  <text x=”120” y=”279” font-size=”11” fill=”var(--text-muted)”>汇率崩、外债爆、受制于IMF</text>
+  <circle cx="110" cy="250" r="5" fill="var(--primary)"/>
+  <text x="120" y="245" font-size="13" fill="var(--text-main)" font-weight="600">储备过少</text>
+  <text x="120" y="263" font-size="12" fill="var(--text-muted)">“放逐式脆弱”</text>
+  <text x="120" y="279" font-size="11" fill="var(--text-muted)">汇率崩、外债爆、受制于IMF</text>
   <!-- 峰顶：储备适中（自主性最高）-->
-  <circle cx=”330” cy=”60” r=”6” fill=”var(--primary)”/>
-  <circle cx=”330” cy=”60” r=”11” fill=”none” stroke=”var(--primary)” stroke-width=”1.5” opacity=”0.4”/>
-  <text x=”330” y=”46” font-size=”13” fill=”var(--text-main)” font-weight=”600” text-anchor=”middle”>储备适中</text>
-  <text x=”330” y=”98” font-size=”12” fill=”var(--text-muted)” text-anchor=”middle”>最自主：进可干预、退可防守</text>
+  <circle cx="330" cy="60" r="6" fill="var(--primary)"/>
+  <circle cx="330" cy="60" r="11" fill="none" stroke="var(--primary)" stroke-width="1.5" opacity="0.4"/>
+  <text x="330" y="46" font-size="13" fill="var(--text-main)" font-weight="600" text-anchor="middle">储备适中</text>
+  <text x="330" y="98" font-size="12" fill="var(--text-muted)" text-anchor="middle">最自主：进可干预、退可防守</text>
   <!-- 右端点：储备过多（依附，自主性低）-->
-  <circle cx=”560” cy=”225” r=”5” fill=”var(--primary)”/>
-  <text x=”470” y=”200” font-size=”13” fill=”var(--text-main)” font-weight=”600” text-anchor=”end”>储备过多</text>
-  <text x=”470” y=”218” font-size=”12” fill=”var(--text-muted)” text-anchor=”end”>“绑架式依附”</text>
-  <text x=”470” y=”234” font-size=”11” fill=”var(--text-muted)” text-anchor=”end”>交铸币税、买美债当“人质”</text>
+  <circle cx="560" cy="225" r="5" fill="var(--primary)"/>
+  <text x="470" y="200" font-size="13" fill="var(--text-main)" font-weight="600" text-anchor="end">储备过多</text>
+  <text x="470" y="218" font-size="12" fill="var(--text-muted)" text-anchor="end">“绑架式依附”</text>
+  <text x="470" y="234" font-size="11" fill="var(--text-muted)" text-anchor="end">交铸币税、买美债当“人质”</text>
 </svg>
-<figcaption style=”text-align:center;font-size:12px;color:var(--text-muted);margin-top:4px;”>图：外汇储备规模与自主性的 U 型关系——储备过多（依附）与过少（脆弱）两端自主性都低，储备适中处最高；但真正自主（本币国际化）是更高维度，不在此曲线上</figcaption>
+<figcaption style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:4px;">图：外汇储备规模与自主性的 U 型关系——储备过多（依附）与过少（脆弱）两端自主性都低，储备适中处最高；但真正自主（本币国际化）是更高维度，不在此曲线上</figcaption>
 </figure>
 
 *   **储备过多**（中国曾达 ~4 万亿）：美元霸权下的**”绑架式依附”**——越能出口赚汇，反而越被绑定在美元体系里。
@@ -1106,40 +1161,40 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 
 **负利差循环——为什么这套机制等于向美元中心国”输血”？**
 
-<figure style=”margin:12px 0;padding:12px 16px;border-left:4px solid var(--primary);background:var(--code-bg);border-radius:0 6px 6px 0;”>
-<svg viewBox=”0 0 640 260” xmlns=”http://www.w3.org/2000/svg” style=”width:100%;max-width:640px;display:block;margin:0 auto;font-family:inherit;” role=”img” aria-label=”负利差循环：外资以高成本流入中国，中国再以低收益回流美国，形成向美元中心国持续输血的负利差”>
+<figure style="margin:12px 0;padding:12px 16px;border-left:4px solid var(--primary);background:var(--code-bg);border-radius:0 6px 6px 0;">
+<svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:0 auto;font-family:inherit;" role="img" aria-label="负利差循环：外资以高成本流入中国，中国再以低收益回流美国，形成向美元中心国持续输血的负利差">
   <!-- 左节点：外资FDI流入中国 -->
-  <rect x=”20” y=”80” width=”200” height=”100” rx=”10” fill=”none” stroke=”var(--primary)” stroke-width=”2”/>
-  <text x=”120” y=”108” font-size=”14” fill=”var(--text-main)” font-weight=”700” text-anchor=”middle”>外资 FDI 流入中国</text>
-  <text x=”120” y=”130” font-size=”12” fill=”var(--text-muted)” text-anchor=”middle”>“引进来” · 借入资金+技术</text>
-  <text x=”120” y=”155” font-size=”14” fill=”#dc2626” font-weight=”700” text-anchor=”middle”>回报率 ~10–15%</text>
-  <text x=”120” y=”172” font-size=”11” fill=”var(--text-muted)” text-anchor=”middle”>（外资在华高收益）</text>
+  <rect x="20" y="80" width="200" height="100" rx="10" fill="none" stroke="var(--primary)" stroke-width="2"/>
+  <text x="120" y="108" font-size="14" fill="var(--text-main)" font-weight="700" text-anchor="middle">外资 FDI 流入中国</text>
+  <text x="120" y="130" font-size="12" fill="var(--text-muted)" text-anchor="middle">“引进来” · 借入资金+技术</text>
+  <text x="120" y="155" font-size="14" fill="#dc2626" font-weight="700" text-anchor="middle">回报率 ~10–15%</text>
+  <text x="120" y="172" font-size="11" fill="var(--text-muted)" text-anchor="middle">（外资在华高收益）</text>
   <!-- 右节点：储备买美债回流美国 -->
-  <rect x=”420” y=”80” width=”200” height=”100” rx=”10” fill=”none” stroke=”var(--primary)” stroke-width=”2”/>
-  <text x=”520” y=”108” font-size=”14” fill=”var(--text-main)” font-weight=”700” text-anchor=”middle”>储备买美债回流美国</text>
-  <text x=”520” y=”130” font-size=”12” fill=”var(--text-muted)” text-anchor=”middle”>“投出去” · 借出资金</text>
-  <text x=”520” y=”155” font-size=”14” fill=”#16a34a” font-weight=”700” text-anchor=”middle”>收益率 ~3%</text>
-  <text x=”520” y=”172” font-size=”11” fill=”var(--text-muted)” text-anchor=”middle”>（低安全资产收益）</text>
+  <rect x="420" y="80" width="200" height="100" rx="10" fill="none" stroke="var(--primary)" stroke-width="2"/>
+  <text x="520" y="108" font-size="14" fill="var(--text-main)" font-weight="700" text-anchor="middle">储备买美债回流美国</text>
+  <text x="520" y="130" font-size="12" fill="var(--text-muted)" text-anchor="middle">“投出去” · 借出资金</text>
+  <text x="520" y="155" font-size="14" fill="#16a34a" font-weight="700" text-anchor="middle">收益率 ~3%</text>
+  <text x="520" y="172" font-size="11" fill="var(--text-muted)" text-anchor="middle">（低安全资产收益）</text>
   <!-- 上方箭头：中国→美国（结汇→储备→买美债）-->
-  <path d=”M 220 110 Q 320 60, 420 110” fill=”none” stroke=”var(--text-muted)” stroke-width=”1.8” marker-end=”url(#arrEnd)”/>
-  <text x=”320” y=”55” font-size=”12” fill=”var(--text-muted)” text-anchor=”middle”>出口创汇 → 强制结汇 → 央行收储 → 买美债</text>
+  <path d="M 220 110 Q 320 60, 420 110" fill="none" stroke="var(--text-muted)" stroke-width="1.8" marker-end="url(#arrEnd)"/>
+  <text x="320" y="55" font-size="12" fill="var(--text-muted)" text-anchor="middle">出口创汇 → 强制结汇 → 央行收储 → 买美债</text>
   <!-- 下方箭头：美国→中国（资本回流支撑美元/消费，买中国商品）-->
-  <path d=”M 420 150 Q 320 200, 220 150” fill=”none” stroke=”var(--text-muted)” stroke-width=”1.8” marker-end=”url(#arrEnd)”/>
-  <text x=”320” y=”218” font-size=”12” fill=”var(--text-muted)” text-anchor=”middle”>美元回流支撑美国低利率 + 消费 → 买中国商品</text>
+  <path d="M 420 150 Q 320 200, 220 150" fill="none" stroke="var(--text-muted)" stroke-width="1.8" marker-end="url(#arrEnd)"/>
+  <text x="320" y="218" font-size="12" fill="var(--text-muted)" text-anchor="middle">美元回流支撑美国低利率 + 消费 → 买中国商品</text>
   <!-- 箭头标记定义 -->
   <defs>
-    <marker id=”arrEnd” markerWidth=”10” markerHeight=”10” refX=”8” refY=”3” orient=”auto” markerUnits=”strokeWidth”>
-      <path d=”M0,0 L0,6 L9,3 z” fill=”var(--text-muted)”/>
+    <marker id="arrEnd" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="var(--text-muted)"/>
     </marker>
   </defs>
   <!-- 负利差标注 -->
-  <text x=”320” y=”138” font-size=”13” fill=”#dc2626” font-weight=”700” text-anchor=”middle”>负利差 ≈ 7–12%</text>
-  <text x=”320” y=”178” font-size=”11” fill=”var(--text-muted)” text-anchor=”middle” font-style=”italic”>中国向美元中心国持续输血</text>
+  <text x="320" y="138" font-size="13" fill="#dc2626" font-weight="700" text-anchor="middle">负利差 ≈ 7–12%</text>
+  <text x="320" y="178" font-size="11" fill="var(--text-muted)" text-anchor="middle" font-style="italic">中国向美元中心国持续输血</text>
 </svg>
-<figcaption style=”text-align:center;font-size:12px;color:var(--text-muted);margin-top:4px;”>图：中国外汇循环的”负利差”——FDI 高成本流入（~10-15%），储备又低成本借出买美债（~3%），差额即向美元体系缴纳的隐形”铸币税”</figcaption>
+<figcaption style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:4px;">图：中国外汇循环的”负利差”——FDI 高成本流入（~10-15%），储备又低成本借出买美债（~3%），差额即向美元体系缴纳的隐形”铸币税”</figcaption>
 </figure>
 
-<span class=”hl-q”>**深度追问：既然经常项目顺差足够大，为什么不直接做”资本项目逆差”（对外投资）来对冲，反而搞成双顺差？**</span>
+<span class="hl-q">**深度追问：既然经常项目顺差足够大，为什么不直接做”资本项目逆差”（对外投资）来对冲，反而搞成双顺差？**</span>
 
 这是”双顺差”最反直觉之处。答案是**主动要、制度堵、能力缺、结构锁**四重原因：
 
@@ -3648,7 +3703,7 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 
 ##### **🎯 考场标准作答（直击采分点 · 可直接背诵）**
 
-> **答：公开市场操作成为发达市场经济国家最主要的政策工具，源于其在主动性、灵活性、可逆性、精确性和市场化程度上的综合优势。**
+> **答：公开市场操作（OMO）是指中央银行在金融市场上公开买卖有价证券（国债、央行票据等）和外汇，以吞吐基础货币、调节货币供应量和市场利率的行为——常见形式包括现券买断/卖断、正回购（回笼流动性）、逆回购（投放流动性）等。它之所以成为发达市场经济国家最主要的政策工具，源于其在主动性、灵活性、可逆性、精确性和市场化程度上的综合优势。**
 >
 > **1. 主动性强**——央行可完全根据政策目标自主决定买卖证券的时机、种类和数量，不像再贴现政策那样处于被动地位。
 > **2. 灵活性和时效性强**——规模可大可小，便于微调或大幅调整；可经常、连续进行，迅速生效。
@@ -3656,6 +3711,8 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 > **4. 调控精确**——能相对精确地控制银行体系准备金数量，从而影响货币市场利率和信贷条件。
 > **5. 市场化程度高**——通过市场交易实施，价格发现机制完善，有助于稳定预期、引导市场利率，符合现代市场经济要求。
 > *一句话：发达国家的金融市场深度大、交易工具齐全，让公开市场操作的五大优势能充分兑现。*
+>
+> 💡 **答题技巧**：简答题宜"先定义、后列点"——开头先一句交代 OMO 是什么、包含哪些操作（现券买卖、正/逆回购、央票等），再展开五大优势，答案结构更完整。OMO 完整工具家族见下方深度笔记"五、公开市场操作（OMO）的工具家族"。
 
 
 ##### **📚 深度复习笔记（逻辑推导、视图与理论延伸）**
@@ -3766,7 +3823,7 @@ html.dark .hl-q { background: rgba(244, 63, 94, 0.18); color: #fb7185; }
 |  | **现券卖断** | 央行直接卖出国债等 → 永久**回笼**基础货币 |
 | **票据类（中国特色）** | **央行票据（央票）** | 央行发行自己的短期债券 → **回笼**流动性（中国 2000 年代主力） |
 | **期限角度** | **短期 OMO（7/14 天逆回购）** | 调节银行体系短期流动性、稳短期利率 |
-|  | **中长期操作** | 投放/回笼较长期资金（如美联储 QE、中国 MLF/PMLF 等） |
+|  | **中长期操作** | 投放/回笼较长期资金（如美联储 QE、中国 MLF/TMLF 等） |
 | **非常规** | **量化宽松（QE）** | 利率到零后大规模买长期国债/MBS，扩表（美联储、日央行、欧央行） |
 |  | **量化紧缩（QT）** | 通过到期不续或主动卖债，缩表回收流动性 |
 
@@ -6812,6 +6869,16 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
   // 统一在其前补一个空行，使其成为独立块级元素（内容不变，仅分段规范化）
   md = md.replace(/\n(>[ ]*\*(?:必背|重难点|补充))/g, '\n\n$1');
 
+  // 修复「考场标准作答」等引用块内换行丢失的问题：
+  // marked breaks:false 时，相邻引用行会被合并成一个段落，导致 1. 2. 3. 编号要点挤在一起。
+  // 注意：此时 ** 已被上方规则转成 <strong>，故模式匹配 <strong>N. 而非 **N.；
+  // 边界 \n 放在先行断言里不消耗，保证连续编号（1/2/3/4）每个边界都能命中。
+  // 规则一：任何非空引用行之后若紧跟新的编号要点行（> <strong>N.），补一个空引用行使其各自成段。
+  md = md.replace(/\n(>[ ]*\S[^\n]*)(?=\n>[ ]*<strong>\d)/g, '\n$1\n>');
+  // 规则二：编号要点行之后若紧跟斜体小结行（> *……*），同样补空引用行分段
+  // （排除 必背/重难点/补充 标签行，以及 > * 空格开头的列表项行）。
+  md = md.replace(/\n(>[ ]*<strong>\d[^\n]*)(?=\n>[ ]*\*(?![ ]*(?:必背|重难点|补充))[^*\s])/g, '\n$1\n>');
+
   requestAnimationFrame(function () {
     document.getElementById('content').innerHTML = marked.parse(md);
     var h1El = document.querySelector('h1');
@@ -7112,6 +7179,18 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
     }
 
     // ===== 速记卡片（interlude，原逻辑保留） =====
+    // ===== 「考场标准作答 / 深度复习笔记」小节标记（差异化样式） =====
+    content.querySelectorAll('h5').forEach(function (h5) {
+      var t = h5.textContent;
+      if (t.indexOf('考场标准作答') !== -1) {
+        h5.classList.add('ans-head');
+        var bq = h5.nextElementSibling;
+        if (bq && bq.tagName === 'BLOCKQUOTE') bq.classList.add('ans-block');
+      } else if (t.indexOf('深度复习笔记') !== -1) {
+        h5.classList.add('notes-head');
+      }
+    });
+
     content.querySelectorAll('h3').forEach(function (h3) {
       var txt = h3.textContent;
       var isVideo = txt.indexOf('📺') !== -1 || txt.indexOf('B站') !== -1;
