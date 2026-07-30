@@ -1,19 +1,18 @@
 {
- "generated": "2026-07-29 22:27",
- "drawdown": -0.0372,
+ "generated": "2026-07-30 22:34",
+ "drawdown": -0.021,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
   "financial": 0.0,
   "rates_debt": 0.33,
   "services": 0.17,
-  "inflation_energy": 0.25
+  "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -3.7%(高点 2026-06-02)",
+  "SPY 距高点回撤 -2.1%(高点 2026-06-02)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[rates_debt +2] 股债相关性转正(0.45),债券失去避险功能",
-  "[services +1] 可选消费显著弱于必需(XLY-XLP -12.4%)",
-  "[inflation_energy +1] 能源板块逆势跑赢(XLE相对 +5.6%)"
+  "[rates_debt +2] 股债相关性转正(0.43),债券失去避险功能",
+  "[services +1] 可选消费显著弱于必需(XLY-XLP -9.4%)"
  ]
 }
