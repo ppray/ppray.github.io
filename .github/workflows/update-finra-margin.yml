@@ -7,7 +7,8 @@ name: update-finra-margin
 on:
   schedule:
     # 每月 26 日凌晨 02:00 UTC (FINRA 每月中下旬发布上月数据)
-    - cron: "0 2 * 26 *"
+    # GitHub Actions cron 五段式: 分 时 日 月 周 — 月份取值 1-12, 日期取值 1-31
+    - cron: "0 2 26 * *"
   workflow_dispatch: {}  # 允许手动触发，随时测试更新
 
 permissions:
