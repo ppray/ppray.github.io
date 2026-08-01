@@ -8816,6 +8816,16 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
   var md = document.getElementById('md-source').textContent;
   marked.setOptions({ gfm: true, breaks: false });
 
+  // 修复 marked v12 把 SVG 内部的空行+注释误判为段落边界，往 <svg> 里插入非法 <p>
+  // 导致浏览器错误恢复、SVG 后半段（如"外因栏"）塌陷成纯文字。
+  // 做法：解析前把所有 <svg>...</svg> 整块摘出存档、替换为占位符，解析后再原样还原。
+  var svgStore = [];
+  md = md.replace(/<svg[\s\S]*?<\/svg>/g, function (m) {
+    var ph = '\u0000SVG' + svgStore.length + '\u0000';
+    svgStore.push(m);
+    return ph;
+  });
+
   // 修复 marked v12 对 ** 紧贴 CJK 标点时无法识别加粗的问题
   md = md.replace(/\*\*([^\s*](?:[^*]*[^\s*])?)\*\*/g, '<strong>$1</strong>');
 
@@ -8834,7 +8844,14 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
   md = md.replace(/\n(>[ ]*<strong>\d[^\n]*)(?=\n>[ ]*\*(?![ ]*(?:必背|重难点|补充))[^*\s])/g, '\n$1\n>');
 
   requestAnimationFrame(function () {
-    document.getElementById('content').innerHTML = marked.parse(md);
+    var htmlOut = marked.parse(md);
+    // 还原被暂存的 SVG 块（占位符 → 原始 SVG）
+    if (svgStore.length) {
+      htmlOut = htmlOut.replace(/\u0000SVG(\d+)\u0000/g, function (_, i) {
+        return svgStore[+i];
+      });
+    }
+    document.getElementById('content').innerHTML = htmlOut;
     var h1El = document.querySelector('h1');
     if (h1El) document.title = h1El.textContent;
 
