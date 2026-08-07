@@ -40,3 +40,10 @@ child/
 # 临时脚本（一次性生成原文佐证/引用来源，不纳入仓库）
 国关复习/add_sources.py
 .zcode/
+
+# LoopX 目标状态（本地任务编排，不属于站点内容）
+.loopx/
+.codex/
+
+# 预渲染脚本下载的 marked 副本
+scripts/.cache/

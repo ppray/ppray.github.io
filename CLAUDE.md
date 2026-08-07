@@ -108,6 +108,30 @@ ln -s /Users/guoruidong/ppray.github.io/swiftbar-glm-usage.10m.sh \
 - Course-specific HTML/PDF review files in `国关复习/` are also frequently updated
 - Commit changes with meaningful messages
 
+**编辑《货币与金融的国际政治经济学》复习笔记后必须重跑预渲染**：
+
+```bash
+node scripts/prerender-mfipe.mjs          # 改完 <script id="md-source"> 里的正文后运行
+node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用）
+```
+
+该页正文写在 `<script type="text/markdown" id="md-source">` 里、由浏览器端 marked 渲染，
+不执行 JS 的抓取器（Baidu / GPTBot / ClaudeBot / PerplexityBot 等）看不到任何正文。
+预渲染脚本把它渲染成静态 HTML 写回 `#content`，并同步伴生的
+`国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.md`（llms.txt 指向这一份）。
+
+- 预处理正则不在脚本里重写，而是直接执行页面内 `<script id="md-pipeline">` 的源码，两边不会漂移。
+- `#content` 上的 `data-md-hash` 是正文指纹：与 md-source 对不上时页面自动回退到实时渲染，
+  读者永远看到最新内容，过期的静态副本只会短暂出现在爬虫视角。
+- `.github/workflows/prerender-mfipe.yml` 会在推送该页后自动重跑并提交，手动跑只是兜底。
+
+### SEO / GEO 资产
+- `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。
+- `sitemap.xml` 由脚本生成，新增内容页后重跑：`node scripts/gen-sitemap.mjs`
+  （只收录落地页，刻意排除 AI 训练师素材碎片与 iframe widget）。
+- 站点唯一权威域名是 `https://ppray.github.io`，canonical、OG、sitemap 中的绝对 URL 都以它为准，
+  中文路径一律 percent-encode。
+
 ### Modifying the SwiftBar Plugin
 - Edit `swiftbar-glm-usage.10m.sh` - the filename suffix controls update frequency
 - Test changes by refreshing SwiftBar

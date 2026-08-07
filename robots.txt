@@ -1,0 +1,71 @@
+# ppray 考试复习资源站 —— 公开学习资料，欢迎搜索引擎与 AI 检索工具抓取、索引与引用。
+# 唯一功能性配置是末尾的 Sitemap；上面的 Allow 段落是显式表态，
+# 因为 Google-Extended / Applebot-Extended 这类 AI 训练与检索代理走的是
+# "不写即允许、写 Disallow 才是退出" 的机制，显式 Allow 可避免被误读为退出。
+
+User-agent: *
+Allow: /
+
+# ---- 生成式检索 / AI 抓取器 ----
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+# ---- 中文搜索引擎 ----
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://ppray.github.io/sitemap.xml
