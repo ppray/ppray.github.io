@@ -123,7 +123,10 @@ node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用）
 - 预处理正则不在脚本里重写，而是直接执行页面内 `<script id="md-pipeline">` 的源码，两边不会漂移。
 - `#content` 上的 `data-md-hash` 是正文指纹：与 md-source 对不上时页面自动回退到实时渲染，
   读者永远看到最新内容，过期的静态副本只会短暂出现在爬虫视角。
-- `.github/workflows/prerender-mfipe.yml` 会在推送该页后自动重跑并提交，手动跑只是兜底。
+- 脚本顺带把 JSON-LD 的 `dateModified` 与 `article:modified_time` 刷成该文件的最后修改日期
+  （工作区有未提交改动时用今天），内容新鲜度是 AI 检索的重要排序信号，不要手工维护。
+- `.github/workflows/prerender-mfipe.yml` 会在推送该页后自动重跑并提交，手动跑只是兜底；
+  其 checkout 必须保留 `fetch-depth: 0`，否则 `git log` 取不到日期，全站 lastmod 会被刷成当天。
 
 ### SEO / GEO 资产
 - `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。

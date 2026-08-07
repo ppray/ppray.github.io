@@ -35,6 +35,11 @@ jobs:
     steps:
       - name: 检出仓库
         uses: actions/checkout@v4
+        with:
+          # 两个脚本都用 git log 取「最后修改日期」（sitemap 的 lastmod、JSON-LD 的 dateModified）。
+          # 默认的浅克隆里 git log 对绝大多数文件返回空，会退化成 checkout 时间，
+          # 导致每次运行都把全站 lastmod 刷成当天——这种撒谎的 lastmod 会被搜索引擎降权。
+          fetch-depth: 0
 
       - name: 安装 Node
         uses: actions/setup-node@v4

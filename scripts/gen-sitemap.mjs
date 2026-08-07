@@ -49,8 +49,15 @@ function priorityOf(rel) {
   return '0.6';
 }
 
+// 注意：git log 取日期要求完整历史。CI 里 actions/checkout 必须设 fetch-depth: 0，
+// 否则浅克隆下 git log 对绝大多数文件返回空，会退化成 checkout 时间，
+// 把全站 lastmod 刷成当天——撒谎的 lastmod 会被搜索引擎降权。
 function lastmod(rel) {
   try {
+    // 有未提交改动说明这次生成就是它的最新版本，用今天；否则取最后一次提交日期
+    const dirty = execFileSync('git', ['status', '--porcelain', '--', rel],
+      { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (dirty) return new Date().toISOString().slice(0, 10);
     const out = execFileSync('git', ['log', '-1', '--format=%ad', '--date=short', '--', rel],
       { cwd: ROOT, encoding: 'utf8' }).trim();
     if (out) return out;

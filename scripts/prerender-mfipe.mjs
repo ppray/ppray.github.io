@@ -20,6 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -99,12 +100,36 @@ const block =
   rendered.trim() +
   `\n<!--prerender:end--></div>`;
 
-fs.writeFileSync(HTML, html.replace(target, () => block));
+/**
+ * 「最后修改日期」：内容新鲜度是 AI 检索排序的重要信号，不能手工维护。
+ * 工作区里这个文件有未提交改动 → 用今天；否则用它最后一次提交的日期
+ * （CI 里检出是干净的，取到的就是触发本次运行的那次提交）。
+ */
+function modifiedDate(rel) {
+  try {
+    const dirty = execFileSync('git', ['status', '--porcelain', '--', rel],
+      { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (!dirty) {
+      const d = execFileSync('git', ['log', '-1', '--format=%ad', '--date=short', '--', rel],
+        { cwd: ROOT, encoding: 'utf8' }).trim();
+      if (d) return d;
+    }
+  } catch { /* 非 git 环境时用今天 */ }
+  return new Date().toISOString().slice(0, 10);
+}
+
+const modified = modifiedDate(path.relative(ROOT, HTML));
+const out = html
+  .replace(target, () => block)
+  .replace(/"dateModified": "\d{4}-\d{2}-\d{2}"/, `"dateModified": "${modified}"`)
+  .replace(/(<meta property="article:modified_time" content=")\d{4}-\d{2}-\d{2}"/, `$1${modified}"`);
+
+fs.writeFileSync(HTML, out);
 
 // 5) 伴生 Markdown：给 LLM 抓取器一份零噪声的纯文本正文（llms.txt 指向它）
 fs.writeFileSync(MD_OUT, mdRaw.trim() + '\n');
 
 const kb = (n) => (n / 1024).toFixed(0) + ' KB';
-console.log(`✓ 预渲染完成  指纹 ${stamp}`);
+console.log(`✓ 预渲染完成  指纹 ${stamp}  dateModified ${modified}`);
 console.log(`  正文 ${kb(rendered.length)} 已写入 #content（原页面 ${kb(html.length)} → ${kb(fs.statSync(HTML).size)}）`);
 console.log(`  伴生 Markdown：${path.relative(ROOT, MD_OUT)}（${kb(mdRaw.length)}）`);
