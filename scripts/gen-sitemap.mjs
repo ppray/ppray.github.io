@@ -69,9 +69,12 @@ const pages = walk('')
   .filter((rel) => !EXCLUDE.some((re) => re.test(rel)))
   .sort();
 
-// 复习笔记的 Markdown 伴生文件也收进来：AI 抓取器更愿意直接吃 .md
-const extras = ['国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.md']
-  .filter((rel) => fs.existsSync(path.join(ROOT, rel)));
+// 预渲染页的 Markdown 伴生文件也收进来：AI 抓取器更愿意直接吃 .md。
+// 新增预渲染页时记得同步这里，否则 llms.txt 指向的 .md 不在 sitemap 里。
+const extras = [
+  '国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.md',
+  '国关复习/《国际与比较政治经济学研究》模拟卷答案.md',
+].filter((rel) => fs.existsSync(path.join(ROOT, rel)));
 
 const urls = [...pages, ...extras].map((rel) => {
   // index.html 用目录形式收录，避免 /x/ 与 /x/index.html 两个 URL 抢同一份内容

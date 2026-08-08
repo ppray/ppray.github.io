@@ -1,21 +1,28 @@
-# 复习笔记预渲染：正文写在页面的 <script id="md-source"> 里，靠浏览器端 marked 渲染，
+# 客户端渲染页面的预渲染：这些页面的正文写在 <script id="md-source"> 里，靠浏览器端 marked 渲染，
 # 不执行 JS 的抓取器（Baidu、GPTBot、ClaudeBot、PerplexityBot…）看不到任何内容。
 # 构建期把它渲染成静态 HTML 写回 #content，并同步伴生 .md 与 sitemap。
 #
-# 路径：.github/workflows/prerender-mfipe.yml
-# 手动触发：仓库 Actions 页面 → prerender-mfipe → Run workflow
+# 路径：.github/workflows/prerender.yml
+# 手动触发：仓库 Actions 页面 → prerender → Run workflow
+#
+# 覆盖的页面各有一个入口脚本（新增页面时，paths 与下面的运行步骤都要加）：
+#   scripts/prerender-mfipe.mjs → 翟东升《货币与金融的国际政治经济学》复习笔记
+#   scripts/prerender-icpe.mjs  → 《国际与比较政治经济学研究》模拟卷答案
 #
 # 页面自带指纹校验：预渲染副本与 md-source 对不上时会自动回退到浏览器实时渲染，
 # 所以即便这个工作流失败，读者看到的内容也不会是旧的——只是爬虫会短暂看到旧正文。
 
-name: prerender-mfipe
+name: prerender
 
 on:
   push:
     branches: [main]
     paths:
       - "国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.html"
+      - "国关复习/《国际与比较政治经济学研究》模拟卷答案.html"
+      - "scripts/lib/prerender.mjs"
       - "scripts/prerender-mfipe.mjs"
+      - "scripts/prerender-icpe.mjs"
       - "scripts/gen-sitemap.mjs"
   workflow_dispatch: {}
 
@@ -23,7 +30,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: prerender-mfipe
+  group: prerender
   cancel-in-progress: false
 
 jobs:
@@ -49,6 +56,7 @@ jobs:
       - name: 重新预渲染并同步 sitemap
         run: |
           node scripts/prerender-mfipe.mjs
+          node scripts/prerender-icpe.mjs
           node scripts/gen-sitemap.mjs
 
       - name: 提交变更
@@ -60,5 +68,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore(seo): 重新预渲染复习笔记正文并同步 sitemap"
+          git commit -m "chore(seo): 重新预渲染正文并同步 sitemap"
           git push

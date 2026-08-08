@@ -108,25 +108,31 @@ ln -s /Users/guoruidong/ppray.github.io/swiftbar-glm-usage.10m.sh \
 - Course-specific HTML/PDF review files in `国关复习/` are also frequently updated
 - Commit changes with meaningful messages
 
-**编辑《货币与金融的国际政治经济学》复习笔记后必须重跑预渲染**：
+**编辑这两个页面的正文后必须重跑预渲染**：
 
 ```bash
-node scripts/prerender-mfipe.mjs          # 改完 <script id="md-source"> 里的正文后运行
-node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用）
+node scripts/prerender-mfipe.mjs          # 翟东升《货币与金融的国际政治经济学》复习笔记
+node scripts/prerender-icpe.mjs           # 《国际与比较政治经济学研究》模拟卷答案
+node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用），--check 两个脚本都支持
 ```
 
-该页正文写在 `<script type="text/markdown" id="md-source">` 里、由浏览器端 marked 渲染，
+这两页的正文都写在 `<script type="text/markdown" id="md-source">` 里、由浏览器端 marked 渲染，
 不执行 JS 的抓取器（Baidu / GPTBot / ClaudeBot / PerplexityBot 等）看不到任何正文。
-预渲染脚本把它渲染成静态 HTML 写回 `#content`，并同步伴生的
-`国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.md`（llms.txt 指向这一份）。
+预渲染脚本把它渲染成静态 HTML 写回 `#content`，并同步伴生的同名 `.md`（llms.txt 指向这一份）。
 
+- 通用逻辑在 `scripts/lib/prerender.mjs`，`prerender-*.mjs` 只提供每页的配置
+  （HTML 路径、伴生 .md 路径、页面导出的管线全局名）。新增页面照抄一份入口脚本即可。
 - 预处理正则不在脚本里重写，而是直接执行页面内 `<script id="md-pipeline">` 的源码，两边不会漂移。
+  每页的管线全局名不同（`MFIPE_PIPELINE` / `ICPE_PIPELINE`），入口脚本里写错会直接报错。
+- 写回 `#content` 的必须是 `marked.parse` 的产物，**不能**是页面脚本增强后的 DOM：
+  增强逻辑（把标题替换成 `.question-item` 卡片）不幂等，对着已增强的 DOM 再跑一次卡片数会归零。
 - `#content` 上的 `data-md-hash` 是正文指纹：与 md-source 对不上时页面自动回退到实时渲染，
   读者永远看到最新内容，过期的静态副本只会短暂出现在爬虫视角。
 - 脚本顺带把 JSON-LD 的 `dateModified` 与 `article:modified_time` 刷成该文件的最后修改日期
   （工作区有未提交改动时用今天），内容新鲜度是 AI 检索的重要排序信号，不要手工维护。
-- `.github/workflows/prerender-mfipe.yml` 会在推送该页后自动重跑并提交，手动跑只是兜底；
+- `.github/workflows/prerender.yml` 会在推送这些页面后自动重跑并提交，手动跑只是兜底；
   其 checkout 必须保留 `fetch-depth: 0`，否则 `git log` 取不到日期，全站 lastmod 会被刷成当天。
+  新增预渲染页时，工作流的 `paths` 与运行步骤、以及 `gen-sitemap.mjs` 里的 `extras` 都要同步加。
 
 ### SEO / GEO 资产
 - `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。
