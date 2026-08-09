@@ -331,6 +331,11 @@ html.dark .q-type.jian{background:rgba(99,102,241,.22)}
 html.dark .q-type.lun{background:rgba(225,29,72,.2)}
 html.dark .q-type.juan{background:rgba(217,119,6,.22)}
 .question-title{flex:1;font-size:.94rem;font-weight:600;color:var(--text-main);line-height:1.55}
+/* 复习次数角标：展开研读累计达标后显示「读 N 次」 */
+.q-reads{flex-shrink:0;font-size:.68rem;font-weight:600;color:var(--text-muted);background:var(--code-bg);
+  border-radius:20px;padding:3px 9px;white-space:nowrap;display:none;letter-spacing:.2px}
+.q-reads.show{display:inline-flex;align-items:center;gap:4px}
+html.dark .q-reads{background:rgba(255,255,255,.06)}
 .q-done{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);background:transparent;
   color:transparent;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .q-done:hover{border-color:var(--done);color:var(--done)}
@@ -414,8 +419,8 @@ mark{background:var(--highlight);color:inherit;border-radius:2px;padding:0 2px}
 <body>
 <div class="progress" id="progressBar"></div>
 <div class="layout">
-  <aside class="toc-side">
-    <div class="toc-title">目录</div>
+  <aside class="toc-side" aria-label="章节目录">
+    <div class="toc-title">目录 · CONTENTS</div>
     <nav class="toc-nav" id="tocNav"></nav>
   </aside>
   <div class="container">
@@ -6473,8 +6478,8 @@ mark{background:var(--highlight);color:inherit;border-radius:2px;padding:0 2px}
 </div>
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
-<aside class="toc-drawer" id="tocDrawer">
-  <div class="drawer-head"><span>目录</span><button class="drawer-close" id="drawerClose">✕</button></div>
+<aside class="toc-drawer" id="tocDrawer" aria-label="章节目录抽屉">
+  <div class="drawer-head"><span>章节目录</span><button class="drawer-close" id="drawerClose">✕</button></div>
   <nav class="toc-nav" id="tocNavDrawer"></nav>
 </aside>
 
@@ -11008,6 +11013,114 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
       try { localStorage.setItem(DONE_KEY, JSON.stringify(Object.keys(doneSet).map(function (k) { return parseInt(k, 10); }))); } catch (e) {}
     }
 
+    // ===== 复习统计：每题「读 N 次」——展开且在视口累计停留 ≥ 阈值 = 1 次读完 =====
+    var READS_KEY = 'icpe-reads-v1';
+    var READ_THRESHOLD = 8;        // 秒：单次展开累计可见停留达到此值算"读完 1 次"
+    var FLUSH_SEC = 5;             // 秒：可见时长攒到此处落盘一次
+    var TICK_MS = 1000;            // 计时心跳
+    var readStats = {};
+    var readChips = {};            // idx → 角标 DOM
+    var readTimers = {};           // idx → { acc, counted, pending, lastTs, tick }
+    try {
+      var rawReads = localStorage.getItem(READS_KEY);
+      if (rawReads) readStats = JSON.parse(rawReads) || {};
+    } catch (e) {}
+    function getRead(idx) {
+      var s = readStats[idx];
+      return { reads: (s && s.reads) || 0, seconds: (s && s.seconds) || 0 };
+    }
+    function saveReads() {
+      try { localStorage.setItem(READS_KEY, JSON.stringify(readStats)); } catch (e) {}
+    }
+    // 把 pending 秒数落盘到 seconds
+    function flushPending(idx) {
+      var t = readTimers[idx];
+      if (!t || t.pending < 1) return;
+      var s = getRead(idx);
+      s.seconds += t.pending;
+      readStats[idx] = s;
+      t.pending = 0;
+      saveReads();
+      updateReadChip(readChips[idx], s);
+    }
+    function fmtReadSec(sec) {
+      sec = Math.max(0, Math.round(sec || 0));
+      if (sec < 60) return sec + ' 秒';
+      if (sec < 3600) return Math.round(sec / 60) + ' 分';
+      return (sec / 3600).toFixed(1) + ' 时';
+    }
+    function updateReadChip(el, s) {
+      if (!el) return;
+      if (s.reads > 0) {
+        el.classList.add('show');
+        el.textContent = '📖 读 ' + s.reads + ' 次';
+        el.title = '累计研读 ' + fmtReadSec(s.seconds);
+      } else {
+        el.classList.remove('show');
+        el.textContent = '';
+        el.title = '';
+      }
+    }
+    // 题卡至少部分在视口内才算"可见"（防滚出屏幕仍空计时）
+    function isCardVisible(item) {
+      var r = item.getBoundingClientRect();
+      var vh = window.innerHeight;
+      return r.bottom > 80 && r.top < vh - 40;
+    }
+    function startReadTimer(idx, item) {
+      if (readTimers[idx]) return;
+      var t = { acc: 0, counted: false, pending: 0, lastTs: 0 };
+      readTimers[idx] = t;
+      t.tick = setInterval(function () {
+        // tab 隐藏 / 题卡折叠 / 滚出视口 → 暂停累计（先 flush 已攒的，再重置基准）
+        if (document.hidden) { flushPending(idx); t.lastTs = 0; return; }
+        if (!item.classList.contains('expanded')) { flushPending(idx); t.lastTs = 0; return; }
+        if (!isCardVisible(item)) { flushPending(idx); t.lastTs = 0; return; }
+        var now = Date.now();
+        if (t.lastTs) {
+          var delta = (now - t.lastTs) / 1000;
+          // 只接受 0~3s 的合理增量，防止 tab 切换造成的大跳
+          if (delta > 0 && delta < 3) {
+            t.acc += delta;
+            t.pending += delta;
+          }
+        }
+        t.lastTs = now;
+        if (t.pending >= FLUSH_SEC) flushPending(idx);
+        if (!t.counted && t.acc >= READ_THRESHOLD) {
+          t.counted = true;
+          var s = getRead(idx);
+          s.reads += 1;
+          readStats[idx] = s;
+          saveReads();
+          updateReadChip(readChips[idx], s);
+        }
+      }, TICK_MS);
+    }
+    function stopReadTimer(idx) {
+      var t = readTimers[idx];
+      if (!t) return;
+      clearInterval(t.tick);
+      flushPending(idx);  // 折叠/隐藏前把攒下的零碎秒数落盘
+      delete readTimers[idx];
+    }
+    // 统一入口：所有改 expanded 的地方都走这里，保证计时器与显示态不漂移
+    function setQuestionExpanded(item, on) {
+      var idx = parseInt(item.dataset.idx, 10);
+      var wasExpanded = item.classList.contains('expanded');
+      if (on && !wasExpanded) {
+        item.classList.add('expanded');
+        if (idx) startReadTimer(idx, item);
+      } else if (!on && wasExpanded) {
+        item.classList.remove('expanded');
+        if (idx) stopReadTimer(idx);
+      }
+    }
+    // 离场前把所有展开中的计时器落盘
+    function flushReadTimers() {
+      Object.keys(readTimers).forEach(function (k) { stopReadTimer(parseInt(k, 10)); });
+    }
+
     var TYPE_MAP = { ming: '名', jian: '简', lun: '论', juan: '卷' };
     var CAT_RE = /^[一二三四五六七八九十]+、/;
 
@@ -11047,6 +11160,12 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
       title.textContent = cleanTitle;
       header.appendChild(title);
 
+      // 复习次数角标（有研读数据才显示）
+      var readsChip = document.createElement('span');
+      readsChip.className = 'q-reads';
+      header.appendChild(readsChip);
+      (function (idx, el) { readChips[idx] = el; updateReadChip(el, getRead(idx)); })(qi, readsChip);
+
       var doneBtn = document.createElement('button');
       doneBtn.className = 'q-done';
       doneBtn.title = '标记为已掌握 (d)';
@@ -11073,8 +11192,12 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
       }
       item.appendChild(header); item.appendChild(body);
       hd.parentNode.replaceChild(item, hd);
-      header.addEventListener('click', function () { item.classList.toggle('expanded'); });
+      header.addEventListener('click', function () { setQuestionExpanded(item, !item.classList.contains('expanded')); });
     });
+
+    // 离开页面 / 切后台前把展开中的计时器落盘
+    window.addEventListener('pagehide', flushReadTimers);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) flushReadTimers(); });
 
     var questions = Array.prototype.slice.call(document.querySelectorAll('.question-item'));
 
@@ -11197,7 +11320,7 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
           visible = tM || bM;
           if (visible && tM) { var re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'); titleEl.innerHTML = origTitle.replace(re, '<mark>$1</mark>'); }
           else titleEl.innerHTML = origTitle;
-          if (!visible) q.classList.remove('expanded');
+          if (!visible) setQuestionExpanded(q, false);
         } else titleEl.innerHTML = origTitle;
         if (visible && hideDone && q.classList.contains('done')) visible = false;
         q.style.display = visible ? '' : 'none';
@@ -11224,12 +11347,12 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
 
     searchInput.addEventListener('input', function () { clearTimeout(debounceTimer); debounceTimer = setTimeout(applyFilters, 150); });
     searchInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { var first = questions.filter(function (q) { return q.style.display !== 'none'; })[0]; if (first) { first.classList.add('expanded'); setFocus(questions.indexOf(first)); } }
+      if (e.key === 'Enter') { var first = questions.filter(function (q) { return q.style.display !== 'none'; })[0]; if (first) { setQuestionExpanded(first, true); setFocus(questions.indexOf(first)); } }
     });
     searchClear.addEventListener('click', function () { searchInput.value = ''; applyFilters(); searchInput.focus(); });
     btnUndone.addEventListener('click', function () { hideDone = !hideDone; btnUndone.classList.toggle('on', hideDone); applyFilters(); });
-    document.getElementById('btnExpandAll').addEventListener('click', function () { questions.forEach(function (q) { if (q.style.display !== 'none') q.classList.add('expanded'); }); });
-    document.getElementById('btnCollapseAll').addEventListener('click', function () { questions.forEach(function (q) { q.classList.remove('expanded'); }); });
+    document.getElementById('btnExpandAll').addEventListener('click', function () { questions.forEach(function (q) { if (q.style.display !== 'none') setQuestionExpanded(q, true); }); });
+    document.getElementById('btnCollapseAll').addEventListener('click', function () { questions.forEach(function (q) { setQuestionExpanded(q, false); }); });
 
     // ===== 深色模式切换 =====
     var btnTheme = document.getElementById('btnTheme');
@@ -11268,10 +11391,10 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
       if (e.key === '/') { e.preventDefault(); searchInput.focus(); return; }
       if (e.key === 'j' || e.key === 'J') { setFocus(Math.min(focusIdx + 1, questions.length - 1)); return; }
       if (e.key === 'k' || e.key === 'K') { setFocus(Math.max(focusIdx - 1, 0)); return; }
-      if (e.key === 'Enter' && focusIdx >= 0) { questions[focusIdx].classList.toggle('expanded'); return; }
+      if (e.key === 'Enter' && focusIdx >= 0) { var it = questions[focusIdx]; setQuestionExpanded(it, !it.classList.contains('expanded')); return; }
       if ((e.key === 'd' || e.key === 'D') && focusIdx >= 0) { toggleDone(parseInt(questions[focusIdx].dataset.idx, 10)); return; }
       if (e.key === 'Escape') { clearFocus(); closeDrawer(); return; }
-      if (e.key === 'e' || e.key === 'E') { var allExp = questions.every(function (q) { return q.classList.contains('expanded'); }); questions.forEach(function (q) { q.classList.toggle('expanded', !allExp); }); }
+      if (e.key === 'e' || e.key === 'E') { var allExp = questions.every(function (q) { return q.classList.contains('expanded'); }); questions.forEach(function (q) { setQuestionExpanded(q, !allExp); }); }
     });
 
     updateDoneUI();
@@ -11279,5 +11402,11 @@ G20、金砖等新兴国际机制反映了**全球治理从西方主导向多极
   });
 })();
 </script>
+
+<!-- 不蒜子站点访问统计 -->
+<div id="busuanzi_container" style="text-align:center;font-size:11px;color:#999;padding:6px 0 10px;opacity:.85;line-height:1.6;">
+  本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
