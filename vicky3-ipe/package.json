@@ -1,0 +1,10 @@
+{
+    "name": "empires-ledger-vicky3-ipe",
+    "version": "3.4.0",
+    "description": "《帝国的账本：核心与边缘》 IPE 理论模拟游戏 — v3.4 引擎与门禁",
+    "type": "module",
+    "scripts": {
+        "balance": "node tools/balance.js",
+        "test": "node tools/run-tests.js"
+    }
+}

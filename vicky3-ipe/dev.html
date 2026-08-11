@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M1 趋势调试页 | 帝国的账本</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding: 20px; background: #0f172a; color: #f8fafc; font-family: sans-serif; }
+        .chart-box { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(217, 119, 6, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        canvas { width: 100%; height: 260px; background: #090d16; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1 style="color:var(--brass-gold-light); margin-bottom:10px;">🧪 M1 经济引擎与趋势调试面板 (Dev Dashboard)</h1>
+    <p style="color:var(--text-secondary); margin-bottom:20px;">运行 100 回合纯函数模拟，通过 Canvas 直观实时绘制大清拉氏 ToT 恶化曲线与英国关税下调后的地主收益变化：</p>
+
+    <div style="margin-bottom: 20px;">
+        <button id="btn-run-sim" class="btn-turn">▶️ 运行 100 回合趋势仿真</button>
+        <a href="index.html" class="btn-turn" style="display:inline-block; text-decoration:none; margin-left:8px;">🎮 返回游戏主界面</a>
+    </div>
+
+    <div class="chart-box">
+        <h3>⚖️ 1. 大清帝国拉氏贸易条件 (Terms of Trade) 100 回合演化趋势</h3>
+        <canvas id="canvas-tot"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>🌾 2. 英国废除《谷物法》后地主 vs 资本家 vs 工人收益占比</h3>
+        <canvas id="canvas-pops"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>🧪 自动化测试与理论验证套件</h3>
+        <p style="color:var(--text-secondary); margin-bottom:12px;">运行 balance.js 求解门禁与全套引擎断言：</p>
+        <div style="margin-bottom: 12px; display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="btn-run-solver" class="btn-turn">🧮 运行 t=0 平衡求解</button>
+            <button id="btn-run-tests" class="btn-turn" style="background:linear-gradient(135deg, #3b82f6, #1d4ed8);">▶️ 运行全套测试</button>
+        </div>
+        <div id="test-results-container" style="display:flex; flex-direction:column; gap:10px;"></div>
+    </div>
+
+    <script type="module">
+        import { createInitialState, tick } from './js/engine/core.js';
+        import { solveInitialBalance } from './tools/balance.js';
+        import { runInvariantTests } from './js/tests/invariants.test.js';
+        import { runSSTheoremTest } from './js/tests/theory_ss.test.js';
+        import { runPSTheoremTest } from './js/tests/theory_ps.test.js';
+
+        document.getElementById('btn-run-sim').addEventListener('click', () => {
+            let state = createInitialState('GBR');
+            const totHistory = [];
+            const landownerHistory = [];
+            const capitalistHistory = [];
+
+            for (let i = 0; i < 100; i++) {
+                if (i === 5) {
+                    state.nations.GBR.tariffs.grain = 0.00;
+                }
+                state = tick(state);
+
+                totHistory.push(state.nations.QING.termsOfTrade || 100);
+                landownerHistory.push(Math.round((state.nations.GBR.pops.landowners.incomeShare || 0.3) * 100));
+                capitalistHistory.push(Math.round((state.nations.GBR.pops.capitalists.incomeShare || 0.4) * 100));
+            }
+
+            drawChart('canvas-tot', totHistory, '#ef4444', '大清 ToT 指数');
+            drawMultiChart('canvas-pops', landownerHistory, capitalistHistory);
+        });
+
+        document.getElementById('btn-run-solver').addEventListener('click', () => {
+            const resBox = document.getElementById('test-results-container');
+            try {
+                const balanceRes = solveInitialBalance();
+                const gateColor = balanceRes.allBalanced ? 'var(--accent-green)' : 'var(--accent-red)';
+                resBox.innerHTML = `
+                    <div style="background:rgba(15,23,42,0.8); border:1px solid var(--brass-gold); padding:12px; border-radius:8px;">
+                        <h4 style="color:var(--brass-gold-light); margin-bottom:8px;">🧮 t=0 全球供需平衡（总就业 ${balanceRes.totalEmployedLabor} 人）</h4>
+                        <p style="color:${gateColor}; font-weight:700; margin-bottom:8px;">
+                            ${balanceRes.allBalanced ? '✅ 门禁通过' : '❌ 门禁失败'} · W_sub=${balanceRes.wSub}
+                        </p>
+                        <table class="market-table" style="font-size:0.85rem; width:100%; border-collapse:collapse;">
+                            <thead><tr><th style="text-align:left; padding:6px;">商品</th><th>S</th><th>D</th><th>S/D</th><th>状态</th></tr></thead>
+                            <tbody>
+                                ${balanceRes.report.map(r => `
+                                    <tr>
+                                        <td style="padding:6px;"><b>${r.good}</b></td>
+                                        <td style="text-align:center;">${r.supply}</td>
+                                        <td style="text-align:center;">${r.demand}</td>
+                                        <td style="text-align:center;"><b>${r.ratio}</b></td>
+                                        <td style="text-align:center;">${r.status}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } catch (err) {
+                resBox.innerHTML = `<div style="color:var(--accent-red);">💥 求解异常: ${err.message}</div>`;
+                console.error(err);
+            }
+        });
+
+        document.getElementById('btn-run-tests').addEventListener('click', () => {
+            const resBox = document.getElementById('test-results-container');
+            resBox.innerHTML = '<div style="color:var(--brass-gold-light)">⏳ 正在执行测试...</div>';
+            setTimeout(() => {
+                try {
+                    const invResults = runInvariantTests();
+                    const ssResult = runSSTheoremTest();
+                    const psResult = runPSTheoremTest();
+                    const allTests = [...invResults, ssResult, psResult];
+                    const passN = allTests.filter(t => t.passed).length;
+                    resBox.innerHTML = `
+                        <div style="color:var(--brass-gold-light); margin-bottom:4px;">
+                            汇总：${passN}/${allTests.length} 通过
+                        </div>
+                        ${allTests.map(t => `
+                            <div style="background:rgba(15,23,42,0.8); border:1px solid ${t.passed ? 'var(--accent-green)' : 'var(--accent-red)'}; padding:12px; border-radius:8px;">
+                                <span style="font-weight:bold; color:${t.passed ? 'var(--accent-green)' : 'var(--accent-red)'}">${t.passed ? '✅ PASSED' : '❌ FAILED'} — ${t.name}</span>
+                                <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;">${t.detail}</div>
+                            </div>
+                        `).join('')}
+                    `;
+                } catch (err) {
+                    resBox.innerHTML = `<div style="color:var(--accent-red);">💥 测试异常: ${err.message}</div>`;
+                    console.error(err);
+                }
+            }, 50);
+        });
+
+        function drawChart(canvasId, data, color, label) {
+            const cvs = document.getElementById(canvasId);
+            const ctx = cvs.getContext('2d');
+            cvs.width = cvs.clientWidth;
+            cvs.height = 260;
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+            const max = Math.max(...data) * 1.1;
+            const min = Math.min(...data) * 0.9;
+            const stepX = cvs.width / (data.length - 1);
+
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+
+            data.forEach((val, idx) => {
+                const x = idx * stepX;
+                const y = cvs.height - ((val - min) / (max - min)) * (cvs.height - 40) - 20;
+                if (idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.font = '14px sans-serif';
+            ctx.fillText(`${label} (初始: ${data[0]} -> 终值: ${data[data.length - 1]})`, 20, 30);
+        }
+
+        function drawMultiChart(canvasId, dataA, dataB) {
+            const cvs = document.getElementById(canvasId);
+            const ctx = cvs.getContext('2d');
+            cvs.width = cvs.clientWidth;
+            cvs.height = 260;
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+            const stepX = cvs.width / (dataA.length - 1);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 3;
+            dataA.forEach((val, idx) => {
+                const x = idx * stepX;
+                const y = cvs.height - (val / 100) * (cvs.height - 40) - 20;
+                if (idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 3;
+            dataB.forEach((val, idx) => {
+                const x = idx * stepX;
+                const y = cvs.height - (val / 100) * (cvs.height - 40) - 20;
+                if (idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = '#d97706';
+            ctx.fillText(`🎩 地主 Clout% (黄线)`, 20, 30);
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillText(`🏭 资本家 Clout% (蓝线)`, 220, 30);
+        }
+    </script>
+</body>
+</html>

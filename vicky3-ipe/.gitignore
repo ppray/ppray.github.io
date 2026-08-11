@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# 本地工具/Agent 运行时状态
+.superpowers/
+
+# 本地依赖与产物
+node_modules/
