@@ -28,6 +28,38 @@ const NATION_META = {
     USA: { hex: '#5b8fd6', role: '半边缘' }
 };
 
+/* 各国速胜手册：基于 65 回合模拟实测的最优路径，写入图鉴页供卡局玩家参考 */
+const STRATEGY_PLAYBOOK = {
+    GBR: {
+        flag: '🇬🇧', name: '大英帝国', difficulty: '难度 🟢 最易（容错大）',
+        win: '霸权度 ≥80（全程未跌破）+ 重工业全球第一 + 撑到 1900',
+        lose: '国库 < −5000 或霸权度 < 30',
+        core: '开局即把所得税拉到 20%（或对棉花/铁矿加 40-60% 关税）即可覆盖霸权维护开支。财政是唯一硬约束——实测任一单一杠杆（提税/关税/建钢厂）都够活到 1900。无需全程操作，但别完全挂机。',
+        timeline: '前 10 回合提税一次 → 中期国库告急时再加关税 → 1900 自动判定胜利'
+    },
+    PRS: {
+        flag: '🇩🇪', name: '普鲁士', difficulty: '难度 🟢 易（路径直接）',
+        win: '重工业产值反超英国',
+        lose: '工人激进度 >80% 或国库 < −4000',
+        core: '李斯特幼稚工业保护路线：所得税 20%，每回合集中建炼钢厂。普鲁士煤铁潜能极高，约 10 回合重工业即可超英——是全游戏最快胜利路径。注意别把制成品关税拉到让工人消费不起。',
+        timeline: '开局即建钢厂 → 约第 10 回合（1846 前后）重工业超英 → 触发胜利'
+    },
+    QING: {
+        flag: '🇨🇳', name: '大清帝国', difficulty: '难度 🟡 中（需激进转型）',
+        win: '制造品出口占比 >40%（破除依附锁链）',
+        lose: '贸易条件 <40 或国库 < −3000',
+        core: '进口替代工业化（ISI）：所得税 20%，每回合轮流建钢厂/机械厂/兵工厂，把庞大的农业人口底盘转向制造品产能。大清人口红利足、税收基数大，关键是产能结构从原料出口转向制造品。警惕贸易条件随时间恶化（P-S 效应）。',
+        timeline: '前 20 回合打重工业地基 → 中期制造品出口占比爬升 → 约第 45 回合（1880 前后）破 40%'
+    },
+    USA: {
+        flag: '🇺🇸', name: '美利坚', difficulty: '难度 🔴 最难（双约束）',
+        win: '1870 后 GDP 增速超英（≥1.5% 且高出英国 1pp）+ 内战张力 <50',
+        lose: '内战张力 >90 或国库 < −4000',
+        core: '后发高增长路线：所得税 20%，激进建重工业（钢厂+机械厂+兵工厂），1870 年后 GDP 增速会自然反超停滞的英国。内战张力是软约束（实测很难触发），但别把制成品关税拉到极端。最难的是"增速差 1 个百分点"——需要持续建厂保持增长势头。',
+        timeline: '前 30 回合疯狂工业化 → 1870 时间门通过 → 增速反超英国即胜（实测约 1870 当回合）'
+    }
+};
+
 /* 周期历史事件池（每 3 回合随机抽一个触发，避免短期内重复）。
  * 标 `id` 用于去重；部分选项带 `modifier` 字段 → 触发跨回合遗留效应（见 MODIFIER_TYPES）。 */
 const EVENTS = [
@@ -222,6 +254,7 @@ function saveState() {
 function normalizeState(s) {
     if (!Array.isArray(s.activeModifiers)) s.activeModifiers = [];
     if (!Array.isArray(s.recentEventIds)) s.recentEventIds = [];
+    if (!s.advisoryFlags) s.advisoryFlags = {};
     return s;
 }
 
@@ -258,9 +291,51 @@ function onNextTurn() {
     }
 
     saveState();
+
+    // 财政预警与接近胜利提示（每条仅触发一次，标志位存于 state 避免刷屏）
+    emitAdvisories(now, nowStats);
+
     render();
     if (gameState.gameStatus !== 'PLAYING') showEndgame();
     else showNextEvent();
+}
+
+/* 一次性预警/提示：财政悬崖告急 + USA/QING 接近胜利。标志位持久化于 state。 */
+function emitAdvisories(nation, stats) {
+    const code = gameState.playerNationKey;
+    const flags = gameState.advisoryFlags || (gameState.advisoryFlags = {});
+    const treasury = Math.round(nation.treasury);
+
+    // 财政告急：国库 < 2000 且未预警过
+    if (treasury < 2000 && !flags.fiscal) {
+        flags.fiscal = true;
+        gameState.logs.unshift(`${gameState.year} · ⚠️ 财政告急：国库仅 ¥${treasury}。基础治理与霸权开支随回合上升，建议尽快提高所得税率、对净进口商品加关税或关闭亏损补贴。`);
+    }
+
+    // USA 接近胜利：增速与 GBR 差距 < 0.5%，1870 后
+    if (code === 'USA' && gameState.year >= 1870 && !flags.usaClose) {
+        const usaG = stats.gdpGrowth || 0;
+        const gbrG = gameState.derivedStats.GBR?.gdpGrowth || 0;
+        if (usaG >= gbrG - 0.005 && usaG < gbrG + 0.01) {
+            flags.usaClose = true;
+            gameState.logs.unshift(`${gameState.year} · 🗽 美国经济增速（${(usaG*100).toFixed(1)}%）已逼近英国（${(gbrG*100).toFixed(1)}%），再加几座重工业工厂即可反超达成胜利。`);
+        }
+    }
+
+    // QING 接近胜利：制造品出口占比突破 25%
+    if (code === 'QING' && !flags.qingClose) {
+        const ratio = stats.manufacturedExportRatio || 0;
+        if (ratio >= 0.25 && ratio < 0.40) {
+            flags.qingClose = true;
+            gameState.logs.unshift(`${gameState.year} · ⛵ 大清制造品出口占比已达 ${Math.round(ratio*100)}%，进口替代工业化初见成效，继续扩建钢厂/机械厂/兵工厂推向 40% 即可破除依附锁链。`);
+        }
+    }
+
+    // GBR 霸权告急：heg 跌破 82 且未预警（预警后不再重复）
+    if (code === 'GBR' && !flags.hegWarn && gameState.hegemonyScore < 82) {
+        flags.hegWarn = true;
+        gameState.logs.unshift(`${gameState.year} · ⚠️ 霸权稳定度降至 ${Math.round(gameState.hegemonyScore)}%：他国重工业崛起正在挤压英国。建议维持钢厂/兵工厂产能以稳住重工业全球第一。`);
+    }
 }
 
 function onNewGame() {
@@ -324,17 +399,73 @@ function showHelp() {
 
 function showEndgame() {
     endgameShown = true;
-    const n = gameState.nations[gameState.playerNationKey];
+    const code = gameState.playerNationKey;
+    const n = gameState.nations[code];
     const won = gameState.gameStatus === 'WON';
+    const diag = won ? diagnoseWin(gameState, code) : diagnoseLoss(gameState, code);
     showModal({
         tag: won ? '战略胜利' : '国家危机', tagClass: won ? 'win' : 'lose',
         title: won ? '🏆 达成历史战略目标' : '⚠️ 触及失败防线',
-        body: won ? `胜利条件：${n.winCondition.desc}` : `失败条件：${n.loseCondition.desc}`,
+        body: `<p>${won ? `胜利条件：${n.winCondition.desc}` : `失败条件：${n.loseCondition.desc}`}</p>
+               <p style="margin-top:10px;padding-top:10px;border-top:1px solid oklch(72% 0.11 75 / .25)"><b style="color:var(--brass)">${won ? '📊 制胜路径' : '🔬 失败诊断'}</b><br>${diag}</p>`,
         opts: [
             { t: '重新开局', d: '回到 1836 年，延续同一国家', fx: () => { gameState = normalizeState(createInitialState(gameState.playerNationKey)); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
             { t: '留在终局画面', d: '查看最终账本' }
         ]
     });
+}
+
+/* 失败诊断：按各国 lose 条件逐条比对，返回根因 + 对策（基于实测最优路径） */
+function diagnoseLoss(state, code) {
+    const n = state.nations[code];
+    const st = state.derivedStats?.[code] || {};
+    const tips = {
+        GBR: {
+            treasury: '国库被霸权维护成本（每回合 +45×年）与基础治理开支拖垮。对策：开局即把所得税拉到 20%+，或对棉花/铁矿（净进口）加 40-60% 关税增收入；维持钢厂/兵工厂产能以保霸权度不崩。',
+            hegemony: '霸权度跌破 30：他国重工业崛起挤压（挑战者压力）。对策：每回合维持 1-2 座钢厂/兵工厂的建造节奏，确保重工业全球第一。'
+        },
+        PRS: {
+            radicals: '工人激进度 >80%：消费篮子过贵或配给不足。对策：对粮食/煤炭降关税压低生存成本，或开启亏损产业补贴维持就业。',
+            treasury: '国库破产（< −4000）。对策：所得税 20%+，集中建炼钢厂（普鲁士煤铁潜能高），约 10 回合重工业即可超英获胜，避免拖延。'
+        },
+        QING: {
+            tot: '贸易条件跌破 40（Prebisch-Singer 依附恶化）。对策：加速进口替代——每回合建钢厂/机械厂/兵工厂，把制造品出口占比推向 40% 后即破除依附锁链获胜。',
+            treasury: '国库破产（< −3000）。对策：所得税 20%，激进工业化；大清人口底盘大、税收基数足，关键是把产能转向制造品而非原料出口。'
+        },
+        USA: {
+            tension: '内战张力 >90：保护主义关税加剧南北撕裂。对策：适度（非最大化）制成品关税，平衡北方工业与南方种植园利益。',
+            treasury: '国库破产（< −4000）。对策：所得税 20%，激进建重工业；1870 年后 GDP 增速会反超英国达成胜利，期间保持内战张力 <50。'
+        }
+    };
+    if (code === 'GBR') {
+        if (n.treasury < -5000) return tips.GBR.treasury;
+        if (state.hegemonyScore < 30) return tips.GBR.hegemony;
+        return tips.GBR.treasury;
+    }
+    if (code === 'PRS') {
+        if ((n.pops?.workers?.radicals || 0) > 80) return tips.PRS.radicals;
+        return tips.PRS.treasury;
+    }
+    if (code === 'QING') {
+        if ((st.termsOfTrade || 100) < 40) return tips.QING.tot;
+        return tips.QING.treasury;
+    }
+    if (code === 'USA') {
+        if ((st.civilWarTension || 0) > 90) return tips.USA.tension;
+        return tips.USA.treasury;
+    }
+    return '详见「图鉴 · 各国速胜手册」。';
+}
+
+/* 胜利诊断：简述达成的关键指标 */
+function diagnoseWin(state, code) {
+    const st = state.derivedStats?.[code] || {};
+    const n = state.nations[code];
+    if (code === 'GBR') return `霸权稳定度终值 ${Math.round(state.hegemonyScore)}%，全程未跌破 80，重工业全球第 ${st.heavyRank}，撑到 ${state.year} 年。`;
+    if (code === 'PRS') return `重工业产值 ${st.heavyIndustryVal} 反超英国（${state.derivedStats.GBR.heavyIndustryVal}），完成李斯特式产业追赶。`;
+    if (code === 'QING') return `制造品出口占比 ${Math.round((st.manufacturedExportRatio||0)*100)}% 破除依附锁链，贸易条件 ${st.termsOfTrade}。`;
+    if (code === 'USA') return `GDP 增速 ${(st.gdpGrowth*100).toFixed(1)}% 反超英国，内战张力 ${st.civilWarTension}，完成新兴大国崛起。`;
+    return '';
 }
 
 function showModal({ tag, tagClass = '', title, body, opts }) {
@@ -560,7 +691,14 @@ function panelHTML(id, code) {
             <div class="note"><b>撮合规则</b><p>价格由全球供需缺口决定；关税只改变本国到岸价格，不改变世界价格——这是小国假设与霸权国假设的分野。</p></div>`;
     }
 
-    return `<div class="sec-label">范式</div>
+    return `<div class="sec-label">📜 各国速胜手册</div>
+        <div class="cards one-col">${Object.entries(STRATEGY_PLAYBOOK).map(([code, p]) => `
+            <div class="card"><h3>${p.flag} ${p.name} <span style="font-size:.72rem;color:var(--ink-mute);font-weight:400">· ${p.difficulty}</span></h3>
+            <p><b style="color:var(--verdant)">胜利：</b>${p.win}<br>
+            <b style="color:oklch(72% 0.14 30)">失败：</b>${p.lose}</p>
+            <div class="note" style="margin-top:8px"><b>核心打法</b><p>${p.core}</p></div>
+            <div class="note" style="margin-top:6px"><b>关键回合</b><p>${p.timeline}</p></div></div>`).join('')}</div>
+        <div class="sec-label" style="margin-top:16px">范式</div>
         <div class="cards one-col">${Object.values(IPE_THEORY_DATA.paradigms).map(p => `
             <div class="card"><h3>${p.name}</h3><p><b style="color:var(--brass)">奠基人：</b>${p.founder}<br>${p.coreTenets}</p>
             <div class="note" style="margin-top:8px"><b>名言</b><p>${p.quote}</p></div></div>`).join('')}</div>
