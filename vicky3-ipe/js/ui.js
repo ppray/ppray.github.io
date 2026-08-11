@@ -134,14 +134,230 @@ const EVENTS = [
             { t: '推行国民教育', d: '国库 −800，工人 Clout +5%', log: '推行国民教育法：人力资本长期投资，工人阶层壮大。', fx: n => { n.treasury = (n.treasury || 0) - 800; if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.05); } },
             { t: '维持现状，节省开支', d: '国库无损，阶层格局不变', log: '搁置教育改革：财政稳健，阶层格局维持现状。' }
         ]
+    },
+
+    /* ========== GBR 专属（霸权 / 财政 / 海权） ========== */
+    {
+        id: 'gbr_opium_prelude', nation: 'GBR', tag: '远东贸易', title: '鸦片贸易与对华开战之争',
+        body: '东印度公司在广州的鸦片走私利润丰厚但引爆外交危机，议会的自由贸易派与道德改良派就是否诉诸武力激烈交锋。',
+        opts: [
+            { t: '动用海军打开通商口岸', d: '国库 +2000，贸易条件改善；工人 Clout +3%', log: '对华开战：通商口岸洞开，关税与贸易条件大幅改善。', fx: n => { n.treasury = (n.treasury || 0) + 2000; if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.03); } },
+            { t: '收敛鸦片、避免战争', d: '国库无损，错失扩张红利', log: '选择道德路线：收缩鸦片贸易，财政稳健但远东扩张停滞。' }
+        ]
+    },
+    {
+        id: 'gbr_india_tribute', nation: 'GBR', tag: '殖民财源', title: '印度殖民地岁入汇缴',
+        body: '东印度公司向伦敦汇缴本季殖民地岁入，财政部可选择直接入库或留给殖民地作基础投资。',
+        opts: [
+            { t: '直接汇缴国库', d: '国库 +1500', log: '印度岁入汇缴：国库一次性大额补充。', fx: n => { n.treasury = (n.treasury || 0) + 1500; } },
+            { t: '留作殖民地铁路投资', d: '投资池 +800', log: '殖民地铁路投资：岁入转化为长期产能。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 800; } }
+        ]
+    },
+    {
+        id: 'gbr_gold_standard', nation: 'GBR', minYear: 1860, tag: '货币体系', title: '金本位存废之议',
+        body: '战争开支使英格兰银行黄金储备吃紧，议会辩论是否暂停金本位兑换以增发货币。',
+        opts: [
+            { t: '坚守金本位', d: '国库 −1000，霸权度稳定；维持信用', log: '坚守金本位：财政紧缩但保住英镑信用。', fx: n => { n.treasury = (n.treasury || 0) - 1000; } },
+            { t: '暂停兑换、增发纸币', d: '国库 +1200，通胀压工人实际工资', log: '暂停金本位兑换：短期财政宽裕，工人激进度 +15%。', fx: n => { n.treasury = (n.treasury || 0) + 1200; if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 15); } }
+        ]
+    },
+    {
+        id: 'gbr_naval_arms', nation: 'GBR', minYear: 1850, tag: '军备竞赛', title: '皇家海军两年造舰计划',
+        body: '法俄海军扩张威胁海权，海军部要求专项拨款扩建铁甲舰以维持两强标准。',
+        opts: [
+            { t: '批准造舰、巩固海权', d: '国库 −1800，兵工厂 ×1.3 产出 4 回合', log: '启动造舰计划：兵工厂进入战时动员。', modifier: 'war_mobilization' },
+            { t: '削减海军、节省财政', d: '国库无损，霸权度承压', log: '削减造舰预算：财政稳健但海权优势收窄。' }
+        ]
+    },
+    {
+        id: 'gbr_famine_relief', nation: 'GBR', minYear: 1845, maxYear: 1855, tag: '人道危机', title: '爱尔兰马铃薯饥荒',
+        body: '连年马铃薯歉收引发爱尔兰大饥荒，内阁面临救济开支与自由放任教条的抉择。',
+        opts: [
+            { t: '拨款赈灾', d: '国库 −1200，工人激进度 −10%', log: '拨款赈济爱尔兰：人道代价缓解，民心稍稳。', fx: n => { n.treasury = (n.treasury || 0) - 1200; if (n.pops?.workers) n.pops.workers.radicals = Math.max(0, (n.pops.workers.radicals || 0) - 10); } },
+            { t: '坚持自由放任', d: '国库无损，工人激进度 +12%', log: '坚持自由放任：饥荒加剧，工人不满上升。', fx: n => { if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 12); } }
+        ]
+    },
+    {
+        id: 'gbr_long_depression', nation: 'GBR', minYear: 1873, tag: '周期危机', title: '1873 大萧条冲击',
+        body: '维也纳股市崩盘引发全球长萧条，英国出口骤降、失业攀升，财政部辩论救市方向。',
+        opts: [
+            { t: '央行注资 + 铁路拉动', d: '国库 −1500，6 回合投资池持续注入', log: '反周期刺激：央行注资并启动铁路繁荣对冲萧条。', modifier: 'railway_boom' },
+            { t: '等市场自发出清', d: '国库无损，投资池 −400', log: '放任出清：市场调节，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 400); } }
+        ]
+    },
+
+    /* ========== PRS 专属（幼稚工业 / 重工业 / 关税同盟） ========== */
+    {
+        id: 'prs_zollverein', nation: 'PRS', tag: '关税同盟', title: '德意志关税同盟扩张',
+        body: 'Zollverein 拟纳入更多邦国，统一内部市场的同时对外维持保护关税，李斯特派力主加速。',
+        opts: [
+            { t: '加速同盟、统一市场', d: '投资池 +500，制成品关税 +10%', log: '扩张关税同盟：内部市场扩大，保护关税上调。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 500; ['steel', 'tools', 'textiles', 'arms'].forEach(g => { n.tariffs[g] = Math.min(0.6, (n.tariffs[g] || 0) + 0.10); }); } },
+            { t: '谨慎渐进', d: '投资池 +200，关税不变', log: '渐进扩张同盟：稳健但红利有限。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 200; } }
+        ]
+    },
+    {
+        id: 'prs_krupp_steel', nation: 'PRS', minYear: 1850, tag: '产业突破', title: '克虏伯炼钢法引进',
+        body: '埃森的克虏伯工厂试验新式坩埚炼钢，产能跃升需要大笔资本投入，政府被请求担保。',
+        opts: [
+            { t: '担保克虏伯扩产', d: '6 回合制造品产出 ×1.15', log: '引进克虏伯炼钢法：重工业产能系统性提升。', modifier: 'tech_transfer' },
+            { t: '让私人资本自行承担', d: '无财政支出，扩产缓慢', log: '由私人资本承担：稳健但错失技术红利。' }
+        ]
+    },
+    {
+        id: 'prs_war_indemnity', nation: 'PRS', minYear: 1864, maxYear: 1875, tag: '战争红利', title: '战争赔款注入国库',
+        body: '对丹麦/法国的军事胜利带来巨额赔款与领土，财政部可选择一次性入库或专项投入重工业。',
+        opts: [
+            { t: '赔款直接入库', d: '国库 +2500', log: '战争赔款入库：财政一次性大额补充。', fx: n => { n.treasury = (n.treasury || 0) + 2500; } },
+            { t: '专项投入重工业', d: '投资池 +2000', log: '赔款转投重工业：为反超英国铺路。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 2000; } }
+        ]
+    },
+    {
+        id: 'prs_social_insurance', nation: 'PRS', minYear: 1860, tag: '社会政策', title: '俾斯麦社会保险法案',
+        body: '为压制工人运动、巩固容克-资本联盟，俾斯麦推动世界首创的疾病/工伤/养老社会保险。',
+        opts: [
+            { t: '推行社会保险', d: '国库 −1000，工人激进度 −25%', log: '推行社会保险：工人激进度大幅下降，阶层稳定。', fx: n => { n.treasury = (n.treasury || 0) - 1000; if (n.pops?.workers) n.pops.workers.radicals = Math.max(0, (n.pops.workers.radicals || 0) - 25); } },
+            { t: '拒绝、维持高压', d: '国库无损，工人激进度 +10%', log: '拒绝社会保险：财政省下，工人不满积累。', fx: n => { if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 10); } }
+        ]
+    },
+    {
+        id: 'prs_iron_tariff', nation: 'PRS', tag: '保护主义', title: '铁血宰相的高关税路线',
+        body: '俾斯麦为筹措军费与保护容克地主，推动对钢铁与粮食大幅加征关税，自由贸易派强烈反对。',
+        opts: [
+            { t: '加征保护关税', d: '钢铁/粮食关税 +20%，地主 Clout +5%', log: '通过保护关税法：重工业与地主双双受益。', fx: n => { n.tariffs.steel = Math.min(0.6, (n.tariffs.steel || 0) + 0.20); n.tariffs.grain = Math.min(0.6, (n.tariffs.grain || 0) + 0.20); if (n.pops?.landowners) n.pops.landowners.clout = Math.min(0.95, (n.pops.landowners.clout || 0) + 0.05); } },
+            { t: '维持温和税率', d: '关税不变，资本家满意', log: '维持温和税率：自由贸易派满意，保护不足。' }
+        ]
+    },
+    {
+        id: 'prs_gruender', nation: 'PRS', minYear: 1870, tag: '金融泡沫', title: '1873 创办者狂潮崩盘',
+        body: '统一后的德国爆发创办公司狂热，股市泡沫破裂导致大批银行倒闭，财政部面临救市抉择。',
+        opts: [
+            { t: '国家救助银行', d: '国库 −1500，投资池 +600', log: '救助金融体系：稳定市场，国库大幅承压。', fx: n => { n.treasury = (n.treasury || 0) - 1500; n.investmentPool = (n.investmentPool || 0) + 600; } },
+            { t: '任其出清', d: '国库无损，投资池 −500', log: '放任出清：市场重整，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 500); } }
+        ]
+    },
+
+    /* ========== QING 专属（进口替代 / 白银 / 贸易条件） ========== */
+    {
+        id: 'qing_opium_war', nation: 'QING', tag: '不平等条约', title: '鸦片战争与五口通商',
+        body: '英舰北上游弋，朝廷在割地赔款与持久抵抗间抉择。战败将打开国门、冲击贸易条件。',
+        opts: [
+            { t: '签订通商条约', d: '国库 −1500，贸易条件 −15', log: '签订不平等条约：国门洞开，贸易条件恶化。', fx: n => { n.treasury = (n.treasury || 0) - 1500; } },
+            { t: '坚持抵抗', d: '国库 −800，工人激进度 +10%', log: '坚持抵抗：财政消耗，民心激愤。', fx: n => { n.treasury = (n.treasury || 0) - 800; if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 10); } }
+        ]
+    },
+    {
+        id: 'qing_taiping', nation: 'QING', tag: '内乱', title: '太平天国运动',
+        body: '南方爆发大规模民变，江南赋税重镇告急。朝廷面临全力镇压与招抚安抚的两难。',
+        opts: [
+            { t: '调集重兵镇压', d: '国库 −2000，工人激进度 −15%', log: '镇压太平天国：财政重负，但恢复秩序。', fx: n => { n.treasury = (n.treasury || 0) - 2000; if (n.pops?.workers) n.pops.workers.radicals = Math.max(0, (n.pops.workers.radicals || 0) - 15); } },
+            { t: '妥协招抚', d: '国库 −600，地主 Clout −5%', log: '招抚妥协：财政省却兵费，但中央权威受损。', fx: n => { n.treasury = (n.treasury || 0) - 600; if (n.pops?.landowners) n.pops.landowners.clout = Math.max(0.05, (n.pops.landowners.clout || 0) - 0.05); } }
+        ]
+    },
+    {
+        id: 'qing_self_strengthening', nation: 'QING', minYear: 1860, tag: '自强运动', title: '洋务自强与新式工厂',
+        body: '曾国藩、李鸿章力主"师夷长技"，在上海、江南筹建兵工厂与造船厂，亟需专款。',
+        opts: [
+            { t: '拨款兴办洋务', d: '国库 −1800，6 回合制造品产出 ×1.15', log: '推行洋务自强：重工业产能系统性提升。', modifier: 'tech_transfer' },
+            { t: '缓办、先行厘清财政', d: '国库无损，错失近代化窗口', log: '缓办洋务：财政稳健但近代化延误。' }
+        ]
+    },
+    {
+        id: 'qing_lijin_tax', nation: 'QING', tag: '财政改革', title: '厘金流通税推广',
+        body: '为筹措军饷，地方建议在全国推广厘金（国内流通税），短期充实财政但阻碍国内贸易。',
+        opts: [
+            { t: '全国推行厘金', d: '国库 +1800，投资池 −300', log: '推广厘金：财政充实但国内流通受阻。', fx: n => { n.treasury = (n.treasury || 0) + 1800; n.investmentPool = Math.max(0, (n.investmentPool || 0) - 300); } },
+            { t: '维持旧税制', d: '国库 +300，无副作用', log: '维持旧税制：稳健但财政红利有限。', fx: n => { n.treasury = (n.treasury || 0) + 300; } }
+        ]
+    },
+    {
+        id: 'qing_sino_japanese', nation: 'QING', minYear: 1890, tag: '地缘危机', title: '甲午战争前夜',
+        body: '日本在朝鲜挑衅，朝廷内部海防派与避战派相持不下，北洋水师战备吃紧。',
+        opts: [
+            { t: '扩军备战', d: '国库 −1500，4 回合兵工厂 ×1.3 产出', log: '扩军备战：军工动员，财政承压。', modifier: 'war_mobilization' },
+            { t: '避战求和', d: '国库 −500，地主 Clout −8%', log: '避战求和：节省军费但主权与威信受损。', fx: n => { n.treasury = (n.treasury || 0) - 500; if (n.pops?.landowners) n.pops.landowners.clout = Math.max(0.05, (n.pops.landowners.clout || 0) - 0.08); } }
+        ]
+    },
+    {
+        id: 'qing_coast_vs_frontier', nation: 'QING', minYear: 1870, tag: '战略之争', title: '海防与塞防之争',
+        body: '左宗棠主张西征收复新疆（塞防），李鸿章主张专注海军建设（海防），朝廷军费有限只能侧重一方。',
+        opts: [
+            { t: '重海防、建北洋水师', d: '国库 −1200，投资池 +400', log: '侧重海防：海军成型，民用投资有限。', fx: n => { n.treasury = (n.treasury || 0) - 1200; n.investmentPool = (n.investmentPool || 0) + 400; } },
+            { t: '重塞防、收复新疆', d: '国库 −1500，地主 Clout +6%', log: '侧重塞防：西北平定，地主威望上升。', fx: n => { n.treasury = (n.treasury || 0) - 1500; if (n.pops?.landowners) n.pops.landowners.clout = Math.min(0.95, (n.pops.landowners.clout || 0) + 0.06); } }
+        ]
+    },
+
+    /* ========== USA 专属（增速 / 南北 / 西进） ========== */
+    {
+        id: 'usa_civil_war', nation: 'USA', minYear: 1860, tag: '南北分裂', title: '南北战争爆发',
+        body: '南方蓄奴州宣布脱离联邦。林肯面临动员平叛与妥协和解的抉择，关税保护主义正是分裂导火索之一。',
+        opts: [
+            { t: '动员联邦军平叛', d: '国库 −2000，4 回合兵工厂 ×1.3 产出', log: '动员内战：军工全速运转，财政重负。', modifier: 'war_mobilization' },
+            { t: '寻求妥协', d: '国库 −800，内战张力 −20', log: '妥协退让：避免全面战争但张力仍存。', fx: n => { n.treasury = (n.treasury || 0) - 800; } }
+        ]
+    },
+    {
+        id: 'usa_transcontinental', nation: 'USA', minYear: 1860, tag: '西进运动', title: '横贯大陆铁路',
+        body: '联邦政府拟拨地担保修建横贯大陆铁路，连接东西海岸，资本与劳动力需求空前。',
+        opts: [
+            { t: '联邦担保修建', d: '6 回合投资池持续 +120', log: '启动横贯铁路：投资池持续注入，拉动西进。', modifier: 'railway_boom' },
+            { t: '交由私人投机', d: '国库 +300，扩张缓慢', log: '私人铁路：财政无损但扩张缓慢。', fx: n => { n.treasury = (n.treasury || 0) + 300; } }
+        ]
+    },
+    {
+        id: 'usa_gilded_trust', nation: 'USA', minYear: 1875, tag: '镀金时代', title: '垄断托拉斯扩张',
+        body: '洛克菲勒、卡内基等巨头整合产业形成托拉斯，效率与价格操纵并存，国会辩论反托拉斯立法。',
+        opts: [
+            { t: '放任垄断整合', d: '投资池 +800，工人激进度 +12%', log: '放任托拉斯：产能集中，工人不满上升。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 800; if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 12); } },
+            { t: '推动反托拉斯法', d: '国库 −500，资本家 Clout −5%', log: '反托拉斯立法：抑制垄断，资本家势力下降。', fx: n => { n.treasury = (n.treasury || 0) - 500; if (n.pops?.capitalists) n.pops.capitalists.clout = Math.max(0.05, (n.pops.capitalists.clout || 0) - 0.05); } }
+        ]
+    },
+    {
+        id: 'usa_silver_free', nation: 'USA', minYear: 1870, tag: '货币之争', title: '金银本位之争',
+        body: '银矿州与农场主推动自由铸造银币以扩张货币、减轻债务；东部银行家坚持金本位。',
+        opts: [
+            { t: '自由铸银、扩张货币', d: '国库 +1200，通胀压工人实际工资', log: '自由铸银：短期财政宽裕，工人激进度 +12%。', fx: n => { n.treasury = (n.treasury || 0) + 1200; if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 12); } },
+            { t: '坚守金本位', d: '国库 −600，资本家 Clout +4%', log: '坚守金本位：紧缩信用，资本家受益。', fx: n => { n.treasury = (n.treasury || 0) - 600; if (n.pops?.capitalists) n.pops.capitalists.clout = Math.min(0.95, (n.pops.capitalists.clout || 0) + 0.04); } }
+        ]
+    },
+    {
+        id: 'usa_spanish_war', nation: 'USA', minYear: 1890, tag: '海外扩张', title: '美西战争与海外领地',
+        body: '古巴局势引发对西班牙的战争呼声，扩张派主张夺取古巴、菲律宾，反战派警告帝国过度扩张。',
+        opts: [
+            { t: '对西开战、夺取领地', d: '国库 −1500，4 回合兵工厂 ×1.3 产出', log: '美西战争：军工动员，海外领地扩张。', modifier: 'war_mobilization' },
+            { t: '保持中立', d: '国库无损，错失海外领地', log: '保持中立：财政稳健，海外扩张停滞。' }
+        ]
+    },
+    {
+        id: 'usa_immigration', nation: 'USA', tag: '人口红利', title: '欧洲移民潮涌入',
+        body: '连年欧洲动荡驱动大规模移民涌入美国东岸，工厂主欢呼廉价劳动力，本土工人担忧工资被压。',
+        opts: [
+            { t: '开放移民、充实工业', d: '投资池 +700，资本家 Clout +5%', log: '开放移民：劳动力充裕，资本家势力上升。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 700; if (n.pops?.capitalists) n.pops.capitalists.clout = Math.min(0.95, (n.pops.capitalists.clout || 0) + 0.05); } },
+            { t: '限制移民', d: '工人 Clout +5%，投资池 +200', log: '限制移民：保护本土工人，资本扩张放缓。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 200; if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.05); } }
+        ]
     }
 ];
 
-/* 随机抽取事件，避开最近 3 次（recentEventIds）以保证新鲜感 */
+/* v3.6 条件触发：事件可选带 nation（字符串或数组，缺省=通用全国家可见）
+ * 与 minYear/maxYear（整数年份门，缺省=不限）。先按条件筛，再在合格子集内去重随机。 */
+function eventApplies(e) {
+    const code = gameState.playerNationKey, yr = gameState.year;
+    if (e.nation) {
+        const ns = Array.isArray(e.nation) ? e.nation : [e.nation];
+        if (!ns.includes(code)) return false;
+    }
+    if (e.minYear && yr < e.minYear) return false;
+    if (e.maxYear && yr > e.maxYear) return false;
+    return true;
+}
+
+/* 随机抽取事件：先条件筛 → 再避开最近 3 次（recentEventIds）以保证新鲜感。
+ * 若条件筛后无一合格则返回 null（调用方跳过，不硬塞不合格事件）。 */
 function pickRandomEvent() {
     const recent = gameState.recentEventIds || [];
-    let pool = EVENTS.filter(e => !recent.includes(e.id));
-    if (!pool.length) pool = EVENTS;                  // 全都近期出现过则放弃去重
+    const eligible = EVENTS.filter(eventApplies);
+    if (!eligible.length) return null;
+    let pool = eligible.filter(e => !recent.includes(e.id));
+    if (!pool.length) pool = eligible;                  // 去重空了→放弃去重，仍只挑合格的
     const ev = pool[Math.floor(Math.random() * pool.length)];
     gameState.recentEventIds = [ev.id, ...recent].slice(0, 3);
     return ev;
@@ -287,7 +503,8 @@ function onNextTurn() {
     };
 
     if (gameState.turn % 3 === 0) {
-        eventQueue.push(pickRandomEvent());
+        const ev = pickRandomEvent();
+        if (ev) eventQueue.push(ev);
     }
 
     saveState();
