@@ -28,18 +28,19 @@ const NATION_META = {
     USA: { hex: '#5b8fd6', role: '半边缘' }
 };
 
-/* 周期历史事件（每 3 回合触发一次，循环） */
+/* 周期历史事件池（每 3 回合随机抽一个触发，避免短期内重复）。
+ * 标 `id` 用于去重；部分选项带 `modifier` 字段 → 触发跨回合遗留效应（见 MODIFIER_TYPES）。 */
 const EVENTS = [
     {
-        tag: '议会动议', title: '《谷物法》存废之争',
+        id: 'corn_laws', tag: '议会动议', title: '《谷物法》存废之争',
         body: '曼彻斯特的工厂主联名请愿废除谷物关税，地主阶层则警告地租崩塌将动摇乡村秩序。内阁需在本回合表态。',
         opts: [
             { t: '废除谷物法，粮食关税归零', d: '资本家收益上升，地主阶层强烈不满', log: '议会通过废除《谷物法》：粮食关税降至 0%，资本家 Clout 上升。', fx: n => { n.tariffs.grain = 0; } },
-            { t: '维持保护，安抚地主', d: '地租维持高位，工业扩张放缓', log: '内阁维持《谷物法》：地租维持高位，纺织资本扩张放缓。' }
+            { t: '维持保护，安抚地主', d: '地租维持高位，工业扩张放缓；5 回合内地主 Clout 持续 +5%', log: '内阁维持《谷物法》并安抚地主：地租维持高位，纺织资本扩张放缓。', modifier: 'landlord_subsidy' }
         ]
     },
     {
-        tag: '海关照会', title: '白银外流与关税自主',
+        id: 'silver_outflow', tag: '海关照会', title: '白银外流与关税自主',
         body: '广州海关报告白银持续外流，朝廷内部就是否提高进口关税、重整通商口岸展开争论。',
         opts: [
             { t: '提高制成品关税至 40%', d: '短期财政改善，贸易条件或进一步承压', log: '提高制成品关税至 40%：财政改善，ToT 承压。', fx: n => { ['steel', 'tools', 'textiles', 'arms'].forEach(g => { n.tariffs[g] = 0.40; }); } },
@@ -47,14 +48,142 @@ const EVENTS = [
         ]
     },
     {
-        tag: '技术扩散', title: '铁路时代的资本需求',
+        id: 'railway_age', tag: '技术扩散', title: '铁路时代的资本需求',
         body: '铁路投资吸走大量社会资本，银行要求政府担保发债，工人则涌向新的铁路工地。',
         opts: [
             { t: '政府担保铁路债券', d: '投资池注入 ¥150，国库承压 ¥200', log: '政府为铁路债券提供担保：投资池扩张，国库负担加重。', fx: n => { n.treasury -= 200; n.investmentPool = (n.investmentPool || 0) + 150; } },
-            { t: '交由私人资本自行融资', d: '国库无损，扩张速度受限', log: '铁路交由私人资本融资：国库无损，扩张速度受限。' }
+            { t: '举国推进铁路网建设', d: '6 回合内投资池每回合 +120', log: '启动铁路繁荣期：投资池持续扩张 6 回合。', modifier: 'railway_boom' }
+        ]
+    },
+    {
+        id: 'chartism', tag: '社会运动', title: '工人宪章运动',
+        body: '工人阶级组织起来提出普选与福利诉求，资本家警告加薪将削弱工业竞争力，温和派建议立法调和。',
+        opts: [
+            { t: '镇压运动，维持工资', d: '工人激进度 +20%，资本利润维持', log: '镇压宪章运动：工人激进度飙升，短期资本利润保住。', fx: n => { if (n.pops?.workers) n.pops.workers.radicals = Math.min(100, (n.pops.workers.radicals || 0) + 20); } },
+            { t: '立法提高工资保障', d: '工人 Clout +8%，资本利润承压', log: '通过工资保障法：工人 Clout 上升，资本利润承压。', fx: n => { if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.08); } }
+        ]
+    },
+    {
+        id: 'colonial_rush', tag: '殖民扩张', title: '非洲瓜分狂潮',
+        body: '列强竞相在海外建立殖民地。军部要求扩军巩固航路，自由派担心过度扩张拖垮财政。',
+        opts: [
+            { t: '加入瓜分，扩军备战', d: '4 回合内兵工厂产出 ×1.3，国库每回合 −300', log: '启动战争动员：军工扩张，财政持续承压。', modifier: 'war_mobilization' },
+            { t: '专注本土，避免殖民竞赛', d: '国库无损，错失扩张红利', log: '保持战略克制：未卷入殖民竞赛，财政稳健。' }
+        ]
+    },
+    {
+        id: 'free_treaty', tag: '外交谈判', title: '自由贸易协定谈判',
+        body: '邻国提议签署互惠贸易协定，全面降低关税壁垒。出口商欢呼，幼稚工业则请求保护期。',
+        opts: [
+            { t: '签署协定，全面降税', d: '8 回合内全商品关税每回合 −10%', log: '签署自由贸易协定：关税壁垒系统性降低。', modifier: 'trade_treaty' },
+            { t: '拒绝，保护本土产业', d: '关税不变，贸易条件略升', log: '拒绝自由贸易协定：保护本土产业，贸易条件小幅改善。' }
+        ]
+    },
+    {
+        id: 'tech_import', tag: '产业升级', title: '欧洲技术引进',
+        body: '海外工程师带来炼钢与机械的最新工艺，政府可选择重金引进或观望其自然扩散。',
+        opts: [
+            { t: '重金引进先进工艺', d: '6 回合内制造品产出 ×1.15', log: '引进欧洲先进工艺：制造品产能系统性提升。', modifier: 'tech_transfer' },
+            { t: '等待技术自然扩散', d: '无即时收益，避免财政支出', log: '放任技术自然扩散：稳健但缓慢。' }
+        ]
+    },
+    {
+        id: 'bank_crisis', tag: '金融危机', title: '伦敦证券交易所恐慌',
+        body: '投机泡沫破裂引发挤兑，多家银行濒临倒闭。财政部面临救市与坚守金本位的两难。',
+        opts: [
+            { t: '央行注资救市', d: '国库 −1500，投资池 +500', log: '央行紧急注资：稳定金融体系，国库大幅承压。', fx: n => { n.treasury = (n.treasury || 0) - 1500; n.investmentPool = (n.investmentPool || 0) + 500; } },
+            { t: '坚守金本位，任其出清', d: '国库无损，投资池 −300', log: '坚守金本位：市场出清，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 300); } }
+        ]
+    },
+    {
+        id: 'education_reform', tag: '内政改革', title: '国民教育法案',
+        body: '改革派推动建立国民教育体系，提升长期人力资本；保守派忧虑税负与教会影响。',
+        opts: [
+            { t: '推行国民教育', d: '国库 −800，工人 Clout +5%', log: '推行国民教育法：人力资本长期投资，工人阶层壮大。', fx: n => { n.treasury = (n.treasury || 0) - 800; if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.05); } },
+            { t: '维持现状，节省开支', d: '国库无损，阶层格局不变', log: '搁置教育改革：财政稳健，阶层格局维持现状。' }
         ]
     }
 ];
+
+/* 随机抽取事件，避开最近 3 次（recentEventIds）以保证新鲜感 */
+function pickRandomEvent() {
+    const recent = gameState.recentEventIds || [];
+    let pool = EVENTS.filter(e => !recent.includes(e.id));
+    if (!pool.length) pool = EVENTS;                  // 全都近期出现过则放弃去重
+    const ev = pool[Math.floor(Math.random() * pool.length)];
+    gameState.recentEventIds = [ev.id, ...recent].slice(0, 3);
+    return ev;
+}
+
+/* ---------------- 跨回合遗留效应（UI 层 modifier 系统）----------------
+ * 不动引擎纯函数 tick：modifier 列表存于 state.activeModifiers（可序列化数据），
+ * onNextTurn 在 tick 之前对本国应用、tick 之后衰减。测试不走 UI，故不受影响。
+ * 每回合应用是"增量式"（如 +投资池/−国库），衰减只减 turnsLeft、到 0 移除并记日志。
+ */
+const MODIFIER_TYPES = {
+    landlord_subsidy: {
+        label: '🏛️ 地主安抚金',
+        desc: '地主 Clout +5%/回合',
+        duration: 5,
+        apply: (n) => { if (n.pops?.landowners) n.pops.landowners.clout = Math.min(0.95, (n.pops.landowners.clout || 0) + 0.05); }
+    },
+    railway_boom: {
+        label: '🚂 铁路繁荣',
+        desc: '投资池 +120/回合',
+        duration: 6,
+        apply: (n) => { n.investmentPool = (n.investmentPool || 0) + 120; }
+    },
+    trade_treaty: {
+        label: '🤝 自由贸易协定',
+        desc: '全商品关税 −10%（一次性，持续期内锁定）',
+        duration: 8,
+        apply: (n) => { Object.keys(n.tariffs || {}).forEach(g => { n.tariffs[g] = Math.max(0, (n.tariffs[g] || 0) - 0.10); }); }
+    },
+    war_mobilization: {
+        label: '⚔️ 战争动员',
+        desc: '兵工厂 ×1.3 产出，国库 −300/回合',
+        duration: 4,
+        apply: (n) => {
+            n.treasury = (n.treasury || 0) - 300;
+            if (n.production?.arms) n.production.arms = Math.round(n.production.arms * 1.3);
+        }
+    },
+    tech_transfer: {
+        label: '🔬 技术引进',
+        desc: '制造品建筑产出 ×1.15',
+        duration: 6,
+        apply: (n) => {
+            ['steel', 'tools', 'textiles', 'arms'].forEach(g => {
+                if (n.production?.[g]) n.production[g] = Math.round(n.production[g] * 1.15);
+            });
+        }
+    }
+};
+
+function applyActiveModifiers(nation) {
+    if (!gameState.activeModifiers?.length) return;
+    gameState.activeModifiers.forEach(m => {
+        const def = MODIFIER_TYPES[m.type];
+        if (def) def.apply(nation, m.magnitude || 1);
+    });
+}
+
+function tickActiveModifiers() {
+    if (!gameState.activeModifiers?.length) return;
+    const expired = [];
+    gameState.activeModifiers = gameState.activeModifiers.filter(m => {
+        m.turnsLeft = (m.turnsLeft || 0) - 1;
+        if (m.turnsLeft <= 0) {
+            const def = MODIFIER_TYPES[m.type];
+            expired.push(def?.label || m.type);
+            return false;
+        }
+        return true;
+    });
+    expired.forEach(label => {
+        gameState.logs.unshift(`${gameState.year} · 「${label}」遗留效应结束。`);
+    });
+}
 
 let gameState = null;
 let viewNation = 'GBR';      // 面板查看的国家（操作仅对本国生效）
@@ -73,6 +202,7 @@ export function initUI() {
     } else {
         gameState = createInitialState('GBR');
     }
+    normalizeState(gameState);
     viewNation = gameState.playerNationKey;
 
     document.getElementById('btn-turn').addEventListener('click', onNextTurn);
@@ -88,6 +218,13 @@ function saveState() {
     if (gameState) localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
 }
 
+// 补齐 v3.5 新增字段，兼容旧存档与 createInitialState 的纯引擎产物
+function normalizeState(s) {
+    if (!Array.isArray(s.activeModifiers)) s.activeModifiers = [];
+    if (!Array.isArray(s.recentEventIds)) s.recentEventIds = [];
+    return s;
+}
+
 /* ---------------- 回合与事件 ---------------- */
 
 function onNextTurn() {
@@ -99,7 +236,13 @@ function onNextTurn() {
     const prevNation = prev.nations[prev.playerNationKey];
     const prevStats = prev.derivedStats?.[prev.playerNationKey] || {};
 
-    gameState = tick(gameState);
+    // 遗留效应：tick 之前对本国应用本期增量（如投资池注入、关税下调），再让 tick 带着这些变化出清
+    applyActiveModifiers(prev.nations[prev.playerNationKey]);
+
+    gameState = tick(prev);
+
+    // 衰减：tick 之后减少剩余回合、到期移除并记日志
+    tickActiveModifiers();
 
     const now = gameState.nations[gameState.playerNationKey];
     const nowStats = gameState.derivedStats?.[gameState.playerNationKey] || {};
@@ -111,7 +254,7 @@ function onNextTurn() {
     };
 
     if (gameState.turn % 3 === 0) {
-        eventQueue.push(EVENTS[(gameState.turn / 3 - 1) % EVENTS.length]);
+        eventQueue.push(pickRandomEvent());
     }
 
     saveState();
@@ -125,7 +268,7 @@ function onNewGame() {
         tag: '新局', title: '重新开始一局？',
         body: '当前进度将被清空，回到 1836 年开局。',
         opts: [
-            { t: '确认重开', d: `以 ${gameState.nations[gameState.playerNationKey].name} 重新开局`, fx: () => { gameState = createInitialState(gameState.playerNationKey); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
+            { t: '确认重开', d: `以 ${gameState.nations[gameState.playerNationKey].name} 重新开局`, fx: () => { gameState = normalizeState(createInitialState(gameState.playerNationKey)); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
             { t: '取消', d: '继续当前对局' }
         ]
     });
@@ -139,8 +282,17 @@ function showNextEvent() {
         opts: ev.opts.map(o => ({
             t: o.t, d: o.d,
             fx: () => {
-                if (o.fx) o.fx(gameState.nations[gameState.playerNationKey]);
-                gameState.logs.unshift(`${gameState.year} · ${o.log}`);
+                const nation = gameState.nations[gameState.playerNationKey];
+                if (o.fx) o.fx(nation);
+                if (o.modifier) {
+                    const def = MODIFIER_TYPES[o.modifier];
+                    if (def) {
+                        gameState.activeModifiers.push({ type: o.modifier, magnitude: 1, turnsLeft: def.duration });
+                        gameState.logs.unshift(`${gameState.year} · ${o.log}（生效 ${def.duration} 回合：${def.desc}）`);
+                    }
+                } else {
+                    gameState.logs.unshift(`${gameState.year} · ${o.log}`);
+                }
                 saveState();
             }
         }))
@@ -179,7 +331,7 @@ function showEndgame() {
         title: won ? '🏆 达成历史战略目标' : '⚠️ 触及失败防线',
         body: won ? `胜利条件：${n.winCondition.desc}` : `失败条件：${n.loseCondition.desc}`,
         opts: [
-            { t: '重新开局', d: '回到 1836 年，延续同一国家', fx: () => { gameState = createInitialState(gameState.playerNationKey); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
+            { t: '重新开局', d: '回到 1836 年，延续同一国家', fx: () => { gameState = normalizeState(createInitialState(gameState.playerNationKey)); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
             { t: '留在终局画面', d: '查看最终账本' }
         ]
     });
@@ -244,6 +396,14 @@ function renderHUD() {
                 <div class="v" style="color:${r.c}">${r.v}${r.d ? `<span class="delta" style="color:${r.d > 0 ? 'var(--verdant)' : 'oklch(72% 0.14 30)'}">${r.d > 0 ? '+' : ''}${r.d}</span>` : ''}</div>
             </div>
         </div>`).join('');
+
+    // 进行中的跨回合效应徽章（v3.5）
+    const mods = gameState.activeModifiers || [];
+    document.getElementById('hud-modifiers').innerHTML = mods.map(m => {
+        const def = MODIFIER_TYPES[m.type];
+        if (!def) return '';
+        return `<span class="mod-badge" title="${def.desc}">${def.label} <i>×${m.turnsLeft}</i></span>`;
+    }).join('');
 }
 
 function renderNations() {

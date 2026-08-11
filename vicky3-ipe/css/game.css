@@ -82,6 +82,19 @@ button { font-family: inherit; }
 .date-plate .year { font-family: var(--serif); font-size: 1.35rem; font-weight: 700; color: var(--brass); letter-spacing: 1px; }
 .date-plate .turn { font-family: var(--mono); font-size: .68rem; color: var(--ink-mute); letter-spacing: .06em; }
 
+/* v3.5 进行中的跨回合效应徽章 */
+.modifiers { display: flex; align-items: center; gap: 6px; padding: 0 8px; flex-wrap: wrap; }
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+    padding: 5px 9px; font-size: .68rem; letter-spacing: .02em;
+    color: var(--brass);
+    background: oklch(72% 0.11 75 / .10);
+    border: 1px solid oklch(72% 0.11 75 / .42);
+    border-radius: 2px;
+}
+.mod-badge i { font-style: normal; font-family: var(--mono); font-size: .64rem; color: var(--ink-mute); }
+.modifiers:empty { display: none; }
+
 /* ---------- 左侧功能竖排 ---------- */
 .rail { position: absolute; left: 16px; top: 96px; display: flex; flex-direction: column; gap: 8px; z-index: 20; }
 .rail button {
