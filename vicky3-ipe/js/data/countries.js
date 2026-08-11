@@ -143,7 +143,7 @@ export const COUNTRIES_1836 = {
         wageRigidity: false,
         civilWarTension: 10,
         winCondition: {
-            desc: '🗽 跃居全球第一大 GDP 经济体，且有效控制南北重工业关税引发的内战张力。'
+            desc: '🗽 经济增速超越大英帝国（1870 年后），且未因关税撕裂引发内战（内战张力 < 50）。'
             // check 逻辑见 js/engine/rules.js (NATION_RULES.USA.win)
         },
         loseCondition: {

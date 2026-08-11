@@ -145,6 +145,27 @@ export function tick(state) {
         const netFiscalDelta = tariffRevenue + incomeTaxRevenue - subsidiesCost - hegemonyCost;
         n.treasury += netFiscalDelta;
 
+        // v3.5 财政悬崖（帝国过度扩张）：两部分构成，确保被动挂机最终破产、
+        // 主动玩家用足所得税/关税/产业杠杆方可维持。
+        //   (a) 存量累进费率：对超过"健康储备"的国库余额按随回合上升的费率侵蚀
+        //       ——模拟维持庞大官僚/军备/海外资产的边际成本递增；无法靠加税绕过
+        //       （收入先入库、余额再被费率侵蚀）。
+        //   (b) 基础治理成本：与回合线性增长的固定开支，对低储备国库也施加压力
+        //       ——模拟社保、基建、行政体系随时代扩张的不可压缩开支。
+        const treasuryReserve = 3000;
+        const overexpansionRate = 0.008 * nextTurn; // t=20→16%, t=50→40% of excess/turn
+        if (n.treasury > treasuryReserve) {
+            n.treasury -= Math.round((n.treasury - treasuryReserve) * overexpansionRate);
+        }
+        const baseGovernanceCost = 45 * nextTurn; // t=20→900, t=50→2250/turn (无免征)
+        n.treasury -= baseGovernanceCost;
+
+        // v3.5 霸权维护成本：GBR 从固定 300 改为随全球体系扩张线性上升，
+        // 模拟海权/金本位/全球秩序的维护代价——霸权国财政真正承压。
+        if (n.id === 'GBR') {
+            n.treasury -= nextTurn * 45;
+        }
+
         // 税后资本家利润 30% 存入投资池
         const capitalistProfit = n.factorIncome.capitalProfit || 0;
         n.prevCapitalProfit = n.prevCapitalProfit || capitalistProfit; // M2-3.5: 保存上一期供内战张力增速计算
@@ -180,6 +201,15 @@ export function tick(state) {
 
     // 步骤 9 & 10: 派生指标计算 (stats.js) 与霸权度动态
     const derivedStats = computeDerivedStats(nationsWithTrade, updatedPrices);
+
+    // v3.5: 计算每国 GDP 增速（供 USA 胜利条件用）。
+    // prevGdp 存于 nation 上，本期增速 = (gdp - prevGdp) / prevGdp，随后更新 prevGdp。
+    Object.keys(derivedStats).forEach(code => {
+        const cur = derivedStats[code].gdp || 0;
+        const prev = nationsWithTrade[code].prevGdp;
+        derivedStats[code].gdpGrowth = (prev && prev > 0) ? (cur - prev) / prev : 0;
+        nationsWithTrade[code].prevGdp = cur;
+    });
 
     // 步骤 10: 霸权度动态 (M2-3.4: 向 H_target 渐进，替换 +1/-2 规则)
     let hegemonyScore = state.hegemonyScore;

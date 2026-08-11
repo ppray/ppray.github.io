@@ -117,6 +117,26 @@ export function computeDerivedStats(nations, prices) {
         });
     });
 
+    // v3.5 挑战者压力：当 GBR 之外的国家重工业产值逼近英国时，霸权目标被压低
+    // ——模拟霸权被后发挑战者（普鲁士/美国）侵蚀的历史动力学。
+    // 压力 = Σ max(0, (挑战者重工业 - GBR×0.6) / GBR)，目标减去 压力×55。
+    // 阈值定在 60%：玩家通过主动维持重工业领先可把挑战者压回 60% 以下、解除压力；
+    // 被动挂机则随挑战者扩张触发 heg 跌破 80、everBelow80=true，1900 胜利条件失效。
+    if (statsMap.GBR) {
+        const gbrHeavy = statsMap.GBR.heavyIndustryVal || 1;
+        let challengerPressure = 0;
+        Object.keys(statsMap).forEach(code => {
+            if (code === 'GBR') return;
+            const otherHeavy = statsMap[code].heavyIndustryVal || 0;
+            if (otherHeavy > gbrHeavy * 0.6) {
+                challengerPressure += (otherHeavy - gbrHeavy * 0.6) / gbrHeavy;
+            }
+        });
+        const gbrTargetDrop = Math.round(challengerPressure * 55);
+        statsMap.GBR.hegemonyTarget = Math.max(15, statsMap.GBR.hegemonyTarget - gbrTargetDrop);
+        statsMap.GBR.challengerPressure = Math.round(challengerPressure * 100) / 100;
+    }
+
     // GDP 排名与重工业排名
     const gdpSorted = Object.keys(statsMap).sort((a, b) => statsMap[b].gdp - statsMap[a].gdp);
     gdpSorted.forEach((code, idx) => { statsMap[code].gdpRank = idx + 1; });
