@@ -11,6 +11,7 @@ import { GOODS } from './data/goods.js';
 import { BUILDINGS } from './data/buildings.js';
 import { IPE_THEORY_DATA } from './ipe-theory.js';
 import { renderMap } from './map.js';
+import { createSpecieFlowGame, step as specieStep, debrief as specieDebrief, availableActions as specieActions, PARITY, GOLD_POINT } from './minigame-goldstandard.js';
 
 const SAVE_KEY = 'empire_ledger_state_v33';
 
@@ -121,10 +122,10 @@ const EVENTS = [
     },
     {
         id: 'bank_crisis', tag: '金融危机', title: '伦敦证券交易所恐慌',
-        body: '投机泡沫破裂引发挤兑，多家银行濒临倒闭。财政部面临救市与坚守金本位的两难。',
+        body: '投机泡沫破裂引发挤兑，多家银行濒临倒闭。财政部面临救市与坚守金本位的两难——若本国正处于英镑潮汐的高脆弱度中，这场恐慌只会更猛烈。',
         opts: [
-            { t: '央行注资救市', d: '国库 −1500，投资池 +500', log: '央行紧急注资：稳定金融体系，国库大幅承压。', fx: n => { n.treasury = (n.treasury || 0) - 1500; n.investmentPool = (n.investmentPool || 0) + 500; } },
-            { t: '坚守金本位，任其出清', d: '国库无损，投资池 −300', log: '坚守金本位：市场出清，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 300); } }
+            { t: '央行注资救市', d: '国库 −1500 起，投资池 +500 起（按潮汐脆弱度加重/减效）', log: '央行紧急注资：稳定金融体系，国库大幅承压。', fx: n => { const scale = 1 + (n.tideFragility || 0) / 100; n.treasury = (n.treasury || 0) - Math.round(1500 * scale); n.investmentPool = (n.investmentPool || 0) + Math.round(500 / scale); } },
+            { t: '坚守金本位，任其出清', d: '国库无损，投资池 −300 起（按潮汐脆弱度加重）', log: '坚守金本位：市场出清，投资池萎缩。', fx: n => { const scale = 1 + (n.tideFragility || 0) / 100; n.investmentPool = Math.max(0, (n.investmentPool || 0) - Math.round(300 * scale)); } }
         ]
     },
     {
@@ -179,10 +180,10 @@ const EVENTS = [
     },
     {
         id: 'gbr_long_depression', nation: 'GBR', minYear: 1873, tag: '周期危机', title: '1873 大萧条冲击',
-        body: '维也纳股市崩盘引发全球长萧条，英国出口骤降、失业攀升，财政部辩论救市方向。',
+        body: '维也纳股市崩盘引发全球长萧条，英国出口骤降、失业攀升，财政部辩论救市方向——若外围国普遍深陷英镑潮汐的高脆弱度，这场萧条的全球传导也会更猛烈。',
         opts: [
-            { t: '央行注资 + 铁路拉动', d: '国库 −1500，6 回合投资池持续注入', log: '反周期刺激：央行注资并启动铁路繁荣对冲萧条。', modifier: 'railway_boom' },
-            { t: '等市场自发出清', d: '国库无损，投资池 −400', log: '放任出清：市场调节，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 400); } }
+            { t: '央行注资 + 铁路拉动', d: '国库 −1500 起（按外围潮汐脆弱度加重），6 回合投资池持续注入', log: '反周期刺激：央行注资并启动铁路繁荣对冲萧条。', fx: (n, state) => { const others = ['PRS', 'QING', 'USA']; const avgFrag = others.reduce((s, c) => s + (state.nations[c].tideFragility || 0), 0) / others.length; n.treasury = (n.treasury || 0) - Math.round(1500 * (1 + avgFrag / 100)); }, modifier: 'railway_boom' },
+            { t: '等市场自发出清', d: '国库无损，投资池 −400 起（按外围潮汐脆弱度加重）', log: '放任出清：市场调节，投资池萎缩。', fx: (n, state) => { const others = ['PRS', 'QING', 'USA']; const avgFrag = others.reduce((s, c) => s + (state.nations[c].tideFragility || 0), 0) / others.length; n.investmentPool = Math.max(0, (n.investmentPool || 0) - Math.round(400 * (1 + avgFrag / 100))); } }
         ]
     },
 
@@ -229,10 +230,10 @@ const EVENTS = [
     },
     {
         id: 'prs_gruender', nation: 'PRS', minYear: 1870, tag: '金融泡沫', title: '1873 创办者狂潮崩盘',
-        body: '统一后的德国爆发创办公司狂热，股市泡沫破裂导致大批银行倒闭，财政部面临救市抉择。',
+        body: '统一后的德国爆发创办公司狂热，股市泡沫破裂导致大批银行倒闭，财政部面临救市抉择——若持续挂钩英镑吃尽潮汐宽松红利，这场崩盘的账单也会更沉重。',
         opts: [
-            { t: '国家救助银行', d: '国库 −1500，投资池 +600', log: '救助金融体系：稳定市场，国库大幅承压。', fx: n => { n.treasury = (n.treasury || 0) - 1500; n.investmentPool = (n.investmentPool || 0) + 600; } },
-            { t: '任其出清', d: '国库无损，投资池 −500', log: '放任出清：市场重整，投资池萎缩。', fx: n => { n.investmentPool = Math.max(0, (n.investmentPool || 0) - 500); } }
+            { t: '国家救助银行', d: '国库 −1500 起，投资池 +600 起（按潮汐脆弱度加重/减效）', log: '救助金融体系：稳定市场，国库大幅承压。', fx: n => { const scale = 1 + (n.tideFragility || 0) / 100; n.treasury = (n.treasury || 0) - Math.round(1500 * scale); n.investmentPool = (n.investmentPool || 0) + Math.round(600 / scale); } },
+            { t: '任其出清', d: '国库无损，投资池 −500 起（按潮汐脆弱度加重）', log: '放任出清：市场重整，投资池萎缩。', fx: n => { const scale = 1 + (n.tideFragility || 0) / 100; n.investmentPool = Math.max(0, (n.investmentPool || 0) - Math.round(500 * scale)); } }
         ]
     },
 
@@ -334,11 +335,62 @@ const EVENTS = [
             { t: '开放移民、充实工业', d: '投资池 +700，资本家 Clout +5%', log: '开放移民：劳动力充裕，资本家势力上升。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 700; if (n.pops?.capitalists) n.pops.capitalists.clout = Math.min(0.95, (n.pops.capitalists.clout || 0) + 0.05); } },
             { t: '限制移民', d: '工人 Clout +5%，投资池 +200', log: '限制移民：保护本土工人，资本扩张放缓。', fx: n => { n.investmentPool = (n.investmentPool || 0) + 200; if (n.pops?.workers) n.pops.workers.clout = Math.min(0.95, (n.pops.workers.clout || 0) + 0.05); } }
         ]
+    },
+
+    /* ========== v3.6 跨国系统事件（英镑潮汐时机 / 雁行产业转移 / 金融城信用封锁）
+     * fx 签名扩展为 (nation, state)，可跨国读写 state.nations.*；cond(nation, state) 为运行时条件门。 */
+    {
+        id: 'gbr_boe_rate', nation: 'GBR', tag: '潮汐决策', title: '英格兰银行贴现率抉择',
+        cond: (n, state) => state.tide && state.tide.phase === 'EASY' && state.tide.turnsInPhase >= 6,
+        body: '海外信贷持续扩张，黄金储备缓慢流出。英格兰银行行长请求内阁定夺：是否即刻加息以捍卫金本位，还是再放任资本潮汐外溢一段时日。',
+        opts: [
+            { t: '即刻加息，捍卫黄金', d: '下回合触发潮汐收紧，外围国脆弱度提前清算，收割较温和', log: '英格兰银行宣布加息：贴现率抬升，全球资本开始回流伦敦。', fx: (n, state) => { state.tide.turnsInPhase = state.tide.phaseLength; } },
+            { t: '维持宽松，继续放水', d: '宽松期延长 4 回合，外围国脆弱度继续累积，日后收割更猛烈', log: '内阁决定维持低贴现率：伦敦资本继续外溢，潮汐脆弱度持续累积。', fx: (n, state) => { state.tide.phaseLength += 4; } }
+        ]
+    },
+    {
+        id: 'gbr_textile_offshoring', nation: 'GBR', minYear: 1850, tag: '雁行首发', title: '纺织资本谋求海外设厂',
+        cond: (n, state) => (n.employmentTightness || 0) >= 0.90 || state.year >= 1870,
+        body: '兰开夏郡的纺织工资持续攀升，工厂主们盯上了大清通商口岸的低廉劳动力，请求政府放行资本出海设厂。',
+        opts: [
+            { t: '资本出海，通商口岸设厂', d: '大清纺织产能 +3；此后 8 回合内小额利润回流英国国库', log: '纺织资本移师大清通商口岸：产业接力棒交出，海外利润开始回流母国。', fx: (n, state) => { const q = state.nations.QING; q.buildings.textile_mill = (q.buildings.textile_mill || 0) + 3; state.globalEffects.push({ type: 'profit_repatriation', from: 'QING', to: 'GBR', amount: 40, turnsLeft: 8 }); } },
+            { t: '保护本土产业链，拒绝外迁', d: '错失雁行红利，但纺织产业链完整留在本土', log: '拒绝资本外迁：纺织产业链留在本土，错失海外扩张窗口。' }
+        ]
+    },
+    {
+        id: 'qing_foreign_concession_mill', nation: 'QING', minYear: 1850, tag: '通商口岸', title: '洋商申请设立纺纱厂',
+        cond: (n, state) => (state.nations.GBR.employmentTightness || 0) >= 0.90 || state.year >= 1860,
+        body: '英国洋行请求在通商口岸自建纺纱厂，承诺带来机器与订单，但利润将循原航路汇回伦敦。李鸿章一系主张借船出海，清流则警告"以夷制夷"恐养虎为患。',
+        opts: [
+            { t: '批准洋商设厂', d: '纺织产能 +3；此后 8 回合内小额利润流向英国', log: '批准洋商设厂：产能立时扩张，但利润开始外流。', fx: (n, state) => { n.buildings.textile_mill = (n.buildings.textile_mill || 0) + 3; state.globalEffects.push({ type: 'profit_repatriation', from: 'QING', to: 'GBR', amount: 40, turnsLeft: 8 }); } },
+            { t: '洋务自强，婉拒洋商', d: '错失产能红利，但利润与产业主权完整自留', log: '婉拒洋商设厂：自强路线继续，产业主权完整保留。' }
+        ]
+    },
+    {
+        id: 'gbr_credit_blockade', nation: 'GBR', minYear: 1850, tag: '金融武器', title: '金融城的承销抉择',
+        body: '一个不驯的贸易伙伴对英国商品筑起高墙关税，金融城的承销商们私下讨论：是否该拒绝为其国债承销，让它尝尝被排除在伦敦资本网络之外的滋味。',
+        opts: [
+            { t: '拒绝承销，实施信用封锁', d: '关税最高的挑战者投资池连续 6 回合遭压制', log: '金融城行使信用封锁：向不驯的贸易伙伴关闭伦敦资本大门。', fx: (n, state) => {
+                const codes = ['PRS', 'QING', 'USA'];
+                let target = null, maxTariff = -1;
+                codes.forEach(code => {
+                    const nn = state.nations[code];
+                    const avg = ['steel', 'tools', 'textiles', 'arms'].reduce((s, g) => s + (nn.tariffs[g] || 0), 0) / 4;
+                    if (avg > maxTariff) { maxTariff = avg; target = code; }
+                });
+                if (target) {
+                    state.globalEffects.push({ type: 'credit_blockade', nation: target, turnsLeft: 6 });
+                    state.logs.unshift(`${state.year} · 🚫 金融城对${state.nations[target].name}实施信用封锁：投资池遭持续压制。`);
+                }
+            } },
+            { t: '保持金融中立', d: '不动用金融武器，避免激化对抗', log: '金融城保持中立：暂不动用承销权作为武器。' }
+        ]
     }
 ];
 
 /* v3.6 条件触发：事件可选带 nation（字符串或数组，缺省=通用全国家可见）
- * 与 minYear/maxYear（整数年份门，缺省=不限）。先按条件筛，再在合格子集内去重随机。 */
+ * 与 minYear/maxYear（整数年份门，缺省=不限）。先按条件筛，再在合格子集内去重随机。
+ * v3.6 新增 e.cond(nation, state) 谓词：用于挂钩运行时指标（如雇佣紧张度突破拐点）。 */
 function eventApplies(e) {
     const code = gameState.playerNationKey, yr = gameState.year;
     if (e.nation) {
@@ -347,6 +399,7 @@ function eventApplies(e) {
     }
     if (e.minYear && yr < e.minYear) return false;
     if (e.maxYear && yr > e.maxYear) return false;
+    if (e.cond && !e.cond(gameState.nations[code], gameState)) return false;
     return true;
 }
 
@@ -433,6 +486,102 @@ function tickActiveModifiers() {
     });
 }
 
+/* ---------------- v3.6 跨国系统（英镑潮汐 / 铸币税 / 金融城信用封锁）----------------
+ * 与 MODIFIER_TYPES（仅作用于玩家本国）不同，这里的效果需要读写全部四国，
+ * 因此单独用 state.tide / state.globalEffects 承载，在 tick() 之前对 prev.nations 直接写入
+ * （与 applyActiveModifiers 同一时机），只碰 treasury/investmentPool/buildings 等 tick 会
+ * 增量延续的字段，不碰每回合从建筑重算的 production/consumption（写了也会被覆盖，参见
+ * MODIFIER_TYPES.tech_transfer/war_mobilization 的产出加成分支——那两条其实从未生效过）。 */
+const PERIPHERY_CODES = ['PRS', 'QING', 'USA'];
+
+function applyGlobalSystems(prev) {
+    const tide = prev.tide;
+    const others = PERIPHERY_CODES.map(c => prev.nations[c]).filter(Boolean);
+
+    // (1) 铸币税 / 负利差循环：正对外净资产每回合被小额抽成流入英国国库（seigniorage_negative_carry）
+    let seigniorage = 0;
+    others.forEach(n => {
+        const nfa = n.netForeignAssets || 0;
+        if (nfa > 0) {
+            const skim = Math.round(nfa * 0.01);
+            if (skim > 0) {
+                n.treasury = (n.treasury || 0) - skim;
+                seigniorage += skim;
+            }
+        }
+    });
+    if (seigniorage > 0) {
+        prev.nations.GBR.treasury = (prev.nations.GBR.treasury || 0) + seigniorage;
+        if (seigniorage >= 5) {
+            prev.logs.unshift(`${prev.year} · 💰 铸币税：外围储备回流伦敦，英国国库 +${seigniorage}（负利差循环）。`);
+        }
+    }
+
+    // (2) 英镑潮汐：EASY 宽松期资本溢出 + 脆弱度累积；TIGHT 收紧期一次性收割
+    if (tide.phase === 'EASY') {
+        others.forEach(n => {
+            n.investmentPool = (n.investmentPool || 0) + 70;
+            const gain = n.goldExchangeStandard ? 7 : 0; // 金块本位免疫脆弱度累积
+            n.tideFragility = Math.min(100, (n.tideFragility || 0) + gain);
+        });
+        tide.turnsInPhase += 1;
+        if (tide.turnsInPhase >= tide.phaseLength) {
+            tide.phase = 'TIGHT';
+        }
+    } else {
+        let gbrGain = 0;
+        others.forEach(n => {
+            const frag = n.tideFragility || 0;
+            if (frag <= 0) return;
+            const poolHit = Math.round(frag * 6);
+            const treasuryHit = Math.round(frag * 4);
+            n.investmentPool = Math.max(0, (n.investmentPool || 0) - poolHit);
+            n.treasury = (n.treasury || 0) - treasuryHit;
+            gbrGain += treasuryHit * 0.5;
+            if (frag >= 15) {
+                prev.logs.unshift(`${prev.year} · 🌊 英镑潮汐收割：${n.name} 投资池 −${poolHit}、国库 −${treasuryHit}（脆弱度 ${Math.round(frag)}）。`);
+            }
+            n.tideFragility = 0;
+        });
+        if (gbrGain > 0) {
+            prev.nations.GBR.treasury = (prev.nations.GBR.treasury || 0) + Math.round(gbrGain);
+            prev.logs.unshift(`${prev.year} · 💷 伦敦资本回流：英格兰银行加息捍卫黄金，英国国库 +${Math.round(gbrGain)}。`);
+        }
+        tide.phase = 'EASY';
+        tide.turnsInPhase = 0;
+        tide.phaseLength = 10 + Math.floor(Math.random() * 6);
+    }
+
+    // (3) globalEffects：跨国持续效应（雁行利润回流 / 金融城信用封锁）
+    if (prev.globalEffects && prev.globalEffects.length) {
+        const expiredLabels = [];
+        prev.globalEffects = prev.globalEffects.filter(e => {
+            const from = prev.nations[e.from];
+            const to = prev.nations[e.to];
+            const target = prev.nations[e.nation];
+            if (e.type === 'profit_repatriation' && from && to) {
+                from.treasury = (from.treasury || 0) - e.amount;
+                to.treasury = (to.treasury || 0) + e.amount;
+            } else if (e.type === 'credit_blockade' && target) {
+                target.investmentPool = Math.round((target.investmentPool || 0) * 0.7);
+            }
+            e.turnsLeft -= 1;
+            if (e.turnsLeft <= 0) {
+                expiredLabels.push(e);
+                return false;
+            }
+            return true;
+        });
+        expiredLabels.forEach(e => {
+            if (e.type === 'profit_repatriation') {
+                prev.logs.unshift(`${prev.year} · 🏭 ${prev.nations[e.to]?.name}对${prev.nations[e.from]?.name}的产业利润回流期结束。`);
+            } else if (e.type === 'credit_blockade') {
+                prev.logs.unshift(`${prev.year} · 🚫 金融城对${prev.nations[e.nation]?.name}的信用封锁解除。`);
+            }
+        });
+    }
+}
+
 let gameState = null;
 let viewNation = 'GBR';      // 面板查看的国家（操作仅对本国生效）
 let activeTab = 'tariffs';
@@ -466,11 +615,20 @@ function saveState() {
     if (gameState) localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
 }
 
-// 补齐 v3.5 新增字段，兼容旧存档与 createInitialState 的纯引擎产物
+// 补齐 v3.5/v3.6 新增字段，兼容旧存档与 createInitialState 的纯引擎产物
 function normalizeState(s) {
     if (!Array.isArray(s.activeModifiers)) s.activeModifiers = [];
     if (!Array.isArray(s.recentEventIds)) s.recentEventIds = [];
     if (!s.advisoryFlags) s.advisoryFlags = {};
+    // v3.6: 英镑潮汐周期（EASY 宽松 / TIGHT 收紧-收割），UI 层跨国系统，不进入引擎纯函数
+    if (!s.tide) s.tide = { phase: 'EASY', turnsInPhase: 0, phaseLength: 10 + Math.floor(Math.random() * 6) };
+    if (!Array.isArray(s.globalEffects)) s.globalEffects = [];
+    Object.entries(s.nations || {}).forEach(([code, n]) => {
+        if (code !== 'GBR') {
+            if (n.goldExchangeStandard === undefined) n.goldExchangeStandard = true;
+            if (n.tideFragility === undefined) n.tideFragility = 0;
+        }
+    });
     return s;
 }
 
@@ -487,6 +645,8 @@ function onNextTurn() {
 
     // 遗留效应：tick 之前对本国应用本期增量（如投资池注入、关税下调），再让 tick 带着这些变化出清
     applyActiveModifiers(prev.nations[prev.playerNationKey]);
+    // v3.6 跨国系统：英镑潮汐/铸币税/信用封锁，四国全局生效，与玩家选择的国家无关
+    applyGlobalSystems(prev);
 
     gameState = tick(prev);
 
@@ -514,7 +674,66 @@ function onNextTurn() {
 
     render();
     if (gameState.gameStatus !== 'PLAYING') showEndgame();
-    else showNextEvent();
+    else if (!maybeTriggerSpecieCrisis()) showNextEvent();
+}
+
+/* 国际收支危局：对外净资产转负、或贸易大幅逆差时触发一次金本位自动调节推演。
+ * 返回 true 表示已弹出（调用方跳过本回合的普通事件，避免两个弹窗叠在一起）。 */
+function maybeTriggerSpecieCrisis() {
+    const flags = gameState.advisoryFlags || (gameState.advisoryFlags = {});
+    if (flags.specieCrisis) return false;
+    if (gameState.turn < 8) return false;
+
+    const code = gameState.playerNationKey;
+    const n = gameState.nations[code];
+    // 注意：引擎的 n.tradeBalance 从未被赋值（core.js/stats.js 都是 `|| 0` 读取），
+    // 这里用 market.js 真实计算的进出口额差价，而不是那个恒为 0 的字段。
+    const tradeBal = (n.exportValSum || 0) - (n.importValSum || 0);
+    // 角色由结构位置决定而非贸易差额瞬时符号：GBR 是金本位的清算中心（握有"冲销"工具），
+    // 其余国是被动承受调整的外围。这正是笔记"规则对等、执行能力不对等"的建模。
+    const role = code === 'GBR' ? 'surplus' : 'deficit';
+    const stressed = role === 'surplus' ? tradeBal > 0 : tradeBal < -200;
+    // 兜底：即使本局没出现明显失衡，也保证第 14 回合前必定推演一次，不让玩家整局错过
+    if (!stressed && gameState.turn < 14) return false;
+
+    flags.specieCrisis = true;
+    showSpecieFlowGame({
+        mode: 'crisis', role, nationName: n.name,
+        onFinish: g => { applySpecieOutcome(g); saveState(); render(); showNextEvent(); }
+    });
+    return true;
+}
+
+/* 把推演结果写回本局：国库 / 工人激进度 / 潮汐脆弱度。
+ * 顺差国的"冲销"把代价转嫁给外围——所以要改的是其余三国的脆弱度，而不是自己的。 */
+function applySpecieOutcome(g) {
+    const code = gameState.playerNationKey;
+    const n = gameState.nations[code];
+    const bumpRadicals = d => { if (n.pops?.workers) n.pops.workers.radicals = Math.max(0, Math.min(100, (n.pops.workers.radicals || 0) + d)); };
+    const bumpOwnFragility = d => { if (n.tideFragility !== undefined) n.tideFragility = Math.max(0, Math.min(100, (n.tideFragility || 0) + d)); };
+    const bumpPeripheryFragility = d => PERIPHERY_CODES.forEach(c => {
+        const p = gameState.nations[c];
+        if (p && p.tideFragility !== undefined) p.tideFragility = Math.max(0, Math.min(100, (p.tideFragility || 0) + d));
+    });
+
+    let log;
+    if (g.status === 'WON' && g.role === 'deficit') {
+        n.treasury += 600; bumpOwnFragility(-25); bumpRadicals(8);
+        log = '🪙 金本位自动调节闭环走通：国际收支恢复平衡，国库 +600、脆弱度 −25，但通缩留下的失业推高了工人激进度 +8。';
+    } else if (g.status === 'WON' && g.role === 'surplus' && g.outcome === 'sterilized') {
+        n.treasury += 500; bumpRadicals(-5); bumpPeripheryFragility(12);
+        log = `🪙 冲销黄金流入：拒绝通胀，国库 +500、工人激进度 −5。调整代价转嫁给外围——三国潮汐脆弱度 +12。`;
+    } else if (g.status === 'WON' && g.role === 'surplus') {
+        n.treasury -= 300; bumpPeripheryFragility(-15);
+        log = '🪙 分担调整成本：资本输出让机制双向闭合，国库 −300，但外围三国脆弱度 −15，体系更稳。';
+    } else if (g.outcome === 'broke_peg') {
+        n.treasury -= 800; bumpOwnFragility(20); bumpRadicals(-10);
+        log = '🪙 暂停黄金兑换、脱离金本位：通缩立止，工人激进度 −10；但国际信用受损，国库 −800、脆弱度 +20。';
+    } else {
+        n.treasury -= 700; bumpOwnFragility(15); bumpRadicals(18);
+        log = '🪙 国际收支调整失败：国库 −700、工人激进度 +18、脆弱度 +15。';
+    }
+    gameState.logs.unshift(`${gameState.year} · ${log}`);
 }
 
 /* 一次性预警/提示：财政悬崖告急 + USA/QING 接近胜利。标志位持久化于 state。 */
@@ -575,7 +794,7 @@ function showNextEvent() {
             t: o.t, d: o.d,
             fx: () => {
                 const nation = gameState.nations[gameState.playerNationKey];
-                if (o.fx) o.fx(nation);
+                if (o.fx) o.fx(nation, gameState);
                 if (o.modifier) {
                     const def = MODIFIER_TYPES[o.modifier];
                     if (def) {
@@ -624,7 +843,8 @@ function showEndgame() {
         tag: won ? '战略胜利' : '国家危机', tagClass: won ? 'win' : 'lose',
         title: won ? '🏆 达成历史战略目标' : '⚠️ 触及失败防线',
         body: `<p>${won ? `胜利条件：${n.winCondition.desc}` : `失败条件：${n.loseCondition.desc}`}</p>
-               <p style="margin-top:10px;padding-top:10px;border-top:1px solid oklch(72% 0.11 75 / .25)"><b style="color:var(--brass)">${won ? '📊 制胜路径' : '🔬 失败诊断'}</b><br>${diag}</p>`,
+               <p style="margin-top:10px;padding-top:10px;border-top:1px solid oklch(72% 0.11 75 / .25)"><b style="color:var(--brass)">${won ? '📊 制胜路径' : '🔬 失败诊断'}</b><br>${diag}</p>
+               <p style="margin-top:10px;padding-top:10px;border-top:1px solid oklch(72% 0.11 75 / .25)"><b style="color:var(--ink-mute)">🕯️ 尾声</b><br>本局的英镑潮汐、金汇兑本位与铸币税，正是二十世纪布雷顿森林体系与牙买加体系的制度雏形——两次世界大战后霸权货币从英镑更迭为美元，1971 年黄金窗口关闭、1976 年牙买加协议确认浮动汇率，但"铸币税・潮汐・信用封锁"三利器的收割逻辑一脉相承。读懂了这盘账本里英镑本位如何运转，也就读懂了今天的美元本位。</p>`,
         opts: [
             { t: '重新开局', d: '回到 1836 年，延续同一国家', fx: () => { gameState = normalizeState(createInitialState(gameState.playerNationKey)); viewNation = gameState.playerNationKey; lastDelta = null; endgameShown = false; eventQueue = []; saveState(); } },
             { t: '留在终局画面', d: '查看最终账本' }
@@ -683,6 +903,194 @@ function diagnoseWin(state, code) {
     if (code === 'QING') return `制造品出口占比 ${Math.round((st.manufacturedExportRatio||0)*100)}% 破除依附锁链，贸易条件 ${st.termsOfTrade}。`;
     if (code === 'USA') return `GDP 增速 ${(st.gdpGrowth*100).toFixed(1)}% 反超英国，内战张力 ${st.civilWarTension}，完成新兴大国崛起。`;
     return '';
+}
+
+/* ---------------- 金本位自动调节小游戏（休谟价格—铸币流动机制）----------------
+ * mode='crisis'  ：国际收支恶化时强制弹出，结算回写国库/激进度/潮汐脆弱度
+ * mode='sandbox' ：从图鉴页随时打开，纯练习，不触碰存档
+ * role 由玩家国在体系中的位置决定：GBR=顺差国（有"冲销"按钮），其余=逆差国（没有）。 */
+
+const SG_LO = 50, SG_HI = 150;   // 变量条的显示区间（均衡 100 落在正中）
+
+function sgPct(v) { return Math.max(0, Math.min(100, ((v - SG_LO) / (SG_HI - SG_LO)) * 100)); }
+
+function sgBar({ name, hint, value, prev, color, max100 = false }) {
+    const pct = max100 ? Math.max(0, Math.min(100, value)) : sgPct(value);
+    const delta = prev == null ? null : Math.round((value - prev) * 10) / 10;
+    const dTxt = delta === null || delta === 0 ? '' :
+        `<span class="sg-delta" style="color:${delta > 0 ? 'var(--verdant)' : 'oklch(72% 0.14 30)'}">${delta > 0 ? '+' : ''}${delta}</span>`;
+    return `<div class="sg-var">
+        <div class="sg-top">
+            <span class="sg-name">${name}<i>${hint}</i></span>
+            <span class="sg-num" style="color:${color}">${Math.round(value * 10) / 10}${dTxt}</span>
+        </div>
+        <div class="sg-track">
+            <i style="width:${pct}%;background:${color}"></i>
+            ${max100 ? '' : `<div class="sg-eq" style="left:${sgPct(PARITY)}%"></div>`}
+        </div>
+    </div>`;
+}
+
+/* 复刻笔记那张四变量时序图：黄金先动 → 货币跟进 → 物价最滞后 */
+function sgChart(history) {
+    const W = 660, H = 118, padL = 8, padR = 8, padT = 10, padB = 10;
+    const series = [
+        { key: 'gold', color: '#d97706', label: '黄金存量' },
+        { key: 'money', color: '#6366f1', label: '货币供给' },
+        { key: 'prices', color: '#16a34a', label: '物价水平' }
+    ];
+    const all = history.flatMap(h => series.map(s => h[s.key]));
+    const lo = Math.min(...all, 95) - 3, hi = Math.max(...all, 105) + 3;
+    const n = Math.max(1, history.length - 1);
+    const x = i => padL + (i / n) * (W - padL - padR);
+    const y = v => padT + (1 - (v - lo) / Math.max(1, hi - lo)) * (H - padT - padB);
+
+    const eqY = y(PARITY);
+    const paths = series.map(s => {
+        const d = history.map((h, i) => `${i ? 'L' : 'M'} ${x(i).toFixed(1)} ${y(h[s.key]).toFixed(1)}`).join(' ');
+        const last = history[history.length - 1];
+        return `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="${x(history.length - 1).toFixed(1)}" cy="${y(last[s.key]).toFixed(1)}" r="2.6" fill="${s.color}"/>`;
+    }).join('');
+
+    return `<div class="sg-chart">
+        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="黄金存量、货币供给、物价水平三条曲线的时序推演">
+            <line x1="${padL}" y1="${eqY.toFixed(1)}" x2="${W - padR}" y2="${eqY.toFixed(1)}"
+                  stroke="var(--ink-mute)" stroke-width="1" stroke-dasharray="2 4" opacity=".55"/>
+            ${paths}
+        </svg>
+        <div class="sg-legend">
+            ${series.map(s => `<span><i style="background:${s.color}"></i>${s.label}</span>`).join('')}
+            <span style="margin-left:auto">虚线＝均衡 100 · 注意三者的<b style="color:var(--brass)">相位差</b>：黄金先动、货币跟进、物价最滞后</span>
+        </div>
+    </div>`;
+}
+
+function sgFxBand(game) {
+    // 把 [PARITY-2*GOLD_POINT, PARITY+2*GOLD_POINT] 映射到 0-100%，输送点带落在中间一半
+    const lo = PARITY - GOLD_POINT * 2, hi = PARITY + GOLD_POINT * 2;
+    const pos = v => Math.max(0, Math.min(100, ((v - lo) / (hi - lo)) * 100));
+    const bandL = pos(PARITY - GOLD_POINT), bandR = pos(PARITY + GOLD_POINT);
+    return `<div class="sg-var sg-fx">
+        <div class="sg-top">
+            <span class="sg-name">汇率<i>铸币平价 ± 运金成本＝黄金输送点</i></span>
+            <span class="sg-num" style="color:#a855f7">${(Math.round(game.fx * 10) / 10).toFixed(1)}</span>
+        </div>
+        <div class="sg-fxband">
+            <div class="band" style="left:${bandL}%;width:${bandR - bandL}%"></div>
+            <div class="par" style="left:${pos(PARITY)}%"></div>
+            <div class="dot ${game.fxPinned ? 'pinned' : ''}" style="left:${pos(game.fx)}%"></div>
+        </div>
+        <div class="sg-fxnote ${game.fxPinned ? 'pinned' : ''}">${game.fxPinned
+            ? '⚠️ 汇率已抵输送点——继续偏离不划算，黄金开始实物外运。这就是金本位"固定汇率"的物理机制。'
+            : '汇率被锁在输送点窄带内小幅震荡，不会大幅偏离铸币平价。'}</div>
+    </div>`;
+}
+
+function showSpecieFlowGame({ mode = 'sandbox', role, nationName, onFinish } = {}) {
+    const game = createSpecieFlowGame({ role, maxRounds: 10, nationName });
+    const isCrisis = mode === 'crisis';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'overlay';
+    document.getElementById('stage').appendChild(wrap);
+
+    const draw = () => {
+        const h = game.history;
+        const cur = h[h.length - 1];
+        const prev = h.length > 1 ? h[h.length - 2] : null;
+        const done = game.status !== 'PLAYING';
+
+        const intro = game.role === 'deficit'
+            ? `<b>${nationName}</b> 出现国际收支逆差，黄金正按平价外运。休谟的价格—铸币流动机制理论上会自动把你拉回均衡——
+               <b>逆差→黄金外流→货币紧缩→物价下跌→出口变便宜→转顺差→黄金回流</b>。
+               问题在于：让物价跌下去正是让失业涨上来。你手里没有对冲黄金外流的工具，只能决定<b>怎么熬</b>。`
+            : `全球黄金的定价与清算集中在伦敦，<b>${nationName}</b> 是这套体系的中心——净黄金正随结算流入。
+               按机制你的货币供给应当随之扩张、物价上涨，直到出口变贵、顺差消失，这是闭环的另一半。
+               但你有一个外围国永远没有的按钮：<b>冲销</b>。用它就能拒绝通胀、人为截断自己这半个环，
+               代价则留在贸易对手那一头。<b>注意观察"外围民怨"那根条</b>——那才是这一局真正的计分板。`;
+
+        const bars = [
+            sgBar({ name: '黄金存量', hint: '最先反应', value: game.gold, prev: prev && prev.gold, color: '#d97706' }),
+            sgBar({ name: '货币供给', hint: '滞后跟进', value: game.money, prev: prev && prev.money, color: '#6366f1' }),
+            sgBar({ name: '物价水平', hint: '粘性最强', value: game.prices, prev: prev && prev.prices, color: '#16a34a' }),
+            sgBar({ name: game.role === 'deficit' ? '民怨（通缩失业）' : '本国民怨', hint: '≥100 崩溃', value: game.unrest, prev: prev && prev.unrest, color: 'oklch(72% 0.14 30)', max100: true })
+        ];
+        if (game.role === 'surplus') {
+            bars.push(sgBar({ name: '外围民怨', hint: '你转嫁出去的代价', value: game.peripheryUnrest, prev: prev && prev.peripheryUnrest, color: 'oklch(60% 0.16 15)', max100: true }));
+        }
+
+        const tb = game.tradeBalance;
+        const tbTxt = `<div style="font-size:.74rem;color:var(--ink-mute);margin:-4px 0 12px">
+            贸易差额 <b style="font-family:var(--mono);color:${tb >= 0 ? 'var(--verdant)' : 'oklch(72% 0.14 30)'}">${tb >= 0 ? '+' : ''}${Math.round(tb * 10) / 10}</b>
+            ${tb >= 0 ? '（顺差·黄金流入）' : '（逆差·黄金流出）'}　·　物价每低于均衡 1 点，竞争力改善约 0.42</div>`;
+
+        let tail;
+        if (done) {
+            const d = specieDebrief(game);
+            const rewardTxt = isCrisis ? `<div class="sg-reward">${describeSpecieReward(game)}</div>` : '';
+            tail = `<div class="sg-debrief"><h3>${d.title}</h3><p>${d.body}</p></div>${rewardTxt}
+                <div class="sg-acts" style="margin-top:12px">
+                    <button data-close="1"><div class="t">${isCrisis ? '接受结果，回到账本' : '关闭推演'}</div><div class="d">${isCrisis ? '本次推演的结果将写入本局' : '不影响当前对局'}</div></button>
+                    ${isCrisis ? '' : '<button data-replay="1"><div class="t">↻ 再推演一次</div><div class="d">换个策略试试，或切换攻守两方体会不对称</div></button>'}
+                </div>`;
+        } else {
+            tail = `<div class="sg-acts">${specieActions(game.role).map(a =>
+                `<button data-act="${a.id}"><div class="t">${a.label}</div><div class="d">${a.detail}</div></button>`
+            ).join('')}</div>`;
+        }
+
+        const logHtml = game.log.length
+            ? `<div class="sg-log">${game.log.slice(-4).map(l => `<div>${l}</div>`).join('')}</div>` : '';
+
+        wrap.innerHTML = `<div class="specie event frame">
+            <div class="head">
+                <div class="sg-round">回合 ${game.round} / ${game.maxRounds}</div>
+                <div class="tag ${done ? (game.status === 'WON' ? 'win' : 'lose') : ''}">${isCrisis ? '国际收支危局' : '金本位推演'}</div>
+                <h2>${game.role === 'deficit' ? '黄金正在外流' : '黄金正在流入'}</h2>
+            </div>
+            <div class="body">
+                <div class="sg-intro">${intro}</div>
+                ${sgChart(h)}
+                <div class="sg-vars">${bars.join('')}${sgFxBand(game)}</div>
+                ${tbTxt}
+                ${tail}
+                ${logHtml}
+            </div>
+        </div>`;
+
+        wrap.querySelectorAll('[data-act]').forEach(b => {
+            b.onclick = () => { specieStep(game, b.dataset.act); draw(); };
+        });
+        const closeBtn = wrap.querySelector('[data-close]');
+        if (closeBtn) closeBtn.onclick = () => {
+            wrap.remove();
+            if (onFinish) onFinish(game);
+        };
+        const replayBtn = wrap.querySelector('[data-replay]');
+        if (replayBtn) replayBtn.onclick = () => {
+            wrap.remove();
+            showSpecieFlowGame({ mode, role: role === 'deficit' ? 'surplus' : 'deficit', nationName, onFinish });
+        };
+    };
+
+    draw();
+}
+
+/* 危机模式的结算说明（实际写入在 onFinish 回调里） */
+function describeSpecieReward(game) {
+    if (game.status === 'WON' && game.role === 'deficit') {
+        return '📈 <b>结算：</b>闭环走通，国际收支恢复平衡——国库 <b style="color:var(--verdant)">+600</b>，潮汐脆弱度 <b style="color:var(--verdant)">−25</b>；但通缩留下了伤痕，工人激进度 <b>+8</b>。';
+    }
+    if (game.status === 'WON' && game.role === 'surplus') {
+        return game.outcome === 'sterilized'
+            ? '📈 <b>结算：</b>冲销保住了国内稳定——国库 <b style="color:var(--verdant)">+500</b>，工人激进度 <b style="color:var(--verdant)">−5</b>。代价记在别人账上：外围三国潮汐脆弱度 <b>+12</b>。'
+            : '📈 <b>结算：</b>你分担了调整成本——国库 <b>−300</b>，但外围三国潮汐脆弱度 <b style="color:var(--verdant)">−15</b>，体系更稳。';
+    }
+    if (game.outcome === 'broke_peg') {
+        return '📉 <b>结算：</b>脱离金本位——工人激进度 <b style="color:var(--verdant)">−10</b>（通缩立止），但国库 <b>−800</b>、潮汐脆弱度 <b>+20</b>（信用受损，融资更贵）。';
+    }
+    return '📉 <b>结算：</b>调整失败——国库 <b>−700</b>，工人激进度 <b>+18</b>，潮汐脆弱度 <b>+15</b>。';
 }
 
 function showModal({ tag, tagClass = '', title, body, opts }) {
@@ -747,11 +1155,28 @@ function renderHUD() {
 
     // 进行中的跨回合效应徽章（v3.5）
     const mods = gameState.activeModifiers || [];
-    document.getElementById('hud-modifiers').innerHTML = mods.map(m => {
+    const modBadges = mods.map(m => {
         const def = MODIFIER_TYPES[m.type];
         if (!def) return '';
         return `<span class="mod-badge" title="${def.desc}">${def.label} <i>×${m.turnsLeft}</i></span>`;
     }).join('');
+
+    // v3.6 英镑潮汐阶段徽章：宽松/紧缩全局可见；非英国国查看自身脆弱度
+    const tide = gameState.tide;
+    let tideBadge = '';
+    if (tide) {
+        if (tide.phase === 'EASY') {
+            tideBadge = `<span class="mod-badge" title="伦敦资本外溢中，非英国国投资池获注入但脆弱度持续累积">🌊 潮汐·宽松期 <i>${tide.turnsInPhase}/${tide.phaseLength}</i></span>`;
+        } else {
+            tideBadge = `<span class="mod-badge" title="英格兰银行加息捍卫黄金，正在收割外围">🌊 潮汐·收紧中</span>`;
+        }
+        if (code !== 'GBR') {
+            const frag = Math.round(n.tideFragility || 0);
+            tideBadge += `<span class="mod-badge" title="金汇兑本位下随宽松期累积，紧缩期按此比例冲击投资池与国库">⚖️ 脆弱度 <i>${frag}</i></span>`;
+        }
+    }
+
+    document.getElementById('hud-modifiers').innerHTML = tideBadge + modBadges;
 }
 
 function renderNations() {
@@ -867,7 +1292,13 @@ function panelHTML(id, code) {
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:.8rem;">
                 <span>🏭 亏损产业补贴：<b>${n.subsidies ? '已开启' : '已关闭'}</b></span>
                 <button data-subsidy="1">${n.subsidies ? '关闭补贴' : '开启补贴'}</button>
-            </div>` : `<div class="note" style="margin-top:16px"><b>AI 治理</b><p>${n.name} 的经济政策由 AI 脚本治理，切换为本国开局后方可操作。</p></div>`;
+            </div>
+            ${code !== 'GBR' ? `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:.8rem;">
+                <span>💷 货币本位：<b>${n.goldExchangeStandard ? '金汇兑本位（挂钩英镑）' : '金块本位（独立黄金储备）'}</b></span>
+                <button data-goldstd="1">${n.goldExchangeStandard ? '改行金块本位' : '重挂英镑'}</button>
+            </div>
+            <div class="note" style="margin-top:6px"><b>潮汐脆弱度</b><p>当前 ${Math.round(n.tideFragility || 0)}/100——金汇兑本位下随英镑潮汐宽松期持续累积，紧缩期按此比例冲击投资池与国库；金块本位可免疫但已付一次性黄金储备代价。</p></div>` : ''}` : `<div class="note" style="margin-top:16px"><b>AI 治理</b><p>${n.name} 的经济政策由 AI 脚本治理，切换为本国开局后方可操作。</p></div>`;
         return `<div class="sec-label">关税税率${isPlayer ? '' : '（' + n.name + '）'}</div>
             ${rows}
             ${fiscal}
@@ -908,7 +1339,20 @@ function panelHTML(id, code) {
             <div class="note"><b>撮合规则</b><p>价格由全球供需缺口决定；关税只改变本国到岸价格，不改变世界价格——这是小国假设与霸权国假设的分野。</p></div>`;
     }
 
-    return `<div class="sec-label">📜 各国速胜手册</div>
+    return `<div class="sec-label">🎲 互动推演</div>
+        <div class="cards one-col">
+            <div class="card"><h3>⚖️ 金本位自动调节机制</h3>
+            <p>休谟价格—铸币流动机制（Price-Specie-Flow Mechanism, 1752）的十回合推演：
+            <b style="color:var(--brass)">逆差 → 黄金外流 → 货币紧缩 → 物价下跌 → 出口变便宜 → 转顺差 → 黄金回流</b>。
+            亲手操作一遍就会发现，让物价跌下去正是让失业涨上来——"自动恢复均衡"的代价究竟由谁承担，是这套机制真正的政治内核。</p>
+            <div class="row" style="margin-top:8px">
+                <button data-specie="deficit">▶ 扮演逆差国（外围）</button>
+                <button data-specie="surplus">▶ 扮演顺差国（中心）</button>
+            </div>
+            <div class="note" style="margin-top:8px"><b>建议两边各玩一次</b><p>中心国有"冲销黄金流入"按钮，外围国没有——两局打完，"规则对等、执行能力不对等"就不再是一句需要背的话。此处为练习模式，不影响当前对局。</p></div>
+            </div>
+        </div>
+        <div class="sec-label" style="margin-top:16px">📜 各国速胜手册</div>
         <div class="cards one-col">${Object.entries(STRATEGY_PLAYBOOK).map(([code, p]) => `
             <div class="card"><h3>${p.flag} ${p.name} <span style="font-size:.72rem;color:var(--ink-mute);font-weight:400">· ${p.difficulty}</span></h3>
             <p><b style="color:var(--verdant)">胜利：</b>${p.win}<br>
@@ -977,6 +1421,23 @@ function bindPanel(id, code) {
                 render();
             };
         }
+        const goldBtn = body.querySelector('[data-goldstd]');
+        if (goldBtn) {
+            goldBtn.onclick = () => {
+                const n = gameState.nations[code];
+                if (n.goldExchangeStandard) {
+                    n.goldExchangeStandard = false;
+                    n.treasury = (n.treasury || 0) - 800;
+                    n.tideFragility = Math.max(0, (n.tideFragility || 0) - 40);
+                    gameState.logs.unshift(`${gameState.year} · 💰 ${n.name}改行金块本位：自建独立黄金储备，国库 −800，此后免疫英镑潮汐脆弱度累积。`);
+                } else {
+                    n.goldExchangeStandard = true;
+                    gameState.logs.unshift(`${gameState.year} · 💷 ${n.name}重新挂钩英镑（金汇兑本位）：融资成本降低，但重新暴露于潮汐收割风险。`);
+                }
+                saveState();
+                render();
+            };
+        }
     }
     if (id === 'industry') {
         body.querySelectorAll('[data-build]').forEach(b => {
@@ -992,6 +1453,15 @@ function bindPanel(id, code) {
                 saveState();
                 render();
             };
+        });
+    }
+    if (id === 'codex') {
+        body.querySelectorAll('[data-specie]').forEach(b => {
+            b.onclick = () => showSpecieFlowGame({
+                mode: 'sandbox',
+                role: b.dataset.specie,
+                nationName: b.dataset.specie === 'surplus' ? '中心国' : '外围国'
+            });
         });
     }
 }

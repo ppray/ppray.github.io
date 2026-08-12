@@ -278,3 +278,88 @@ td.name { font-family: var(--sans); }
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     color: var(--ink-mute); font-size: .85rem; letter-spacing: .1em;
 }
+
+/* ---------- 金本位自动调节小游戏（休谟价格—铸币流动机制推演） ---------- */
+.specie { width: 720px; max-width: 94vw; max-height: 92vh; overflow-y: auto; }
+/* 注意：字号数字用 --mono，但标签含中文，--mono (IBM Plex Mono) 无 CJK 字形会出豆腐块，
+   故此处整体走 --sans（内含 Noto Sans SC 兜底）。 */
+.specie .head .sg-round {
+    float: right; font-family: var(--sans); font-size: .72rem; color: var(--brass);
+    letter-spacing: .08em; margin-top: 6px;
+}
+.sg-intro { font-size: .82rem; line-height: 1.65; color: var(--ink-soft); margin-bottom: 14px; }
+.sg-intro b { color: var(--brass); }
+
+/* 变量条 */
+.sg-vars { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 18px; margin-bottom: 14px; }
+.sg-var { }
+.sg-var .sg-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.sg-var .sg-name { font-size: .76rem; color: var(--ink-soft); }
+.sg-var .sg-name i { font-style: normal; color: var(--ink-mute); font-size: .68rem; margin-left: 4px; }
+.sg-var .sg-num { font-family: var(--mono); font-size: .82rem; font-weight: 600; }
+.sg-var .sg-delta { font-family: var(--mono); font-size: .66rem; margin-left: 5px; }
+.sg-track {
+    position: relative; height: 7px; background: oklch(14% 0.02 250 / .9);
+    border: 1px solid oklch(72% 0.11 75 / .18); overflow: hidden;
+}
+.sg-track i { position: absolute; inset: 0 auto 0 0; display: block; transition: width .35s ease; }
+.sg-track .sg-eq {
+    position: absolute; top: -2px; bottom: -2px; width: 1px;
+    background: var(--ink-mute); opacity: .8;
+}
+
+/* 汇率黄金输送点窄带 */
+.sg-fx { grid-column: 1 / -1; }
+.sg-fxband {
+    position: relative; height: 22px; background: oklch(14% 0.02 250 / .9);
+    border: 1px solid oklch(72% 0.11 75 / .18);
+}
+.sg-fxband .band {
+    position: absolute; top: 0; bottom: 0; background: oklch(62% 0.12 300 / .13);
+    border-left: 1px dashed oklch(62% 0.12 300 / .7); border-right: 1px dashed oklch(62% 0.12 300 / .7);
+}
+.sg-fxband .par { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ink-mute); opacity: .55; }
+.sg-fxband .dot {
+    position: absolute; top: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
+    background: var(--accent, oklch(62% 0.12 300)); border-radius: 50%; transition: left .35s ease;
+    box-shadow: 0 0 7px oklch(62% 0.12 300 / .8);
+}
+.sg-fxband .dot.pinned { background: oklch(72% 0.14 30); box-shadow: 0 0 9px oklch(72% 0.14 30 / .9); }
+.sg-fxnote { font-size: .68rem; color: var(--ink-mute); margin-top: 4px; }
+.sg-fxnote.pinned { color: oklch(72% 0.14 30); }
+
+/* 时序图 */
+.sg-chart { margin: 4px 0 14px; border: 1px solid oklch(72% 0.11 75 / .16); background: oklch(13% 0.02 250 / .6); }
+.sg-chart svg { display: block; width: 100%; height: 118px; }
+.sg-legend { display: flex; gap: 13px; flex-wrap: wrap; font-size: .66rem; color: var(--ink-mute); padding: 5px 9px 7px; }
+.sg-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.sg-legend i { width: 11px; height: 2px; display: inline-block; }
+
+/* 动作按钮 */
+.sg-acts { display: flex; flex-direction: column; gap: 8px; }
+.sg-acts button {
+    text-align: left; padding: 11px 14px; background: oklch(18% 0.02 250 / .9);
+    border: 1px solid oklch(72% 0.11 75 / .25); color: var(--ink); cursor: pointer; transition: all .15s ease;
+}
+.sg-acts button:hover { border-color: var(--brass); background: oklch(26% 0.04 250 / .95); }
+.sg-acts .t { font-size: .86rem; font-weight: 600; margin-bottom: 2px; }
+.sg-acts .d { font-size: .72rem; color: var(--ink-mute); line-height: 1.5; }
+
+/* 回合日志 */
+.sg-log {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid oklch(72% 0.11 75 / .18);
+    font-size: .72rem; color: var(--ink-mute); line-height: 1.65; max-height: 74px; overflow-y: auto;
+}
+
+/* 终局点评 */
+.sg-debrief {
+    margin-top: 4px; padding: 14px 16px; background: oklch(16% 0.02 250 / .85);
+    border: 1px solid oklch(72% 0.11 75 / .3); border-left: 3px solid var(--brass);
+}
+.sg-debrief h3 { font-family: var(--serif); font-size: 1.05rem; margin-bottom: 8px; color: var(--ink); }
+.sg-debrief p { font-size: .81rem; line-height: 1.75; color: var(--ink-soft); }
+.sg-debrief b { color: var(--brass); }
+.sg-reward {
+    margin-top: 10px; padding: 9px 12px; font-size: .78rem; line-height: 1.6;
+    background: oklch(20% 0.03 250 / .8); border: 1px dashed oklch(72% 0.11 75 / .35); color: var(--ink-soft);
+}
