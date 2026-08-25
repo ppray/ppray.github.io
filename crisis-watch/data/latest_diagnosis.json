@@ -1,18 +1,17 @@
 {
- "generated": "2026-08-24 21:52",
- "drawdown": -0.0185,
+ "generated": "2026-08-25 21:51",
+ "drawdown": -0.0154,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
   "financial": 0.0,
   "rates_debt": 0.33,
   "services": 0.0,
-  "inflation_energy": 0.25
+  "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -1.9%(高点 2026-08-13)",
+  "SPY 距高点回撤 -1.5%(高点 2026-08-13)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[rates_debt +2] 股债相关性转正(0.32),债券失去避险功能",
-  "[inflation_energy +1] 能源板块逆势跑赢(XLE相对 +5.2%)"
+  "[rates_debt +2] 股债相关性转正(0.32),债券失去避险功能"
  ]
 }
