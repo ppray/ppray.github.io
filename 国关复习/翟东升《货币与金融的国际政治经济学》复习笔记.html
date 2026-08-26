@@ -20618,6 +20618,7 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
     }
 
     // ===== h1 后插入页面统计 chips =====
+    var h1El = content.querySelector('h1');
     if (h1El) {
       var meta = document.createElement('div');
       meta.className = 'page-meta';
@@ -20848,6 +20849,357 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
     updateDoneUI();
     applyFilters();
   });
+})();
+</script>
+
+<!-- ===================== 每题音频播放器（TTS 音频托管于 GitHub Releases） ===================== -->
+<style id="qa-audio-css">
+.q-audio {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: transparent;
+  color: var(--text-muted); cursor: pointer; font-size: 0.78rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; line-height: 1;
+}
+.q-audio:hover { border-color: var(--primary); color: var(--primary); }
+.question-item.q-playing { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.question-item.q-playing .q-audio {
+  border-color: var(--primary); color: var(--primary); background: var(--primary-soft);
+}
+.question-item.q-playing .q-audio.pulse { animation: qa-pulse 1.4s ease-in-out infinite; }
+@keyframes qa-pulse { 50% { box-shadow: 0 0 0 6px rgba(99,102,241,0.15); } }
+
+#qaBar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 300;
+  display: none; align-items: center; gap: 8px;
+  padding: 9px 14px calc(9px + env(safe-area-inset-bottom));
+  background: var(--toolbar-bg); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 18px rgba(31,38,135,0.08);
+}
+body.qa-bar-on #qaBar { display: flex; }
+body.qa-bar-on { padding-bottom: 64px; }
+body.qa-bar-on .fab-col { bottom: 84px; }
+body.qa-bar-on .kbd-hint { bottom: 84px; }
+#qaBar .qa-btn {
+  flex-shrink: 0; min-width: 34px; height: 34px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--card-bg);
+  color: var(--text-main); cursor: pointer; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; white-space: nowrap; padding: 0 8px;
+}
+#qaBar .qa-btn:hover { border-color: var(--primary); color: var(--primary); }
+#qaBar .qa-toggle {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg,#6366f1,#a855f7); color:#fff; border:none;
+  font-size: 1rem;
+}
+#qaBar .qa-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+#qaBar .qa-title {
+  font-size: 0.78rem; font-weight: 600; color: var(--text-main);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#qaBar .qa-seek-row { display: flex; align-items: center; gap: 8px; }
+#qaBar .qa-time { flex-shrink: 0; font-size: 0.68rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+#qaBar input[type=range].qa-seek {
+  flex: 1; min-width: 60px; height: 4px; accent-color: var(--primary); cursor: pointer;
+}
+@media (max-width: 640px) {
+  #qaBar .qa-rate, #qaBar .qa-close { display: none; }
+  body.qa-bar-on .kbd-hint { display: none; }
+}
+</style>
+<script id="qa-audio-player">
+(function () {
+  'use strict';
+  // MP3 托管在 GitHub Releases（与 podcast.html 的 AUDIO_BASE 同一约定）；
+  // manifest.json 随仓库发布，本地开发时若 Releases 还没传则回退相对路径。
+  var AUDIO_BASE = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+  var AUDIO_LOCAL = '../podcasts/mfipe-qa/';
+  var MANIFEST_URL = new URL('../podcasts/mfipe-qa/manifest.json', location.href).href;
+
+  var tracks = [];        // [{idx,file,topic,type,title,seconds,…}]
+  var byIdx = {};         // dataset.idx(string) -> track
+  var cards = {};         // dataset.idx -> {item, header, btn}
+  var order = [];         // 数字索引数组，播放顺序=页面题序
+  var cur = -1;
+  var mode = localStorage.getItem('mfipe-qa-mode') || 'list';   // list | one | seq
+  var rate = parseFloat(localStorage.getItem('mfipe-qa-rate') || '1');
+  if ([1, 1.25, 1.5, 2, 0.75].indexOf(rate) === -1) rate = 1;
+  var errStreak = 0;
+  var audioBase = null;   // manifest 就绪后探测确定（Releases 或本地相对路径）
+  var dragging = false;   // 用户拖动进度条期间暂停 timeupdate 回写
+  var ui = {};
+  var audio = new Audio();
+  audio.preload = 'none';
+  window.__qaAudio = audio;   // 调试句柄
+
+  var MODE_META = {
+    list: { icon: '\uD83D\uDD01', tip: '列表循环：播完自动下一首，到末尾回到第一题' },
+    one:  { icon: '\uD83D\uDD02', tip: '单曲循环' },
+    seq:  { icon: '\u23ED', tip: '顺序播放：播完整个列表后停止' }
+  };
+  var RATES = [1, 1.25, 1.5, 2, 0.75];
+
+  function fmt(s) {
+    s = Math.max(0, Math.floor(s || 0));
+    return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  }
+
+  // ---------- 题卡按钮 ----------
+  function injectCardButtons() {
+    document.querySelectorAll('.question-item').forEach(function (item) {
+      var idx = item.dataset.idx;
+      var header = item.querySelector('.question-header');
+      var done = header.querySelector('.q-done');
+      if (!idx || !header || !done || cards[idx]) return;
+      var tr = byIdx[idx];
+      var btn = document.createElement('button');
+      btn.className = 'q-audio';
+      btn.title = tr ? ('播放本题音频（约 ' + fmt(tr.seconds) + '）')
+                     : '暂无音频';
+      btn.textContent = tr ? '\uD83D\uDD0A' : '\uD83D\uDD07';
+      if (!tr) btn.disabled = true;
+      header.insertBefore(btn, done);
+      cards[idx] = { item: item, btn: btn };
+      order.push(parseInt(idx, 10));
+      (function (i) {
+        btn.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          if (!byIdx[i]) return;
+          if (cur === parseInt(i, 10)) {
+            if (audio.paused) audio.play().catch(noop); else audio.pause();
+          } else {
+            playIdx(parseInt(i, 10), true);
+          }
+        });
+      })(idx);
+    });
+    refreshButtons();
+  }
+
+  function refreshButtons() {
+    Object.keys(cards).forEach(function (i) {
+      var c = cards[i], n = parseInt(i, 10);
+      var active = n === cur;
+      c.item.classList.toggle('q-playing', active && !audio.paused);
+      c.btn.classList.toggle('pulse', active && !audio.paused);
+      c.btn.textContent = (active && !audio.paused) ? '\u23F8'
+        : (active ? '\uD83D\uDD0A' : (byIdx[i] ? '\uD83D\uDD0A' : '\uD83D\uDD07'));
+    });
+  }
+
+  // ---------- 底部播放条 ----------
+  function buildBar() {
+    var bar = document.createElement('div');
+    bar.id = 'qaBar';
+    bar.innerHTML =
+      '<button class="qa-btn" data-act="prev" title="上一题">\u23EE</button>' +
+      '<button class="qa-btn qa-toggle" data-act="toggle" title="播放/暂停">\u25B6</button>' +
+      '<button class="qa-btn" data-act="next" title="下一题">\u23ED</button>' +
+      '<div class="qa-info">' +
+        '<span class="qa-title">加载音频清单…</span>' +
+        '<span class="qa-seek-row">' +
+          '<span class="qa-time" data-el="cur">0:00</span>' +
+          '<input type="range" class="qa-seek" min="0" max="100" step="0.1" value="0" disabled>' +
+          '<span class="qa-time" data-el="dur">0:00</span>' +
+        '</span>' +
+      '</div>' +
+      '<button class="qa-btn qa-opt" data-act="mode"></button>' +
+      '<button class="qa-btn qa-opt qa-rate" data-act="rate"></button>' +
+      '<button class="qa-btn qa-opt qa-close" data-act="close" title="收起播放条">\u2715</button>';
+    document.body.appendChild(bar);
+    ui.bar = bar;
+    ui.title = bar.querySelector('.qa-title');
+    ui.cur = bar.querySelector('[data-el=cur]');
+    ui.dur = bar.querySelector('[data-el=dur]');
+    ui.seek = bar.querySelector('.qa-seek');
+    ui.toggle = bar.querySelector('[data-act=toggle]');
+    ui.mode = bar.querySelector('[data-act=mode]');
+    ui.rate = bar.querySelector('[data-act=rate]');
+
+    bar.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-act]');
+      if (!b) return;
+      var act = b.dataset.act;
+      if (act === 'toggle') togglePlay();
+      else if (act === 'prev') step(-1);
+      else if (act === 'next') step(1);
+      else if (act === 'mode') cycleMode();
+      else if (act === 'rate') cycleRate();
+      else if (act === 'close') { document.body.classList.remove('qa-bar-on'); }
+    });
+
+    ui.seek.addEventListener('input', function () {
+      dragging = true;
+      ui.cur.textContent = fmt(parseFloat(ui.seek.value));
+    });
+    ui.seek.addEventListener('change', function () {
+      if (cur >= 0) audio.currentTime = parseFloat(ui.seek.value);
+      setTimeout(function () { dragging = false; }, 350);
+    });
+    syncModeRateUI();
+  }
+
+  function syncModeRateUI() {
+    ui.mode.innerHTML = MODE_META[mode].icon + ' ' + ({ list: '列表', one: '单曲', seq: '顺序' })[mode];
+    ui.mode.title = MODE_META[mode].tip;
+    ui.rate.textContent = rate + '\u00D7';
+    ui.rate.title = '倍速播放';
+  }
+
+  function noop() {}
+
+  function showBar() { document.body.classList.add('qa-bar-on'); }
+
+  // 音源探测：起播前用一次性独立元素试 Releases 首题，成功则全量走 Releases，
+  // 失败（未上传/离线开发）回退仓库内相对路径。避免运行期热换 src 污染播放元素。
+  function probeAudioBase(done) {
+    var probe = document.createElement('audio');
+    probe.preload = 'metadata';
+    var settled = false;
+    var finish = function (base) {
+      if (settled) return;
+      settled = true;
+      probe.src = '';
+      done(base);
+    };
+    probe.addEventListener('canplaythrough', function () { finish(AUDIO_BASE); });
+    probe.addEventListener('error', function () { finish(AUDIO_LOCAL.replace(/\/$/, '')); });
+    setTimeout(function () { finish(null); }, 8000);
+    probe.src = AUDIO_BASE + '/' + (tracks[0] ? tracks[0].file : '');
+  }
+
+  function playIdx(n, scroll) {
+    var tr = byIdx[String(n)];
+    if (!tr || !audioBase) return;
+    cur = n;
+    showBar();
+    ui.title.textContent = '第' + n + '题 · ' + tr.topic + ' · ' + tr.title;
+    ui.seek.disabled = false;
+    audio.src = audioBase + '/' + tr.file;
+    audio.playbackRate = rate;
+    audio.play().catch(function (e) { console.warn('play blocked:', e.message); });
+    errStreak = 0;
+    maybeScrollTo(n, scroll);
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: '第' + n + '题 · ' + tr.title,
+          artist: tr.topic,
+          album: '翟东升《货币与金融的国际政治经济学》复习带背'
+        });
+      } catch (e) {}
+    }
+  }
+
+  function maybeScrollTo(n, force) {
+    var c = cards[String(n)];
+    if (!c || !force) return;
+    var r = c.item.getBoundingClientRect();
+    if (r.top < 70 || r.bottom > innerHeight - 80) {
+      c.item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function togglePlay() {
+    if (cur < 0) { if (order.length) playIdx(order[0], true); return; }
+    if (audio.paused) audio.play().catch(noop); else audio.pause();
+  }
+
+  function step(dir) {
+    if (!order.length) return;
+    var pos = order.indexOf(cur);
+    var nextPos = (pos < 0 ? 0 : pos + dir);
+    if (mode === 'seq') {
+      if (nextPos < 0 || nextPos >= order.length) { nextPos = Math.min(Math.max(nextPos, 0), order.length - 1); }
+    } else {
+      nextPos = (nextPos + order.length) % order.length;
+    }
+    playIdx(order[nextPos], true);
+  }
+
+  function cycleMode() {
+    mode = mode === 'list' ? 'one' : mode === 'one' ? 'seq' : 'list';
+    localStorage.setItem('mfipe-qa-mode', mode);
+    syncModeRateUI();
+  }
+  function cycleRate() {
+    rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length];
+    audio.playbackRate = rate;
+    localStorage.setItem('mfipe-qa-rate', String(rate));
+    syncModeRateUI();
+  }
+
+  // ---------- 播放事件 ----------
+  audio.addEventListener('playing', function () { errStreak = 0; refreshButtons(); syncToggle(); });
+  audio.addEventListener('pause', function () { refreshButtons(); syncToggle(); });
+  audio.addEventListener('play', function () { refreshButtons(); syncToggle(); });
+  audio.addEventListener('timeupdate', function () {
+    if (cur < 0 || !isFinite(audio.duration)) return;
+    ui.cur.textContent = fmt(audio.currentTime);
+    ui.dur.textContent = fmt(audio.duration);
+    if (!dragging) {
+      ui.seek.value = audio.currentTime;
+      ui.seek.max = audio.duration;
+    }
+  });
+  audio.addEventListener('ended', function () {
+    var pos = order.indexOf(cur);
+    if (mode === 'one') { audio.currentTime = 0; audio.play().catch(noop); return; }
+    var last = pos >= order.length - 1;
+    if (mode === 'seq' && last) { refreshButtons(); syncToggle(); return; }
+    step(1);
+  });
+  audio.addEventListener('error', function () {
+    if (cur < 0) return;
+    var c = cards[String(cur)];
+    if (c) c.btn.textContent = '\u26A0';
+    errStreak++;
+    if (errStreak <= 3 && mode !== 'one') {
+      console.warn('audio failed for #' + cur + ', skipping');
+      step(1);
+    } else if (errStreak > 3) {
+      console.warn('too many consecutive failures, stopping');
+      audio.pause();
+    }
+  });
+
+  function syncToggle() {
+    ui.toggle.textContent = audio.paused ? '\u25B6' : '\u23F8';
+  }
+
+  // ---------- 启动 ----------
+  function boot(attempt) {
+    var items = document.querySelectorAll('.question-item');
+    if (!items.length) {
+      if (attempt < 40) requestAnimationFrame(function () { boot(attempt + 1); });
+      return;
+    }
+    buildBar();
+    fetch(MANIFEST_URL)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (list) {
+        if (!Array.isArray(list) || !list.length) throw new Error('empty manifest');
+        tracks = list;
+        list.forEach(function (t) { byIdx[String(t.idx)] = t; });
+        injectCardButtons();
+        probeAudioBase(function (base) {
+          audioBase = base;
+          ui.title.textContent = base === AUDIO_BASE
+            ? list.length + ' 题音频已就绪 · 点击任意 🔊 开始'
+            : list.length + ' 题音频已就绪（本地开发模式） · 点击任意 🔊 开始';
+          ui.dur.textContent = '';
+        });
+      })
+      .catch(function (e) {
+        console.warn('[qa-audio] manifest 加载失败，音频功能未启用：', e.message);
+        injectCardButtons();  // 无清单时也补占位按钮（置灰）
+        ui.title.textContent = '音频清单加载失败（需联网访问站点）';
+      });
+  }
+
+  requestAnimationFrame(function () { boot(0); });
 })();
 </script>
 
