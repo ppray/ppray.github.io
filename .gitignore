@@ -47,3 +47,7 @@ child/
 
 # 预渲染脚本下载的 marked 副本
 scripts/.cache/
+
+# Cloudflare Pages 本地构建产物（由 git 跟踪口径组装，见 wrangler.toml）
+dist/
+.wrangler/

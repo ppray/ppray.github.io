@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研学游戏馆 · Games</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root{--gold:#b68235;--gold-deep:#7d5411;--ink:#f3f2f2;--bg:#1c1a17;}
+  *{box-sizing:border-box;}
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);
+    font-family:Lora,'Noto Serif SC',Georgia,serif;display:flex;align-items:center;justify-content:center;padding:64px 24px;}
+  .wrap{width:100%;max-width:860px;border:1px solid rgba(182,130,53,.42);padding:64px 56px 48px;position:relative;
+    background:rgba(28,26,23,.82);backdrop-filter:blur(6px);}
+  .wrap::before{content:"";position:absolute;top:14px;left:14px;right:14px;bottom:14px;border:1px solid rgba(182,130,53,.16);pointer-events:none;}
+  .eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);}
+  h1{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:52px;line-height:1.1;letter-spacing:.06em;margin:18px 0 8px;}
+  .sub{font-family:'Noto Serif SC',serif;font-size:15px;color:rgba(243,242,242,.6);letter-spacing:.1em;}
+  .rule{height:1px;background:rgba(182,130,53,.5);margin:30px 0;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:640px){.grid{grid-template-columns:1fr;}.wrap{padding:48px 28px 36px;}}
+  a.card{display:block;text-decoration:none;color:inherit;border:1px solid rgba(182,130,53,.35);border-radius:4px;
+    padding:24px 22px;transition:background .18s,border-color .18s;background:rgba(182,130,53,.05);}
+  a.card:hover{background:rgba(182,130,53,.14);border-color:var(--gold);}
+  a.card .num{font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:var(--gold);}
+  a.card .title{font-family:'Noto Serif SC',serif;font-weight:600;font-size:19px;margin-top:12px;letter-spacing:.04em;}
+  a.card .desc{font-family:'Noto Serif SC',serif;font-size:13px;color:rgba(243,242,242,.62);margin-top:8px;line-height:1.75;text-align:justify;}
+  a.card .go{display:inline-block;margin-top:14px;font-family:'Noto Serif SC',serif;font-size:12.5px;letter-spacing:.12em;color:var(--gold);}
+  .todo{border:1px dashed rgba(182,130,53,.3);border-radius:4px;padding:24px 22px;display:flex;flex-direction:column;justify-content:center;}
+  .todo .title{font-family:'Noto Serif SC',serif;font-size:16px;color:rgba(243,242,242,.45);}
+  .todo .desc{font-family:'Noto Serif SC',serif;font-size:12.5px;color:rgba(243,242,242,.3);margin-top:8px;line-height:1.7;}
+  .back{display:inline-block;margin-top:34px;font-family:'Noto Serif SC',serif;font-size:13px;color:rgba(243,242,242,.5);
+    text-decoration:none;letter-spacing:.1em;}
+  .back:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Study Games · Arcade</div>
+  <h1>研学游戏馆</h1>
+  <div class="sub">把复习题做成能玩的东西 · 每局一个子目录，陆续上架</div>
+  <div class="rule"></div>
+  <div class="grid">
+    <a class="card" href="fx-reserves/">
+      <div class="num">壹</div>
+      <div class="title">外储纪年</div>
+      <div class="desc">外汇储备专题 · 七卷通关。含义 → 成因 → 代价 → 分摊，一条因果链说到底。七道真题、八个数字锚点、六组易混辨析。</div>
+      <span class="go">推门进去 →</span>
+    </a>
+    <div class="todo">
+      <div class="title">下一局 · 筹备中</div>
+      <div class="desc">汇率、铸币税、美债……哪个专题先做成游戏，待定。目录约定：games/&lt;英文短名&gt;/index.html。</div>
+    </div>
+  </div>
+  <a class="back" href="/">← 回首页</a>
+</div>
+</body>
+</html>
