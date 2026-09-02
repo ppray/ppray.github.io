@@ -644,15 +644,15 @@ class Component extends DCLogic {
   get CHARACTERS(){
     return {
       hebingwen: { id:'hebingwen', name:'何炳文', role:'外管局司长 · 资深考官',
-        idle:'../../art/char-hebingwen-idle.png', ok:'../../art/char-hebingwen-ok.png', no:'../../art/char-hebingwen-no.png' },
+        idle:'../../art/char-hebingwen-idle.webp', ok:'../../art/char-hebingwen-ok.webp', no:'../../art/char-hebingwen-no.webp' },
       zheng: { id:'zheng', name:'郑处长', role:'央行公开市场操作处主管',
-        idle:'../../art/char-zheng-idle.png', ok:'../../art/char-zheng-ok.png', no:'../../art/char-zheng-no.png' },
+        idle:'../../art/char-zheng-idle.webp', ok:'../../art/char-zheng-ok.webp', no:'../../art/char-zheng-no.webp' },
       lin: { id:'lin', name:'林教授', role:'国际政治经济学导师',
-        idle:'../../art/char-lin-idle.png', ok:'../../art/char-lin-ok.png', no:'../../art/char-lin-no.png' },
+        idle:'../../art/char-lin-idle.webp', ok:'../../art/char-lin-ok.webp', no:'../../art/char-lin-no.webp' },
       lumin: { id:'lumin', name:'陆敏', role:'课题组助研 · 操作员搭档',
-        idle:'../../art/char-lumin-idle.png', ok:'../../art/char-lumin-ok.png', no:'../../art/char-lumin-no.png' },
+        idle:'../../art/char-lumin-idle.webp', ok:'../../art/char-lumin-ok.webp', no:'../../art/char-lumin-no.webp' },
       calloway: { id:'calloway', name:'卡洛威 (Calloway)', role:'美方谈判代表 · 财政部顾问',
-        idle:'../../art/char-calloway-idle.png', ok:'../../art/char-calloway-ok.png', no:'../../art/char-calloway-no.png' }
+        idle:'../../art/char-calloway-idle.webp', ok:'../../art/char-calloway-ok.webp', no:'../../art/char-calloway-no.webp' }
     };
   }
 
@@ -1316,20 +1316,20 @@ class Component extends DCLogic {
     const goMap=()=>this.setState({screen:'map', fromReview:false, confirmNew:false});
     
     // 背景图映射
-    let curBgUrl = '../../art/bg-00.jpg';
+    let curBgUrl = '../../art/bg-00.webp';
     let bgOpacity = '0.45';
     let bgFilter = 'brightness(0.7) contrast(1.1)';
     let bgOverlay = 'radial-gradient(circle at 50% 50%, rgba(28,26,23,0.65), rgba(28,26,23,0.94))';
 
     if(S.screen === 'title'){
-      curBgUrl = '../../art/bg-00.jpg'; bgOpacity = '0.45'; bgFilter = 'brightness(0.7) contrast(1.05)';
+      curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.45'; bgFilter = 'brightness(0.7) contrast(1.05)';
       bgOverlay = 'radial-gradient(circle at 50% 50%, rgba(28,26,23,0.65), rgba(28,26,23,0.92))';
     } else if(S.screen === 'map' || S.screen === 'review'){
-      curBgUrl = '../../art/bg-00.jpg'; bgOpacity = '0.22'; bgFilter = 'sepia(0.18) brightness(0.95)';
+      curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.22'; bgFilter = 'sepia(0.18) brightness(0.95)';
       bgOverlay = 'linear-gradient(to bottom, rgba(243,242,242,0.92), rgba(243,242,242,0.96))';
     } else {
       const bgIdx = Math.max(1, Math.min(7, S.ci + 1));
-      curBgUrl = '../../art/bg-0' + bgIdx + '.jpg';
+      curBgUrl = '../../art/bg-0' + bgIdx + '.webp';
       if(S.screen === 'intro'){
         bgOpacity = '0.42'; bgFilter = 'brightness(0.65)';
         bgOverlay = 'radial-gradient(circle at 40% 50%, rgba(28,26,23,0.7), rgba(28,26,23,0.92))';
