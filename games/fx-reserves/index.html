@@ -29,6 +29,23 @@
   @keyframes fxRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes fxBreathe{0%,100%{opacity:.28}50%{opacity:.6}}
   @keyframes fxSeal{from{opacity:0;transform:scale(.86) rotate(-6deg)}to{opacity:1;transform:none}}
+  @keyframes fxCaret{0%,44%{opacity:1}50%,94%{opacity:0}100%{opacity:1}}
+  /* 立绘是一整张不透明卡面（原画本身就带印刷边框、没有 alpha），
+     与其假装抠图，不如认领成「人事档案卡」：纸面 + 金线 + 名牌。
+     support.js 每次 setState 都重建整棵 DOM，transition 永远触发不了，
+     所以这里的状态切换全部走 @keyframes——重建即重放，正好是要的效果。 */
+  .fx-figwrap{flex:0 0 auto;perspective:1100px;}
+  .fx-fig{width:242px;padding:9px 9px 0;border:1px solid rgba(32,31,29,.3);border-radius:3px;
+    background:linear-gradient(160deg,#f7f3ea 0%,#efe8d9 62%,#e6ddca 100%);
+    opacity:var(--op,1);transform:var(--rest,none);transform-origin:50% 100%;}
+  .fx-figart{height:322px;position:relative;overflow:hidden;background:#efe9dc;
+    border:1px solid rgba(182,130,53,.45);}
+  .fx-figplate{height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
+  .fx-figname{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.04em;line-height:1.2;}
+  .fx-figrole{font-family:'Noto Serif SC',serif;font-size:9.5px;letter-spacing:.18em;color:#8d8579;line-height:1.2;}
+  @keyframes fxCardRise{from{opacity:0;transform:translateY(34px) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
+  @keyframes fxCardFlip{from{opacity:0;transform:rotateY(-74deg) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
+  @keyframes fxCardBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.5px)}}
   /* 手机端：内联样式优先级更高，这里只覆盖会溢出的固定栅格 */
   @media (max-width:860px){
     .fx-card{padding:38px 22px 30px!important;}
@@ -39,8 +56,12 @@
     .fx-map{padding:0 16px 64px!important;}
     .fx-maprow{grid-template-columns:52px 1fr!important;gap:14px!important;}
     .fx-mapstate{grid-column:1/-1!important;text-align:left!important;padding-top:14px!important;}
-    .fx-figs{min-height:210px!important;}
-    .fx-fig{width:112px!important;height:210px!important;margin:0 -4px!important;}
+    .fx-figs{min-height:236px!important;gap:8px!important;}
+    .fx-fig{width:142px!important;padding:6px 6px 0!important;}
+    .fx-figart{height:186px!important;}
+    .fx-figplate{height:36px!important;}
+    .fx-figname{font-size:13px!important;}
+    .fx-figrole{font-size:8.5px!important;}
     .fx-flow{grid-template-columns:repeat(2,1fr)!important;gap:12px!important;margin-top:14px!important;}
     .fx-bins{grid-template-columns:1fr!important;}
     .fx-dlg{padding-bottom:58px!important;min-height:150px!important;}
@@ -51,9 +72,10 @@
 <div style="min-height:100vh;font-family:Lora,'Noto Serif SC',Georgia,serif;font-size:15px;line-height:1.75;color:#201f1d;background-color:#1c1a17;position:relative;">
 
 <!-- 动态原画背景层 -->
+<!-- 墨底必须垫在最底：三层同 z-index，后写者覆盖前者 -->
+<div style="position:fixed;inset:0;z-index:0;background:#1c1a17;pointer-events:none;display:{{ darkGround }};"></div>
 <div style="position:fixed;inset:0;z-index:0;background-image:url('{{ curBgUrl }}');background-size:cover;background-position:center;opacity:{{ bgOpacity }};filter:{{ bgFilter }};transition:background-image .6s ease,opacity .6s ease;pointer-events:none;"></div>
 <div style="position:fixed;inset:0;z-index:0;background:{{ bgOverlay }};pointer-events:none;"></div>
-<div style="position:fixed;inset:0;z-index:0;background:#1c1a17;pointer-events:none;display:{{ darkGround }};"></div>
 <canvas ref="{{ bgRef }}" style="position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
 
 <sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
@@ -177,10 +199,18 @@
 <sc-if value="{{ isScene }}" hint-placeholder-val="{{ false }}">
 <div onClick="{{ onSceneAdvance }}" style="min-height:100vh;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 24px 40px;cursor:pointer;">
   <div style="max-width:1080px;margin:0 auto;width:100%;">
-    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:0;min-height:360px;">
+    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:18px;min-height:392px;padding-bottom:16px;">
       <sc-for list="{{ sceneFigures }}" as="f" hint-placeholder-count="5">
-        <div class="fx-fig" style="display:{{ f.show }};width:{{ f.w }};height:360px;position:relative;opacity:{{ f.op }};filter:{{ f.filter }};transform:translateY({{ f.dy }});transition:opacity .35s,transform .35s,filter .35s;margin:0 -6px;">
-          <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="contain" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
+        <div class="fx-figwrap" style="animation:{{ f.breathe }};">
+          <div class="fx-fig" style="--op:{{ f.op }};--rest:{{ f.rest }};animation:{{ f.anim }};filter:{{ f.filter }};box-shadow:{{ f.shadow }};">
+            <div class="fx-figart" style="border-color:{{ f.rule }};">
+              <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="cover" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
+            </div>
+            <div class="fx-figplate">
+              <span class="fx-figname" style="color:{{ f.nameColor }};">{{ f.ph }}</span>
+              <span class="fx-figrole">{{ f.role }}</span>
+            </div>
+          </div>
         </div>
       </sc-for>
     </div>
@@ -192,7 +222,7 @@
         <span style="flex:1;height:1px;background:rgba(182,130,53,.4);"></span>
         <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.16em;color:#bab6b6;font-variant-numeric:tabular-nums;">{{ sceneCount }}</span>
       </div>
-      <p style="font-family:'Noto Serif SC',serif;font-size:18px;line-height:1.95;margin:16px 0 0;max-width:64ch;text-align:justify;color:#201f1d;">{{ sceneText }}<span style="color:#b68235;opacity:{{ sceneCaret }};">▍</span></p>
+      <p style="font-family:'Noto Serif SC',serif;font-size:18px;line-height:1.95;margin:16px 0 0;max-width:64ch;text-align:justify;color:#201f1d;">{{ sceneText }}<span style="color:#b68235;animation:fxCaret 1.1s steps(1) infinite;">▍</span></p>
       <div style="position:absolute;right:26px;bottom:16px;display:flex;gap:16px;align-items:center;">
         <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:#bab6b6;letter-spacing:.1em;">点击继续</span>
         <button onClick="{{ onSceneSkip }}" style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:#7d7979;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:5px 13px;background:rgba(255,255,255,0.6);" style-hover="background:rgba(32,31,29,.07)">跳过剧情</button>
@@ -484,8 +514,10 @@
     <div class="fx-aside" style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;">
       <div style="border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:16px 18px;background:rgba(248,244,244,.85);backdrop-filter:blur(4px);position:relative;overflow:hidden;">
         <div style="display:flex;gap:14px;align-items:center;">
-          <div style="width:68px;height:86px;flex-shrink:0;position:relative;border-radius:4px;overflow:hidden;border:1px solid rgba(182,130,53,.35);background:rgba(28,26,23,0.06);">
-            <image-slot id="{{ playCharSlot }}" src="{{ playCharSrc }}" shape="rect" fit="contain" placeholder="{{ playCharName }}" style="width:100%;height:100%;display:block;"></image-slot>
+          <div style="width:76px;flex-shrink:0;padding:4px 4px 3px;border:1px solid rgba(32,31,29,.22);border-radius:3px;background:linear-gradient(160deg,#f7f3ea,#e9e1d0);box-shadow:0 4px 12px rgba(18,14,9,.18);">
+            <div style="height:101px;position:relative;overflow:hidden;border:1px solid rgba(182,130,53,.42);background:#efe9dc;">
+              <image-slot id="{{ playCharSlot }}" src="{{ playCharSrc }}" shape="rect" fit="cover" placeholder="{{ playCharName }}" style="width:100%;height:100%;display:block;"></image-slot>
+            </div>
           </div>
           <div style="min-width:0;">
             <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:17px;color:#201f1d;">{{ playCharName }}</div>
@@ -526,8 +558,10 @@
       <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:46px;margin:14px 0 0;letter-spacing:.05em;">{{ result.title }}</h2>
       
       <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-top:24px;">
-        <div style="width:104px;height:132px;position:relative;border-radius:4px;overflow:hidden;border:1px solid rgba(182,130,53,.35);background:rgba(28,26,23,0.06);">
-          <image-slot id="{{ result.charSlot }}" src="{{ result.charSrc }}" shape="rect" fit="contain" placeholder="{{ result.charName }}" style="width:100%;height:100%;display:block;"></image-slot>
+        <div style="width:118px;padding:6px 6px 5px;border:1px solid rgba(32,31,29,.22);border-radius:3px;background:linear-gradient(160deg,#f7f3ea,#e9e1d0);box-shadow:0 8px 22px rgba(18,14,9,.22);animation:fxCardRise .5s .1s ease both;">
+          <div style="height:158px;position:relative;overflow:hidden;border:1px solid rgba(182,130,53,.42);background:#efe9dc;">
+            <image-slot id="{{ result.charSlot }}" src="{{ result.charSrc }}" shape="rect" fit="cover" placeholder="{{ result.charName }}" style="width:100%;height:100%;display:block;"></image-slot>
+          </div>
         </div>
         <div style="border:2px solid {{ result.sealColor }};border-radius:50%;width:132px;height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fxSeal .6s .15s ease both;">
           <div style="font-family:'Cormorant Garamond',serif;font-size:40px;color:{{ result.sealColor }};line-height:1;font-variant-numeric:tabular-nums;">{{ result.pct }}</div>
@@ -1088,10 +1122,9 @@ class Component extends DCLogic {
     cv.getContext('2d').setTransform(d,0,0,d,0,0);
   }
   startBG(){
-    const cv=this.bgRef.current;
-    if(!cv){ setTimeout(()=>this.startBG(),120); return; }
-    const ctx=cv.getContext('2d');
-    this.sizeBG();
+    if(!this.bgRef.current){ setTimeout(()=>this.startBG(),120); return; }
+    if(this._raf) return;
+    let cv=null, ctx=null;
     this._rz=()=>this.sizeBG(); window.addEventListener('resize', this._rz);
     const R=(n,f)=>{ const a=[]; for(let i=0;i<n;i++) a.push(f(i)); return a; };
     const dust=R(64,()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.5+.35,s:Math.random()*.10+.015,ph:Math.random()*6.283,dx:(Math.random()-.5)*.02}));
@@ -1099,6 +1132,12 @@ class Component extends DCLogic {
     let t=0;
     const loop=()=>{
       this._raf=requestAnimationFrame(loop);
+      // support.js 每次 setState 都 innerHTML='' 重建整棵 DOM，画布节点跟着被换掉。
+      // 闭包里抓住的旧节点会脱离文档、clientWidth 归零——不每帧重取，
+      // 就等于第一次点击之后这层粒子永久熄灭。新画布位图默认 300x150，要重新 sizeBG。
+      const cur=this.bgRef.current;
+      if(!cur) return;
+      if(cur!==cv){ cv=cur; this.sizeBG(); ctx=cv.getContext('2d'); }
       const w=cv.clientWidth, h=cv.clientHeight; if(!w||!h) return;
       t+=1;
       ctx.clearRect(0,0,w,h);
@@ -1418,24 +1457,43 @@ class Component extends DCLogic {
     v.sceneNameColor = '#b68235';
     v.sceneCount = (S.sceneIdx + 1) + ' / ' + scenes.length;
     v.sceneText = curScene.text;
-    v.sceneCaret = '1';
     
-    // 生成场上出场的立绘列表
+    // 生成场上出场的立绘列表。整章的说话人一次全部上台，之后集合不再变化，
+    // 所以「入场」只发生在第 0 句；之后每句只有「谁接过话头」在变。
+    const prevScene = S.sceneIdx>0 ? scenes[S.sceneIdx-1] : null;
     const activeSpeakers = Array.from(new Set(scenes.map(s=>s.speaker)));
-    v.sceneFigures = activeSpeakers.map(spkKey => {
-      const spk = C_MAP[spkKey];
+    const nFig = activeSpeakers.length;
+    // 呼吸是无限循环动画，而每次 setState 都会重建 DOM 让它从第 0 帧重放。
+    // 给一个负 delay 把相位接回去，重建就看不出来了（限时题每 100ms 一次重绘）。
+    const breathePhase = -(Date.now() % 5200);
+    v.sceneFigures = activeSpeakers.map((spkKey, i) => {
+      const spk = C_MAP[spkKey] || C_MAP.lumin;
       const isSpeaking = (spkKey === curScene.speaker);
+      const justTookOver = isSpeaking && !!prevScene && prevScene.speaker !== spkKey;
       const emotion = isSpeaking ? curScene.emotion : 'idle';
       const imgSrc = spk[emotion] || spk.idle;
+      // 未发言的卡向外微微倾斜，像摊在桌上；发言的卡摆正、抬起
+      const tilt = nFig<2 ? 0 : ((i - (nFig-1)/2) / Math.max(1,(nFig-1)/2)) * 1.6;
+      const rest = isSpeaking
+        ? 'translateY(-14px) rotate(0deg) scale(1.03)'
+        : 'translateY(0px) rotate(' + tilt.toFixed(2) + 'deg) scale(0.96)';
+      let anim = 'none';
+      if(S.sceneIdx === 0)      anim = 'fxCardRise .52s ' + (i*90) + 'ms ease both';
+      else if(justTookOver)     anim = 'fxCardFlip .46s cubic-bezier(.2,.7,.3,1) both';
       return {
-        show: 'block',
-        w: '260px',
-        op: isSpeaking ? '1' : '0.45',
-        filter: isSpeaking ? 'none' : 'brightness(0.72) saturate(0.8)',
-        dy: isSpeaking ? '0px' : '16px',
+        op: '1',
+        rest, anim,
+        breathe: isSpeaking ? ('fxCardBreathe 5.2s ease-in-out ' + breathePhase + 'ms infinite') : 'none',
+        filter: isSpeaking ? 'none' : 'saturate(0.5) brightness(0.7) contrast(0.96)',
+        shadow: isSpeaking
+          ? '0 22px 46px rgba(18,14,9,.58), 0 1px 0 rgba(255,255,255,.5) inset'
+          : '0 8px 22px rgba(18,14,9,.42)',
+        rule: isSpeaking ? 'rgba(182,130,53,.85)' : 'rgba(182,130,53,.35)',
+        nameColor: isSpeaking ? '#7d5411' : '#6b6659',
         slot: imgSrc,
         src: imgSrc,
-        ph: spk.name
+        ph: spk.name,
+        role: spk.role
       };
     });
 
