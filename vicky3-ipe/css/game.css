@@ -363,3 +363,78 @@ td.name { font-family: var(--sans); }
     margin-top: 10px; padding: 9px 12px; font-size: .78rem; line-height: 1.6;
     background: oklch(20% 0.03 250 / .8); border: 1px dashed oklch(72% 0.11 75 / .35); color: var(--ink-soft);
 }
+
+/* ---------- 外汇储备四问 ---------- */
+.specie.rsv { width: 760px; }
+.rsv-progress { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+.rsv-progress .pip {
+    padding: 6px 8px; font-size: .68rem; color: var(--ink-mute);
+    border: 1px solid oklch(72% 0.11 75 / .2); background: oklch(14% 0.02 250 / .6);
+}
+.rsv-progress .pip em { display: block; font-style: normal; color: var(--brass); letter-spacing: .08em; font-size: .6rem; }
+.rsv-progress .pip.cur { border-color: var(--brass); color: var(--ink); }
+.rsv-progress .pip.done { border-color: var(--verdant); color: var(--ink-soft); }
+.rsv-chain {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0 0 12px;
+    font-size: .68rem;
+}
+.rsv-chain .st {
+    padding: 3px 7px; border: 1px solid oklch(72% 0.11 75 / .25);
+    background: oklch(16% 0.02 250 / .8);
+}
+.rsv-chain .st.on { border-color: var(--brass); color: var(--brass); }
+.rsv-chain .st.off { opacity: .45; text-decoration: line-through; }
+.rsv-chain .arr { color: var(--ink-mute); }
+.rsv-locks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 0 0 12px; }
+.rsv-locks .lk {
+    padding: 8px 10px; border: 1px solid oklch(72% 0.11 75 / .2);
+    background: oklch(16% 0.02 250 / .75); font-size: .72rem;
+}
+.rsv-locks .lk b { display: block; font-size: .62rem; letter-spacing: .12em; margin-bottom: 2px; }
+.rsv-locks .lk.shut b { color: oklch(72% 0.14 30); }
+.rsv-locks .lk.open b { color: var(--verdant); }
+.rsv-locks .lk span { color: var(--ink); }
+.rsv-locks .lk i { display: block; font-style: normal; color: var(--ink-mute); font-size: .64rem; margin-top: 2px; }
+.rsv-costs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 12px; }
+.rsv-costs .cg span { display: block; font-size: .68rem; color: var(--ink-soft); margin-bottom: 4px; }
+.rsv-costs .cg i { font-style: normal; color: var(--ink-mute); font-size: .6rem; margin-left: 4px; }
+.rsv-four { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 0 0 12px; }
+.rsv-four .mini { padding: 8px 10px; border: 1px solid oklch(72% 0.11 75 / .18); background: oklch(15% 0.02 250 / .7); }
+.rsv-four .mini b { display: block; font-size: .72rem; color: var(--brass); margin-bottom: 3px; }
+.rsv-four .mini p { font-size: .66rem; color: var(--ink-mute); line-height: 1.5; margin: 0; }
+.rsv-ledger { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 14px; }
+.rsv-ledger .col { padding: 10px 12px; border: 1px solid oklch(72% 0.11 75 / .2); }
+.rsv-ledger .col.lose { border-left: 3px solid oklch(72% 0.14 30); }
+.rsv-ledger .col.win { border-left: 3px solid var(--verdant); }
+.rsv-ledger .h { font-size: .68rem; letter-spacing: .1em; margin-bottom: 6px; color: var(--ink-mute); }
+.rsv-ledger .row { display: flex; justify-content: space-between; font-size: .76rem; padding: 2px 0; }
+.rsv-ledger .row b { font-family: var(--mono); }
+.rsv-card {
+    padding: 14px 16px; margin-bottom: 4px;
+    background: oklch(16% 0.02 250 / .9); border: 1px solid var(--brass); border-left-width: 3px;
+}
+.rsv-card .k { font-size: .62rem; letter-spacing: .14em; color: var(--brass); margin-bottom: 6px; }
+.rsv-card h3 { font-family: var(--serif); font-size: 1.05rem; margin: 0 0 8px; }
+.rsv-card p { font-size: .8rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 12px; }
+.rsv-card .hl, .sg-debrief .hl { background: oklch(72% 0.11 75 / .28); padding: 0 3px; }
+.rsv-card button {
+    padding: 8px 12px; background: var(--brass); color: oklch(12% 0.02 250);
+    border: 0; cursor: pointer; font-weight: 600; font-size: .78rem;
+}
+.rsv-mnemo { padding: 14px 16px; margin-bottom: 10px; border-left: 3px solid var(--brass); background: oklch(16% 0.02 250 / .85); }
+.rsv-mnemo .k { font-size: .62rem; letter-spacing: .14em; color: var(--brass); margin-bottom: 6px; }
+.rsv-mnemo .m { font-family: var(--serif); font-size: 1.05rem; line-height: 1.55; color: var(--ink); }
+.rsv-mnemo .ex { margin-top: 8px; font-size: .78rem; color: var(--ink-soft); }
+.rsv-mnemo .ex em { font-style: normal; color: var(--brass); margin-right: 6px; }
+.rsv-mn { display: grid; gap: 4px; margin: 10px 0; font-size: .78rem; }
+.rsv-mn em { font-style: normal; color: var(--brass); margin-right: 8px; }
+.rsv-traps { display: grid; gap: 6px; margin-top: 10px; }
+.rsv-traps div { font-size: .74rem; line-height: 1.55; color: var(--ink-soft); padding: 6px 8px; border-left: 2px solid oklch(72% 0.14 30); background: oklch(18% 0.03 30 / .25); }
+.rsv-traps b { color: oklch(78% 0.12 30); }
+.sg-acts button.trap { border-color: oklch(72% 0.14 30 / .45); }
+.sg-acts button.trap .t { color: oklch(82% 0.1 30); }
+
+@media (max-width: 640px) {
+    .rsv-progress, .rsv-locks, .rsv-costs, .rsv-four, .rsv-ledger { grid-template-columns: 1fr 1fr; }
+    .rsv-costs { grid-template-columns: 1fr 1fr; }
+}

@@ -8,11 +8,13 @@
 import { runInvariantTests } from '../js/tests/invariants.test.js';
 import { runSSTheoremTest } from '../js/tests/theory_ss.test.js';
 import { runPSTheoremTest } from '../js/tests/theory_ps.test.js';
+import { runReservesMinigameTests } from '../js/tests/minigame-reserves.test.js';
 
 const suites = [
     { name: '不变量测试 (invariants)', run: runInvariantTests },
     { name: 'S-S 定理断言 (theory_ss)', run: () => [runSSTheoremTest()] },
-    { name: 'P-S 假说断言 (theory_ps)', run: () => [runPSTheoremTest()] }
+    { name: 'P-S 假说断言 (theory_ps)', run: () => [runPSTheoremTest()] },
+    { name: '外汇储备四问小游戏 (minigame-reserves)', run: runReservesMinigameTests }
 ];
 
 let passCount = 0;

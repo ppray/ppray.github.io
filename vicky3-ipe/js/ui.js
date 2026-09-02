@@ -12,6 +12,12 @@ import { BUILDINGS } from './data/buildings.js';
 import { IPE_THEORY_DATA } from './ipe-theory.js';
 import { renderMap } from './map.js';
 import { createSpecieFlowGame, step as specieStep, debrief as specieDebrief, availableActions as specieActions, PARITY, GOLD_POINT } from './minigame-goldstandard.js';
+import {
+    createReservesGame, step as rsvStep, dismissGlossary as rsvDismiss,
+    availableActions as rsvActions, currentAct as rsvAct, coverage as rsvCoverage,
+    debrief as rsvDebrief, hud as rsvHud, KNOWLEDGE, KNOWLEDGE_TOTAL,
+    ACTS, SEIGNIORAGE_FOUR, COST_KEYS, CLASS_KEYS
+} from './minigame-reserves.js';
 
 const SAVE_KEY = 'empire_ledger_state_v33';
 
@@ -1093,6 +1099,179 @@ function describeSpecieReward(game) {
     return '📉 <b>结算：</b>调整失败——国库 <b>−700</b>，工人激进度 <b>+18</b>，潮汐脆弱度 <b>+15</b>。';
 }
 
+/* ---------------- 外汇储备四问（1994–2022 顺差外围） ----------------
+ * 图鉴练习模式。四问战役把速查卡上的词条、口诀、易混、数字锚点嵌进机制，
+ * 词条卡必须点过才能继续——保证"在游戏过程中掌握"，而不是打完再背。 */
+
+function rsvBar({ name, hint, value, color, max = 130 }) {
+    const pct = Math.max(0, Math.min(100, (value / max) * 100));
+    return `<div class="sg-var">
+        <div class="sg-top">
+            <span class="sg-name">${name}${hint ? `<i>${hint}</i>` : ''}</span>
+            <span class="sg-num" style="color:${color}">${Math.round(value * 10) / 10}</span>
+        </div>
+        <div class="sg-track"><i style="width:${pct}%;background:${color}"></i></div>
+    </div>`;
+}
+
+function rsvChain(g) {
+    const on = g.surrenderOn;
+    const steps = [
+        ['企业外汇', true],
+        ['强制结售汇', on],
+        ['央行购汇', on],
+        ['外汇占款', true],
+        ['外储 / 基础货币', true],
+        ['美债', g.ustShare > 60]
+    ];
+    return `<div class="rsv-chain">${steps.map(([t, live], i) =>
+        `${i ? '<span class="arr">→</span>' : ''}<span class="st ${live ? 'on' : 'off'}">${t}</span>`
+    ).join('')}</div>`;
+}
+
+function rsvLocks(g) {
+    const inst = g.surrenderOn;
+    const items = [
+        { on: inst, t: '制度锁定', d: inst ? '强制结汇仍在转' : '2012 门已开，钱在跑' },
+        { on: true, t: '利益锁定', d: '出口 · 银行 · 地方' },
+        { on: g.ustShare > 62, t: '外部锁定', d: '美元无处可去' }
+    ];
+    return `<div class="rsv-locks">${items.map(x =>
+        `<div class="lk ${x.on ? 'shut' : 'open'}"><b>${x.on ? '锁' : '开'}</b><span>${x.t}</span><i>${x.d}</i></div>`
+    ).join('')}</div>`;
+}
+
+function rsvProgress(g) {
+    return `<div class="rsv-progress">${ACTS.map(a => {
+        const done = g.act > a.id || (g.act === a.id && (g.phase === 'MNEMONIC' || g.phase === 'DONE' || g.status === 'DONE'));
+        const cur = g.act === a.id && g.status === 'PLAYING' && g.phase !== 'MNEMONIC';
+        return `<div class="pip ${done ? 'done' : ''} ${cur ? 'cur' : ''}"><em>${a.q}</em>${a.title}</div>`;
+    }).join('')}</div>`;
+}
+
+function showReservesGame() {
+    const game = createReservesGame();
+    const wrap = document.createElement('div');
+    wrap.className = 'overlay';
+    document.getElementById('stage').appendChild(wrap);
+
+    const draw = () => {
+        const act = rsvAct(game);
+        const cov = rsvCoverage(game);
+        const h = rsvHud(game);
+        const done = game.status === 'DONE';
+
+        const bars = [
+            rsvBar({ name: '经常账户', hint: `卖东西赚的 · 约占流入 ${h.caShare}%`, value: game.ca, color: '#0F6E56', max: 14 }),
+            rsvBar({ name: '资本账户', hint: '借来 / FDI 10–15%', value: game.ka, color: '#185FA5', max: 14 }),
+            rsvBar({ name: '外汇储备', hint: `≈ ${h.reservesUsd} 万亿美元`, value: game.reserves, color: '#d97706' }),
+            rsvBar({ name: '外汇占款', hint: `≈ ${h.fxPurchaseCny} 万亿人民币`, value: game.fxPurchase, color: '#6366f1' }),
+            rsvBar({ name: '基础货币', hint: '占款一度占投放 80%+', value: game.baseMoney, color: '#a855f7' }),
+            rsvBar({ name: 'U 型自主性', hint: '过多绑架 · 过少放逐', value: game.autonomy, color: '#854F0B', max: 100 })
+        ];
+
+        const costHtml = game.act >= 3 || done ? `<div class="rsv-costs">${COST_KEYS.map(c => {
+            const v = game.costs[c.id] || 0;
+            return `<div class="cg"><span>${c.term}<i>${c.hint}</i></span>
+                <div class="sg-track"><i style="width:${Math.min(100, v)}%;background:#993C1D"></i></div></div>`;
+        }).join('')}</div>` : '';
+
+        const ledgerHtml = game.act >= 4 || done ? `<div class="rsv-ledger">
+            <div class="col lose"><div class="h">被剥夺</div>${CLASS_KEYS.filter(c => c.side === 'lose').map(c =>
+                `<div class="row"><span>${c.term}</span><b>${Math.round(game.classes[c.id] ?? 0)}</b></div>`
+            ).join('')}</div>
+            <div class="col win"><div class="h">被补贴</div>${CLASS_KEYS.filter(c => c.side === 'win').map(c =>
+                `<div class="row"><span>${c.term}</span><b>${Math.round(game.classes[c.id] ?? 0)}</b></div>`
+            ).join('')}</div>
+        </div>` : '';
+
+        const fourHtml = game.act >= 2 || done ? `<div class="rsv-four">${SEIGNIORAGE_FOUR.map(s =>
+            `<div class="mini"><b>${s.title}</b><p>${s.body}</p></div>`
+        ).join('')}</div>` : '';
+
+        let tail;
+        if (done) {
+            const d = rsvDebrief(game);
+            tail = `<div class="sg-debrief">
+                <h3>${d.title}</h3>
+                <p>${d.ending} 抓住「美元霸权 → 双顺差 → 强制结汇 → 被动囤储 → 买美债 → 负利差输血 → 三重锁定」这条链，七题可一气呵成。</p>
+                <div class="rsv-mn">${Object.entries(d.mnemonics).map(([q, t]) =>
+                    `<div><em>${q}</em>${t}</div>`).join('')}</div>
+                <div class="rsv-traps">${d.traps.map(t => `<div><b>${t.title}</b> ${t.body}</div>`).join('')}</div>
+                <div class="note" style="margin-top:10px"><b>数字锚点</b><p>${d.numbers.join(' · ')}</p></div>
+            </div>
+            <div class="sg-acts" style="margin-top:12px">
+                <button data-close="1"><div class="t">关闭推演</div><div class="d">不影响 1836 对局</div></button>
+                <button data-replay="1"><div class="t">↻ 再走一遍四问</div><div class="d">换条路：取消结汇、去美国化、或撞上抛售</div></button>
+            </div>`;
+        } else if (game.phase === 'GLOSSARY' && game.glossary[0]) {
+            const id = game.glossary[0];
+            const k = KNOWLEDGE[id];
+            tail = `<div class="rsv-card">
+                <div class="k">词条 · 必须记下才能继续</div>
+                <h3>${k.term}</h3>
+                <p>${k.card}</p>
+                <button data-dismiss="1">记下了（${game.glossary.length}）</button>
+            </div>`;
+        } else if (game.phase === 'MNEMONIC') {
+            const extras = (act.extraMnemonics || []).map(q => {
+                const map = { Q1: '外汇占款（投本币）· 铸币税（四好之一）· 强制结售汇（收外汇）', Q3: '安全流动、回流撑出口、别无选择、稳汇率', Q5: '一象征、两面性、一出路' };
+                return `<div class="ex"><em>${q}</em>${map[q] || ''}</div>`;
+            }).join('');
+            tail = `<div class="rsv-mnemo">
+                <div class="k">${act.q} 口诀 · 本问带走</div>
+                <div class="m">${act.mnemonic}</div>
+                ${extras}
+            </div>
+            <div class="sg-acts">${rsvActions(game).map(a =>
+                `<button data-act="${a.id}"><div class="t">${a.label}</div><div class="d">${a.detail}</div></button>`
+            ).join('')}</div>`;
+        } else {
+            tail = `<div class="sg-acts">${rsvActions(game).map(a =>
+                `<button data-act="${a.id}" class="${a.trap ? 'trap' : ''}"><div class="t">${a.label}</div><div class="d">${a.detail}</div></button>`
+            ).join('')}</div>`;
+        }
+
+        const logHtml = game.log.length
+            ? `<div class="sg-log">${game.log.slice(-5).map(l => `<div>${l}</div>`).join('')}</div>` : '';
+
+        const title = done ? '四问走完' : (game.phase === 'EVENT' ? '人质考验' : act.question);
+        const tag = done ? '掌握 ' + cov.n + '/' + cov.total : (game.phase === 'EVENT' ? '2022 冻结' : `第 ${game.act} 问 · ${act.title}`);
+        const intro = `<div class="sg-intro">${done ? '金本位局里顺差等于中心；这一局里中国是顺差国，却仍是外围。' : act.intro}</div>`;
+        const hudBlock = `${rsvChain(game)}
+                ${game.act >= 2 || done ? rsvLocks(game) : ''}
+                <div class="sg-vars">${bars.join('')}</div>
+                ${costHtml}
+                ${fourHtml}
+                ${ledgerHtml}`;
+        wrap.innerHTML = `<div class="specie rsv event frame">
+            <div class="head">
+                <div class="sg-round">${game.year} · 掌握 ${cov.n}/${KNOWLEDGE_TOTAL}</div>
+                <div class="tag ${done ? 'win' : ''}">${tag}</div>
+                <h2>${title}</h2>
+            </div>
+            <div class="body">
+                ${rsvProgress(game)}
+                ${intro}${tail}${hudBlock}
+                ${logHtml}
+            </div>
+        </div>`;
+
+        wrap.querySelector('.specie')?.scrollTo(0, 0);
+        wrap.querySelectorAll('[data-act]').forEach(b => {
+            b.onclick = () => { rsvStep(game, b.dataset.act); draw(); };
+        });
+        const dismissBtn = wrap.querySelector('[data-dismiss]');
+        if (dismissBtn) dismissBtn.onclick = () => { rsvDismiss(game); draw(); };
+        const closeBtn = wrap.querySelector('[data-close]');
+        if (closeBtn) closeBtn.onclick = () => wrap.remove();
+        const replayBtn = wrap.querySelector('[data-replay]');
+        if (replayBtn) replayBtn.onclick = () => { wrap.remove(); showReservesGame(); };
+    };
+
+    draw();
+}
+
 function showModal({ tag, tagClass = '', title, body, opts }) {
     const wrap = document.createElement('div');
     wrap.className = 'overlay';
@@ -1351,6 +1530,15 @@ function panelHTML(id, code) {
             </div>
             <div class="note" style="margin-top:8px"><b>建议两边各玩一次</b><p>中心国有"冲销黄金流入"按钮，外围国没有——两局打完，"规则对等、执行能力不对等"就不再是一句需要背的话。此处为练习模式，不影响当前对局。</p></div>
             </div>
+            <div class="card"><h3>🧧 外汇储备四问 · 顺差外围</h3>
+            <p>同一套霸权货币逻辑在 1994–2022 的重演。你是中国货币当局：强制结汇自动把双顺差变成外储、再变成美债。
+            四问 <b style="color:var(--brass)">含义 → 成因 → 代价 → 分摊</b> 走完，七题口诀、六条易混、八个数字锚点都嵌在机制里——不是打完再背，是走一遍就会。
+            金本位那局里顺差等于中心；这一局中国是<b>顺差国，却仍是外围</b>。</p>
+            <div class="row" style="margin-top:8px">
+                <button data-reserves="1">▶ 开始四问战役</button>
+            </div>
+            <div class="note" style="margin-top:8px"><b>练习模式</b><p>不影响当前 1836 对局。词条必须点过才能进下一问；走偏的选项（出口＝双顺差、花光储备换自主、美债绝对安全）都有机械代价。</p></div>
+            </div>
         </div>
         <div class="sec-label" style="margin-top:16px">📜 各国速胜手册</div>
         <div class="cards one-col">${Object.entries(STRATEGY_PLAYBOOK).map(([code, p]) => `
@@ -1462,6 +1650,9 @@ function bindPanel(id, code) {
                 role: b.dataset.specie,
                 nationName: b.dataset.specie === 'surplus' ? '中心国' : '外围国'
             });
+        });
+        body.querySelectorAll('[data-reserves]').forEach(b => {
+            b.onclick = () => showReservesGame();
         });
     }
 }
