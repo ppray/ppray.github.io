@@ -29,6 +29,22 @@
   @keyframes fxRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes fxBreathe{0%,100%{opacity:.28}50%{opacity:.6}}
   @keyframes fxSeal{from{opacity:0;transform:scale(.86) rotate(-6deg)}to{opacity:1;transform:none}}
+  /* 手机端：内联样式优先级更高，这里只覆盖会溢出的固定栅格 */
+  @media (max-width:860px){
+    .fx-card{padding:38px 22px 30px!important;}
+    .fx-h1{font-size:44px!important;}
+    .fx-title-stats{grid-template-columns:repeat(2,1fr)!important;}
+    .fx-play-grid{grid-template-columns:1fr!important;gap:26px!important;padding:24px 16px 72px!important;}
+    .fx-aside{position:static!important;top:auto!important;}
+    .fx-map{padding:0 16px 64px!important;}
+    .fx-maprow{grid-template-columns:52px 1fr!important;gap:14px!important;}
+    .fx-mapstate{grid-column:1/-1!important;text-align:left!important;padding-top:14px!important;}
+    .fx-figs{min-height:210px!important;}
+    .fx-fig{width:112px!important;height:210px!important;margin:0 -4px!important;}
+    .fx-flow{grid-template-columns:repeat(2,1fr)!important;gap:12px!important;margin-top:14px!important;}
+    .fx-bins{grid-template-columns:1fr!important;}
+    .fx-dlg{padding-bottom:58px!important;min-height:150px!important;}
+  }
 </style>
 </helmet>
 
@@ -42,10 +58,10 @@
 
 <sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
 <div style="min-height:100vh;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:64px 24px;">
-  <div style="width:100%;max-width:860px;border:1px solid rgba(182,130,53,.42);padding:72px 64px 56px;position:relative;animation:fxInSlow .9s ease both;background:rgba(28,26,23,0.75);backdrop-filter:blur(6px);">
+  <div class="fx-card" style="width:100%;max-width:860px;border:1px solid rgba(182,130,53,.42);padding:72px 64px 56px;position:relative;animation:fxInSlow .9s ease both;background:rgba(28,26,23,0.75);backdrop-filter:blur(6px);">
     <div style="position:absolute;top:14px;left:14px;right:14px;bottom:14px;border:1px solid rgba(182,130,53,.16);pointer-events:none;"></div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#b68235;font-variant-numeric:tabular-nums;">Foreign Exchange Reserves · A Study Game</div>
-    <h1 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:76px;line-height:1.05;letter-spacing:.06em;color:#f3f2f2;margin:22px 0 10px;">外储纪年</h1>
+    <h1 class="fx-h1" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:76px;line-height:1.05;letter-spacing:.06em;color:#f3f2f2;margin:22px 0 10px;">外储纪年</h1>
     <div style="font-family:'Noto Serif SC',serif;font-size:17px;color:rgba(243,242,242,.62);letter-spacing:.12em;">六层图谱 · 七卷通关 · 一条因果链</div>
     <div style="height:1px;background:rgba(182,130,53,.5);margin:34px 0;transform-origin:left;animation:fxRule 1.1s .3s ease both;"></div>
     <p style="font-family:'Noto Serif SC',serif;color:rgba(243,242,242,.72);max-width:56ch;text-align:justify;margin:0 0 8px;">你被派往一间没有窗户的档案室，桌上摞着 8,848 字的复习笔记和七道真题。接下来你要轮流坐上七张椅子——外管局新人、央行操作台、翟门弟子、储备管理委员会、谈判代表、分配裁决官，最后是考场里的自己。</p>
@@ -56,7 +72,21 @@
       <button onClick="{{ onResume }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:rgba(243,242,242,.8);border:1px solid rgba(243,242,242,.28);border-radius:4px;padding:13px 30px;transition:background .18s;" style-hover="background:rgba(243,242,242,.09)">接着上次（{{ saveLabel }}）</button>
       </sc-if>
     </div>
-    <div style="margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(182,130,53,.22);border:1px solid rgba(182,130,53,.22);">
+
+    <sc-if value="{{ confirmNew }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:18px;border:1px solid rgba(122,47,47,.5);border-radius:4px;padding:15px 18px;background:rgba(122,47,47,.16);display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+        <span style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.88);">重开会清空「{{ saveLabel }}」的进度、声望与错题本，且不可撤销。</span>
+        <button onClick="{{ onStart }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#e8b4b4;border:1px solid rgba(232,180,180,.55);border-radius:4px;padding:8px 18px;" style-hover="background:rgba(122,47,47,.3)">确认清档</button>
+        <button onClick="{{ onCancelNew }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.6);padding:8px 10px;" style-hover="color:#b68235">取消</button>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:26px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+      <button onClick="{{ onToggleExam }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;letter-spacing:.08em;color:{{ examFg }};border:1px solid {{ examBd }};border-radius:4px;padding:9px 18px;" style-hover="background:rgba(182,130,53,.12)">{{ examLabel }}</button>
+      <span style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:rgba(243,242,242,.45);line-height:1.7;max-width:46ch;">{{ examDesc }}</span>
+    </div>
+
+    <div class="fx-title-stats" style="margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(182,130,53,.22);border:1px solid rgba(182,130,53,.22);">
       <sc-for list="{{ titleStats }}" as="s" hint-placeholder-count="4">
         <div style="background:#1c1a17;padding:16px 14px;">
           <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#b68235;font-variant-numeric:tabular-nums;line-height:1;">{{ s.n }}</div>
@@ -69,7 +99,7 @@
 </sc-if>
 
 <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
-<div style="min-height:100vh;padding:0 24px 88px;position:relative;z-index:2;">
+<div class="fx-map" style="min-height:100vh;padding:0 24px 88px;position:relative;z-index:2;">
   <div style="max-width:1080px;margin:0 auto;">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:30px 0 18px;border-bottom:1px solid rgba(32,31,29,.16);flex-wrap:wrap;">
       <div>
@@ -80,6 +110,8 @@
         <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#b68235;line-height:1;">{{ repText }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">声望</div></div>
         <div style="width:1px;height:36px;background:rgba(32,31,29,.16);"></div>
         <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#7a2f2f;line-height:1;">{{ wrongCount }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">错题</div></div>
+        <div style="width:1px;height:36px;background:rgba(32,31,29,.16);"></div>
+        <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#7d5411;line-height:1;">{{ bestText }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">最佳连对</div></div>
         <button onClick="{{ onOpenReview }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:13.5px;letter-spacing:.1em;color:#201f1d;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:9px 18px;background:rgba(255,255,255,0.6);" style-hover="background:rgba(32,31,29,.07)">翻错题本</button>
       </div>
     </div>
@@ -89,7 +121,7 @@
     <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(32,31,29,.16);">
       <sc-for list="{{ mapRows }}" as="c" hint-placeholder-count="7">
         <button onClick="{{ c.onOpen }}" disabled="{{ c.locked }}" style="display:block;width:100%;border-bottom:1px solid rgba(32,31,29,.16);padding:24px 18px 24px 8px;background:{{ c.rowBg }};opacity:{{ c.rowOpacity }};cursor:{{ c.cursor }};transition:background .2s;animation:fxIn .5s ease both;" style-hover="background:rgba(182,130,53,.07)">
-          <div style="display:grid;grid-template-columns:76px 1fr 132px;gap:20px;align-items:start;">
+          <div class="fx-maprow" style="display:grid;grid-template-columns:76px 1fr 132px;gap:20px;align-items:start;">
             <div style="text-align:center;padding-top:2px;">
               <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:40px;line-height:1;color:{{ c.numColor }};">{{ c.num }}</div>
               <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:.18em;color:#9b9797;margin-top:7px;font-variant-numeric:tabular-nums;">{{ c.code }}</div>
@@ -105,7 +137,7 @@
                 </sc-for>
               </div>
             </div>
-            <div style="text-align:right;padding-top:6px;">
+            <div class="fx-mapstate" style="text-align:right;padding-top:6px;">
               <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.14em;color:{{ c.stateColor }};font-variant-numeric:tabular-nums;">{{ c.stateText }}</div>
               <div style="height:2px;background:rgba(32,31,29,.1);margin-top:10px;position:relative;">
                 <div style="position:absolute;left:0;top:0;bottom:0;width:{{ c.pct }};background:#b68235;"></div>
@@ -122,7 +154,7 @@
 <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
 <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;z-index:2;overflow:hidden;">
   <div style="position:absolute;right:-4vw;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:44vh;line-height:1;color:#b68235;opacity:.09;pointer-events:none;user-select:none;animation:fxBreathe 7s ease-in-out infinite;">{{ intro.num }}</div>
-  <div style="width:100%;max-width:760px;position:relative;animation:fxIn .6s ease both;background:rgba(28,26,23,0.78);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
+  <div class="fx-card" style="width:100%;max-width:760px;position:relative;animation:fxIn .6s ease both;background:rgba(28,26,23,0.78);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
     <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#b68235;">{{ intro.code }}</div>
     <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:60px;line-height:1.1;color:#f3f2f2;margin:16px 0 0;letter-spacing:.05em;">{{ intro.title }}</h2>
     <div style="height:1px;background:rgba(182,130,53,.5);margin:26px 0;transform-origin:left;animation:fxRule .8s .2s ease both;"></div>
@@ -145,15 +177,15 @@
 <sc-if value="{{ isScene }}" hint-placeholder-val="{{ false }}">
 <div onClick="{{ onSceneAdvance }}" style="min-height:100vh;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 24px 40px;cursor:pointer;">
   <div style="max-width:1080px;margin:0 auto;width:100%;">
-    <div style="display:flex;align-items:flex-end;justify-content:center;gap:0;min-height:360px;">
+    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:0;min-height:360px;">
       <sc-for list="{{ sceneFigures }}" as="f" hint-placeholder-count="5">
-        <div style="display:{{ f.show }};width:{{ f.w }};height:360px;position:relative;opacity:{{ f.op }};filter:{{ f.filter }};transform:translateY({{ f.dy }});transition:opacity .35s,transform .35s,filter .35s;margin:0 -6px;">
+        <div class="fx-fig" style="display:{{ f.show }};width:{{ f.w }};height:360px;position:relative;opacity:{{ f.op }};filter:{{ f.filter }};transform:translateY({{ f.dy }});transition:opacity .35s,transform .35s,filter .35s;margin:0 -6px;">
           <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="contain" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
         </div>
       </sc-for>
     </div>
     <div style="height:1px;background:rgba(32,31,29,.16);margin:0 0 0;"></div>
-    <div style="border:1px solid rgba(32,31,29,.16);border-top:none;border-radius:0 0 4px 4px;background:rgba(248,244,244,.95);backdrop-filter:blur(6px);padding:22px 30px 26px;min-height:172px;position:relative;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+    <div class="fx-dlg" style="border:1px solid rgba(32,31,29,.16);border-top:none;border-radius:0 0 4px 4px;background:rgba(248,244,244,.95);backdrop-filter:blur(6px);padding:22px 30px 26px;min-height:172px;position:relative;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
       <div style="display:flex;align-items:baseline;gap:12px;">
         <span style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:21px;letter-spacing:.04em;color:{{ sceneNameColor }};">{{ sceneName }}</span>
         <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;letter-spacing:.14em;color:#9b9797;">{{ sceneRole }}</span>
@@ -191,7 +223,7 @@
     <div style="height:2px;background:rgba(32,31,29,.08);"><div style="height:2px;background:#b68235;width:{{ progressPct }};transition:width .35s ease;"></div></div>
   </div>
 
-  <div style="max-width:1120px;margin:0 auto;padding:36px 24px 96px;display:grid;grid-template-columns:1fr 268px;gap:44px;align-items:start;">
+  <div class="fx-play-grid" style="max-width:1120px;margin:0 auto;padding:36px 24px 96px;display:grid;grid-template-columns:1fr 268px;gap:44px;align-items:start;">
 
     <div style="min-width:0;">
       <div style="display:flex;align-items:baseline;gap:12px;">
@@ -274,7 +306,7 @@
             <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:#9b9797;font-style:italic;">卡片已全部归位。</div>
           </sc-if>
           <div style="height:1px;background:rgba(32,31,29,.16);margin:20px 0;"></div>
-          <div style="display:grid;grid-template-columns:{{ q.binCols }};gap:14px;">
+          <div class="fx-bins" style="display:grid;grid-template-columns:{{ q.binCols }};gap:14px;">
             <sc-for list="{{ q.bins }}" as="bin" hint-placeholder-count="2">
               <button onClick="{{ bin.onClick }}" style="display:block;width:100%;border:1px {{ bin.borderStyle }} {{ bin.bd }};border-radius:4px;padding:14px 14px 16px;background:{{ bin.bg }};min-height:132px;vertical-align:top;transition:all .16s;">
                 <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;color:{{ bin.titleColor }};letter-spacing:.04em;padding-bottom:9px;border-bottom:1px solid rgba(32,31,29,.16);">{{ bin.name }}</div>
@@ -295,9 +327,9 @@
             <div style="position:relative;height:176px;">
               <svg viewBox="0 0 600 176" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
                 <line x1="0" y1="165" x2="600" y2="165" stroke="#201f1d" stroke-opacity="0.18" stroke-width="1"></line>
-                <line x1="200" y1="6" x2="200" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
-                <line x1="400" y1="6" x2="400" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
-                <path d="M6,14 C170,206 430,206 594,14" fill="none" stroke="#b68235" stroke-opacity="0.62" stroke-width="1.6"></path>
+                <line opacity="{{ q.curveOp }}" x1="200" y1="6" x2="200" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
+                <line opacity="{{ q.curveOp }}" x1="400" y1="6" x2="400" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
+                <path opacity="{{ q.curveOp }}" d="M6,14 C170,206 430,206 594,14" fill="none" stroke="#b68235" stroke-opacity="0.62" stroke-width="1.6"></path>
               </svg>
               <div style="position:absolute;top:0;bottom:11px;width:1px;background:#b68235;left:{{ q.dialPct }};"></div>
               <div style="position:absolute;left:{{ q.dialPct }};top:{{ q.dialTop }};transform:translate(-50%,-50%);width:13px;height:13px;border:1.5px solid #b68235;background:#f3f2f2;border-radius:50%;box-shadow:0 1px 2px rgba(45,43,43,.14);"></div>
@@ -324,7 +356,7 @@
             <div style="position:relative;height:4px;background:rgba(32,31,29,.1);border-radius:2px;">
               <div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:#b68235;width:{{ q.flowPct }};transition:width .55s cubic-bezier(.4,0,.2,1);"></div>
             </div>
-            <div style="display:grid;grid-template-columns:{{ q.flowCols }};gap:8px;margin-top:-11px;">
+            <div class="fx-flow" style="display:grid;grid-template-columns:{{ q.flowCols }};gap:8px;margin-top:-11px;">
               <sc-for list="{{ q.flowSlots }}" as="s" hint-placeholder-count="5">
                 <div style="text-align:center;min-width:0;">
                   <div style="width:17px;height:17px;border-radius:50%;border:1.5px solid {{ s.bd }};background:{{ s.bg }};margin:0 auto;transition:all .35s;"></div>
@@ -416,7 +448,17 @@
         <sc-if value="{{ q.showReset }}" hint-placeholder-val="{{ false }}">
           <button onClick="{{ onResetQ }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d7979;padding:6px 8px;" style-hover="color:#b68235">重来一次</button>
         </sc-if>
+        <sc-if value="{{ q.showPeek }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ q.onPeek }}" disabled="{{ q.peekDisabled }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d5411;border:1px dashed rgba(182,130,53,.55);border-radius:4px;padding:8px 16px;opacity:{{ q.peekOpacity }};" style-hover="background:rgba(182,130,53,.1)">{{ q.peekLabel }}</button>
+        </sc-if>
       </div>
+
+      <sc-if value="{{ q.showPeeked }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border:1px dashed rgba(182,130,53,.5);border-radius:4px;background:rgba(182,130,53,.07);padding:15px 20px 17px;animation:fxIn .3s ease both;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">已翻开 · {{ q.peekRef }} · 本题不计声望</div>
+          <p style="font-family:'Noto Serif SC',serif;font-size:14px;line-height:1.85;margin:9px 0 0;color:#444141;text-align:justify;">{{ q.peekSrc }}</p>
+        </div>
+      </sc-if>
 
       <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
         <div style="margin-top:30px;border-top:2px solid {{ verdictColor }};padding-top:22px;animation:fxIn .4s ease both;">
@@ -439,7 +481,7 @@
     </div>
 
     <!-- 右侧导师立绘与卷目速览 -->
-    <div style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;">
+    <div class="fx-aside" style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;">
       <div style="border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:16px 18px;background:rgba(248,244,244,.85);backdrop-filter:blur(4px);position:relative;overflow:hidden;">
         <div style="display:flex;gap:14px;align-items:center;">
           <div style="width:68px;height:86px;flex-shrink:0;position:relative;border-radius:4px;overflow:hidden;border:1px solid rgba(182,130,53,.35);background:rgba(28,26,23,0.06);">
@@ -478,7 +520,7 @@
 
 <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
 <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;z-index:2;">
-  <div style="width:100%;max-width:760px;animation:fxIn .5s ease both;background:rgba(248,244,244,.92);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
+  <div class="fx-card" style="width:100%;max-width:760px;animation:fxIn .5s ease both;background:rgba(248,244,244,.92);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
     <div style="text-align:center;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#a06f24;">{{ result.code }} · Sealed</div>
       <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:46px;margin:14px 0 0;letter-spacing:.05em;">{{ result.title }}</h2>
@@ -494,6 +536,11 @@
       </div>
 
       <p style="font-family:'Noto Serif SC',serif;color:#605d5d;margin:24px auto 0;max-width:52ch;text-align:justify;">{{ result.comment }}</p>
+      <div style="display:flex;gap:0;justify-content:center;margin-top:26px;border:1px solid rgba(32,31,29,.14);border-radius:4px;overflow:hidden;">
+        <div style="padding:11px 22px;border-right:1px solid rgba(32,31,29,.14);"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b68235;line-height:1;font-variant-numeric:tabular-nums;">{{ result.repText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">声望</div></div>
+        <div style="padding:11px 22px;border-right:1px solid rgba(32,31,29,.14);"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#7d5411;line-height:1;font-variant-numeric:tabular-nums;">{{ result.bestText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">最佳连对</div></div>
+        <div style="padding:11px 22px;"><div style="font-family:'Noto Serif SC',serif;font-size:15px;color:#201f1d;line-height:1.5;padding-top:3px;">{{ result.modeText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:4px;">本局模式</div></div>
+      </div>
     </div>
     <div style="height:1px;background:rgba(32,31,29,.16);margin:32px 0;"></div>
     <sc-if value="{{ result.hasWrong }}" hint-placeholder-val="{{ false }}">
@@ -546,6 +593,9 @@
             <div style="font-size:11.5px;letter-spacing:.14em;color:#9b9797;padding-top:4px;">原文</div>
             <div style="color:#605d5d;font-size:13.5px;text-align:justify;">{{ w.src }}</div>
           </div>
+          <div style="margin-top:14px;">
+            <button onClick="{{ w.onRetry }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:14px;letter-spacing:.12em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:9px 20px;background:rgba(182,130,53,.1);" style-hover="background:rgba(182,130,53,.2)">重练这题 →</button>
+          </div>
         </div>
       </sc-for>
     </div>
@@ -585,7 +635,8 @@ class Component extends DCLogic {
       sel:null, multi:[], seq:[], bins:{}, held:null,
       dv:50, fl:0, flErr:0, tIdx:0, tLeft:0, tHits:0, tOn:false,
       wrong:[], stats:{}, rep:0, streak:0, best:0, hasSave:false, saveLabel:'',
-      sceneIdx:0, sceneCharIdx:0
+      sceneIdx:0, sceneCharIdx:0,
+      attempt:0, examMode:false, peekQ:false, fromReview:false, confirmNew:false
     };
   }
 
@@ -664,7 +715,7 @@ class Component extends DCLogic {
     chips:['外汇储备 59','强制结售汇 47','外汇占款 14'],
     items:[
       {t:'choice', q:'「外汇储备」的标准定义是什么？',
-       o:['央行持有的可自由兑换外币资产','国家全部对外债权的总和','出口企业账上的美元存款','外汇市场上一天的成交额'], a:0,
+       o:['央行持有的可自由兑换外币资产','国家全部对外债权与债务的净额','出口企业账上持有的美元存款','外汇市场上一日的成交总额'], a:0,
        w:'定义只有一句：央行持有的可自由兑换外币资产。名词解释题第一句必须是它，剩下的篇幅才轮到定性和数据。',
        s:'外汇储备：央行持有的可自由兑换外币资产。', sr:'L1 核心概念层'},
       {t:'choice', q:'主流叙事说外储是「实力象征」。翟东升把它翻转定性为什么？',
@@ -673,7 +724,7 @@ class Component extends DCLogic {
        w:'这是本章的「撕开点」：外储不是攒下的钱，是向美元体系交的贡——一份财富转移的历史记录。答题时定义之后必须跟上这句翻转，否则拿不到分析分。',
        s:'答题陷阱：主流叙事讲"实力象征"，翟东升翻转定性为"财富转移的历史记录"——不是攒下的钱，是向美元体系交的贡。', sr:'L1 · 外汇储备'},
       {t:'choice', q:'「外汇占款」指的是——',
-       o:['央行收购外汇资产而相应投放的本国货币','外汇储备中被长期占用的那部分','企业占用的外汇额度','外债中以外币计价的部分'], a:0,
+       o:['央行收购外汇资产而投放的本国货币','商业银行收购外汇而占用的自有资金','外汇储备中被长期占用无法动用的部分','央行为稳定汇率在市场上抛出的外汇'], a:0,
        w:'关键词是「相应投放的本国货币」。央行买美元，付出去的是人民币，这笔人民币就是外汇占款。它是外储与国内货币供应之间的接口。',
        s:'外汇占款：央行收购外汇资产而相应投放的本国货币。唯二考过 2 次的名词之一（卷2 + 卷7）。', sr:'L1 · 外汇占款'},
       {t:'cloze', q:'补全外汇占款的数字锚点',
@@ -683,7 +734,7 @@ class Component extends DCLogic {
        w:'3 万亿 → 27 万亿，占基础货币投放 80% 以上。这组数字说明央行当年是「被迫开动印钞机」——货币投放的主动权被外汇占款绑架了。',
        s:'外汇占款膨胀：3 万亿 → 27 万亿（2003–2014），一度占基础货币投放 80% 以上。Q1 / Q6 说明央行"被迫开动印钞机"。', sr:'四、数字锚点'},
       {t:'choice', q:'「强制结售汇制度」的核心内容是——',
-       o:['企业外汇须卖给指定银行，需用时再买，央行是最终买家','企业出口必须结汇为美元后再上交财政','所有跨境交易须经外管局逐笔审批','个人换汇每年有五万美元额度'], a:0,
+       o:['企业外汇须卖给指定银行，央行是最终买家','企业出口收汇须结为美元后上缴财政部','所有跨境外汇交易须经外管局逐笔审批','居民个人每年五万美元便利化换汇额度'], a:0,
        w:'1994 年汇率并轨后建立：企业「必须卖、要用再买」，央行站在链条末端做最终买家。它把全社会的美元集中到国家手里。',
        s:'强制结售汇制度：1994 年汇率并轨后，企业外汇须卖给指定银行、需用时再买，央行是"最终买家"。2012 年后逐步改革。', sr:'L1 · 强制结售汇'},
       {t:'choice', q:'强制结售汇是「三外路线」中哪一环的核心工具？',
@@ -714,7 +765,7 @@ class Component extends DCLogic {
        w:'企业结汇 → 央行购汇（投放人民币）→ 外汇占款形成外储 → 买美债。整条链是行政制度的自动运转，不是市场结果——这是 Q7 的骨架。',
        s:'结汇链条：企业结汇 → 央行购汇（投放人民币）→ 外汇占款形成外储。这是行政制度的自动运转，不是市场结果。', sr:'L2 · 结汇链条'},
       {t:'choice', q:'「双顺差」到底指什么？',
-       o:['经常账户顺差 + 资本账户顺差同向叠加','出口顺差连续两年为正','货物贸易与服务贸易同时顺差','对美顺差与对欧顺差同时存在'], a:0,
+       o:['经常账户与资本账户顺差同向叠加','经常账户顺差被资本账户逆差对冲','货物贸易与服务贸易同时出现顺差','对美顺差与对欧顺差在同期并存'], a:0,
        w:'两个不同账户同向叠加。经常账户顺差是「卖东西赚的钱」，资本账户顺差是「借来 / 引进的钱」。',
        s:'双顺差：经常账户顺差 + 资本账户顺差同向叠加。', sr:'L2 · 双顺差'},
       {t:'tf', q:'易混辨析①：可以把「双顺差」简化理解成「中国出口厉害」。', a:false,
@@ -730,14 +781,14 @@ class Component extends DCLogic {
        w:'提准、发央票、财政存款沉淀。冲销就是央行回收外汇占款投放的过剩流动性。',
        s:'冲销：央行回收外汇占款投放的过剩流动性：提高存准、发行央票、财政存款沉淀。', sr:'L2 · 冲销'},
       {t:'choice', q:'冲销与金融抑制的关系是——',
-       o:['两者对利率的作用方向相反，不可混淆','两者都是压低利率的手段','金融抑制是冲销的一种形式','两者都由财政部执行'], a:0,
+       o:['两者对利率的作用方向相反','两者都是压低市场利率的手段','金融抑制是冲销的一种具体形式','两者都由财政部负责执行'], a:0,
        w:'方向相反。冲销是回收流动性（利率承压上行），金融抑制是行政压低存款利率。写在同一段里必须分清，否则逻辑自相矛盾。',
        s:'注意与金融抑制对利率作用方向相反，两者不可混淆。', sr:'L2 · 冲销'},
       {t:'choice', q:'「金融抑制」的机制与直接后果是——',
-       o:['行政压低存款利率制造存贷利差，国有银行坐收制度租金','抑制金融机构数量增长以防风险','限制外资银行进入国内市场','压缩影子银行规模'], a:0,
+       o:['行政压低存款利率，制造存贷利差','行政压低贷款利率，压缩银行利润','限制金融机构数量增长以防范风险','抬高存款准备金率以回收过剩流动性'], a:0,
        w:'行政压低存款利率 → 巨大存贷利差 → 国有银行坐收「制度租金」。它是「剥夺储蓄者」的直接工具，第六卷还会再见到它。',
        s:'金融抑制：行政压低存款利率，制造巨大存贷利差。是"剥夺储蓄者"的直接工具，国有银行凭此坐收制度租金。', sr:'L2 · 金融抑制'},
-      {t:'bins', q:'按章节出现频次给三个关键词归位',
+      {t:'bins', q:'按章节出现频次给三个关键词归位', hideChips:true,
        hint:'频次高低反映考查权重，值得记一记',
        cols:'repeat(auto-fit,minmax(150px,1fr))', bn:['26 次','18 次','7 次'],
        c:[{t:'双顺差',b:0},{t:'冲销',b:1},{t:'金融抑制',b:2}],
@@ -771,13 +822,13 @@ class Component extends DCLogic {
        s:'狭义仅约千亿、广义三千多亿美元低于美国军费；真正可观的是经财政乘数放大后相当于美国近 20% GDP。', sr:'L3 · 铸币税'},
       {t:'dial', q:'拨动储备规模，把国家停在受制程度最低的位置',
        scene:'助研桌上有一台老式游标。曲线是翟东升画的：纵轴不是"实力"，是"受制程度"。',
-       hint:'曲线两端高、中段低——点击图上任意位置移动游标',
+       hint:'点击图上任意位置移动游标；曲线要等你核对之后才画出来',
        zone:[34,66], labels:['放逐式脆弱（泰国、阿根廷：汇率崩、外债爆、受制于 IMF）','自主性相对最高','绑架式依附（储备成为人质）'],
        w:'正 U 型关系：两端都不自主，过多＝绑架式依附，过少＝放逐式脆弱。但注意最后一层——适中处只是自主性相对最高，真正自主（本币国际化）根本不在这条曲线上，是更高维度。',
        s:'中心—外围：理解"储备越多 ≠ 越强大"的钥匙。储备规模与自主性是正 U 型关系：过多＝绑架式依附，过少＝放逐式脆弱，两端都不自主。', sr:'L3 · 中心—外围'},
       {t:'choice', q:'易混辨析⑥：那么真正的自主在 U 型曲线的哪个位置？',
        hint:'注意这道题在考你有没有背到最后一句',
-       o:['根本不在这条曲线上——本币国际化是更高维度','曲线最低点，储备适中处','曲线左端，储备越少越自主','曲线右端，储备越多越自主'], a:0,
+       o:['不在这条曲线上，本币国际化才是','曲线最低点，储备规模适中之处','曲线左端，储备越少反而越自主','曲线右端，储备越多议价力越强'], a:0,
        w:'适中处只是自主性相对最高，真正自主（本币国际化）根本不在这条曲线上，是更高维度。储备过少是「放逐式脆弱」——泰国、阿根廷：汇率崩、外债爆、受制于 IMF。',
        s:'U 型曲线 ≠ 越少越自主。储备过少是"放逐式脆弱"（泰国、阿根廷：汇率崩、外债爆、受制于 IMF）。适中处自主性最高；真正自主根本不在这条曲线上。', sr:'五、易混辨析⑥'},
       {t:'bins', q:'「三重锁定」各锁在哪里？把机制配到对应的锁上',
@@ -786,7 +837,7 @@ class Component extends DCLogic {
        w:'制度锁定（强制结汇）＋ 利益锁定（政治联盟）＋ 外部锁定（美元霸权）。三重锁定是 Q6 的「根因」，也是全章最后一个采分点。',
        s:'三重锁定：制度锁定（强制结汇）＋ 利益锁定（出口资本＋银行＋地方政府政治联盟）＋ 外部锁定（美元霸权下外储无处可去）。', sr:'L3 · 三重锁定'},
       {t:'choice', q:'照此逻辑，改革的突破口应该在哪？',
-       o:['打破三重锁定，而不在汇率本身','让人民币一次性大幅升值','继续增持储备以增强议价能力','放开资本账户，全面自由兑换'], a:0,
+       o:['打破三重锁定，而不在汇率本身','让人民币一次性大幅升值到均衡水平','继续增持储备以增强对美议价能力','放开资本账户，实现全面自由兑换'], a:0,
        w:'突破口不在汇率本身，而在打破三重锁定。只调汇率，制度、利益、外部三把锁都还在，问题会以别的形式回来。',
        s:'改革突破口不在汇率本身，而在打破三重锁定。', sr:'L3 · 三重锁定'},
       {t:'cloze', q:'补全 Q7（成因论述）的口诀',
@@ -814,7 +865,7 @@ class Component extends DCLogic {
        w:'经济成本三项（机会/会计/冲销）、福利成本一项（资源错配）、政治风险一项（武器化）。先分三层再列五项，比平铺五点高一档。',
        s:'经济成本（可量化）：①机会成本 ②会计成本 ③冲销成本；福利成本（结构性）：④资源错配；政治风险（翟最强调）：⑤武器化风险。', sr:'L4 分层表'},
       {t:'choice', q:'易混辨析②：机会成本与冲销成本的区别是——',
-       o:['机会成本是「该赚没赚」（隐性、更大），冲销成本是「不得不花」（央行实付、显性）','两者是同一笔钱的不同算法','冲销成本远大于机会成本','机会成本由财政承担，冲销成本由企业承担'], a:0,
+       o:['机会成本是该赚没赚，冲销成本是不得不花','机会成本是不得不花，冲销成本是该赚没赚','冲销成本显性，且数额大于机会成本','机会成本由财政承担，冲销成本由企业承担'], a:0,
        w:'机会成本＝收益差，隐性但数额最大；冲销成本＝央票利息 + 提准挤压银行盈利，显性但小于机会成本。这两个概念在卷面上混用是典型扣分点。',
        s:'机会成本 ≠ 冲销成本。机会成本是"该赚没赚"（收益差，隐性、数额更大）；冲销成本是"不得不花的对冲费用"（央行实付，显性）。', sr:'五、易混辨析②'},
       {t:'cloze', q:'补全机会成本的核心算式',
@@ -823,16 +874,16 @@ class Component extends DCLogic {
        w:'美债 ~3% vs 国内 ~10%，7 个百分点的利差就是向美元体系缴纳的铸币税。FDI 在华回报 10–15%——高成本借入、低成本借出，这就是负利差循环。',
        s:'负利差：美债 ~3% vs 国内 ~10%，7 个百分点利差＝铸币税。FDI 在华回报 10–15%，Q2 负利差循环图：高成本借入、低成本借出。', sr:'四、数字锚点'},
       {t:'choice', q:'「会计成本」具体指什么？',
-       o:['美元贬值导致人民币计价的储备资产账面缩水','外储管理机构的运营开支','央行财务报表的审计成本','外汇交易的手续费'], a:0,
+       o:['美元贬值致储备资产账面缩水','外储管理机构的日常运营开支','央行财务报表的年度审计成本','购汇与售汇之间的交易手续费'], a:0,
        w:'汇率变动带来的账面损失。它是可量化的经济成本之一，但不是数额最大的一项。',
        s:'② 会计成本：美元贬值 → 人民币计价的储备资产账面缩水。', sr:'L4 · 会计成本'},
       {t:'choice', q:'「资源错配」这项福利成本的机制是——',
-       o:['实物净输出只换回债权，资源过度向出口部门倾斜，延缓结构调整并加剧资产泡沫与通胀','外储投资品种过于单一','央行人力配置不合理','外汇管理审批效率低下'], a:0,
+       o:['实物净输出只换回债权，延缓结构调整','外储投资的币种与品种过于单一','冲销操作挤压商业银行的放贷能力','储备资产被冻结，实物财富无法收回'], a:0,
        w:'实物净输出只换回债权。资源被锁在出口部门，结构调整被延缓，同时国内资产泡沫与通胀被推高。这是结构性的、不可量化的那一层。',
        s:'④ 资源错配：实物净输出只换回债权；资源过度向出口部门倾斜，延缓结构调整、加剧资产泡沫与通胀。', sr:'L4 · 资源错配'},
       {t:'choice', q:'武器化风险最有力的现实证据是什么？',
        scene:'委员会的会议室里，有人把一份 2022 年的新闻剪报推到桌子中间。没人说话。',
-       o:['2022 年俄罗斯外储被冻结','2008 年雷曼破产','1997 年亚洲金融危机','2015 年人民币汇改'], a:0,
+       o:['2022 年俄罗斯外储被冻结','2008 年雷曼兄弟破产引发危机','1997 年亚洲金融危机泰铢崩盘','2015 年人民币汇改引发波动'], a:0,
        w:'2022 年俄罗斯外储被冻结——储备从资产变成人质的现实先例。Q4 / Q5 都要甩这个例子。',
        s:'武器化先例：2022 年俄罗斯外储被冻结。Q4 / Q5：储备从资产变人质的现实证据。', sr:'四、数字锚点'},
       {t:'tf', q:'判断：前四项成本是慢性失血，第五项（武器化）是一次性致命。', a:true,
@@ -854,7 +905,7 @@ class Component extends DCLogic {
        w:'中国抛售美债 → 自身外储缩水；美国冻结中国外储 → 美元信用崩塌。任何一方激进破坏＝双输，这就是「威慑」。',
        s:'金融恐怖平衡：中国生产美国消费、中国储蓄美国借贷的共生模式＝相互依赖的战略威慑。中国抛售美债 → 自身外储缩水；美国冻结中国外储 → 美元信用崩塌。任何一方激进破坏 = 双输，这就是"威慑"。', sr:'L5 · 金融恐怖平衡'},
       {t:'choice', q:'「金融恐怖平衡」建立在什么样的共生模式上？',
-       o:['中国生产美国消费、中国储蓄美国借贷','中美双方互持等额国债','两国货币互换协议','双方共同持有黄金储备'], a:0,
+       o:['中国生产美国消费、中国储蓄美国借贷','中美互持等额国债，形成对等制衡','两国央行之间的本币互换协议网络','双方以共同持有的黄金储备为锚'], a:0,
        w:'生产—消费、储蓄—借贷的双重共生。正因为深度嵌套，相互依赖才转化为战略威慑。',
        s:'中国生产美国消费、中国储蓄美国借贷的共生模式＝相互依赖的战略威慑。', sr:'L5 · 金融恐怖平衡'},
       {t:'multi', q:'中国持有美债的四个原因是哪些？（多选）',
@@ -870,7 +921,7 @@ class Component extends DCLogic {
        w:'错。「安全」仅指违约概率低、流动性好，不免疫武器化风险。2022 年的先例已经证明：违约风险和被冻结风险是两码事。',
        s:'安全资产 ≠ 绝对安全。"安全"仅指违约概率低、流动性好，不免疫武器化风险。', sr:'五、易混辨析④'},
       {t:'choice', q:'易混辨析⑤：大量持有美债是「理性选择」，那它是最优选择吗？',
-       o:['是给定约束下的理性，但约束本身是结构性的，突破约束才是根本出路','是，收益风险比最优','不是，纯属决策失误','无法判断'], a:0,
+       o:['是给定约束下的理性，但约束可以打破','是最优解，收益与风险的比值最高','不是理性选择，纯属外储管理失误','既非理性也非最优，只是路径依赖'], a:0,
        w:'理性 ≠ 最优。在给定约束下别无选择，但约束本身可以被改变——人民币国际化才是根本出路。这句话是 Q5 收尾的高分句。',
        s:'"理性选择" ≠ "最优选择"。大量持美债是给定约束下的理性（别无选择），但约束本身是结构性的。突破约束（人民币国际化）才是根本出路。', sr:'五、易混辨析⑤'},
       {t:'decision', q:'既然如此，「去美国化」这条路怎么走？选一条你要主推的路线。',
@@ -899,15 +950,15 @@ class Component extends DCLogic {
        w:'三受害者（储蓄者、劳动者、全体国民）对四受益者（美国、出口企业、国有银行、地方政府/国企）。美国是最大受益方。',
        s:'被剥夺：储蓄者、劳动者、全体国民。被补贴：美国（最大）、出口企业、国有银行、地方政府 / 国企。', sr:'L6 分配表'},
       {t:'choice', q:'储蓄者是怎么被剥夺的？',
-       o:['存款利率被压低、实际利率长期为负，被隐性通胀税持续稀释','存款被强制转为国债','银行收取高额账户管理费','外汇兑换额度受限'], a:0,
+       o:['存款实际利率长期为负，被通胀税稀释','存款被强制转换为长期国债而锁死','银行收取的账户管理费逐年抬高','个人购汇额度受限，无法配置美元'], a:0,
        w:'负实际利率 + 隐性通胀税。这是金融抑制在个人层面的直接后果。',
        s:'储蓄者：存款利率被压低、实际利率长期为负，被"隐性通胀税"持续稀释。', sr:'L6 · 储蓄者'},
       {t:'choice', q:'为什么说劳动者遭受的是「双重剥夺」？',
-       o:['生产端被低估汇率压工资，储蓄端又遭负利率二次盘剥','既交个税又交社保','工资低且工时长','同时被出口企业和银行剥削'], a:0,
+       o:['生产端低汇率压工资，储蓄端负利率','生产端压工资，消费端又抬高物价','既要缴纳个人所得税又要缴纳社保','同时被出口企业与国有银行剥削'], a:0,
        w:'生产端（低估汇率压工资）+ 储蓄端（负利率）。同一个人被剥两次，这是 Q6 里最有力的一笔。',
        s:'劳动者：双重剥夺——生产端被低估汇率压工资，储蓄端又遭负利率二次盘剥。', sr:'L6 · 劳动者'},
       {t:'choice', q:'「全体国民」被剥夺的算式是什么？',
-       o:['外储买美债 ~3%、国内回报 ~10%，7 个百分点利差＝向美元体系缴纳的铸币税','人均分摊外储的账面损失','通胀导致的购买力下降','税负逐年上升'], a:0,
+       o:['美债 3% 对国内 10%，7 点利差即铸币税','外储的账面亏损按全国人口平均分摊','通货膨胀导致居民购买力逐年持续下降','宏观税负上升，挤压居民可支配收入'], a:0,
        w:'7 个百分点的利差，就是穷国补贴富国的逆向转移。这是把「铸币税」落到国民头上的关键一步。',
        s:'全体国民：外储回流买美债 ~3% 而国内回报 ~10%，7 个百分点利差即向美元体系缴纳的铸币税——穷国补贴富国的逆向转移。', sr:'L6 · 全体国民'},
       {t:'bins', q:'四个受益者，各自靠什么机制得利？',
@@ -916,8 +967,8 @@ class Component extends DCLogic {
        c:[{t:'压低美国长期利率，为赤字与过度消费提供廉价融资',b:0},{t:'人民币低估→出口更便宜→隐性汇率补贴',b:0},{t:'金融抑制制造存贷利差，坐收制度租金',b:1},{t:'低利率下近乎免费的资本，信贷扩张推动 GDP 与政绩',b:1}],
        w:'美国：廉价融资赤字与消费；出口企业：隐性汇率补贴；国有银行：制度租金；地方政府/国企：近乎免费的资本。四条机制各不相同，不能混着写。',
        s:'美国（最大）：中国外储压低美国长期利率，为其赤字与过度消费提供廉价融资。出口企业：人民币低估→出口商品更便宜→隐性"汇率补贴"。国有银行：金融抑制制造巨大存贷利差，坐收"制度租金"。地方政府/国企：低利率下享受近乎免费的资本，信贷扩张推动 GDP 与政绩。', sr:'L6 分配表'},
-      {t:'bins', q:'按频次给五个主体归位',
-       hint:'地方政府 / 国企 19 次，比你以为的重要',
+      {t:'bins', q:'按频次给五个主体归位', hideChips:true,
+       hint:'受益者一侧的频次普遍高于受害者，想想为什么',
        cols:'repeat(auto-fit,minmax(120px,1fr))', bn:['19','13','11','10','9'],
        c:[{t:'地方政府/国企',b:0},{t:'出口企业',b:1},{t:'劳动者',b:2},{t:'储蓄者',b:3},{t:'国有银行',b:4}],
        w:'地方政府/国企 19、出口企业 13、劳动者 11、储蓄者 10、国有银行 9。受益者一侧的频次普遍高于受害者，因为它们同时是「政治联盟」的成员。',
@@ -928,7 +979,7 @@ class Component extends DCLogic {
        w:'「一前提两工具，三受害者四受益者，根因三重锁」。一前提＝美元霸权，两工具＝强制结汇 + 金融抑制，最后落到三重锁定作为根因。',
        s:'口诀：一前提两工具，三受害者（储·工·民）四受益者（美·出·银·地），根因三重锁。', sr:'L6 口诀'},
       {t:'choice', q:'Q6 这道论述题的最后一段应该落在哪里？',
-       o:['三重锁定——制度、利益、外部三把锁共同维持这套分配结构','呼吁提高存款利率','建议取消出口退税','主张立即抛售美债'], a:0,
+       o:['三重锁定：制度、利益、外部三把锁','呼吁提高存款利率以补偿储蓄者','建议取消出口退税以纠正激励','主张立即抛售美债以摆脱依附'], a:0,
        w:'根因三重锁。分配结构之所以稳定，是因为制度锁定、利益锁定、外部锁定同时在起作用；不打破锁，改分配是治标。',
        s:'根因三重锁。改革突破口不在汇率本身，而在打破三重锁定。', sr:'L6 口诀 / L3 三重锁定'}
     ]},
@@ -964,7 +1015,7 @@ class Component extends DCLogic {
        w:'峰值 3.99 万亿（≈GDP 40%）、约 70% 来自经常账户顺差、外汇占款 3→27 万亿、利差 7 个百分点。第二个数尤其重要：说明「两差」里经常账户才是主力。',
        s:'峰值来源结构：约 70% 来自经常账户顺差。Q7 说明"两差"中经常账户是主力，不是资本账户。', sr:'四、数字锚点'},
       {t:'choice', q:'强制结汇 2012 年取消之后发生了什么？',
-       o:['2014.6 → 2017.1 外储缩水约 1 万亿，资本外逃','外储继续稳步增长','汇率立即自由浮动','人民币迅速国际化'], a:0,
+       o:['2014.6→2017.1 缩水约 1 万亿，资本外逃','2012→2015 外储继续稳步增长','2013 起人民币转入完全自由浮动','2014 起人民币国际化两年内完成'], a:0,
        w:'制度开了门，一开就跑，不得不又关上。这是 Q2 追问的落点，也是「三重锁定」难以打破的现实证据。',
        s:'取消后的资本外逃：2014.6 → 2017.1 缩水约 1 万亿。Q2 追问落点：制度开了门，一开就跑，不得不又关上。', sr:'四、数字锚点'},
       {t:'timed', q:'数字闪电战：四十五秒，六个锚点', secs:45,
@@ -1004,7 +1055,7 @@ class Component extends DCLogic {
         const d = JSON.parse(raw);
         const ch = this.DATA[d.ci] || this.DATA[0];
         this.setState({ wrong:d.wrong||[], stats:d.stats||{}, rep:d.rep||0, best:d.best||0,
-          hasSave:true, saveLabel:(ch?ch.title:'第一卷'), _ci:d.ci||0 });
+          examMode:!!d.examMode, hasSave:true, saveLabel:(ch?ch.title:'第一卷'), _ci:d.ci||0 });
       }
     }catch(e){}
     this.startBG();
@@ -1140,7 +1191,7 @@ class Component extends DCLogic {
 
   save(patch){
     const s = Object.assign({}, this.state, patch||{});
-    try{ localStorage.setItem('fx-reserve-game-v1', JSON.stringify({ci:s.ci, wrong:s.wrong, stats:s.stats, rep:s.rep, best:s.best})); }catch(e){}
+    try{ localStorage.setItem('fx-reserve-game-v1', JSON.stringify({ci:s.ci, wrong:s.wrong, stats:s.stats, rep:s.rep, best:s.best, examMode:!!s.examMode})); }catch(e){}
   }
 
   shuf(arr, seed){
@@ -1152,18 +1203,28 @@ class Component extends DCLogic {
   }
   ch(){ return this.DATA[this.state.ci]; }
   it(){ const c=this.ch(); return c && c.items[this.state.qi]; }
-  seed(){ return (this.state.ci+1)*97 + (this.state.qi+1)*31; }
+  seed(){ return this.seedOf(this.state.ci, this.state.qi, this.state.attempt); }
+  seedOf(ci,qi,at){ return (ci+1)*97 + (qi+1)*31 + (at||0)*7919; }
   chapUnlocked(i){
     if(i===0) return true;
     const st = this.state.stats[i-1];
     return !!(st && st.total && st.right/st.total >= 0.5);
   }
-  resetQ(ci,qi){
-    const C=this.DATA[ci==null?this.state.ci:ci];
-    const it=C && C.items[qi==null?this.state.qi:qi];
+  resetQ(ci,qi,at){
+    const _ci = ci==null?this.state.ci:ci, _qi = qi==null?this.state.qi:qi;
+    const _at = at==null?(this.state.attempt||0):at;
+    const C=this.DATA[_ci];
+    const it=C && C.items[_qi];
+    // 拨盘起点：按种子落在正确区间之外，否则「不动即过关」
+    let dv=50;
+    if(it && it.t==='dial'){
+      const sd=this.seedOf(_ci,_qi,_at);
+      dv = (sd%2) ? (4 + sd%(Math.max(1,it.zone[0]-8))) : (it.zone[1]+6 + sd%(Math.max(1,94-it.zone[1])));
+      dv = Math.max(2, Math.min(98, dv));
+    }
     return { answered:false, correct:false, sel:null, multi:[], seq:[], bins:{}, held:null,
-      dv:50, fl:0, flErr:0, tIdx:0, tHits:0, tRes:[], tLeft:(it&&it.t==='timed')?(it.secs||45):0,
-      sceneIdx:0, sceneCharIdx:0 };
+      dv, fl:0, flErr:0, tIdx:0, tHits:0, tRes:[], tLeft:(it&&it.t==='timed')?(it.secs||45):0,
+      sceneIdx:0, sceneCharIdx:0, peekQ:false };
   }
 
   /* ─────────────  作答逻辑  ───────────── */
@@ -1232,12 +1293,19 @@ class Component extends DCLogic {
     let wrong=st.wrong.filter(w=>!(w.ci===ci&&w.qi===qi));
     if(!ok) wrong=wrong.concat([{ci,qi,q:this.it().q,yours:this.answerStr(),right:this.rightStr(),src:this.it().s,why:this.it().w}]);
     const streak = ok ? st.streak+1 : 0;
-    const rep = Math.max(0, st.rep + (ok ? (10 + Math.min(10, streak*2)) : (this.props.strictMode ? -6 : 0)));
+    const exam = !!(st.examMode || this.props.strictMode);
+    // 偷看过速查卡的题不计声望，否则「买答案」仍能刷分
+    const gain = st.peekQ ? 0 : ((exam?15:10) + Math.min(10, streak*2));
+    const rep = Math.max(0, st.rep + (ok ? gain : (exam ? -6 : 0)));
     const patch={answered:true, correct:ok, stats, wrong, streak, rep, best:Math.max(st.best, streak)};
     this.setState(patch); this.save(patch);
   }
   next(){
     const c=this.ch();
+    if(this.state.fromReview){
+      this.setState(Object.assign({screen:'review', fromReview:false}, this.resetQ()));
+      this.save({}); return;
+    }
     if(this.state.qi+1 < c.items.length){ this.setState(Object.assign({qi:this.state.qi+1}, this.resetQ(this.state.ci, this.state.qi+1))); }
     else { this.setState({screen:'result'}); this.save({}); }
   }
@@ -1245,7 +1313,7 @@ class Component extends DCLogic {
   /* ─────────────  渲染值  ───────────── */
   renderVals(){
     const S=this.state, D=this.DATA, C_MAP=this.CHARACTERS, self=this;
-    const goMap=()=>this.setState({screen:'map'});
+    const goMap=()=>this.setState({screen:'map', fromReview:false, confirmNew:false});
     
     // 背景图映射
     let curBgUrl = '../../art/bg-00.jpg';
@@ -1285,9 +1353,24 @@ class Component extends DCLogic {
       bgRef:this.bgRef, darkGround:(S.screen==='title'||S.screen==='intro'||S.screen==='scene')?'block':'none',
       repText:String(S.rep), wrongCount:String(S.wrong.length),
       onBackToMap:goMap, onOpenReview:()=>this.setState({screen:'review'}),
-      onStart:()=>{ try{localStorage.removeItem('fx-reserve-game-v1');}catch(e){} this.setState(Object.assign({screen:'map',ci:0,qi:0,wrong:[],stats:{},rep:0,streak:0},this.resetQ())); },
+      // 有存档时先要一次确认，避免误点清档
+      onStart:()=>{ if(S.hasSave && !S.confirmNew){ this.setState({confirmNew:true}); return; }
+        try{localStorage.removeItem('fx-reserve-game-v1');}catch(e){}
+        this.setState(Object.assign({screen:'map',ci:0,qi:0,wrong:[],stats:{},rep:0,streak:0,best:0,attempt:0,hasSave:false,confirmNew:false},this.resetQ(0,0,0))); },
+      onCancelNew:()=>this.setState({confirmNew:false}),
+      confirmNew:S.confirmNew,
+      bestText:String(S.best),
+      examOn:S.examMode,
+      examLabel:S.examMode?'考场模式 · 开':'考场模式 · 关',
+      examDesc:S.examMode?'无剧情、无提示、不能翻卡；答对 +15，答错 −6。':'带剧情与提示，答错不扣分，可花声望翻速查卡。适合第一遍。',
+      examBd:S.examMode?'#b68235':'rgba(243,242,242,.28)',
+      examFg:S.examMode?'#b68235':'rgba(243,242,242,.7)',
+      // 标题页上 state.ci 恒为 0（续玩章节存在 _ci 里），落盘时要把它带回去，
+      // 否则切一下模式就把存档的续玩位置冲成第一卷；没有存档时不落盘，避免凭空造出存档
+      onToggleExam:()=>{ const e=!S.examMode; this.setState({examMode:e});
+        if(S.hasSave) this.save({examMode:e, ci:S._ci||0}); },
       onResume:()=>this.setState({screen:'map', ci:S._ci||0}),
-      onRestartAll:()=>{ try{localStorage.removeItem('fx-reserve-game-v1');}catch(e){} this.setState(Object.assign({screen:'title',ci:0,qi:0,wrong:[],stats:{},rep:0,streak:0,hasSave:false},this.resetQ())); },
+      onRestartAll:()=>{ try{localStorage.removeItem('fx-reserve-game-v1');}catch(e){} this.setState(Object.assign({screen:'title',ci:0,qi:0,wrong:[],stats:{},rep:0,streak:0,best:0,attempt:0,hasSave:false,confirmNew:false,fromReview:false},this.resetQ(0,0,0))); },
       titleStats:[{n:'7',l:'卷'},{n:String(D.reduce((n,ch)=>n+ch.items.length,0)),l:'题'},{n:'6',l:'层图谱'},{n:'8',l:'数字锚点'}],
       chainWords:['美元霸权','双顺差','强制结汇','被动囤储','买美债','负利差输血','三重锁定']
     };
@@ -1307,7 +1390,9 @@ class Component extends DCLogic {
     const c=this.ch();
     if(c){
       v.intro={ num:c.num, code:c.code, title:c.title, role:c.role, brief:c.brief, exam:c.exam, count:String(c.items.length) };
-      v.onBeginChapter=()=>this.setState({screen:'scene', sceneIdx:0, sceneCharIdx:0});
+      v.onBeginChapter=()=> S.examMode
+        ? this.setState(Object.assign({screen:'play'}, this.resetQ(S.ci,0), {qi:0}))
+        : this.setState({screen:'scene', sceneIdx:0, sceneCharIdx:0});
       v.playChapterTitle=c.num+'卷 · '+c.title; v.playRole=c.role; v.playBrief=c.brief;
       v.playCode=c.code; v.playChips=c.chips;
       v.progressText=(S.qi+1)+' / '+c.items.length;
@@ -1426,7 +1511,7 @@ class Component extends DCLogic {
             else { fg='#7d7979'; }
           } else if(sel){ bd=A; bar=A; bg='rgba(182,130,53,.09)'; mkColor=A; }
           let txt2=txt;
-          if(it.t==='decision' && S.answered && S.sel===oi) txt2 = txt + '　—— ' + it.o[oi].oc;
+          if(it.t==='decision' && S.answered) txt2 = txt + '　—— ' + it.o[oi].oc;
           return { text:txt2, bd, bar, bg, fg, mark, mkColor,
             onClick: S.answered ? (()=>{}) : (it.t==='multi'
               ? (()=>{ const m=S.multi.slice(); const kk=m.indexOf(oi); if(kk>=0)m.splice(kk,1); else m.push(oi); self.setState({multi:m}); })
@@ -1505,10 +1590,12 @@ class Component extends DCLogic {
         const v0=S.dv;
         q.dialPct=v0+'%'; q.dialVal=String(v0);
         const x=v0/100, curveY=1-4*(x-0.5)*(x-0.5);
-        q.dialTop=(8+curveY*82)+'%';
-        q.dialReadout=this.dialZoneLabel(v0,it);
-        const zi = v0<it.zone[0]?0:(v0>it.zone[1]?2:1);
-        q.dialZones=it.labels.map((l,i)=>({ k:['LEFT','MID','RIGHT'][i], label:l,
+        // 曲线与区间标签在作答前全部藏起：否则「点最低点」不需要任何知识
+        q.curveOp = S.answered?'1':'0';
+        q.dialTop = S.answered ? (8+curveY*82)+'%' : '88%';
+        q.dialReadout = S.answered ? this.dialZoneLabel(v0,it) : '曲线未标注 · 凭记忆定位';
+        const zi = S.answered ? (v0<it.zone[0]?0:(v0>it.zone[1]?2:1)) : -1;
+        q.dialZones=it.labels.map((l,i)=>({ k:['LEFT','MID','RIGHT'][i], label:S.answered?l:'？',
           bg: i===zi?'rgba(182,130,53,.11)':'transparent',
           fg: i===zi?'#201f1d':'#9b9797', kColor: i===zi?'#a06f24':'#bab6b6' }));
         q.onTrack = S.answered ? (()=>{}) : ((e)=>{ const r=e.currentTarget.getBoundingClientRect();
@@ -1574,8 +1661,9 @@ class Component extends DCLogic {
         q.timerColor=S.tLeft<total*0.25?'#7a2f2f':'#b68235';
         q.timedIdxText='第 '+Math.min(S.tIdx+1,it.rounds.length)+' / '+it.rounds.length+' 问 · 答对 '+S.tHits;
         q.timedPrompt=S.answered?(S.tLeft<=0.1?'时间到。':'六问答完，用时 '+((it.secs||45)-S.tLeft).toFixed(1)+' 秒。'):r.q;
-        q.timedOpts=S.answered?[]:r.o.map((txt,i)=>({ text:txt, onClick:()=>{
-          const s=self.state, hit=(i===r.a), ni=s.tIdx+1;
+        const tOrder=this.shuf(r.o, this.seed()+S.tIdx*13).map(z=>z.i);
+        q.timedOpts=S.answered?[]:tOrder.map((oi)=>({ text:r.o[oi], onClick:()=>{
+          const s=self.state, hit=(oi===r.a), ni=s.tIdx+1;
           const res=(s.tRes||[]).concat([hit]);
           if(ni>=it.rounds.length){ self.setState({tIdx:ni, tHits:s.tHits+(hit?1:0), tRes:res}, ()=>self.commit()); }
           else self.setState({tIdx:ni, tHits:s.tHits+(hit?1:0), tRes:res});
@@ -1583,22 +1671,44 @@ class Component extends DCLogic {
         const res=S.tRes||[];
         q.timedMarks=it.rounds.map((_,i)=>({ bg: i<res.length?(res[i]?'#b68235':'#7a2f2f'):'rgba(32,31,29,.14)' }));
       }
+      // 声望的用途：花 20 点提前翻速查卡原文；翻过的题不计声望
+      const peekCost=20, examOn=!!(S.examMode||this.props.strictMode);
+      q.hasHint = q.hasHint && !examOn;
+      q.showPeek = !S.answered && !!it.s && !examOn && !S.peekQ;
+      q.peekDisabled = S.rep < peekCost;
+      q.peekOpacity = (S.rep<peekCost)?'0.4':'1';
+      q.peekLabel = S.rep<peekCost ? ('翻速查卡（需 '+peekCost+' 声望）') : ('翻速查卡（−'+peekCost+' 声望）');
+      q.onPeek = (S.rep<peekCost||S.answered||S.peekQ) ? (()=>{}) : (()=>{
+        const patch={rep:Math.max(0,S.rep-peekCost), peekQ:true};
+        self.setState(patch); self.save(patch);
+      });
+      q.showPeeked = S.peekQ && !S.answered;
+      q.peekSrc = it.s||''; q.peekRef = it.sr||'';
+
+      // 频次题的答案就印在侧栏 chips 上，作答前抹掉数字
+      if(it.hideChips && !S.answered) v.playChips=c.chips.map(k=>k.replace(/\s*\d+\s*$/,''));
       v.q=q;
       v.answered=S.answered;
       v.verdictColor=S.correct?A:ARED;
       v.verdictWord=S.correct?'对':'差一点';
       const pool=S.correct?this.SNARK_OK():this.SNARK_NO();
       v.snark=pool[(S.ci*7+S.qi)%pool.length];
-      v.nextLabel=(S.qi+1<c.items.length)?'下一题':'交卷';
+      v.nextLabel=S.fromReview?'回错题本':((S.qi+1<c.items.length)?'下一题':'交卷');
       v.onCheck=()=>this.commit();
       v.onNext=()=>this.next();
-      v.onResetQ=()=>this.setState(this.resetQ());
+      v.onResetQ=()=>{
+        const at=(S.attempt||0)+1;
+        // 管道题的误开次数跨重置累计，否则可以试错探路后再重走一遍
+        this.setState(Object.assign(this.resetQ(S.ci,S.qi,at), {attempt:at},
+          it.t==='flow'?{flErr:S.flErr}:{}));
+      };
     } else {
       v.q={kindLabel:'',no:'',text:'',hint:'',hasHint:false,scene:'',hasScene:false,why:'',src:'',srcRef:'',hasSrc:false,
         isOptions:false,isOrder:false,isCloze:false,isBins:false,isDial:false,isFlow:false,isScale:false,isTimed:false,
         showCheck:false,showReset:false,checkDisabled:false,checkOpacity:'1',
         options:[],slots:[],bank:[],parts:[],loose:[],bins:[],noLoose:false,binCols:'repeat(auto-fit,minmax(220px,1fr))',
-        dialPct:'50%',dialTop:'60%',dialVal:'50',dialReadout:'',dialZones:[],onTrack:()=>{},
+        dialPct:'50%',dialTop:'60%',dialVal:'50',dialReadout:'',dialZones:[],onTrack:()=>{},curveOp:'0',
+        showPeek:false,peekDisabled:false,peekOpacity:'1',peekLabel:'',onPeek:()=>{},showPeeked:false,peekSrc:'',peekRef:'',
         flowPct:'0%',flowCols:'repeat(5,1fr)',flowSlots:[],valves:[],flowErr:'0',
         tilt:'0deg',antiTilt:'0deg',leftN:'0',rightN:'0',leftName:'',rightName:'',
         timerText:'',timerPct:'100%',timerColor:'#b68235',timedPrompt:'',timedOpts:[],timedMarks:[],timedIdxText:''};
@@ -1621,6 +1731,8 @@ class Component extends DCLogic {
       const resCharSrc = mentorObj[resCharEmotion] || mentorObj.idle;
 
       v.result={ code:c.code, title:c.num+'卷 · '+c.title, pct:pct+'%', grade,
+        bestText:String(S.best), repText:String(S.rep),
+        modeText: (S.examMode?'考场模式':'研习模式'),
         sealColor: pct>=50?'#b68235':'#7a2f2f', comment,
         charSlot: resCharSrc, charSrc: resCharSrc, charName: mentorObj.name,
         hasWrong:wl.length>0, wrongN:String(wl.length),
@@ -1628,13 +1740,17 @@ class Component extends DCLogic {
         nextLabel: last?'查看全书复盘':'进入下一卷' };
       v.onAfterResult = last ? (()=>this.setState({screen:'review'}))
         : (()=>{ const ni=Math.min(D.length-1,S.ci+1); this.setState(Object.assign({screen:'intro',ci:ni,qi:0},this.resetQ(ni,0))); this.save({ci:ni}); });
-      v.onRetryChapter=()=>this.setState(Object.assign({screen:'play',qi:0},this.resetQ(S.ci,0)));
+      v.onRetryChapter=()=>{ const at=(S.attempt||0)+1;
+        this.setState(Object.assign({screen:'play',qi:0,attempt:at,fromReview:false},this.resetQ(S.ci,0,at))); };
     } else {
-      v.result={code:'',title:'',pct:'',grade:'',sealColor:'#b68235',comment:'',hasWrong:false,wrongN:'0',wrongList:[],nextLabel:'',charSlot:'',charSrc:'',charName:''};
+      v.result={code:'',title:'',pct:'',grade:'',sealColor:'#b68235',comment:'',hasWrong:false,wrongN:'0',wrongList:[],nextLabel:'',charSlot:'',charSrc:'',charName:'',bestText:'0',repText:'0',modeText:''};
       v.onAfterResult=()=>{}; v.onRetryChapter=()=>{};
     }
 
-    v.reviewList=S.wrong.map(w=>({ tag:(D[w.ci]?D[w.ci].num+'卷':'')+' · '+(w.qi+1), q:w.q, yours:w.yours, right:w.right, src:w.src }));
+    v.reviewList=S.wrong.map(w=>({ tag:(D[w.ci]?D[w.ci].num+'卷':'')+' · '+(w.qi+1), q:w.q, yours:w.yours, right:w.right, src:w.src,
+      onRetry:()=>{ const at=(S.attempt||0)+1;
+        self.setState(Object.assign({screen:'play', ci:w.ci, qi:w.qi, fromReview:true, attempt:at},
+          self.resetQ(w.ci, w.qi, at))); } }));
     v.reviewEmpty=S.wrong.length===0;
     v.allDone=D.every((ch,i)=>{ const st=S.stats[i]; return st && st.total>=ch.items.length; });
     return v;
