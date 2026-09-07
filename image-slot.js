@@ -30,6 +30,17 @@
       const shape = this.getAttribute('shape') || 'rect';
       const borderRadius = shape === 'circle' ? '50%' : '4px';
 
+      if (!src || src.includes('{{')) {
+        this.shadowRoot.innerHTML = `
+          <style>
+            :host { display: block; width: 100%; height: 100%; position: relative; overflow: hidden; border-radius: ${borderRadius}; }
+            .ph { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; background: rgba(182,130,53,0.1); color: #b68235; font-size: 13px; font-family: inherit; text-align: center; padding: 8px; box-sizing: border-box; }
+          </style>
+          <div class="ph">${ph}</div>
+        `;
+        return;
+      }
+
       this.shadowRoot.innerHTML = `
         <style>
           :host {

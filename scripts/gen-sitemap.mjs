@@ -24,7 +24,7 @@ function walk(dir, acc = []) {
   for (const entry of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
     const rel = dir ? `${dir}/${entry.name}` : entry.name;
     if (entry.isDirectory()) {
-      if (['.git', 'node_modules', '.claude', '.codex', '.loopx', '.github', 'scripts'].includes(entry.name)) continue;
+      if (['.git', 'node_modules', '.claude', '.codex', '.loopx', '.github', 'scripts', 'dist', '.wrangler', '.workbuddy', '.zcode'].includes(entry.name)) continue;
       walk(rel, acc);
     } else if (entry.name.endsWith('.html')) {
       acc.push(rel);
