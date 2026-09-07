@@ -2,11 +2,6 @@
 <!-- 由 scripts/gen-sitemap.mjs 生成，请勿手工编辑 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ppray.github.io/child/</loc>
-    <lastmod>2026-07-18</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ppray.github.io/crisis-watch/%E5%8D%B1%E6%9C%BA%E7%9B%91%E6%B5%8B%E4%BD%9C%E6%88%98%E5%8F%B0.html</loc>
     <lastmod>2026-07-28</lastmod>
     <priority>0.6</priority>
@@ -94,26 +89,6 @@
   <url>
     <loc>https://ppray.github.io/us-debt/%E7%BE%8E%E5%80%BA%E5%AE%9E%E6%97%B6%E7%9B%91%E6%8E%A7%E7%9C%8B%E6%9D%BF.html</loc>
     <lastmod>2026-07-19</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ppray.github.io/vicky3-ipe/.superpowers/brainstorm/25531-1786376849/content/map-style.html</loc>
-    <lastmod>2026-08-10</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ppray.github.io/vicky3-ipe/.superpowers/brainstorm/25531-1786376849/content/panel-composition.html</loc>
-    <lastmod>2026-08-10</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ppray.github.io/vicky3-ipe/.superpowers/brainstorm/8479-1786368750/content/layout-direction.html</loc>
-    <lastmod>2026-08-10</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ppray.github.io/vicky3-ipe/.superpowers/brainstorm/8479-1786368750/content/map-style.html</loc>
-    <lastmod>2026-08-10</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
