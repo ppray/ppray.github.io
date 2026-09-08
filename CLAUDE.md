@@ -141,6 +141,15 @@ node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用），
 - 站点唯一权威域名是 `https://ppray.github.io`，canonical、OG、sitemap 中的绝对 URL 都以它为准，
   中文路径一律 percent-encode。
 
+### 读者共建组件（评论区 / 纠错 / 口诀）
+- `community.js` 在页面底部渲染「读者共建」栏：评论区（giscus → GitHub Discussions，pathname 映射，Announcements 分类）、
+  「发现错误」（预填 Issue，label `纠错`）、「补充记忆口诀」（复制选中文字并定位到评论框）。
+- 挂载点由 `scripts/inject-community.mjs` 幂等注入（`<div id="community-root">` + `/community.js`），
+  新增内容页后跑一次即可；根目录工具页、`games/*/index.html`（自动带 `data-theme="transparent_dark"` 深色适配）、`国关复习/*.html` 已全量注入。
+- 前提：仓库已开启 Discussions 且需安装 [giscus App](https://github.com/apps/giscus)（未安装时评论区显示 "giscus is not installed"）。
+  repoId / categoryId 等配置写死在 `community.js` 顶部； Discussions 分类改名后需同步 `data-category` 显示名。
+- 组件自带 `@media print` 隐藏与 `file://` 跳过逻辑；JS 懒加载（IntersectionObserver），不影响 LCP 与爬虫抓取。
+
 ### Modifying the SwiftBar Plugin
 - Edit `swiftbar-glm-usage.10m.sh` - the filename suffix controls update frequency
 - Test changes by refreshing SwiftBar

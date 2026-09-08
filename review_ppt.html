@@ -1574,6 +1574,9 @@
         root.render(<App />);
     </script>
 
+<!-- 读者共建组件：评论区 + 纠错入口（由 scripts/inject-community.mjs 注入/维护） -->
+<div id="community-root"></div>
+<script src="/community.js" defer></script>
 <!-- 不蒜子站点访问统计 -->
 <div id="busuanzi_container" style="text-align:center;font-size:11px;color:#999;padding:6px 0 10px;opacity:.85;line-height:1.6;">
   本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
