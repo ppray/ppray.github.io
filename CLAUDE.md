@@ -142,8 +142,10 @@ node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用），
   中文路径一律 percent-encode。
 
 ### 读者共建组件（评论区 / 纠错 / 口诀）
-- `community.js` 在页面底部渲染「读者共建」栏：评论区（giscus → GitHub Discussions，pathname 映射，Announcements 分类）、
-  「发现错误」（预填 Issue，label `纠错`）、「补充记忆口诀」（复制选中文字并定位到评论框）。
+- `community.js` 提供两种入口：**右下角悬浮「💬 讨论」按钮**（随时滑出侧边抽屉评论区，阅读到任意位置可用；
+  若页面有选中的文字会先自动复制便于引用）和**页面底部的「读者共建」栏**（纠错直开预填 Issue，label `纠错`；
+  口诀/评论区打开抽屉）。评论区为 giscus → GitHub Discussions（pathname 映射，Announcements 分类），
+  首次打开抽屉时才加载，抽屉支持 ESC / 点击遮罩关闭。
 - 挂载点由 `scripts/inject-community.mjs` 幂等注入（`<div id="community-root">` + `/community.js`），
   新增内容页后跑一次即可；根目录工具页、`games/*/index.html`（自动带 `data-theme="transparent_dark"` 深色适配）、`国关复习/*.html` 已全量注入。
 - 前提：仓库已开启 Discussions 且需安装 [giscus App](https://github.com/apps/giscus)（未安装时评论区显示 "giscus is not installed"）。
