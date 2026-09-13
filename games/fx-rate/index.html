@@ -35,14 +35,16 @@
      support.js 每次 setState 都重建整棵 DOM，transition 永远触发不了，
      所以这里的状态切换全部走 @keyframes——重建即重放，正好是要的效果。 */
   .fx-figwrap{flex:0 0 auto;perspective:1100px;}
-  .fx-fig{width:242px;padding:9px 9px 0;border:1px solid rgba(32,31,29,.3);border-radius:3px;
+  /* 卡宽/卡高走 CSS 变量：谈判桌四人、终卷五人谢幕时由内联 --figw/--figh 收缩。
+     手机断点的 !important 不认内联 width，但认变量本身，所以两个断点都挂同一个变量。 */
+  .fx-fig{width:var(--figw,242px);padding:9px 9px 0;border:1px solid rgba(32,31,29,.3);border-radius:3px;
     background:linear-gradient(160deg,#f7f3ea 0%,#efe8d9 62%,#e6ddca 100%);
     opacity:var(--op,1);transform:var(--rest,none);transform-origin:50% 100%;}
-  .fx-figart{height:322px;position:relative;overflow:hidden;background:#efe9dc;
+  .fx-figart{height:var(--figh,322px);position:relative;overflow:hidden;background:#efe9dc;
     border:1px solid rgba(182,130,53,.45);}
   .fx-figplate{height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
-  .fx-figname{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.04em;line-height:1.2;}
-  .fx-figrole{font-family:'Noto Serif SC',serif;font-size:9.5px;letter-spacing:.18em;color:#8d8579;line-height:1.2;}
+  .fx-figname{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.04em;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .fx-figrole{font-family:'Noto Serif SC',serif;font-size:9.5px;letter-spacing:.18em;color:#8d8579;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   @keyframes fxCardRise{from{opacity:0;transform:translateY(34px) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
   @keyframes fxCardFlip{from{opacity:0;transform:rotateY(-74deg) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
   @keyframes fxCardBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.5px)}}
@@ -59,8 +61,8 @@
     .fx-maprow{grid-template-columns:52px 1fr!important;gap:14px!important;}
     .fx-mapstate{grid-column:1/-1!important;text-align:left!important;padding-top:14px!important;}
     .fx-figs{min-height:236px!important;gap:8px!important;}
-    .fx-fig{width:142px!important;padding:6px 6px 0!important;}
-    .fx-figart{height:186px!important;}
+    .fx-fig{width:var(--figw-m,142px)!important;padding:6px 6px 0!important;}
+    .fx-figart{height:var(--figh-m,186px)!important;}
     .fx-figplate{height:36px!important;}
     .fx-figname{font-size:13px!important;}
     .fx-figrole{font-size:8.5px!important;}
@@ -190,6 +192,11 @@
       <div style="font-size:11.5px;letter-spacing:.2em;color:#b68235;padding-top:4px;">对应真题</div>
       <div style="color:rgba(243,242,242,.74);font-variant-numeric:tabular-nums;letter-spacing:.06em;">{{ intro.exam }}</div>
     </div>
+    <sc-if value="{{ intro.hasEcho }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:20px;border-left:2px solid #b68235;padding:7px 0 7px 16px;font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.66);">
+        <span style="font-size:11px;letter-spacing:.16em;color:#b68235;">上卷回响 · </span>{{ intro.echo }}
+      </div>
+    </sc-if>
     <div style="margin-top:40px;display:flex;gap:14px;align-items:center;">
       <button onClick="{{ onBeginChapter }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:13px 30px;background:rgba(182,130,53,.12);" style-hover="background:rgba(182,130,53,.22)">坐下（{{ intro.count }} 题）</button>
       <button onClick="{{ onBackToMap }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.5);padding:6px 4px;" style-hover="color:#b68235">← 回卷目</button>
@@ -201,10 +208,10 @@
 <sc-if value="{{ isScene }}" hint-placeholder-val="{{ false }}">
 <div onClick="{{ onSceneAdvance }}" style="min-height:100vh;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 24px 40px;cursor:pointer;">
   <div style="max-width:1080px;margin:0 auto;width:100%;">
-    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:18px;min-height:392px;padding-bottom:16px;">
+    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:18px;min-height:392px;padding-bottom:16px;{{ sceneFigsWrap }}">
       <sc-for list="{{ sceneFigures }}" as="f" hint-placeholder-count="5">
         <div class="fx-figwrap" style="animation:{{ f.breathe }};">
-          <div class="fx-fig" style="--op:{{ f.op }};--rest:{{ f.rest }};animation:{{ f.anim }};filter:{{ f.filter }};box-shadow:{{ f.shadow }};">
+          <div class="fx-fig" style="--op:{{ f.op }};--rest:{{ f.rest }};{{ f.vars }}animation:{{ f.anim }};filter:{{ f.filter }};box-shadow:{{ f.shadow }};">
             <div class="fx-figart" style="border-color:{{ f.rule }};">
               <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="cover" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
             </div>
@@ -661,6 +668,39 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ isEnding }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;z-index:2;">
+  <div class="fx-card" style="width:100%;max-width:860px;position:relative;animation:fxInSlow .9s ease both;background:rgba(28,26,23,0.82);border:1px solid rgba(182,130,53,.42);border-radius:6px;padding:52px 46px;backdrop-filter:blur(8px);">
+    <div style="position:absolute;top:14px;left:14px;right:14px;bottom:14px;border:1px solid rgba(182,130,53,.16);pointer-events:none;"></div>
+    <div style="text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#b68235;">Epilogue · The File Closed</div>
+      <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:44px;color:#f3f2f2;margin:18px 0 0;letter-spacing:.06em;">档案合卷</h2>
+      <div style="height:1px;width:180px;background:rgba(182,130,53,.5);margin:28px auto;transform-origin:center;animation:fxRule 1s .25s ease both;"></div>
+      <p style="font-family:'Noto Serif SC',serif;font-size:19px;color:#f3f2f2;line-height:2;margin:0 auto;max-width:52ch;">汇率从来不是<span style="border-bottom:1px solid #b68235;padding-bottom:2px;">市场均衡</span>的结果，而是国内利益集团博弈与中美战略互动共同书写的<span style="border-bottom:1px solid #b68235;padding-bottom:2px;">政治经济史</span>。</p>
+      <p style="font-family:'Noto Serif SC',serif;font-size:13px;color:rgba(243,242,242,.5);margin:14px 0 0;letter-spacing:.1em;">扉页那半句空着的话，今天补全了。</p>
+    </div>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:30px;">
+      <sc-for list="{{ endingFigs }}" as="f" hint-placeholder-count="5">
+        <div style="width:106px;padding:5px 5px 0;border:1px solid rgba(32,31,29,.3);border-radius:3px;background:linear-gradient(160deg,#f7f3ea,#e6ddca);animation:fxCardRise .5s ease both;">
+          <div style="height:128px;position:relative;overflow:hidden;border:1px solid rgba(182,130,53,.45);background:#efe9dc;">
+            <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="cover" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
+          </div>
+          <div style="height:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
+            <span style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:12px;color:#201f1d;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ f.ph }}</span>
+            <span style="font-family:'Noto Serif SC',serif;font-size:8px;letter-spacing:.1em;color:#8d8579;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ f.role }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="font-family:'Noto Serif SC',serif;font-size:14px;line-height:2;color:rgba(243,242,242,.72);margin:30px auto 0;max-width:56ch;text-align:justify;">何炳文在鉴定表末页签了字，把汇率档案推回架子最上层；陆敏把七张椅子的名牌一张张收进抽屉；卡洛威的传真还摊在桌上——「下次谈判，换你坐进来。」林教授只留了一行字：把这条链讲给别人听。讲得出口，才算真的学会。</p>
+    <div style="margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <button onClick="{{ onEndingReview }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:13px 30px;background:rgba(182,130,53,.1);" style-hover="background:rgba(182,130,53,.2)">翻错题本 · 全书复盘</button>
+      <button onClick="{{ onEndingMap }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.55);border:1px solid rgba(243,242,242,.24);border-radius:4px;padding:13px 26px;" style-hover="color:#b68235;border-color:#b68235">回卷目</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
 </div>
 
 </x-dc>
@@ -695,44 +735,54 @@ class Component extends DCLogic {
     };
   }
 
-  /* ─────────────  七卷 Visual Novel 开场对白  ───────────── */
+  /* ─────────────  七卷 Visual Novel 开场对白  ─────────────
+     原则：对白只设局、压赌注，不背考点——答案留给题目与答后讲解。
+     扉页那半句空着的话（「汇率从来不是____的结果」）是贯穿全书的悬念，终卷由玩家亲手补全。 */
   get SCENES(){
     return [
       [
-        { speaker:'hebingwen', emotion:'idle', text:'外汇储备那叠合上了。桌上是汇率档案。今天新来的同志坐第一张椅子。' },
-        { speaker:'lumin', emotion:'idle', text:'是，何司长。底卡是三元悖论、高估利弊、低估四大代价。考纲里这三组一个字都不能漏。' },
-        { speaker:'hebingwen', emotion:'ok', text:'记住：汇率从来不是市场均衡的结果。先把骨架词立住，再谈谁赢谁输。' }
+        { speaker:'hebingwen', emotion:'idle', text:'外汇储备那叠刚合上，汇率档案又推了过来。今天新来的同志，坐第一张椅子。' },
+        { speaker:'lumin', emotion:'idle', text:'何司长，这卷档案的扉页只有一句话，后半句空着——「汇率从来不是____的结果」。' },
+        { speaker:'hebingwen', emotion:'ok', text:'空着的那半句，就是这七张椅子要你坐完的东西。先立骨架，再谈谁赢谁输。坐下。' }
       ],
       [
-        { speaker:'zheng', emotion:'idle', text:'看时间轴。从双轨并行到 811 汇改，七个阶段一个都不能漏。' },
-        { speaker:'lumin', emotion:'idle', text:'郑处，8.28 盯住、6.83 回盯，这两个价位我写在手心里了。' },
-        { speaker:'zheng', emotion:'ok', text:'三个转折点：1994 出口集团胜出，2005 中美博弈精算，2015 货币主权自主。按年份把阀门依次打开。' }
+        { speaker:'zheng', emotion:'idle', text:'明天上午，部里听汇改四十年的汇报。昨晚，档案柜整排的年份标签被人撕了。' },
+        { speaker:'lumin', emotion:'idle', text:'郑处，七个卷宗全散在地上。我只敢确定头尾：一头是双轨，一头是双向波动。' },
+        { speaker:'zheng', emotion:'ok', text:'中间怎么接？接错一处，汇报就开天窗。把顺序钉回去——再告诉我，哪几道坎算真正的转折。' }
       ],
       [
-        { speaker:'lin', emotion:'idle', text:'很多人以为老龄化会把汇率打崩。把你的草稿纸拿过来。' },
-        { speaker:'lumin', emotion:'idle', text:'林老师，四步链是老龄 → 可贸易品萎缩 → 通缩 → 升值。日德为证。' },
-        { speaker:'lin', emotion:'ok', text:'对。技术进步是支撑，老龄化是主导。排序写反，这题就没了。' }
+        { speaker:'lumin', emotion:'no', text:'林老师，我先站主流直觉：老龄化一到，增长熄火，本币该贬了吧？' },
+        { speaker:'lin', emotion:'idle', text:'全考场一半人会跟你击掌。可惜，衰退的是总量增速，汇率看的是相对购买力。草稿纸拿来，重走一遍。' },
+        { speaker:'lumin', emotion:'idle', text:'……老龄了，家电汽车这些卖不动，企业降价去库存。等等——物价往下走，钱岂不是更值钱？' },
+        { speaker:'lin', emotion:'ok', text:'停在这。把这条链走完，再答我：为什么铁证偏偏是日本和德国，不是美国。' }
       ],
       [
-        { speaker:'zheng', emotion:'idle', text:'2005 到 2008，升值窗口打开。积极一面和挑战一面要对称写。' },
-        { speaker:'lumin', emotion:'idle', text:'升 · 转 · 缓，困 · 业 · 钱。就业回落，但不是危机性失业。' },
-        { speaker:'zheng', emotion:'ok', text:'信号过于明确，就是给套利者送确定性。所以 811 才转向一次性释放加双向波动。' }
+        { speaker:'zheng', emotion:'idle', text:'2005 年 7 月，窗口打开，币值抬头。你猜报表上最先笑的是哪几栏？' },
+        { speaker:'lumin', emotion:'idle', text:'进口和内需那边。可出口车间在反着疼——订单、工位，一起往下走。' },
+        { speaker:'zheng', emotion:'idle', text:'一枚硬币两面，答题都得写。更麻烦的是这条几乎不回头的单边线：走得太稳，敲门的人就越笃定。' },
+        { speaker:'calloway', emotion:'idle', text:'从纽约看，这条曲线是一张明牌。我的客户只问一句：你们打算让它走多久？' }
       ],
       [
-        { speaker:'calloway', emotion:'idle', text:'华盛顿有人要把贵国列为汇率操纵国。三条量化标准，你们自己对一对。' },
-        { speaker:'zheng', emotion:'idle', text:'中国并未同时满足。2019 年 8 月列名，2020 年 1 月就撤销。' },
-        { speaker:'calloway', emotion:'ok', text:'哈哈，政治施压而已。不过 2012 年前后，你们自己的治国理念倒是真变了。' },
-        { speaker:'lin', emotion:'ok', text:'前低估保就业，后拒贬提收入。从生存逻辑到发展共富。把账算清楚。' }
+        { speaker:'calloway', emotion:'idle', text:'谈判桌上先摆政策：华盛顿正准备把「汇率操纵」五个字，写进对贵国的认定书。' },
+        { speaker:'zheng', emotion:'idle', text:'认定要走标准。标准是你们自己定的——那就三条一并摆上桌，当着面，一条一条对。' },
+        { speaker:'calloway', emotion:'ok', text:'标准可以给。但我看的从来不止标准——我看的是你们自己：2012 年前后，是不是悄悄换了一套活法。' },
+        { speaker:'lumin', emotion:'idle', text:'他对我们的账，怎么比我们还熟？' },
+        { speaker:'lin', emotion:'ok', text:'对手读你，比读者读论文还细。题他出完了——该你们答。' }
       ],
       [
-        { speaker:'lumin', emotion:'idle', text:'贸易外壳、资本内核。发票造假、预收延付、转口虚假。' },
-        { speaker:'zheng', emotion:'idle', text:'价、时、真。伪造的三个维度。' },
-        { speaker:'hebingwen', emotion:'ok', text:'根因不是企业家不守规矩，是定价机制非市场化。治标靠核查，治本靠市场化。' }
+        { speaker:'lumin', emotion:'idle', text:'何司长，海关转来一箱单据：对港贸易一年翻倍，货却对不上数。' },
+        { speaker:'zheng', emotion:'idle', text:'钱走的全是贸易通道，可它长得不像贸易。查单据，是看得见的那只手。' },
+        { speaker:'hebingwen', emotion:'idle', text:'看得见的手按得住单据，按不住价差。先想清楚：这些钱，为什么非要挤进来。' },
+        { speaker:'lumin', emotion:'idle', text:'查，还是改？' },
+        { speaker:'hebingwen', emotion:'ok', text:'都要想。这是检查员的最后一课。' }
       ],
       [
-        { speaker:'hebingwen', emotion:'idle', text:'终卷考场已就绪。九道真题、九个数字锚点、七组易混辨析，全都在这套试卷里。' },
-        { speaker:'lin', emotion:'idle', text:'记住总纲：汇率从来不是市场均衡的结果。三元悖论约束，出口集团主导，中美博弈让步，货币主权自主。' },
-        { speaker:'hebingwen', emotion:'ok', text:'准备好了吗？坐上最后的椅子，开始交卷。' }
+        { speaker:'hebingwen', emotion:'idle', text:'终卷考场已就绪。九道真题、九个数字锚点、七组易混辨析——六个处的家底，都在这套卷子里了。' },
+        { speaker:'zheng', emotion:'idle', text:'时间轴我替你理过一遍。闸门的顺序，别接错。' },
+        { speaker:'calloway', emotion:'idle', text:'华盛顿那边也在考同一套题。别让我的复本上，写得太难看。' },
+        { speaker:'lumin', emotion:'idle', text:'口诀我替你抄成了小卡片……不过进了考场，能靠的只有你自己。' },
+        { speaker:'lin', emotion:'idle', text:'扉页那半句空着的话，想好了，就亲口把它补上。' },
+        { speaker:'hebingwen', emotion:'ok', text:'坐上最后的椅子。开始交卷。' }
       ]
     ];
   }
@@ -836,7 +886,14 @@ class Component extends DCLogic {
        p:['固定「',0,'」，浮动「',1,'」，转型「',2,'」。'],
        b:['稳预期失独立','保独立会超调','风险释放·适应·重构·建信'], d:['保就业提收入','价·时·真'],
        w:'固定稳预期失独立，浮动保独立会超调，转型风险释放·适应·重构·建信。Q8 三段式骨架，先默口诀再展开优 3 缺 3。',
-       s:'固定「稳预期失独立」，浮动「保独立会超调」，转型「风险释放·适应·重构·建信」。', sr:'三、九题闭环 · Q8'}
+       s:'固定「稳预期失独立」，浮动「保独立会超调」，转型「风险释放·适应·重构·建信」。', sr:'三、九题闭环 · Q8'},
+      {t:'decision', q:'最后一道，不考背诵，考拍板。时间倒回 1994 年：官方牌价与调剂市价差出一大截，倒汇成风——并轨这一刀，你怎么落？',
+       scene:'卷宗合上之前，郑处把最薄的一页推了过来：1994 年 1 月 1 日。',
+       o:[{t:'一步并轨，一次性贬值到位，向出口导向战略摊牌',ok:true,oc:'正解。一次性贬值约 33%，主动锁定出口战略——这就是被称作「汇率宣言」的那一刀。三幕剧的第一幕，出口集团胜出。'},
+          {t:'维持双轨，计划轨与市场轨各管一摊，慢慢磨合',ok:false,oc:'价差不收口，套利与寻租就永远有缝。双轨养出来的不是出口竞争力，是倒汇的中间商。'},
+          {t:'反向操作：先让人民币升值，压住通胀再说',ok:false,oc:'1994 年通胀高企，升值等于给出口企业再压一重成本，「汇率宣言」就无从谈起。历史的选择恰好相反。'}],
+       w:'1994 并轨：一次性贬值约 33%，出口集团胜出，是三幕剧的第一幕。它与 2005（中美博弈精算）、2015（货币主权自主）连成整部戏。',
+       s:'1994 并轨：一次性贬值约 33%，主动锁定出口战略，称「汇率宣言」。三幕剧第一幕：出口集团胜出。', sr:'L2 · 三转折 / 四、数字锚点'}
     ]},
 
   { code:'03 · 长期决定层', num:'叁', title:'老龄主导', role:'翟门弟子',
@@ -1090,6 +1147,28 @@ class Component extends DCLogic {
   SNARK_OK(){ return ['这题稳。','对了，继续。','答得像背过。','导师点头。','这分拿到了。','手感不错。']; }
   SNARK_NO(){ return ['先别急着翻页。','这题记进本子了。','考场上这么写要丢分。','差在细节，不在方向。','再读一遍原文。','很多人栽在这里。']; }
 
+  /* 结算评语：按本卷导师分声线，四档 perfect / good / pass / fail */
+  get RESULT_COMMENTS(){
+    return {
+      hebingwen:{ perfect:'一题没丢。这一层的关键词你已经能默出来了——卷宗合上，明天扫一眼口诀就够。',
+        good:'骨架立住了，细节还毛糙。错题记进本子，睡前再过一遍。',
+        pass:'过线了，但过得不体面。下一卷要用这一层的概念，别指望到时现想。',
+        fail:'这卷重做。不是难，是没读进去——回速查卡对应那一节，五分钟就够。' },
+      zheng:{ perfect:'时间轴一寸没接错。这种卷子拿去汇报，我不用复核第二遍。',
+        good:'大方向对，价位和顺序还有毛刺。数字这东西，毛刺会滚成事故。',
+        pass:'勉强能下班。但汇报现场不等人翻笔记，回去把顺序再钉一遍。',
+        fail:'先别碰下一卷。回档案柜，把时间轴重新钉直了再来见我。' },
+      lin:{ perfect:'整条逻辑链一步没断。下一步不是背，是讲——讲给别人听，讲得出口才算学会。',
+        good:'链条通了，中间环还松。机制题最怕半步跳跃，把断口焊上。',
+        pass:'结论对，链条偷了步。阅卷人只认你写出来的每一环。',
+        fail:'回到第一性：汇率看的是相对购买力，不是增速。想通了再来。' },
+      calloway:{ perfect:'无懈可击。我会把这份答卷的复本寄回华盛顿——让他们看看对手在读什么。',
+        good:'大体无懈可击，但有几笔账我勾了出来。谈判桌上，被勾的账就是被攻的账。',
+        pass:'我的复本上写的是「尚可」。在华盛顿，这个评语等于「可乘之机」。',
+        fail:'这笔账算错了。没关系，我的客户也常错——错在同一个地方。' }
+    };
+  }
+
   /* ─────────────  生命周期 & 存档  ───────────── */
   componentDidMount(){
     try{
@@ -1150,7 +1229,7 @@ class Component extends DCLogic {
       const w=cv.clientWidth, h=cv.clientHeight; if(!w||!h) return;
       t+=1;
       ctx.clearRect(0,0,w,h);
-      const S=this.state, dark=(S.screen==='title'||S.screen==='intro');
+      const S=this.state, dark=(S.screen==='title'||S.screen==='intro'||S.screen==='ending');
       const G=dark?'182,130,53':'150,110,45';
       const A=dark?1:0.42;
       const motif = dark ? 'dust' : (S.screen==='play' ? S.ci : 'ledger');
@@ -1369,6 +1448,9 @@ class Component extends DCLogic {
     if(S.screen === 'title'){
       curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.45'; bgFilter = 'brightness(0.7) contrast(1.05)';
       bgOverlay = 'radial-gradient(circle at 50% 50%, rgba(28,26,23,0.65), rgba(28,26,23,0.92))';
+    } else if(S.screen === 'ending'){
+      curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.4'; bgFilter = 'brightness(0.72)';
+      bgOverlay = 'radial-gradient(circle at 50% 45%, rgba(28,26,23,0.72), rgba(28,26,23,0.94))';
     } else if(S.screen === 'map' || S.screen === 'review'){
       curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.22'; bgFilter = 'sepia(0.18) brightness(0.95)';
       bgOverlay = 'linear-gradient(to bottom, rgba(243,242,242,0.92), rgba(243,242,242,0.96))';
@@ -1391,11 +1473,11 @@ class Component extends DCLogic {
     }
 
     const v={
-      isTitle:S.screen==='title', isMap:S.screen==='map', isIntro:S.screen==='intro',
+      isTitle:S.screen==='title', isMap:S.screen==='map', isIntro:S.screen==='intro', isEnding:S.screen==='ending',
       isScene:S.screen==='scene', isPlay:S.screen==='play', isResult:S.screen==='result', isReview:S.screen==='review',
       hasSave:S.hasSave, saveLabel:S.saveLabel,
       curBgUrl, bgOpacity, bgFilter, bgOverlay,
-      bgRef:this.bgRef, darkGround:(S.screen==='title'||S.screen==='intro'||S.screen==='scene')?'block':'none',
+      bgRef:this.bgRef, darkGround:(S.screen==='title'||S.screen==='intro'||S.screen==='scene'||S.screen==='ending')?'block':'none',
       repText:String(S.rep), wrongCount:String(S.wrong.length),
       onBackToMap:goMap, onOpenReview:()=>this.setState({screen:'review'}),
       // 有存档时先要一次确认，避免误点清档
@@ -1434,7 +1516,19 @@ class Component extends DCLogic {
 
     const c=this.ch();
     if(c){
-      v.intro={ num:c.num, code:c.code, title:c.title, role:c.role, brief:c.brief, exam:c.exam, count:String(c.items.length) };
+      // 剧情记忆：进场前先翻上一卷的战报，档案室记得你来过
+      const pst = S.ci>0 ? S.stats[S.ci-1] : null;
+      let prevEcho='', hasEcho=false;
+      if(pst && pst.right!=null){
+        const pc=D[S.ci-1], ptot=pc.items.length, pratio=pst.right/ptot;
+        hasEcho=true;
+        prevEcho = pratio>=1 ? '全对。何司长把这份卷宗单独收进了柜子。'
+          : pratio>=0.8 ? '收卷的时候，何司长多看了你一眼。'
+          : pratio>=0.5 ? '过线了，但没人替你多说一句话。'
+          : '档案员连夜把你的错题钉成了小册子。';
+        prevEcho = pc.num+'卷 '+pst.right+' / '+ptot+' 对 —— '+prevEcho;
+      }
+      v.intro={ num:c.num, code:c.code, title:c.title, role:c.role, brief:c.brief, exam:c.exam, count:String(c.items.length), hasEcho, echo:prevEcho };
       v.onBeginChapter=()=> S.examMode
         ? this.setState(Object.assign({screen:'play'}, this.resetQ(S.ci,0), {qi:0}))
         : this.setState({screen:'scene', sceneIdx:0, sceneCharIdx:0});
@@ -1469,6 +1563,10 @@ class Component extends DCLogic {
     const prevScene = S.sceneIdx>0 ? scenes[S.sceneIdx-1] : null;
     const activeSpeakers = Array.from(new Set(scenes.map(s=>s.speaker)));
     const nFig = activeSpeakers.length;
+    // 四人（谈判桌）与五人（终卷谢幕）同台时收缩卡面，窄屏允许换两行
+    const dense = nFig>=4;
+    const figVars = dense ? ('--figw:'+(nFig>=5?184:206)+'px;--figh:'+(nFig>=5?246:276)+'px;--figw-m:104px;--figh-m:138px;') : '';
+    v.sceneFigsWrap = dense ? 'flex-wrap:wrap;row-gap:16px;' : '';
     // 呼吸是无限循环动画，而每次 setState 都会重建 DOM 让它从第 0 帧重放。
     // 给一个负 delay 把相位接回去，重建就看不出来了（限时题每 100ms 一次重绘）。
     const breathePhase = -(Date.now() % 5200);
@@ -1488,6 +1586,7 @@ class Component extends DCLogic {
       else if(justTookOver)     anim = 'fxCardFlip .46s cubic-bezier(.2,.7,.3,1) both';
       return {
         op: '1',
+        vars: figVars,
         rest, anim,
         breathe: isSpeaking ? ('fxCardBreathe 5.2s ease-in-out ' + breathePhase + 'ms infinite') : 'none',
         filter: isSpeaking ? 'none' : 'saturate(0.5) brightness(0.7) contrast(0.96)',
@@ -1514,6 +1613,11 @@ class Component extends DCLogic {
       if(e) e.stopPropagation();
       self.setState(Object.assign({screen:'play'}, self.resetQ(S.ci, 0), {qi:0}));
     };
+
+    /* ─────────────  终幕谢场（档案合卷）  ───────────── */
+    v.endingFigs = ['hebingwen','zheng','lin','lumin','calloway'].map(k=>{ const sp=C_MAP[k]; return { slot:'end-'+k, src:sp.ok, ph:sp.name, role:sp.role }; });
+    v.onEndingReview=()=>this.setState({screen:'review'});
+    v.onEndingMap=()=>this.setState({screen:'map'});
 
     /* ─────────────  答题画面 (isPlay) 角色联动  ───────────── */
     const mentorKey = (c && c.mentor) || 'lumin';
@@ -1817,10 +1921,9 @@ class Component extends DCLogic {
       const pct=Math.round((st.right/c.items.length)*100);
       const wl=S.wrong.filter(w=>w.ci===S.ci);
       const grade = pct===100?'满卷':(pct>=80?'过':(pct>=50?'勉强过':'重来'));
-      const comment = pct===100?'一题没丢。这一层的关键词你已经能默出来了，明天只需扫一眼口诀。'
-        : pct>=80?'骨架已经立住，剩下的是把细节磨平。错题记进本子，睡前再看一遍。'
-        : pct>=50?'过了，但过得不体面。下一卷会用到这一层的概念，别指望到时候现想。'
-        : '这一卷得重做。不是难，是还没读进去——回速查卡对应那一节，五分钟就够。';
+      // 结算评语按本卷导师分声线，四档：perfect / good / pass / fail
+      const voice = this.RESULT_COMMENTS[mentorKey] || this.RESULT_COMMENTS.hebingwen;
+      const comment = voice[pct===100?'perfect':(pct>=80?'good':(pct>=50?'pass':'fail'))];
       const last=S.ci===D.length-1;
       
       const resCharEmotion = pct>=80 ? 'ok' : 'no';
@@ -1833,8 +1936,8 @@ class Component extends DCLogic {
         charSlot: resCharSrc, charSrc: resCharSrc, charName: mentorObj.name,
         hasWrong:wl.length>0, wrongN:String(wl.length),
         wrongList:wl.map(w=>({q:w.q, why:w.why})),
-        nextLabel: last?'查看全书复盘':'进入下一卷' };
-      v.onAfterResult = last ? (()=>this.setState({screen:'review'}))
+        nextLabel: last?'合卷 · 看尾声':'进入下一卷' };
+      v.onAfterResult = last ? (()=>this.setState({screen:'ending'}))
         : (()=>{ const ni=Math.min(D.length-1,S.ci+1); this.setState(Object.assign({screen:'intro',ci:ni,qi:0},this.resetQ(ni,0))); this.save({ci:ni}); });
       v.onRetryChapter=()=>{ const at=(S.attempt||0)+1;
         this.setState(Object.assign({screen:'play',qi:0,attempt:at,fromReview:false},this.resetQ(S.ci,0,at))); };

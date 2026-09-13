@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>退潮纪年 · 新自由主义与全球化变迁互动研学页游</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<script src="../../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="../../image-slot.js"></script>
+<style>
+  html,body{margin:0;padding:0;background:#1c1a17;}
+  *{box-sizing:border-box;}
+  a{color:#b68235;text-underline-offset:3px;}
+  a:hover{color:#7d5411;}
+  ::selection{background:rgba(182,130,53,.3);}
+  :focus{outline:none;}
+  :focus-visible{outline:2px solid #b68235;outline-offset:2px;}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left;}
+  @keyframes fxIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes fxInSlow{from{opacity:0}to{opacity:1}}
+  @keyframes fxRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes fxBreathe{0%,100%{opacity:.28}50%{opacity:.6}}
+  @keyframes fxSeal{from{opacity:0;transform:scale(.86) rotate(-6deg)}to{opacity:1;transform:none}}
+  @keyframes fxCaret{0%,44%{opacity:1}50%,94%{opacity:0}100%{opacity:1}}
+  @keyframes fxShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .fx-figwrap{flex:0 0 auto;perspective:1100px;}
+  .fx-fig{width:242px;padding:9px 9px 0;border:1px solid rgba(32,31,29,.3);border-radius:3px;
+    background:linear-gradient(160deg,#f7f3ea 0%,#efe8d9 62%,#e6ddca 100%);
+    opacity:var(--op,1);transform:var(--rest,none);transform-origin:50% 100%;}
+  .fx-figart{height:322px;position:relative;overflow:hidden;background:#efe9dc;
+    border:1px solid rgba(182,130,53,.45);}
+  .fx-figplate{height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
+  .fx-figname{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.04em;line-height:1.2;}
+  .fx-figrole{font-family:'Noto Serif SC',serif;font-size:9.5px;letter-spacing:.18em;color:#8d8579;line-height:1.2;}
+  @keyframes fxCardRise{from{opacity:0;transform:translateY(34px) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
+  @keyframes fxCardFlip{from{opacity:0;transform:rotateY(-74deg) var(--rest,none)}to{opacity:var(--op,1);transform:var(--rest,none)}}
+  @keyframes fxCardBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.5px)}}
+  @media (max-width:860px){
+    .fx-card{padding:38px 22px 30px!important;}
+    .fx-h1{font-size:44px!important;}
+    .fx-title-stats{grid-template-columns:repeat(2,1fr)!important;}
+    .fx-play-bar{flex-wrap:wrap!important;row-gap:8px!important;}
+    .fx-play-title{white-space:nowrap;}
+    .fx-play-grid{grid-template-columns:1fr!important;gap:26px!important;padding:24px 16px 72px!important;}
+    .fx-aside{position:static!important;top:auto!important;}
+    .fx-map{padding:0 16px 64px!important;}
+    .fx-maprow{grid-template-columns:52px 1fr!important;gap:14px!important;}
+    .fx-mapstate{grid-column:1/-1!important;text-align:left!important;padding-top:14px!important;}
+    .fx-figs{min-height:236px!important;gap:8px!important;}
+    .fx-fig{width:142px!important;padding:6px 6px 0!important;}
+    .fx-figart{height:186px!important;}
+    .fx-figplate{height:36px!important;}
+    .fx-figname{font-size:13px!important;}
+    .fx-figrole{font-size:8.5px!important;}
+    .fx-flow{grid-template-columns:repeat(2,1fr)!important;gap:12px!important;margin-top:14px!important;}
+    .fx-bins{grid-template-columns:1fr!important;}
+    .fx-dlg{padding-bottom:58px!important;min-height:150px!important;}
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;font-family:Lora,'Noto Serif SC',Georgia,serif;font-size:15px;line-height:1.75;color:#201f1d;background-color:#1c1a17;position:relative;">
+
+<!-- 动态原画背景层 -->
+<div style="position:fixed;inset:0;z-index:0;background:#1c1a17;pointer-events:none;display:{{ darkGround }};"></div>
+<div style="position:fixed;inset:0;z-index:0;background-image:url('{{ curBgUrl }}');background-size:cover;background-position:center;opacity:{{ bgOpacity }};filter:{{ bgFilter }};transition:background-image .6s ease,opacity .6s ease;pointer-events:none;"></div>
+<div style="position:fixed;inset:0;z-index:0;background:{{ bgOverlay }};pointer-events:none;"></div>
+<canvas ref="{{ bgRef }}" style="position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
+
+<!-- 标题屏 -->
+<sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
+<div style="min-height:100vh;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:64px 24px;">
+  <div class="fx-card" style="width:100%;max-width:860px;border:1px solid rgba(182,130,53,.42);padding:72px 64px 56px;position:relative;animation:fxInSlow .9s ease both;background:rgba(28,26,23,0.75);backdrop-filter:blur(6px);">
+    <div style="position:absolute;top:14px;left:14px;right:14px;bottom:14px;border:1px solid rgba(182,130,53,.16);pointer-events:none;"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#b68235;font-variant-numeric:tabular-nums;">Neoliberalism &amp; the Globalization Tide · A Study Game</div>
+    <h1 class="fx-h1" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:76px;line-height:1.05;letter-spacing:.06em;color:#f3f2f2;margin:22px 0 10px;">退潮纪年</h1>
+    <div style="font-family:'Noto Serif SC',serif;font-size:17px;color:rgba(243,242,242,.62);letter-spacing:.12em;">新自由主义 · 脱钩去风险 · 潮汐镜鉴</div>
+    <div style="height:1px;background:rgba(182,130,53,.5);margin:34px 0;transform-origin:left;animation:fxRule 1.1s .3s ease both;"></div>
+    <p style="font-family:'Noto Serif SC',serif;color:rgba(243,242,242,.72);max-width:56ch;text-align:justify;margin:0 0 8px;">全书最具「现实论战感」的一章，贯通四十年全球化兴衰史。七题共用一条主线：Q1 立概念（新自由主义四化＋全球化变迁）→ Q2 美国内政范式转向（旧华盛顿→新华盛顿）→ Q3 对华策略由脱钩改去风险 → Q4 东亚网络「换壳未换芯」→ Q5 四十年涨落大周期 → Q6 车费之辩 → Q7 拉美镜鉴。</p>
+    <p style="font-family:'Noto Serif SC',serif;color:rgba(243,242,242,.72);max-width:56ch;text-align:justify;margin:0 0 34px;">通关核心命题只有一个：表面是经济规则与产业链重组，深层是美西方资本权力对国内分配危机的转嫁与霸权护持；最高频失分点是「把溢出效应答成转移效应」与「把去风险当成战略软化」。</p>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+      <button onClick="{{ onStart }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:13px 30px;transition:background .18s;background:rgba(182,130,53,.08);" style-hover="background:rgba(182,130,53,.18)" style-active="background:rgba(182,130,53,.28)">推门进去</button>
+      <sc-if value="{{ hasSave }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ onResume }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:rgba(243,242,242,.8);border:1px solid rgba(243,242,242,.28);border-radius:4px;padding:13px 30px;transition:background .18s;" style-hover="background:rgba(243,242,242,.09)">接着上次（{{ saveLabel }}）</button>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ confirmNew }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:18px;border:1px solid rgba(122,47,47,.5);border-radius:4px;padding:15px 18px;background:rgba(122,47,47,.16);display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+        <span style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.88);">重开会清空「{{ saveLabel }}」的进度、声望与错题本，且不可撤销。</span>
+        <button onClick="{{ onStart }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#e8b4b4;border:1px solid rgba(232,180,180,.55);border-radius:4px;padding:8px 18px;" style-hover="background:rgba(122,47,47,.3)">确认清档</button>
+        <button onClick="{{ onCancelNew }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.6);padding:8px 10px;" style-hover="color:#b68235">取消</button>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:26px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+      <button onClick="{{ onToggleExam }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;letter-spacing:.08em;color:{{ examFg }};border:1px solid {{ examBd }};border-radius:4px;padding:9px 18px;" style-hover="background:rgba(182,130,53,.12)">{{ examLabel }}</button>
+      <span style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:rgba(243,242,242,.45);line-height:1.7;max-width:46ch;">{{ examDesc }}</span>
+    </div>
+
+    <div class="fx-title-stats" style="margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(182,130,53,.22);border:1px solid rgba(182,130,53,.22);">
+      <sc-for list="{{ titleStats }}" as="s" hint-placeholder-count="4">
+        <div style="background:#1c1a17;padding:16px 14px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#b68235;font-variant-numeric:tabular-nums;line-height:1;">{{ s.n }}</div>
+          <div style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:rgba(243,242,242,.5);letter-spacing:.1em;margin-top:8px;">{{ s.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 卷目地图屏 -->
+<sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+<div class="fx-map" style="min-height:100vh;padding:0 24px 88px;position:relative;z-index:2;">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:30px 0 18px;border-bottom:1px solid rgba(32,31,29,.16);flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#a06f24;">The Receding Tide</div>
+        <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:38px;margin:6px 0 0;letter-spacing:.03em;">涨落账本 · 卷目</h2>
+      </div>
+      <div style="display:flex;gap:26px;align-items:center;font-variant-numeric:tabular-nums;">
+        <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#b68235;line-height:1;">{{ repText }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">声望</div></div>
+        <div style="width:1px;height:36px;background:rgba(32,31,29,.16);"></div>
+        <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#7a2f2f;line-height:1;">{{ wrongCount }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">错题</div></div>
+        <div style="width:1px;height:36px;background:rgba(32,31,29,.16);"></div>
+        <div style="text-align:right;"><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#7d5411;line-height:1;">{{ bestText }}</div><div style="font-size:11px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">最佳连对</div></div>
+        <button onClick="{{ onOpenReview }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:13.5px;letter-spacing:.1em;color:#201f1d;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:9px 18px;background:rgba(255,255,255,0.6);" style-hover="background:rgba(32,31,29,.07)">翻错题本</button>
+      </div>
+    </div>
+
+    <p style="max-width:62ch;color:#605d5d;text-align:justify;margin:22px 0 30px;font-family:'Noto Serif SC',serif;">七卷按六层图谱铺开，从「四化潮信」一路走到「终卷殿试」。前一卷正确率过半才开下一卷——概念、范式、策略、网络、周期、道义，六层缺一环，终卷的三道论述就无法立论。</p>
+
+    <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(32,31,29,.16);">
+      <sc-for list="{{ mapRows }}" as="c" hint-placeholder-count="7">
+        <button onClick="{{ c.onOpen }}" disabled="{{ c.locked }}" style="display:block;width:100%;border-bottom:1px solid rgba(32,31,29,.16);padding:24px 18px 24px 8px;background:{{ c.rowBg }};opacity:{{ c.rowOpacity }};cursor:{{ c.cursor }};transition:background .2s;animation:fxIn .5s ease both;" style-hover="background:rgba(182,130,53,.07)">
+          <div class="fx-maprow" style="display:grid;grid-template-columns:76px 1fr 132px;gap:20px;align-items:start;">
+            <div style="text-align:center;padding-top:2px;">
+              <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:40px;line-height:1;color:{{ c.numColor }};">{{ c.num }}</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:.18em;color:#9b9797;margin-top:7px;font-variant-numeric:tabular-nums;">{{ c.code }}</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+                <h3 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:25px;margin:0;letter-spacing:.02em;">{{ c.title }}</h3>
+                <span style="font-family:'Noto Serif SC',serif;font-size:12px;color:#7d7979;letter-spacing:.08em;">{{ c.roleLine }}</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;">
+                <sc-for list="{{ c.chips }}" as="k" hint-placeholder-count="5">
+                  <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;letter-spacing:.04em;color:#7d5411;border:1px solid rgba(182,130,53,.42);border-radius:2px;padding:2px 9px;font-variant-numeric:tabular-nums;background:rgba(255,255,255,0.4);">{{ k }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div class="fx-mapstate" style="text-align:right;padding-top:6px;">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.14em;color:{{ c.stateColor }};font-variant-numeric:tabular-nums;">{{ c.stateText }}</div>
+              <div style="height:2px;background:rgba(32,31,29,.1);margin-top:10px;position:relative;">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:{{ c.pct }};background:#b68235;"></div>
+              </div>
+            </div>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 卷前指引屏 -->
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;z-index:2;overflow:hidden;">
+  <div style="position:absolute;right:-4vw;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:44vh;line-height:1;color:#b68235;opacity:.09;pointer-events:none;user-select:none;animation:fxBreathe 7s ease-in-out infinite;">{{ intro.num }}</div>
+  <div class="fx-card" style="width:100%;max-width:760px;position:relative;animation:fxIn .6s ease both;background:rgba(28,26,23,0.78);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#b68235;">{{ intro.code }}</div>
+    <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:60px;line-height:1.1;color:#f3f2f2;margin:16px 0 0;letter-spacing:.05em;">{{ intro.title }}</h2>
+    <div style="height:1px;background:rgba(182,130,53,.5);margin:26px 0;transform-origin:left;animation:fxRule .8s .2s ease both;"></div>
+    <div style="display:grid;grid-template-columns:88px 1fr;gap:18px 22px;font-family:'Noto Serif SC',serif;">
+      <div style="font-size:11.5px;letter-spacing:.2em;color:#b68235;padding-top:4px;">你的角色</div>
+      <div style="color:#f3f2f2;font-size:19px;">{{ intro.role }}</div>
+      <div style="font-size:11.5px;letter-spacing:.2em;color:#b68235;padding-top:4px;">今日任务</div>
+      <div style="color:rgba(243,242,242,.74);text-align:justify;">{{ intro.brief }}</div>
+      <div style="font-size:11.5px;letter-spacing:.2em;color:#b68235;padding-top:4px;">对应真题</div>
+      <div style="color:rgba(243,242,242,.74);font-variant-numeric:tabular-nums;letter-spacing:.06em;">{{ intro.exam }}</div>
+    </div>
+    <div style="margin-top:40px;display:flex;gap:14px;align-items:center;">
+      <button onClick="{{ onBeginChapter }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:16px;letter-spacing:.14em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:13px 30px;background:rgba(182,130,53,.12);" style-hover="background:rgba(182,130,53,.22)">坐下（{{ intro.count }} 题）</button>
+      <button onClick="{{ onBackToMap }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:rgba(243,242,242,.5);padding:6px 4px;" style-hover="color:#b68235">← 回卷目</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 剧情屏 (Visual Novel 对白) -->
+<sc-if value="{{ isScene }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ onSceneAdvance }}" style="min-height:100vh;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 24px 40px;cursor:pointer;">
+  <div style="max-width:1080px;margin:0 auto;width:100%;">
+    <div class="fx-figs" style="display:flex;align-items:flex-end;justify-content:center;gap:18px;min-height:392px;padding-bottom:16px;">
+      <sc-for list="{{ sceneFigures }}" as="f" hint-placeholder-count="5">
+        <div class="fx-figwrap" style="animation:{{ f.breathe }};">
+          <div class="fx-fig" style="--op:{{ f.op }};--rest:{{ f.rest }};animation:{{ f.anim }};filter:{{ f.filter }};box-shadow:{{ f.shadow }};">
+            <div class="fx-figart" style="border-color:{{ f.rule }};">
+              <image-slot id="{{ f.slot }}" src="{{ f.src }}" shape="rect" fit="cover" placeholder="{{ f.ph }}" style="width:100%;height:100%;display:block;"></image-slot>
+            </div>
+            <div class="fx-figplate">
+              <span class="fx-figname" style="color:{{ f.nameColor }};">{{ f.ph }}</span>
+              <span class="fx-figrole">{{ f.role }}</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="height:1px;background:rgba(32,31,29,.16);margin:0 0 0;"></div>
+    <div class="fx-dlg" style="border:1px solid rgba(32,31,29,.16);border-top:none;border-radius:0 0 4px 4px;background:rgba(248,244,244,.95);backdrop-filter:blur(6px);padding:22px 30px 26px;min-height:172px;position:relative;box-shadow:0 12px 36px rgba(0,0,0,0.18);">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:21px;letter-spacing:.04em;color:{{ sceneNameColor }};">{{ sceneName }}</span>
+        <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;letter-spacing:.14em;color:#9b9797;">{{ sceneRole }}</span>
+        <span style="flex:1;height:1px;background:rgba(182,130,53,.4);"></span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.16em;color:#bab6b6;font-variant-numeric:tabular-nums;">{{ sceneCount }}</span>
+      </div>
+      <p style="font-family:'Noto Serif SC',serif;font-size:18px;line-height:1.95;margin:16px 0 0;max-width:64ch;text-align:justify;color:#201f1d;">{{ sceneText }}<span style="color:#b68235;animation:fxCaret 1.1s steps(1) infinite;">▍</span></p>
+      <div style="position:absolute;right:26px;bottom:16px;display:flex;gap:16px;align-items:center;">
+        <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:#bab6b6;letter-spacing:.1em;">点击继续</span>
+        <button onClick="{{ onSceneSkip }}" style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:#7d7979;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:5px 13px;background:rgba(255,255,255,0.6);" style-hover="background:rgba(32,31,29,.07)">跳过剧情</button>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 作答屏 (核心题型视窗) -->
+<sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;position:relative;z-index:2;">
+  <div style="border-bottom:1px solid rgba(32,31,29,.16);background:rgba(243,242,242,.86);backdrop-filter:blur(6px);position:sticky;top:0;z-index:5;">
+    <div class="fx-play-bar" style="max-width:1120px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;">
+      <div style="display:flex;align-items:baseline;gap:14px;min-width:0;">
+        <button onClick="{{ onBackToMap }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d7979;padding:4px 6px;" style-hover="color:#b68235">← 卷目</button>
+        <span style="width:1px;height:16px;background:rgba(32,31,29,.16);display:inline-block;"></span>
+        <span class="fx-play-title" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:19px;letter-spacing:.03em;">{{ playChapterTitle }}</span>
+        <span style="font-family:'Noto Serif SC',serif;font-size:12px;color:#7d7979;letter-spacing:.08em;white-space:nowrap;">{{ playRole }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;font-variant-numeric:tabular-nums;white-space:nowrap;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.1em;color:#7d7979;">{{ progressText }}</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.1em;color:#b68235;">声望 {{ repText }}</span>
+        <sc-if value="{{ streakOn }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:'Noto Serif SC',serif;font-size:12px;letter-spacing:.08em;color:#a06f24;border:1px solid rgba(182,130,53,.42);border-radius:2px;padding:1px 8px;background:rgba(255,255,255,0.5);">连对 {{ streakText }}</span>
+        </sc-if>
+      </div>
+    </div>
+    <div style="height:2px;background:rgba(32,31,29,.08);"><div style="height:2px;background:#b68235;width:{{ progressPct }};transition:width .35s ease;"></div></div>
+  </div>
+
+  <div class="fx-play-grid" style="max-width:1120px;margin:0 auto;padding:36px 24px 96px;display:grid;grid-template-columns:1fr 268px;gap:44px;align-items:start;">
+    <div style="min-width:0;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">{{ q.kindLabel }}</span>
+        <span style="flex:1;height:1px;background:rgba(32,31,29,.16);"></span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.18em;color:#9b9797;font-variant-numeric:tabular-nums;">{{ q.no }}</span>
+      </div>
+
+      <sc-if value="{{ q.hasScene }}" hint-placeholder-val="{{ false }}">
+        <div style="border-left:2px solid #b68235;padding:6px 0 6px 16px;margin:22px 0 0;font-family:'Noto Serif SC',serif;font-size:13.5px;color:#605d5d;font-style:italic;text-align:justify;background:rgba(255,255,255,0.4);">{{ q.scene }}</div>
+      </sc-if>
+
+      <h3 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:26px;line-height:1.45;margin:20px 0 0;letter-spacing:.01em;text-wrap:pretty;">{{ q.text }}</h3>
+      <sc-if value="{{ q.hasHint }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d7979;margin-top:10px;">{{ q.hint }}</div>
+      </sc-if>
+
+      <!-- 单选题 / 决策题 -->
+      <sc-if value="{{ q.isOptions }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px;">
+          <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+            <button onClick="{{ o.onClick }}" style="display:flex;gap:14px;align-items:flex-start;width:100%;border:1px solid {{ o.bd }};border-left:3px solid {{ o.bar }};border-radius:4px;padding:14px 18px;background:{{ o.bg }};transition:background .16s,border-color .16s;" style-hover="background:rgba(182,130,53,.07)">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:14px;color:{{ o.mkColor }};letter-spacing:.06em;padding-top:3px;min-width:16px;">{{ o.mark }}</span>
+              <span style="font-family:'Noto Serif SC',serif;font-size:15px;line-height:1.7;color:{{ o.fg }};text-align:justify;">{{ o.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- 多选题 -->
+      <sc-if value="{{ q.isMulti }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px;">
+          <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+            <button onClick="{{ o.onClick }}" style="display:flex;gap:14px;align-items:flex-start;width:100%;border:1px solid {{ o.bd }};border-left:3px solid {{ o.bar }};border-radius:4px;padding:14px 18px;background:{{ o.bg }};transition:background .16s,border-color .16s;" style-hover="background:rgba(182,130,53,.07)">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:14px;color:{{ o.mkColor }};letter-spacing:.06em;padding-top:3px;min-width:16px;">{{ o.mark }}</span>
+              <span style="font-family:'Noto Serif SC',serif;font-size:15px;line-height:1.7;color:{{ o.fg }};text-align:justify;">{{ o.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- 排序题 / 流程题 -->
+      <sc-if value="{{ q.isOrder }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ q.slots }}" as="s" hint-placeholder-count="5">
+              <button onClick="{{ s.onClick }}" style="display:flex;gap:14px;align-items:center;width:100%;border:1px {{ s.borderStyle }} {{ s.bd }};border-radius:4px;padding:12px 16px;background:{{ s.bg }};min-height:50px;transition:all .16s;">
+                <span style="font-family:'Cormorant Garamond',serif;font-size:13px;color:#b68235;letter-spacing:.1em;font-variant-numeric:tabular-nums;min-width:22px;">{{ s.n }}</span>
+                <span style="font-family:'Noto Serif SC',serif;font-size:14.5px;color:{{ s.fg }};">{{ s.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="height:1px;background:rgba(32,31,29,.16);margin:20px 0 14px;"></div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#9b9797;margin-bottom:10px;">备选 · 点击填入</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ q.bank }}" as="b" hint-placeholder-count="5">
+              <button onClick="{{ b.onClick }}" disabled="{{ b.used }}" style="font-family:'Noto Serif SC',serif;font-size:14px;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:8px 15px;background:{{ b.bg }};opacity:{{ b.op }};color:#201f1d;transition:all .16s;" style-hover="border-color:#b68235;background:rgba(182,130,53,.1)">{{ b.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 填空题 -->
+      <sc-if value="{{ q.isCloze }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;">
+          <div style="display:block;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:22px 24px;background:rgba(234,233,233,.5);font-family:'Noto Serif SC',serif;font-size:17px;line-height:2.2;word-break:normal;line-break:strict;">
+            <sc-for list="{{ q.parts }}" as="p" hint-placeholder-count="6">
+              <span style="display:contents;">
+                <sc-if value="{{ p.isBlank }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ p.onClick }}" style="display:inline-block;min-width:{{ p.w }};text-align:center;border:1px {{ p.borderStyle }} {{ p.bd }};border-radius:3px;padding:2px 12px;margin:0 3px;background:{{ p.bg }};color:{{ p.fg }};font-family:'Noto Serif SC',serif;font-size:17px;">{{ p.label }}</button>
+                </sc-if>
+                <sc-if value="{{ p.isText }}" hint-placeholder-val="{{ true }}">
+                  <span>{{ p.text }}</span>
+                </sc-if>
+              </span>
+            </sc-for>
+          </div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#9b9797;margin:20px 0 10px;">字库 · 含干扰项</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ q.bank }}" as="b" hint-placeholder-count="6">
+              <button onClick="{{ b.onClick }}" disabled="{{ b.used }}" style="font-family:'Noto Serif SC',serif;font-size:14px;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:8px 15px;background:{{ b.bg }};opacity:{{ b.op }};color:#201f1d;" style-hover="border-color:#b68235;background:rgba(182,130,53,.1)">{{ b.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 归类分类题 -->
+      <sc-if value="{{ q.isBins }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;">
+          <div style="display:flex;flex-wrap:wrap;gap:9px;min-height:44px;">
+            <sc-for list="{{ q.loose }}" as="b" hint-placeholder-count="6">
+              <button onClick="{{ b.onClick }}" style="font-family:'Noto Serif SC',serif;font-size:14px;border:1px solid {{ b.bd }};border-radius:4px;padding:9px 16px;background:{{ b.bg }};color:#201f1d;transition:all .16s;" style-hover="border-color:#b68235">{{ b.label }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ q.noLoose }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:#9b9797;font-style:italic;">卡片已全部归位。</div>
+          </sc-if>
+          <div style="height:1px;background:rgba(32,31,29,.16);margin:20px 0;"></div>
+          <div class="fx-bins" style="display:grid;grid-template-columns:{{ q.binCols }};gap:14px;">
+            <sc-for list="{{ q.bins }}" as="bin" hint-placeholder-count="2">
+              <button onClick="{{ bin.onClick }}" style="display:block;width:100%;border:1px {{ bin.borderStyle }} {{ bin.bd }};border-radius:4px;padding:14px 14px 16px;background:{{ bin.bg }};min-height:132px;vertical-align:top;transition:all .16s;">
+                <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;color:{{ bin.titleColor }};letter-spacing:.04em;padding-bottom:9px;border-bottom:1px solid rgba(32,31,29,.16);">{{ bin.name }}</div>
+                <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;">
+                  <sc-for list="{{ bin.cards }}" as="c" hint-placeholder-count="0">
+                    <span onClick="{{ c.onClick }}" style="display:block;font-family:'Noto Serif SC',serif;font-size:13.5px;line-height:1.55;border:1px solid {{ c.bd }};border-radius:3px;padding:6px 11px;background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;">{{ c.label }}</span>
+                  </sc-for>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 刻度盘仪表题 -->
+      <sc-if value="{{ q.isDial }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;border:1px solid rgba(32,31,29,.16);border-radius:4px;background:rgba(248,244,244,.6);overflow:hidden;">
+          <button onClick="{{ q.onTrack }}" style="display:block;width:100%;padding:26px 30px 0;cursor:crosshair;">
+            <div style="position:relative;height:176px;">
+              <svg viewBox="0 0 600 176" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+                <line x1="0" y1="165" x2="600" y2="165" stroke="#201f1d" stroke-opacity="0.18" stroke-width="1"></line>
+                <line opacity="{{ q.curveOp }}" x1="200" y1="6" x2="200" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
+                <line opacity="{{ q.curveOp }}" x1="400" y1="6" x2="400" y2="165" stroke="#b68235" stroke-opacity="0.3" stroke-dasharray="3 5" stroke-width="1"></line>
+                <path opacity="{{ q.curveOp }}" d="M6,14 C170,206 430,206 594,14" fill="none" stroke="#b68235" stroke-opacity="0.62" stroke-width="1.6"></path>
+              </svg>
+              <div style="position:absolute;top:0;bottom:11px;width:1px;background:#b68235;left:{{ q.dialPct }};"></div>
+              <div style="position:absolute;left:{{ q.dialPct }};top:{{ q.dialTop }};transform:translate(-50%,-50%);width:13px;height:13px;border:1.5px solid #b68235;background:#f3f2f2;border-radius:50%;box-shadow:0 1px 2px rgba(45,43,43,.14);"></div>
+            </div>
+          </button>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(32,31,29,.16);">
+            <sc-for list="{{ q.dialZones }}" as="z" hint-placeholder-count="3">
+              <div style="padding:11px 14px;border-right:1px solid rgba(32,31,29,.1);background:{{ z.bg }};">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.2em;color:{{ z.kColor }};">{{ z.k }}</div>
+                <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:{{ z.fg }};margin-top:4px;">{{ z.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 限时闪电抢答题 -->
+      <sc-if value="{{ q.isTimed }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.2em;color:#9b9797;font-variant-numeric:tabular-nums;">{{ q.timedIdxText }}</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:24px;color:{{ q.timerColor }};font-variant-numeric:tabular-nums;line-height:1;">{{ q.timerText }}</span>
+          </div>
+          <div style="height:3px;background:rgba(32,31,29,.1);margin-top:9px;"><div style="height:3px;background:{{ q.timerColor }};width:{{ q.timerPct }};transition:width .12s linear;"></div></div>
+          <div style="border:1px solid rgba(32,31,29,.16);border-radius:4px;background:rgba(248,244,244,.6);padding:22px 24px;margin-top:18px;">
+            <div style="font-family:'Noto Serif SC',serif;font-size:19px;line-height:1.6;">{{ q.timedPrompt }}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;">
+            <sc-for list="{{ q.timedOpts }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.onClick }}" style="font-family:'Noto Serif SC',serif;font-size:15px;border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:11px 20px;background:transparent;font-variant-numeric:tabular-nums;" style-hover="border-color:#b68235;background:rgba(182,130,53,.09)">{{ o.text }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:18px;">
+            <sc-for list="{{ q.timedMarks }}" as="m" hint-placeholder-count="8">
+              <span style="width:26px;height:4px;background:{{ m.bg }};"></span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- 操作按钮群 -->
+      <div style="margin-top:26px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+        <sc-if value="{{ q.showCheck }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ onCheck }}" disabled="{{ q.checkDisabled }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.12em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:11px 26px;opacity:{{ q.checkOpacity }};" style-hover="background:rgba(182,130,53,.12)">核对</button>
+        </sc-if>
+        <sc-if value="{{ q.showReset }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ onResetQ }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d7979;padding:6px 8px;" style-hover="color:#b68235">重来一次</button>
+        </sc-if>
+        <sc-if value="{{ q.showPeek }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ q.onPeek }}" disabled="{{ q.peekDisabled }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7d5411;border:1px dashed rgba(182,130,53,.55);border-radius:4px;padding:8px 16px;opacity:{{ q.peekOpacity }};" style-hover="background:rgba(182,130,53,.1)">{{ q.peekLabel }}</button>
+        </sc-if>
+      </div>
+
+      <!-- 偷看速查卡区域 -->
+      <sc-if value="{{ q.showPeeked }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border:1px dashed rgba(182,130,53,.5);border-radius:4px;background:rgba(182,130,53,.07);padding:15px 20px 17px;animation:fxIn .3s ease both;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">已翻开 · {{ q.peekRef }} · 本题不计声望</div>
+          <p style="font-family:'Noto Serif SC',serif;font-size:14px;line-height:1.85;margin:9px 0 0;color:#444141;text-align:justify;">{{ q.peekSrc }}</p>
+        </div>
+      </sc-if>
+
+      <!-- 答案与考点解析 -->
+      <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:30px;border-top:2px solid {{ verdictColor }};padding-top:22px;animation:fxIn .4s ease both;">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+            <span style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:28px;color:{{ verdictColor }};letter-spacing:.06em;">{{ verdictWord }}</span>
+            <span style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#605d5d;font-style:italic;">{{ snark }}</span>
+          </div>
+          <p style="font-family:'Noto Serif SC',serif;margin:16px 0 0;text-align:justify;max-width:66ch;">{{ q.why }}</p>
+          <sc-if value="{{ q.hasSrc }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:20px;border:1px solid rgba(32,31,29,.16);border-radius:4px;background:rgba(234,233,233,.62);padding:16px 20px 18px;">
+              <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">速查卡原文 · {{ q.srcRef }}</div>
+              <p style="font-family:'Noto Serif SC',serif;font-size:14px;line-height:1.85;margin:10px 0 0;color:#444141;text-align:justify;">{{ q.src }}</p>
+            </div>
+          </sc-if>
+          <div style="margin-top:24px;">
+            <button onClick="{{ onNext }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.12em;color:#201f1d;border:1px solid rgba(32,31,29,.28);border-radius:4px;padding:11px 28px;background:rgba(255,255,255,0.6);" style-hover="background:rgba(32,31,29,.07)">{{ nextLabel }} →</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- 右侧导师立绘与卷目速览 -->
+    <div class="fx-aside" style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;">
+      <div style="border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:16px 18px;background:rgba(248,244,244,.85);backdrop-filter:blur(4px);position:relative;overflow:hidden;">
+        <div style="display:flex;gap:14px;align-items:center;">
+          <div style="width:76px;flex-shrink:0;padding:4px 4px 3px;border:1px solid rgba(32,31,29,.22);border-radius:3px;background:linear-gradient(160deg,#f7f3ea,#e9e1d0);box-shadow:0 4px 12px rgba(18,14,9,.18);">
+            <div style="height:101px;position:relative;overflow:hidden;border:1px solid rgba(182,130,53,.42);background:#efe9dc;">
+              <image-slot id="{{ playCharSlot }}" src="{{ playCharSrc }}" shape="rect" fit="cover" placeholder="{{ playCharName }}" style="width:100%;height:100%;display:block;"></image-slot>
+            </div>
+          </div>
+          <div style="min-width:0;">
+            <div style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:17px;color:#201f1d;">{{ playCharName }}</div>
+            <div style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:#7d7979;margin-top:2px;">{{ playCharTitle }}</div>
+            <div style="font-family:'Noto Serif SC',serif;font-size:12px;color:{{ playCharStatusColor }};margin-top:6px;font-style:italic;line-height:1.4;">{{ playCharStatusText }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid rgba(32,31,29,.16);border-radius:4px;padding:18px 18px 20px;background:rgba(248,244,244,.75);backdrop-filter:blur(4px);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">本卷 · {{ playCode }}</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#605d5d;margin-top:10px;line-height:1.7;text-align:justify;">{{ playBrief }}</div>
+        <div style="height:1px;background:rgba(32,31,29,.16);margin:16px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ dots }}" as="d" hint-placeholder-count="8">
+            <span style="width:22px;height:22px;border:1px solid {{ d.bd }};border-radius:2px;background:{{ d.bg }};color:{{ d.fg }};font-family:'Cormorant Garamond',serif;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;">{{ d.n }}</span>
+          </sc-for>
+        </div>
+        <div style="height:1px;background:rgba(32,31,29,.16);margin:16px 0;"></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#a06f24;">本卷关键词</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;">
+          <sc-for list="{{ playChips }}" as="k" hint-placeholder-count="5">
+            <span style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:#7d5411;border:1px solid rgba(182,130,53,.42);border-radius:2px;padding:1px 8px;font-variant-numeric:tabular-nums;background:rgba(255,255,255,0.4);">{{ k }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-family:'Noto Serif SC',serif;font-size:11.5px;color:#9b9797;line-height:1.7;text-align:justify;">进度自动保存。关掉网页也不会丢。</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 结算封卷屏 -->
+<sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:64px 24px;position:relative;z-index:2;">
+  <div class="fx-card" style="width:100%;max-width:760px;animation:fxIn .5s ease both;background:rgba(248,244,244,.92);border:1px solid rgba(182,130,53,.35);border-radius:6px;padding:48px 42px;backdrop-filter:blur(8px);">
+    <div style="text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#a06f24;">{{ result.code }} · Sealed</div>
+      <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:46px;margin:14px 0 0;letter-spacing:.05em;">{{ result.title }}</h2>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-top:24px;">
+        <div style="width:118px;padding:6px 6px 5px;border:1px solid rgba(32,31,29,.22);border-radius:3px;background:linear-gradient(160deg,#f7f3ea,#e9e1d0);box-shadow:0 8px 22px rgba(18,14,9,.22);animation:fxCardRise .5s .1s ease both;">
+          <div style="height:158px;position:relative;overflow:hidden;border:1px solid rgba(182,130,53,.42);background:#efe9dc;">
+            <image-slot id="{{ result.charSlot }}" src="{{ result.charSrc }}" shape="rect" fit="cover" placeholder="{{ result.charName }}" style="width:100%;height:100%;display:block;"></image-slot>
+          </div>
+        </div>
+        <div style="border:2px solid {{ result.sealColor }};border-radius:50%;width:132px;height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fxSeal .6s .15s ease both;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:40px;color:{{ result.sealColor }};line-height:1;font-variant-numeric:tabular-nums;">{{ result.pct }}</div>
+          <div style="font-family:'Noto Serif SC',serif;font-size:11px;letter-spacing:.16em;color:{{ result.sealColor }};margin-top:6px;">{{ result.grade }}</div>
+        </div>
+      </div>
+
+      <p style="font-family:'Noto Serif SC',serif;color:#605d5d;margin:24px auto 0;max-width:52ch;text-align:justify;">{{ result.comment }}</p>
+      <div style="display:flex;gap:0;justify-content:center;margin-top:26px;border:1px solid rgba(32,31,29,.14);border-radius:4px;overflow:hidden;">
+        <div style="padding:11px 22px;border-right:1px solid rgba(32,31,29,.14);"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#b68235;line-height:1;font-variant-numeric:tabular-nums;">{{ result.repText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">声望</div></div>
+        <div style="padding:11px 22px;border-right:1px solid rgba(32,31,29,.14);"><div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#7d5411;line-height:1;font-variant-numeric:tabular-nums;">{{ result.bestText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:6px;">最佳连对</div></div>
+        <div style="padding:11px 22px;"><div style="font-family:'Noto Serif SC',serif;font-size:15px;color:#201f1d;line-height:1.5;padding-top:3px;">{{ result.modeText }}</div><div style="font-size:10.5px;letter-spacing:.14em;color:#7d7979;margin-top:4px;">本局模式</div></div>
+      </div>
+    </div>
+    <div style="height:1px;background:rgba(32,31,29,.16);margin:32px 0;"></div>
+    <sc-if value="{{ result.hasWrong }}" hint-placeholder-val="{{ false }}">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#7a2f2f;margin-bottom:14px;">本卷失手 · {{ result.wrongN }}</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <sc-for list="{{ result.wrongList }}" as="w" hint-placeholder-count="2">
+          <div style="border-left:2px solid #7a2f2f;padding-left:16px;">
+            <div style="font-family:'Noto Serif SC',serif;font-size:14.5px;font-weight:600;">{{ w.q }}</div>
+            <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7a2f2f;margin-top:4px;">你的作答：{{ w.ans }}</div>
+            <div style="font-family:'Noto Serif SC',serif;font-size:13px;color:#0F6E56;margin-top:2px;">标准采分：{{ w.right }}</div>
+            <div style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:#605d5d;margin-top:4px;text-align:justify;">{{ w.why }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="height:1px;background:rgba(32,31,29,.16);margin:28px 0 24px;"></div>
+    </sc-if>
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <button onClick="{{ onNextChapter }}" style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:15px;letter-spacing:.12em;color:#b68235;border:1px solid #b68235;border-radius:4px;padding:11px 28px;background:rgba(182,130,53,.12);" style-hover="background:rgba(182,130,53,.22)">{{ result.nextActionLabel }}</button>
+      <button onClick="{{ onBackToMap }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#7d7979;padding:11px 20px;" style-hover="color:#b68235">回到卷目</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- 错题档案屏 -->
+<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;padding:48px 24px 96px;position:relative;z-index:2;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(32,31,29,.16);padding-bottom:18px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#a06f24;">Error Ledger</div>
+        <h2 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:36px;margin:6px 0 0;letter-spacing:.03em;">错题档案 · 逐题批改</h2>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;">
+        <button onClick="{{ onBackToMap }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#7d7979;padding:6px 12px;" style-hover="color:#b68235">← 回卷目</button>
+        <sc-if value="{{ hasWrongTotal }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ onClearWrong }}" style="font-family:'Noto Serif SC',serif;font-size:13px;color:#7a2f2f;border:1px solid rgba(122,47,47,.4);border-radius:4px;padding:6px 14px;" style-hover="background:rgba(122,47,47,.08)">清空错题</button>
+        </sc-if>
+      </div>
+    </div>
+
+    <sc-if value="{{ noWrongTotal }}" hint-placeholder-val="{{ true }}">
+      <div style="text-align:center;padding:72px 24px;border:1px dashed rgba(32,31,29,.2);border-radius:4px;background:rgba(255,255,255,0.3);margin-top:36px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:40px;color:#b68235;line-height:1;">Clean</div>
+        <p style="font-family:'Noto Serif SC',serif;font-size:16px;color:#605d5d;margin:12px 0 0;">错题本上一字未落。四十年涨落史卷无瑕，继续保持。</p>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:18px;margin-top:28px;">
+      <sc-for list="{{ wrongLedger }}" as="w" hint-placeholder-count="2">
+        <div style="border:1px solid rgba(32,31,29,.16);border-left:3px solid #7a2f2f;border-radius:4px;padding:20px 22px;background:rgba(248,244,244,.85);backdrop-filter:blur(4px);">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.2em;color:#a06f24;">{{ w.chCode }} · 第 {{ w.qIdx }} 题</span>
+            <button onClick="{{ w.onRedo }}" style="font-family:'Noto Serif SC',serif;font-size:12.5px;color:#b68235;border:1px solid rgba(182,130,53,.45);border-radius:3px;padding:3px 10px;" style-hover="background:rgba(182,130,53,.1)">回原题重练</button>
+          </div>
+          <h4 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:600;font-size:18px;margin:12px 0 0;line-height:1.5;">{{ w.q }}</h4>
+          <div style="margin-top:12px;display:grid;grid-template-columns:84px 1fr;gap:6px 14px;font-family:'Noto Serif SC',serif;font-size:13.5px;">
+            <span style="color:#7a2f2f;">你的作答</span>
+            <span style="color:#7a2f2f;">{{ w.ans }}</span>
+            <span style="color:#0F6E56;">标准采分</span>
+            <span style="color:#0F6E56;">{{ w.right }}</span>
+          </div>
+          <p style="font-family:'Noto Serif SC',serif;font-size:13px;color:#605d5d;margin:12px 0 0;line-height:1.75;text-align:justify;border-top:1px dashed rgba(32,31,29,.14);padding-top:10px;">{{ w.why }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:56px;background:#1c1a17;border-radius:4px;padding:44px 44px 48px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#b68235;">The Grand Synthesis</div>
+        <h3 style="font-family:'Cormorant Garamond','Noto Serif SC',serif;font-weight:400;font-size:34px;color:#f3f2f2;margin:14px 0 0;letter-spacing:.04em;">一句话总纲</h3>
+        <p style="font-family:'Noto Serif SC',serif;font-size:19px;color:#f3f2f2;margin:20px 0 0;line-height:1.9;">「<span style="border-bottom:1px solid #b68235;padding-bottom:2px;">全球化的四十年涨落，本质是美西方资本权力对国内分配危机的转嫁与霸权护持；旧理论已破产，而新替代物尚未立</span>」。</p>
+        <div style="height:1px;background:rgba(182,130,53,.4);margin:26px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+          <sc-for list="{{ chainWords }}" as="c" hint-placeholder-count="5">
+            <span style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#f3f2f2;border:1px solid rgba(182,130,53,.5);border-radius:2px;padding:5px 13px;">{{ c }}</span>
+          </sc-for>
+        </div>
+        <p style="font-family:'Noto Serif SC',serif;font-size:14px;color:rgba(243,242,242,.6);margin:22px 0 0;max-width:60ch;text-align:justify;">七题主线一句话串起：Q1 立概念（新自由主义四化＋全球化变迁）→ Q2 美国内政范式转向（旧华盛顿共识→新华盛顿共识，MMT 只在美国成立）→ Q3 对华策略由脱钩改去风险（手段变精、话术变软、遏制不变，理论根源是萨缪尔森陷阱）→ Q4 东亚网络换壳未换芯（组装搬越墨、内部更紧密、中国中间品与研发跃升、雁行变多中心）→ Q5 四十年涨落大周期（80s 四因 ⇋ 2016 四因）→ Q6 车费之辩（收益三项＋代价四项＋双循环）→ Q7 拉美镜鉴（三国死法＋四条教训＋中国三原则）。最高频失分点：把溢出效应答成转移效应、把去风险当成战略软化。</p>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;">
+      <button onClick="{{ onRestartAll }}" style="font-family:'Noto Serif SC',serif;font-size:13.5px;color:#7a2f2f;border:1px solid rgba(122,47,47,.4);border-radius:4px;padding:11px 22px;" style-hover="background:rgba(122,47,47,.07)">清空进度重头再来</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;strictMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;玩法&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.bgRef = React.createRef();
+    this.state = {
+      screen:'title', ci:0, qi:0, answered:false, correct:false,
+      sel:null, multi:[], seq:[], bins:{}, held:null,
+      dv:50, tIdx:0, tLeft:0, tHits:0, tOn:false,
+      wrong:[], stats:{}, rep:0, streak:0, best:0, hasSave:false, saveLabel:'',
+      sceneIdx:0, sceneCharIdx:0,
+      attempt:0, examMode:false, peekQ:false, fromReview:false, confirmNew:false
+    };
+  }
+
+  get CHARACTERS(){
+    return {
+      lin: { id:'lin', name:'林教授', role:'国际政治经济学权威 · 霸权权力解剖者',
+        idle:'../../art/char-lin-idle.webp', ok:'../../art/char-lin-ok.webp', no:'../../art/char-lin-no.webp' },
+      hebingwen: { id:'hebingwen', name:'何炳文', role:'主权货币研究所所长 · 霸权殿试主考官',
+        idle:'../../art/char-hebingwen-idle.webp', ok:'../../art/char-hebingwen-ok.webp', no:'../../art/char-hebingwen-no.webp' },
+      zheng: { id:'zheng', name:'郑处长', role:'美联储观察员 · 债务账本核验人',
+        idle:'../../art/char-zheng-idle.webp', ok:'../../art/char-zheng-ok.webp', no:'../../art/char-zheng-no.webp' },
+      lumin: { id:'lumin', name:'陆敏', role:'研究所助研 · 卷宗整理与图谱助理',
+        idle:'../../art/char-lumin-idle.webp', ok:'../../art/char-lumin-ok.webp', no:'../../art/char-lumin-no.webp' },
+      calloway: { id:'calloway', name:'卡洛威 (Calloway)', role:'美方财政部发言人 · 霸权辩护人',
+        idle:'../../art/char-calloway-idle.webp', ok:'../../art/char-calloway-ok.webp', no:'../../art/char-calloway-no.webp' }
+    };
+  }
+
+  get SCENES(){
+    return [
+      // 卷壹 · 四化潮信：【全球化变迁研究所 · 见习研究员】
+      [
+        { speaker:'lumin', emotion:'idle', text:'欢迎入职全球化变迁研究所。桌上摊着四十年的涨落：新自由主义"四化"、全球化的分与合，外加友岸外包与贸易溢出效应两份附录。' },
+        { speaker:'calloway', emotion:'idle', text:'新自由主义？那不过是"市场更自由、世界更繁荣"的同义词——四十年的繁荣就是它最好的证明。' },
+        { speaker:'lin', emotion:'no', text:'恰恰相反。它兴起于 20 世纪 70 年代，以里根、撒切尔执政为标志主导西方四十年；核心主张是"四化"，代价是严重贫富分化、产业空心化与民粹反噬。' },
+        { speaker:'hebingwen', emotion:'idle', text:'概念题有一条铁律：四化一个都不能漏；全球化的"分与合"不能混。注意，2008 年才是全球化由顺畅扩展转向内在调整的拐点，不是 2016。' },
+        { speaker:'lumin', emotion:'ok', text:'见习研究员，先把"非调私自福"四枚铜牌钉在案头，开卷。' }
+      ],
+      // 卷贰 · 政府归来：【美国政策范式观察处 · 范式观察员】
+      [
+        { speaker:'hebingwen', emotion:'idle', text:'观察员，2021 年之后的白宫换了一整套哲学：从"市场万能"转向"政府回归＋中产优先＋产业政策＋盟友协同"。' },
+        { speaker:'lumin', emotion:'idle', text:'旧华盛顿共识讲涓滴经济学——给资本减税、财富自然渗透底层；新华盛顿共识却是中产外交，"自下而上、自中而外"，工人阶级福利优先。' },
+        { speaker:'calloway', emotion:'no', text:'MMT 已经证明了大手笔赤字完全可行，我们只是把财政空间用在了该用的地方。' },
+        { speaker:'lin', emotion:'ok', text:'撕开点正在这里：MMT 只在美国成立，底气全在美元霸权——美国国债全由本币计价，等于"向全球发自己印的借条"，不会像发展中国家那样外汇枯竭。这是垄断特权，不是普世真理。' },
+        { speaker:'hebingwen', emotion:'ok', text:'五维对比表必须背熟：核心哲学、增长假设、产业政策、财政观念、国际战略。开卷。' }
+      ],
+      // 卷叁 · 软话硬手：【对华博弈推演室 · 推演参谋】
+      [
+        { speaker:'lin', emotion:'idle', text:'参谋，2022 年之后美方把"脱钩"改成了"去风险"。别被话术骗了——这不是战略软化，而是手段更精细、话术更具欺骗性。' },
+        { speaker:'calloway', emotion:'idle', text:'"去风险"是负责任的经济安全考量：我们只是在防范过度依赖带来的供应链风险。' },
+        { speaker:'lumin', emotion:'idle', text:'差异要成对写：脱钩全面切断、高烈度、赤裸零和、反噬自身；去风险精准聚焦、中低烈度、伪装成经济安全、极易凝聚盟友。' },
+        { speaker:'lin', emotion:'no', text:'理论根源是萨缪尔森陷阱——2004 年保罗·萨缪尔森的论文指出，后发国在先发国具有比较优势的高端制造业取得生产率进步，会永久损害先发国的贸易福利。' },
+        { speaker:'hebingwen', emotion:'ok', text:'口诀四因：脱不动、脱不起、话术妙、防陷阱。手段变精、话术变软、遏制不变——开卷。' }
+      ],
+      // 卷肆 · 壳芯之辨：【东亚产业链测绘室 · 测绘师】
+      [
+        { speaker:'lumin', emotion:'idle', text:'测绘师，美国想拆掉东亚生产网络，结果它并未被瓦解，而是发生了"功能分流与层级跃升"——核心特征是"中国＋1"。' },
+        { speaker:'zheng', emotion:'idle', text:'四条变化记牢：组装流向友岸、区域内部更深整合、中国价值链跃升、范式从雁行到多中心。' },
+        { speaker:'calloway', emotion:'no', text:'越南、墨西哥对美出口暴增，这足以说明供应链确实在离开中国。' },
+        { speaker:'lin', emotion:'ok', text:'数据要读全：越墨对美出口暴增，但其进口全依赖中国供应链。美国搬走了"组装壳"，却搬不走"中国制造的供应链之芯"——这就是产业链编辑能力（CICE）。' },
+        { speaker:'lumin', emotion:'ok', text:'雁行模式是日本独大的垂直单向梯队转移；多中心网络则以中国为研发与制造枢纽、日韩台供关键件、东盟承接组装，是网络化共生。开卷。' }
+      ],
+      // 卷伍 · 四因涨落：【全球化史官署 · 史官】
+      [
+        { speaker:'zheng', emotion:'idle', text:'史官，把两页账并排摊开：一页是 1980 年代的兴起四因，一页是 2016 年之后的逆转四因。四十年的涨落，就看这两页。' },
+        { speaker:'lumin', emotion:'idle', text:'80 年代四因：应对滞胀危机、为美元霸权松绑、赢得冷战与意识形态、产业链全球重构。' },
+        { speaker:'calloway', emotion:'idle', text:'逆全球化？那只是暂时的政治噪音。全球化是现代经济规律，不可逆转。' },
+        { speaker:'lin', emotion:'no', text:'2016 年之后四因已经显形：再分配失败与民粹反噬、霸权相对衰落与大国竞争、资本空间修复与创造性破坏、疫情与地缘冲突加速——这是结构性转向，不是噪音。2008 年是拐点，2016 年是政治元年。' },
+        { speaker:'hebingwen', emotion:'ok', text:'口诀：80 年代"滞胀转嫁·美元松绑·冷战终结·产业外移"，2016 后"民粹反噬·霸权衰落·空间修复·疫情地缘"。开卷。' }
+      ],
+      // 卷陆 · 车费之辩：【国际论战答辩厅 · 答辩人】
+      [
+        { speaker:'calloway', emotion:'idle', text:'答辩人，直说吧：中国是全球化的最大受益者，却不肯承担相应责任——典型的搭便车者。' },
+        { speaker:'lin', emotion:'idle', text:'这句话的每一半都要拆开。中国对世界经济增长贡献率长期超 30%，为全球输出平价工业品、抑制恶性通胀——车费付得比谁都多。' },
+        { speaker:'lumin', emotion:'idle', text:'三点反驳：全球经济最大引擎、国际体系积极建设者（联合国第二大会费国与维和出资国、"一带一路"）、为美元霸权提供实体支撑。' },
+        { speaker:'lin', emotion:'ok', text:'若论搭便车，靠印钞换实物的美国才是最大搭车者。而当中国还在低端组装时被称为"伙伴"，一旦产业升级威胁到美科技垄断，即刻被污名化——话术本质是霸权护持。' },
+        { speaker:'hebingwen', emotion:'ok', text:'收益三项、代价四项，务必辩证成对写。开卷。' }
+      ],
+      // 卷柒 · 终卷殿试：【全球化变迁研究所 · 首席研究员】
+      [
+        { speaker:'hebingwen', emotion:'idle', text:'殿试钟响。最后一卷要过两道关：拉美镜鉴与全章合龙。' },
+        { speaker:'lin', emotion:'idle', text:'智利死于急进（"芝加哥男孩"一夜放开利率与资本账户），阿根廷死于僵化（货币局硬盯美元），乌拉圭死于传染（2002 银行挤兑）——三国死法，缺一不可。' },
+        { speaker:'zheng', emotion:'idle', text:'四条共性教训：金融不能脱离实体、资本账户不能过急放开、汇率制度至关重要、IMF 条件性贷款是毒药。中国三原则正是对拉美教训的全面反向操作。' },
+        { speaker:'calloway', emotion:'idle', text:'最后送你们一句我们的标准答案：全球化是普世价值，逆全球化只是暂时的政治噪音。' },
+        { speaker:'lumin', emotion:'ok', text:'美元潮汐两阶段收割：降息放水诱使外围国借外债吹泡，加息紧缩引爆主权危机，外资再抄底核心资产。翟东升的警示是"以我为主、绝不被牵着鼻子走"。首席研究员，升堂！' }
+      ]
+    ];
+  }
+
+  get DATA(){ return [
+    { code:'01 · 概念本体层', num:'壹', title:'四化潮信', role:'全球化变迁研究所见习研究员',
+      mentor:'lumin',
+      exam:'Q1 名词解释：新自由主义 / 全球化与逆全球化 / 友岸外包 / 贸易溢出效应',
+      brief:'四份卷宗一条底座：新自由主义是"四化"（非调私自福），全球化讲"分与合"，友岸外包把供应链圈进盟友，贸易溢出效应让逆差只换了来源地。四化不能漏，分合不能混。',
+      chips:['新自由主义 38','全球化 43','逆全球化 13','友岸外包 7','溢出效应 3'],
+      items:[
+        {t:'bins', q:'新自由主义的核心主张是"四化"。请把八张主张卡归入"经济非调控化／私有化／自由化／福利个人化"四个座次：',
+         scene:'陆敏把八张主张卡撒在案上：「见习研究员，四化不能漏——把每张卡钉回各自的座次！」',
+         bn:['经济非调控化','私有化','自由化','福利个人化'],
+         c:[{t:'解除价格、利率与准入管制，反对政府干预市场运行', b:0},
+            {t:'信奉"市场万能"，把金融监管松绑视为增长的前提', b:0},
+            {t:'把国有企业与公共部门资产向私人资本出售转让', b:1},
+            {t:'主张公共部门的效率天然低于私人部门，应予收缩', b:1},
+            {t:'资本账户、贸易与投资的跨境流动全面放开', b:2},
+            {t:'对外以政治压力要求他国开放市场、推行贸易投资自由化', b:2},
+            {t:'削减福利支出，把养老、医疗等保障责任下推给个人与家庭', b:3},
+            {t:'把"福利依赖"污名化，主张个人自负其责', b:3}],
+         w:'新自由主义"四化"＝经济非调控化（解除管制、反对干预）＋私有化（国企与公共资产出售、收缩公共部门）＋自由化（资本与贸易投资跨境自由化、对外施压开放）＋福利个人化（削减福利、责任下推给个人）。口诀"非调私自福"。',
+         s:'新自由主义（38 次）：核心主张"四化"——经济非调控化、私有化、自由化、福利个人化；反对国家干预、推崇自由市场，对外施压推行贸易投资自由化。', sr:'01 概念本体层'},
+        {t:'choice', q:'关于"新自由主义"的界定，以下哪项最准确？',
+         scene:'卷宗封面的"定义"一栏空着，林教授敲了敲桌面：「先立本质——它凭什么主导了西方四十年？」',
+         o:['兴起于 20 世纪 70 年代、以里根与撒切尔执政为标志、主导西方四十年的思潮；核心主张是"四化"——经济非调控化、私有化、自由化、福利个人化，对外以政治压力推行贸易投资自由化。后果是严重贫富分化、产业空心化与民粹反噬',
+            '20 世纪 30 年代凯恩斯主义的一个分支，主张以财政赤字刺激需求、扩大公共福利',
+            '一种仅停留在学术讨论中的经济学说，从未真正影响过西方国家的实际政策',
+            '发展中国家为摆脱殖民依附而提出的自主发展战略，核心是进口替代与国有化'], a:0,
+         w:'新自由主义＝兴起于 20 世纪 70 年代、里根/撒切尔执政为标志、主导西方四十年的思潮；核心是"四化"（经济非调控化、私有化、自由化、福利个人化），反对国家干预、推崇自由市场，对外施加政治压力推行贸易投资自由化。后果＝严重贫富差距、产业空心化与民粹反噬。',
+         s:'新自由主义（38 次）：兴起 20 世纪 70 年代，里根/撒切尔为标志；核心"四化"——经济非调控化、私有化、自由化、福利个人化；后果制造贫富分化与民粹反噬。', sr:'01 概念本体层'},
+        {t:'choice', q:'"全球化"与"逆全球化"的分野、以及本轮逆全球化的转折点，以下哪项准确？',
+         scene:'陆敏把两枚书签夹进同一册卷宗：「分与合要分家——再把转折的年份标上。」',
+         o:['全球化＝商品、资本、技术与劳动力跨境流动与深度互联（本轮由美国主导且深具新自由主义烙印）；逆全球化＝相互依存度下降，表现为贸易保护主义抬头、供应链阵营化重组、多边机构边缘化；转折点是 2008 年危机，根源是贫富悬殊激化国内阶级矛盾',
+            '全球化＝各国降低关税；逆全球化＝各国提高关税——两者只有关税一个维度',
+            '逆全球化的转折点是 1971 年美元与黄金脱钩，此后全球化再未前进',
+            '逆全球化是发展中国家的集体选择，美国始终是全球化的坚定维护者'], a:0,
+         w:'全球化＝商品、资本、技术与劳动力的跨境流动与深度互联，本轮由美国主导且深具新自由主义烙印；逆全球化＝相互依存度下降（贸易保护主义抬头、供应链阵营化重组、多边机构边缘化）。转折点＝2008 年危机，根源＝贫富悬殊激化国内阶级矛盾。',
+         s:'全球化 43 次 / 逆全球化 13 次：全球化＝跨境流动与深度互联（美国主导）；逆全球化＝依存度下降（保护主义·阵营化·多边边缘化）；转折点 2008 年，根源贫富悬殊。', sr:'01 概念本体层'},
+        {t:'choice', q:'美国财长耶伦阐述的"友岸外包"（Friendshoring），其定位与本质是？',
+         scene:'卡洛威递来一页新战略简报，林教授在"共同价值观"四个字上画了圈：「先写机制，再揭本质。」',
+         o:['把供应链网络重点限定在政治与经济上的盟国（具有共同价值观的国家）；背景是疫情与俄乌冲突下的地缘安全焦虑，本质是以安全与意识形态之名行贸易保护之实，加速世界经济阵营化割裂',
+            '把供应链转移到地理上邻近的国家以降低运输成本，如美国向墨西哥转移产能',
+            '由联合国主导的全球供应链互助计划，任何成员国均可申请加入',
+            '通过关税同盟实现区域内零关税，是自由贸易的深化而非倒退'], a:0,
+         w:'友岸外包（Friendshoring，7 次）＝耶伦阐述的美国新贸易战略，把供应链限定在政治与经济上的盟国（共同价值观国家）；背景＝疫情与俄乌冲突下的地缘安全焦虑；本质＝以安全与意识形态之名行贸易保护之实，加速世界经济阵营化。注意与"近岸外包"（侧重地理临近）区分。',
+         s:'友岸外包（7 次）：耶伦阐述；供应链限定于政治与经济盟国（共同价值观）；本质是以安全与意识形态为名行贸易保护之实，加速阵营化。', sr:'01 概念本体层'},
+        {t:'choice', q:'"贸易溢出效应"在 IPE 语境中的含义是？',
+         scene:'郑处长把中美与越墨的对美顺差曲线叠在一张图上：「看这两条线——溢出效应就藏在里面。」',
+         o:['一国贸易政策或进出口变动对第三方国家产生的间接经济影响：大国关税战迫使跨国供应链绕道第三方（如墨西哥、越南），美对华逆差下降但对第三方逆差激增，整体逆差未降，仅实现逆差来源地转移',
+            '本国关税收入超过预期而产生的财政盈余，可用于补贴受损产业',
+            '贸易顺差国把外汇储备借给逆差国，由此产生的利息收入',
+            '一国出口商品因质量提升而在第三国市场份额自然扩大'], a:0,
+         w:'贸易溢出效应（3 次）：一国贸易政策或进出口变动对第三方国家产生的间接经济影响；在 IPE 语境下＝大国关税战迫使跨国供应链绕道第三方（墨西哥、越南），美对华逆差下降但对第三方逆差激增，整体逆差未降，只是逆差来源地发生转移。',
+         s:'贸易溢出效应（3 次）：政策/进出口变动对第三方的间接影响；关税战令供应链绕道墨越，美对华逆差降但对第三方逆差激增，整体逆差未降。', sr:'01 概念本体层'},
+        {t:'cloze', q:'请补全 Q1 的三句口诀——名解的采分骨架：',
+         scene:'陆敏在白板上写下三行横线，只留下五个空：「关系句嵌进答卷，名解才有层次分。」',
+         b:['四化','自由流','重组','盟友','逆差'],
+         d:['三化','闭关锁','扩张','对手','顺差'],
+         text:'口诀一：新自由主义抓【0】（非调私自福）；口诀二：全球化【1】，逆全球链【2】；口诀三：友岸外包拉【3】，溢出效应转【4】。',
+         w:'Q1 三句口诀：①新自由主义抓"四化"（非调私自福）②全球化自由流、逆全球链重组 ③友岸外包拉盟友、溢出效应转逆差。三句覆盖四个概念，名解骨架即成型。',
+         s:'Q1 口诀："新自由主义抓四化（非调私自福）"·"全球化自由流，逆全球链重组"·"友岸外包拉盟友，溢出效应转逆差"。', sr:'01 概念本体层'},
+        {t:'choice', q:'⚠️出处告警："新自由主义伪科学的本质是将巨大的贫富分化内化到各国国内，2008 年危机宣告其内在矛盾彻底暴露，民粹反噬是必然结果"——这组论断的引用，哪项稳妥？',
+         scene:'陆敏在卷宗页边贴上黄色警示签：「这几句是有主人的——挂错名要丢学术分。」',
+         o:['它出自翟东升《货币、权力与人》第一章与第四章，属原著理论锚定，答题时可放心写"翟东升认为"',
+            '它属通用事实性描述，不必也不应标注出处',
+            '它出自《大国货币》，与翟东升原著无关',
+            '它已被考试大纲列为禁用表述，出现在卷面直接判零分'], a:0,
+         w:'原著理论锚定：翟东升《货币、权力与人》第一章与第四章系统指出——新自由主义伪科学的本质是把巨大贫富分化内化到各国国内；2008 年危机宣告其内在矛盾彻底暴露，民粹主义反噬是必然结果；当前世界正处于"旧理论破产而新替代物未立"的空窗期，中国倡导的民本主义政治经济学是破局之路。可放心挂名。',
+         s:'出处告警：原著锚定＝翟东升《货币、权力与人》第一、四章；"旧理论破产而新替代物未立"＋民本主义政治经济学＝破局之路。', sr:'01 概念本体层'}
+      ]
+    },
+    { code:'02 · 范式转换层', num:'贰', title:'政府归来', role:'美国政策范式观察员',
+      mentor:'hebingwen',
+      exam:'Q2 简答：拜登经济学与新华盛顿共识',
+      brief:'从"市场万能"到"政府回归"的范式转向：核心哲学、增长假设、产业政策、财政观念、国际战略五维全换。撕开点在于——MMT 只在美国成立，底气是美元霸权，不是普适真理。',
+      chips:['拜登经济学 6','新华盛顿共识 5','华盛顿共识 3','涓滴经济学 2','MMT 7'],
+      items:[
+        {t:'bins', q:'新旧共识的五维对比表被打乱了。请把十张主张卡归入"旧华盛顿共识"与"新华盛顿共识"两栏：',
+         scene:'何所长把两栏表摊在案上：「观察员，五维十条——一条都不能贴错栏。」',
+         bn:['旧华盛顿共识（1980s–2016 · 新自由主义）','新华盛顿共识／拜登经济学（2021 至今 · 经济民族主义）'],
+         c:[{t:'市场万能论：反对政府干预，崇尚自由放任', b:0},
+            {t:'涓滴经济学：给资本减税，财富会自然渗透至底层', b:0},
+            {t:'否定产业政策：政府不能"挑选赢家"', b:0},
+            {t:'财政纪律：控制赤字、削减公共福利', b:0},
+            {t:'普惠全球化：多边贸易与自由贸易协定', b:0},
+            {t:'政府强力回归：自由市场无法兼顾国家安全与社会公平', b:1},
+            {t:'中产外交："自下而上、自中而外"，工人阶级福利优先', b:1},
+            {t:'大规模国家补贴：《芯片法案》《通胀削减法案（IRA）》', b:1},
+            {t:'MMT 实践：不畏赤字，通胀被视为修复资产负债表', b:1},
+            {t:'排他小圈子：小院高墙、友岸外包、遏制中国高端升级', b:1}],
+         w:'五维对比：核心哲学（市场万能 → 政府回归）、增长假设（涓滴 → 中产外交）、产业政策（否定 → 大规模补贴）、财政观念（财政纪律 → MMT 实践）、国际战略（普惠全球化 → 排他小圈子）。旧共识＝市场原教旨主义，新共识＝经济民族主义与国家干预。',
+         s:'Q2 对比表：旧华盛顿共识＝市场万能／涓滴／否定产业政策／财政纪律／普惠全球化；新华盛顿共识＝政府回归／中产外交／补贴（芯片·IRA）／MMT／排他小圈子。', sr:'02 范式转换层'},
+        {t:'multi', q:'"新华盛顿共识／拜登经济学"的核心主张是哪四条？',
+         scene:'何所长把六张构件卡倒在图板上：「观察员，真主张只有四条，别把旧共识的柱子也砌进去！」',
+         o:['政府强力回归：自由市场无法兼顾国家安全与社会公平，国家必须重新入场',
+            '中产优先：中产外交——"自下而上、自中而外"，工人阶级福利优先',
+            '大规模产业政策：以《芯片法案》《通胀削减法案（IRA）》实施国家补贴',
+            '盟友协同：以排他小圈子、小院高墙、友岸外包共同遏制中国高端升级',
+            '涓滴经济学：继续给资本减税，让财富自然渗透至底层',
+            '财政纪律优先：严格控制赤字、持续削减公共福利开支'], a:[0,1,2,3],
+         w:'新华盛顿共识核心四条＝政府回归＋中产优先（中产外交）＋产业政策（芯片/IRA 补贴）＋盟友协同（小院高墙、友岸外包）。后两项恰是旧华盛顿共识的主张——答成"涓滴＋财政纪律"就是范式没转过来。',
+         s:'新华盛顿共识核心："政府回归 ＋ 中产优先 ＋ 产业政策 ＋ 盟友协同"，本质是从新自由主义转向经济民族主义。', sr:'02 范式转换层'},
+        {t:'choice', q:'易混辨析："涓滴经济学"与"中产外交"的差别是？',
+         scene:'陆敏把两枚筹码推到你面前：「一个往上给，一个往下给——把方向说清。」',
+         o:['涓滴经济学＝旧共识的增长假设，给资本减税、财富自然渗透至底层；中产外交＝新共识的增长假设，"自下而上、自中而外"，工人阶级福利优先',
+            '两者是同一主张的新旧译名，可以互换使用',
+            '涓滴经济学主张扩大福利，中产外交主张削减福利',
+            '中产外交指美国只与中产阶级占多数的国家发展外交关系'], a:0,
+         w:'涓滴经济学（旧共识）＝给资本减税，财富自然渗透至底层；中产外交（新共识）＝"自下而上、自中而外"，工人阶级福利优先。方向相反：一个自上而下依赖渗透，一个自下而上直接托底。',
+         s:'增长假设之变：涓滴经济学（给资本减税、财富渗透底层）→ 中产外交（"自下而上、自中而外"，工人阶级福利优先）。', sr:'02 范式转换层'},
+        {t:'choice', q:'⭐撕开点："MMT 实践"为何只在美国成立？核心解释是？',
+         scene:'卡洛威把赤字账本推到灯下，林教授按住账本：「先生，关键不在理论，在计价货币。」',
+         o:['底气全在美元霸权——美国国债全由本币计价，等于"向全球发自己印的借条"，即使债务高企也不会像发展中国家那样引发外汇枯竭的主权债务危机；MMT 是美元霸权的垄断特权，绝非普世真理',
+            '因为美国拥有全球最高的储蓄率，可以无限期支撑财政赤字',
+            '因为美国宪法允许财政部直接发行货币，其他国家法律一律禁止',
+            '因为 MMT 是数学上严格证明的普适定理，只是别国不会使用'], a:0,
+         w:'撕开点：MMT 只在美国成立，底气全在美元霸权——美债全由本币计价（"向全球发自己印的借条"），债务高企也不会出现外汇枯竭式的主权债务危机。MMT 是美元霸权的垄断特权，而非普世真理。答题写上这一层，Q2 才有分析分。',
+         s:'翟东升视角撕开点：MMT 为何只在美国成立？——美债全由本币计价（"向全球发自己印的借条"），不引发外汇枯竭式主权债务危机；MMT 是霸权垄断特权，绝非普世真理。', sr:'02 范式转换层'},
+        {t:'cloze', q:'Q2 的背诵骨架填空——从旧共识一步跨到新共识：',
+         scene:'何所长在图纸边角题了半句：「观察员，补全它——考场上先默骨架再展开五维。」',
+         b:['涓滴','补贴','MMT','政府'],
+         d:['凯恩斯','关税','QE','市场'],
+         text:'Q2 骨架：反【0】＋中产外交＋产业【1】（芯片／IRA）＋【2】印钞＋盟友围堵；一句话总括——从旧共识的"市场万能"转向新共识的"【3】回归"。',
+         w:'Q2 骨架："反涓滴 ＋ 中产外交 ＋ 产业补贴（芯片/IRA）＋ MMT 印钞 ＋ 盟友围堵"；总括句＝从"市场万能"转向"政府回归"。五维对比表是展开层，骨架先默出来。',
+         s:'Q2 背诵骨架：反涓滴 ＋ 中产外交 ＋ 产业补贴（芯片/IRA）＋ MMT 印钞 ＋ 盟友围堵。', sr:'02 范式转换层'},
+        {t:'tf', q:'"拜登政府敢于大搞赤字补贴与 MMT 式财政扩张，底气来自 MMT 理论本身的普适性。"——这一说法是否成立？',
+         scene:'卡洛威在答卷上写下"普适真理"四个字，陆敏连忙举手：「这四个字要过秤——请裁决。」',
+         a:false,
+         w:'错误。MMT 之所以只在美国成立，靠的是美元霸权的垄断特权——美国国债全由本币计价（"向全球发自己印的借条"），不会出现外汇枯竭式的主权债务危机。这是霸权的产物，不是普适真理；本卷的撕开点正在这一句。',
+         s:'撕开点：MMT 只在美国成立——底气在美元霸权（本币计价借条）；MMT 是垄断特权，绝非普世真理。', sr:'02 范式转换层'}
+      ]
+    },
+    { code:'03 · 策略调整层', num:'叁', title:'软话硬手', role:'对华博弈推演参谋',
+      mentor:'lin',
+      exam:'Q3 简答：美国对华政策由"脱钩"改为"去风险"',
+      brief:'手段变精、话术变软、遏制不变。四维差异成对写，四原因按口诀背；理论根源是 2004 年萨缪尔森陷阱——后发国高端升级会永久损害先发国贸易福利。',
+      chips:['脱钩 17','去风险 15','萨缪尔森陷阱 6','卡脖子 5','小院高墙 2'],
+      items:[
+        {t:'choice', q:'美国对华经贸政策从"脱钩"改为"去风险"，其性质是？',
+         scene:'推演沙盘上两块标牌并排立着，林教授按住其中一块：「参谋，先定性——这是软化，还是换招？」',
+         o:['不是战略软化，而是手段更精细、话术更具欺骗性：从全面切断转为关键领域的"小院高墙"精准围堵，遏制中国高端升级的实质未变',
+            '是战略全面软化，美国已放弃遏制中国技术升级的目标',
+            '只是翻译差异，两种表述所指的政策完全相同',
+            '是美国对盟友的让步，中国已不再被视为战略竞争对手'], a:0,
+         w:'脱钩→去风险不是战略软化，而是手段更精细、话术更具欺骗性：行动范围从"全面切断"变为关键领域的"小院高墙"精准聚焦（芯片、AI、量子、关键矿产），烈度从中高降为中低但遏制中国高端升级的实质不变。口诀：手段变精、话术变软、遏制不变。',
+         s:'Q3 定性：从"脱钩"到"去风险"——手段更精细、话术更具欺骗性；遏制中国高端升级的实质未变。', sr:'03 策略调整层'},
+        {t:'bins', q:'脱钩与去风险的四维差异被打乱了。请把八张特征卡归入两栏：',
+         scene:'陆敏把八张卡片分成两堆又打乱：「参谋，行动范围、烈度、话术、阻力——四维成对写，一维都不能缺。」',
+         bn:['脱钩 Decoupling（特朗普时期为主）','去风险 De-risking（拜登时期提出）'],
+         c:[{t:'全面切断：全产业链与贸易人为脱钩', b:0},
+            {t:'高烈度、粗暴直接、无差别加征关税', b:0},
+            {t:'话术是赤裸裸的零和对抗——"脱钩对美国有好处"', b:0},
+            {t:'盟友反对、美企强烈反弹，反噬自身难以维系', b:0},
+            {t:'精准聚焦：关键领域搞"小院高墙"（芯片、AI、量子、关键矿产）', b:1},
+            {t:'中低烈度、选择性封锁，非核心领域继续经贸往来', b:1},
+            {t:'话术伪装成经济安全——"防范过度依赖带来的供应链风险"', b:1},
+            {t:'迷惑性强，极易在国内与跨大西洋盟友间凝聚共识', b:1}],
+         w:'四维差异：行动范围（全面切断 → 精准聚焦小院高墙）、烈度与策略（高烈度无差别 → 中低烈度选择性）、话术包装（赤裸零和 → 伪装经济安全）、实施阻力（盟友美企反弹反噬 → 迷惑性强易凝聚共识）。',
+         s:'脱钩 vs 去风险：全面切断/高烈度/零和话术/反噬自身 ⇋ 精准小院高墙/中低烈度/经济安全包装/易凝聚盟友。', sr:'03 策略调整层'},
+        {t:'choice', q:'"去风险"背后的经济学理论根源——萨缪尔森陷阱，其核心论断是？',
+         scene:'林教授从书架上抽出一篇 2004 年的论文抽印本：「参谋，美方转向的理论扳机，就在这一页。」',
+         o:['2004 年保罗·萨缪尔森提出：后发国家在先发国家原本具备比较优势的高端制造业部门取得生产率进步，会导致先发国家的贸易条件恶化，造成其社会福利的永久性损失',
+            '后发国家只要开放市场就能自动获得技术溢出，先发国家必然同步受益',
+            '先发国家应主动放弃高端制造业，专注比较优势更强的农业与服务业',
+            '国际贸易中逆差国必然受损、顺差国必然受益，与产业结构无关'], a:0,
+         w:'萨缪尔森陷阱（2004）：保罗·萨缪尔森提出——后发国在先发国原本具备比较优势的高端制造业部门取得生产率进步，会导致先发国贸易条件恶化，造成其社会福利的永久性损失。美国精英由此认定中国在芯片、电动汽车、高端装备的崛起不是互利竞争而是对美国核心福利的侵蚀，故必须"去风险"施加阻断。',
+         s:'萨缪尔森陷阱（Q3 必点）：2004 年保罗·萨缪尔森论文——后发国在与先发国比较优势重叠的高端制造业取得进步，会永久损害先发国的贸易福利；这是美方走向"去风险"技术封锁的理论根源。', sr:'03 策略调整层'},
+        {t:'multi', q:'美国从"脱钩"转向"去风险"的四条原因，按口诀是哪四条？',
+         scene:'推演台上立着四块路标，陆敏逐一翻开：「脱不动、脱不起、话术妙、防陷阱——四块牌子一块都不能倒。」',
+         o:['脱不动：中美经贸深度交融，全产业链人为切断并不现实',
+            '脱不起：全面脱钩成本高昂，且反噬美国自身企业与消费者',
+            '话术妙：把围堵包装成"经济安全"，极易在国内与跨大西洋盟友间凝聚共识',
+            '防陷阱：萨缪尔森陷阱——后发国高端升级会永久损害先发国贸易福利，必须阻断',
+            '脱得快：中国已具备完全替代美国市场的出口能力，脱钩毫无阻力',
+            '不必防：美国从未担心中国在高端制造业取得技术进步'], a:[0,1,2,3],
+         w:'四原因口诀："脱不动（深度交融）＋ 脱不起（成本高昂）＋ 话术妙（凝聚盟友）＋ 防陷阱（萨缪尔森）"。后两项干扰项与四条原因方向相反。',
+         s:'Q3 口诀：四原因＝"脱不动（深度交融）＋ 脱不起（成本高昂）＋ 话术妙（凝聚盟友）＋ 防陷阱（萨缪尔森）"。', sr:'03 策略调整层'},
+        {t:'cloze', q:'Q3 的口诀填空——四原因与总定性一次锁死：',
+         scene:'林教授在推演板空白处写下骨架：「参谋，补全它——考场上先默这句，再展开四维对比。」',
+         b:['不动','起','妙','陷阱','精'],
+         d:['得快','动','笨','趋势','软'],
+         text:'Q3 口诀：四原因＝"脱【0】（深度交融）＋脱不【1】（成本高昂）＋话术【2】（凝聚盟友）＋防【3】（萨缪尔森陷阱）"；总定性是手段变【4】、话术变软、遏制不变。',
+         w:'Q3 口诀："脱不动、脱不起、话术妙、防陷阱"；总定性＝手段变精、话术变软、遏制不变。答题时先定性（不是软化）再展开四维差异与四条原因，层次最完整。',
+         s:'Q3 口诀：四原因＝"脱不动（深度交融）＋ 脱不起（成本高昂）＋ 话术妙（凝聚盟友）＋ 防陷阱（萨缪尔森）"。', sr:'03 策略调整层'},
+        {t:'choice', q:'易混辨析：以下哪项最准确地刻画了"脱钩"与"去风险"的分野？',
+         scene:'卡洛威把两块标牌叠在一起：「反正都是限制，有区别吗？」——何所长示意你当场纠正。',
+         o:['脱钩是全盘切断的零和莽干，烈度高、反噬自身难以维系；去风险是以国家安全为幌子的精准围堵，聚焦高端科技，隐蔽性与盟友号召力都更强',
+            '脱钩针对盟友，去风险针对中国，两者对象不同',
+            '去风险比脱钩更激进，因为它同时对全部产业链实施切断',
+            '两者都只是学术概念，美国实际政策从未采用过'], a:0,
+         w:'易混辨析：脱钩＝全盘切断的零和莽干（反噬自身、难以维系）；去风险＝以国家安全为幌子的精准围堵（聚焦高端科技，极具隐蔽性与盟友号召力）。一句记牢：脱钩是莽干，去风险是精算，两者遏制方向一致、手法烈度不同。',
+         s:'易混辨析：脱钩是"全盘切断的零和莽干"；去风险是"以国家安全为幌子的精准围堵"。', sr:'03 策略调整层'}
+      ]
+    },
+    { code:'04 · 网络重构层', num:'肆', title:'壳芯之辨', role:'东亚产业链测绘师',
+      mentor:'lumin',
+      exam:'Q4 简答：美国对华政策造成的东亚生产网络变化',
+      brief:'网络没被拆掉，而是"功能分流与层级跃升"，核心特征是"中国＋1"。四条演变特征＋范式从雁行到多中心；理论武器是产业链编辑能力（CICE）——搬走了组装壳，搬不走中国芯。',
+      chips:['东亚生产网络 9','组装 8','雁行模式 5','中间品 3','CICE 2'],
+      items:[
+        {t:'order', q:'美国对华政策造成的东亚生产网络变化，请把四条演变特征按图谱顺序排入图纸：',
+         scene:'图板前摊开一张东亚产业地图，陆敏递来四块铭牌：「测绘师，从组装流向到范式变革，一级都不能装反。」',
+         o:['①组装流向友岸：劳动密集与最终组装环节迁往越南、墨西哥',
+            '②区域内部更深整合：中国向东盟大量输出中间品与零部件',
+            '③中国价值链跃升：高科技封锁倒逼国产替代与技术突破',
+            '④范式从雁行到多中心：打破以日本为单一龙头的传统垂直梯队'],
+         w:'四条演变特征：①组装流向友岸（中越墨）→ ②区域内部更深整合（中国输出中间品）→ ③中国价值链跃升（国产替代）→ ④范式从雁行到多中心。外部压力反而倒逼东亚内部联系加深，中国强化"中间品供应中心"地位。',
+         s:'东亚网络未被瓦解，而是发生"功能分流与层级跃升"，核心特征是"中国＋1"；四特征：组装流向友岸 · 区域内部更深整合 · 中国价值链跃升 · 范式从雁行到多中心。', sr:'04 网络重构层'},
+        {t:'choice', q:'美国力推"中国＋1"，东亚生产网络的实际变化是？',
+         scene:'郑处长把三条出口曲线投在屏上：「看越墨对美出口的斜率——再看它们的进口来源。」',
+         o:['中国对美直接顺差下降，但越南、墨西哥对美出口暴增，而越墨的进口全依赖中国供应链——逆差来源地发生转移，中国供应链地位未被动摇',
+            '中国已完全退出东亚生产网络，东南亚取代了中国的枢纽地位',
+            '东亚生产网络被彻底瓦解，区域内贸易规模大幅萎缩',
+            '美国企业全部回流本土，东亚不再有外资参与'], a:0,
+         w:'"中国＋1"的实质：组装环节流向友岸，中国对美直接顺差下降，但越墨对美出口暴增、而其进口全依赖中国供应链——逆差来源地转移，中国供应链地位反而被锁定。这正是贸易溢出效应在生产网络层面的呈现。',
+         s:'①组装流向友岸：劳动密集与最终组装环节迁往越南、墨西哥；中国对美直接顺差降，越墨对美出口暴增，但其进口全依赖中国供应链。', sr:'04 网络重构层'},
+        {t:'choice', q:'⭐核心结论：美国搬走了"组装壳"，却搬不走什么？',
+         scene:'卡洛威笃定供应链已经外迁，林教授把一张中间品流向图推到他面前：「先生，请看这条隐形的线。」',
+         o:['搬不走"中国制造的供应链之芯"：中国凭借庞大本土市场需求与完备基础工业要素的掌控力，展现了强大的产业链编辑能力，在外部打压中反向锁定了在东亚生产网络中的不可替代性',
+            '搬不走中国的低人工成本，因为东南亚人工成本更高',
+            '搬不走美国的品牌溢价，因为品牌无法转移',
+            '搬不走日本的关键器件，因为日本拒绝向东南亚供货'], a:0,
+         w:'翟东升理论武器——产业链编辑能力（CICE）：美国搬走了"组装壳"，却搬不走"中国制造的供应链之芯"。中国凭借庞大本土市场需求与完备基础工业要素的掌控力，展现出强大的产业链编辑能力，在外部打压中反向锁定了在东亚生产网络中的不可替代性。',
+         s:'翟东升理论武器：产业链编辑能力（CICE）——美国搬走了"组装壳"，却搬不走"中国制造的供应链之芯"；中国反向锁定在东亚网络中的不可替代性。', sr:'04 网络重构层'},
+        {t:'choice', q:'易混辨析：以下对"雁行模式"与"多中心网络"的刻画，哪项准确？',
+         scene:'测绘台上并排铺着两张网络图，陆敏按住旧的：「一张是日本的独角戏，一张是多声部——请分辨。」',
+         o:['雁行模式是以日本独大的垂直单向梯队转移；多中心网络则以中国为研发与制造枢纽、日韩台供应关键器件、东盟承接组装，是网络化共生',
+            '雁行模式以中国为龙头，多中心网络以日本为龙头',
+            '两者都指欧盟内部的产业分工，与东亚无关',
+            '多中心网络意味着东亚各国地位完全平等、不存在层级差异'], a:0,
+         w:'雁行模式＝日本独大的垂直单向梯队转移；多中心网络＝以中国为研发与制造枢纽、日韩台供关键器件、东盟承接组装的网络化共生。范式转变的落点在于：从"单一龙头"到"枢纽＋多声部"，而中国升级为枢纽。',
+         s:'雁行模式＝日本独大的垂直单向梯队转移；多中心网络＝以中国为研发与制造枢纽、日韩台供关键件、东盟组装的网络化共生。', sr:'04 网络重构层'},
+        {t:'cloze', q:'Q4 结论口诀填空——一句话锁住"换壳未换芯"：',
+         scene:'陆敏在图纸边缘题了半句口诀：「测绘师，补全它——考场上先默这句，再展开四条特征。」',
+         b:['壳','芯','跃升','＋1','网络'],
+         d:['骨架','中枢','萎缩','－1','梯队'],
+         text:'Q4 结论：美国搬走了"组装【0】"，却搬不走"中国【1】"；东亚网络未被瓦解，而是"功能分流与层级【2】"，核心特征是"中国【3】"；范式从雁行走向多中心【4】。',
+         w:'Q4 结论："美国搬走了组装壳，却搬不走中国芯"；东亚网络未被瓦解，而是"功能分流与层级跃升"，核心特征是"中国＋1"；范式从雁行模式走向多中心网络。一句口诀串起四条特征与 CICE。',
+         s:'Q4 骨架：组装搬越墨 ＋ 内部更紧密 ＋ 中国中间品与研发跃升 ＋ 雁行变多中心网络。', sr:'04 网络重构层'},
+        {t:'choice', q:'⚠️撕开点：关于东亚生产网络重构，哪个判断最关键？',
+         scene:'何所长在结论栏推来一支笔：「测绘师，这一句写对，全题的层次就立住了。」',
+         o:['外部压力没有瓦解东亚网络，反而倒逼区域内联系加深、中国从中低端"世界工厂"向"世界级研发＋先进制造中心"升级——供应链成本最终由美国自身承担',
+            '美国成功实现了产业链去中国化，中国制造业已全面外流',
+            '东亚生产网络的重构与中国无关，纯属跨国公司自发行为',
+            '中国在东亚的地位已从枢纽退回为普通组装基地'], a:0,
+         w:'撕开点：外部压力非但没有瓦解东亚网络，反而倒逼区域内部联系加深、中国从低端"世界工厂"向"世界级研发＋先进制造中心"升级。美国搬走的是组装壳，付出的是更高的供应链成本——这正是 CICE 的验证。',
+         s:'③中国价值链跃升：高科技封锁倒逼国产替代与技术突破；从低端"世界工厂"向"世界级研发＋先进制造中心"升级。', sr:'04 网络重构层'}
+      ]
+    },
+    { code:'05 · 周期动力层', num:'伍', title:'四因涨落', role:'全球化史官',
+      mentor:'zheng',
+      exam:'Q5 论述：80 年代推行全球化 vs 2016 年后逆全球化',
+      brief:'四十年的涨落是同一套资本逻辑的两面：80 年代四因（滞胀转嫁·美元松绑·冷战终结·产业外移）⇋ 2016 后四因（民粹反噬·霸权衰落·空间修复·疫情地缘）。2008 是拐点，2016 是政治元年。',
+      chips:['民粹反噬 12','关税贸易战 8','创造性破坏 5','滞胀 5','空间修复 3'],
+      items:[
+        {t:'bins', q:'四十年涨落的两页账并排摊开。请把八张成因卡分别归入"1980 年代兴起四因"与"2016 年后逆转四因"：',
+         scene:'史官署的长案上摊着两张年份表，郑处长按住其中一张：「史官，兴起与逆转各有四因——一张都不能贴错栏。」',
+         bn:['1980 年代 · 兴起四因','2016 年后 · 逆转四因'],
+         c:[{t:'应对滞胀危机：削弱工会、削减福利、金融松绑，重新确立资本积累秩序', b:0},
+            {t:'为美元霸权松绑：1971 年金本位崩溃后，用资本自由流动向全球征收铸币税，实现"无泪赤字"', b:0},
+            {t:'赢得冷战与意识形态：把"自由市场"包装成普世真理与历史终结论', b:0},
+            {t:'产业链全球重构：跨国公司利用发展中国家廉价劳动力降本增效，转嫁国内劳资矛盾', b:0},
+            {t:'再分配失败与民粹反噬：产业空心化、铁锈带中下层被抛弃，贫富分化转化为选举动能', b:1},
+            {t:'霸权相对衰落与大国竞争：新兴大国群体崛起挑战单极秩序，全球化被美方视为"资敌"', b:1},
+            {t:'资本空间修复与创造性破坏：资本积累触碰全球极限，通过关税战、科技战人为制造贬值扫清障碍', b:1},
+            {t:'疫情与地缘冲突加速：供应链脆弱性凸显，经贸相互依赖被政治"武器化"', b:1}],
+         w:'两页账：1980 年代兴起四因＝滞胀转嫁、美元松绑、冷战终结、产业外移；2016 年后逆转四因＝民粹反噬、霸权衰落、空间修复、疫情地缘。同一套资本逻辑，前半场外扩、后半场反噬。',
+         s:'Q5 双四因：80 年代兴起＝应对滞胀 · 为美元霸权松绑 · 赢得冷战与意识形态 · 产业链全球重构；2016 后逆转＝再分配失败与民粹反噬 · 霸权衰落与大国竞争 · 资本空间修复与创造性破坏 · 疫情与地缘冲突加速。', sr:'05 周期动力层'},
+        {t:'multi', q:'1980 年代新自由主义全球化得以推行的四条原因（兴起四因）是哪四条？',
+         scene:'郑处长把四枚年号牌推到案前：「史官，兴起四因——为什么是 1980 年代？」',
+         o:['应对滞胀危机：削弱工会、削减福利、金融松绑，重新确立资本积累秩序',
+            '为美元霸权松绑：1971 年金本位崩溃后，用资本自由流动向全球征收铸币税，实现"无泪赤字"',
+            '赢得冷战与意识形态：把"自由市场"包装成普世真理与历史终结论',
+            '产业链全球重构：跨国公司利用发展中国家廉价劳动力降本增效，转嫁国内劳资矛盾',
+            '再分配失败与民粹反噬：产业空心化令铁锈带中下层被抛弃',
+            '疫情与地缘冲突：供应链脆弱性暴露，相互依赖被政治"武器化"'], a:[0,1,2,3],
+         w:'1980 年代兴起四因：①应对滞胀危机（削弱工会、削减福利、金融松绑，重建资本积累秩序）②为美元霸权松绑（1971 金本位崩溃后用资本自由流动征收铸币税，实现"无泪赤字"）③赢得冷战与意识形态（把"自由市场"包装成普世真理与历史终结论）④产业链全球重构（跨国公司利用廉价劳动力降本、转嫁劳资矛盾）。后两项属于 2016 后的逆转四因。',
+         s:'80 年代兴起四因：应对滞胀（削工会·减福利·金融松绑）· 为美元霸权松绑（1971 后征铸币税·无泪赤字）· 赢得冷战与意识形态（历史终结论）· 产业链全球重构（廉价劳动力降本、转嫁劳资矛盾）。', sr:'05 周期动力层'},
+        {t:'multi', q:'2016 年后逆全球化浪潮爆发的四条原因（逆转四因）是哪四条？',
+         scene:'史官署的幕布换成 2016 年之后的剪报墙，郑处长示意：「史官，逆转四因——为什么是 2016 年之后？」',
+         o:['再分配失败与民粹反噬：产业空心化、铁锈带中下层被抛弃，贫富分化转化为极端民粹的选举动能',
+            '霸权相对衰落与大国竞争：新兴大国群体崛起挑战单极秩序，全球化被美方视为"资敌"',
+            '资本空间修复与创造性破坏：资本积累触碰全球极限，通过关税战、科技战人为制造贬值扫清障碍',
+            '疫情与地缘冲突加速：供应链脆弱性凸显，经贸相互依赖被政治"武器化"',
+            '为美元霸权松绑：用资本自由流动向全球征收铸币税',
+            '赢得冷战与意识形态：把"自由市场"包装成历史终结论'], a:[0,1,2,3],
+         w:'2016 年后逆转四因：①再分配失败与民粹反噬（产业空心化、铁锈带被抛弃，贫富分化转为极端民粹的选举动能）②霸权相对衰落与大国竞争（新兴大国崛起，全球化被视为"资敌"）③资本空间修复与创造性破坏（关税战、科技战人为制造贬值扫清障碍）④疫情与地缘冲突加速（供应链脆弱性凸显，相互依赖被"武器化"）。后两项属 80 年代兴起四因。',
+         s:'2016 后逆转四因：再分配失败与民粹反噬 · 霸权相对衰落与大国竞争 · 资本空间修复与创造性破坏 · 疫情与地缘冲突加速。', sr:'05 周期动力层'},
+        {t:'choice', q:'易混辨析：以下对"资本空间修复"与"创造性破坏"的区分，哪项准确？',
+         scene:'陆敏把两张示意图并排钉上：「史官，一张画的是地图，一张画的是周期——请分辨。」',
+         o:['空间修复侧重地理版图扩张与外迁以化解资本过剩；创造性破坏侧重人为制造危机、淘汰落后产能并以新技术垄断开启新周期',
+            '两者只是修辞比喻，没有实质区别，可以互换使用',
+            '空间修复指国内区域平衡政策，创造性破坏指企业破产清算程序',
+            '创造性破坏是凯恩斯提出的需求管理工具，与资本积累无关'], a:0,
+         w:'资本空间修复＝通过地理版图扩张与外迁化解资本过剩（找新空间）；创造性破坏＝人为制造危机、淘汰落后产能，并以新技术垄断开启新周期（换周期）。一个向外找空间，一个向内换周期——都属 2016 后逆转四因。',
+         s:'资本空间修复侧重地理版图扩张与外迁以化解资本过剩；创造性破坏侧重人为制造危机、淘汰落后产能并以新技术垄断开启新周期。', sr:'05 周期动力层'},
+        {t:'cloze', q:'Q5 口诀填空——两页账一次背完：',
+         scene:'郑处长在两页账的页脚各留了一行空格：「史官，补全它——兴起与逆转，一组四个字。」',
+         b:['转嫁','松绑','衰落','修复','地缘'],
+         d:['通胀','收紧','崛起','扩张','贸易'],
+         text:'Q5 口诀：80 年代兴起＝"滞胀【0】· 美元【1】· 冷战终结 · 产业外移"；2016 年后逆转＝"民粹反噬 · 霸权【2】· 空间【3】· 疫情【4】"。',
+         w:'Q5 口诀：80 年代兴起＝"滞胀转嫁·美元松绑·冷战终结·产业外移"；2016 年后逆转＝"民粹反噬·霸权衰落·空间修复·疫情地缘"。两页账各四字一组，考场上先默口诀再展开成句。',
+         s:'Q5 口诀：80 年代兴起＝"滞胀转嫁 · 美元松绑 · 冷战终结 · 产业外移"；2016 年后逆转＝"民粹反噬 · 霸权衰落 · 空间修复 · 疫情地缘"。', sr:'05 周期动力层'},
+        {t:'choice', q:'数字锚点：2008 年与 2016 年在本章各承担什么角色？',
+         scene:'史官署长案上摆着两只沙漏，郑处长问：「史官，哪一年是拐点，哪一年是元年？」',
+         o:['2008 年是全球化由顺畅扩展转向内在调整的拐点，暴露了新自由主义伪科学的真面目；2016 年是逆全球化全面爆发的政治元年（特朗普当选、英国脱欧、蓝领阶层民粹反噬）',
+            '2008 年是逆全球化的政治元年，2016 年才是全球化的转折点',
+            '两者含义相同，均指全球化在当年全面终结',
+            '两者都与全球化无关，分别指两场区域性金融危机'], a:0,
+         w:'2008 年＝全球化由顺畅扩展转向内在调整的拐点，暴露新自由主义伪科学真面目；2016 年＝逆全球化全面爆发的政治元年（特朗普当选、英国脱欧、蓝领阶层民粹反噬）。拐点看经济，元年看政治——两个年份各有分工，不可混用。',
+         s:'锚点：1980 年代＝新自由主义全球化铺开起点；2016 年＝逆全球化爆发政治元年；2008 年＝全球化由扩展转向内在调整的拐点。', sr:'05 周期动力层'}
+      ]
+    },
+    { code:'06 · 道义论战层', num:'陆', title:'车费之辩', role:'国际论战答辩人',
+      mentor:'lin',
+      exam:'Q6 论述：反驳"中国搭便车"论与中国收益代价辩证',
+      brief:'四点反驳＋收益三项＋代价四项＋双循环落点。核心数据是中国对世界经济增长贡献率长期超 30%——"车费"付得比谁都多；靠印钞换实物的美国才是最大搭车者。',
+      chips:['搭便车 14','贫富分化 12','工业化 8','全球公共产品 6','贫困化增长 3'],
+      items:[
+        {t:'multi', q:'"中国是搭便车者"这一指控，有哪四点有力反驳？',
+         scene:'答辩厅里卡洛威把指控书拍在案上，林教授示意：「答辩人，四点逐条驳回——一条都不能少。」',
+         o:['全球经济最大引擎：中国对世界经济增长贡献率长期超 30%，为全球输出平价工业品、抑制恶性通胀——车费付得最多',
+            '国际体系积极建设者：联合国第二大会费国和维和出资国；"一带一路"为全球南方提供关键基建公共产品',
+            '为美元霸权提供实体支撑：长期持有巨额美债、压低美国消费成本，承受顺差被动扩张的代价',
+            '话术本质是霸权护持：中国处于低端组装时被称为"伙伴"，一旦产业升级威胁美科技垄断，即被污名化为"搭便车"',
+            '中国从未从全球化中获益，属于纯粹的受害者，因此谈不上搭便车',
+            '中国确实未承担任何国际责任，搭便车者的指控完全成立'], a:[0,1,2,3],
+         w:'四点反驳：①全球经济最大引擎（贡献率长期超 30%、输出平价工业品抑制通胀）②国际体系积极建设者（联合国第二大会费国与维和出资国、"一带一路"提供公共产品）③为美元霸权提供实体支撑（持有巨额美债、压低美国消费成本）④话术本质是霸权护持（低端时称"伙伴"、升级即污名化）。结论：靠印钞换实物的美国才是最大搭车者。',
+         s:'反驳"搭便车"四点：全球经济最大引擎（贡献率超 30%）· 国际体系积极建设者（第二大会费国／维和出资国、一带一路）· 为美元霸权提供实体支撑（持有美债）· 话术本质是霸权护持。', sr:'06 道义论战层'},
+        {t:'dial', q:'仪表刻度：中国对世界经济增长的贡献率长期稳定在什么水平之上？',
+         scene:'答辩厅的数据屏上一条曲线稳稳探出刻度尺，林教授按住旋钮：「答辩人，把指针拨到那个硬核数字上。」',
+         zone:[26, 34], labels:['贡献率被低估 · 低于 26%','长期超 30% · 全球最大引擎','贡献率被高估 · 高于 34%'],
+         w:'中国对世界经济增长贡献率长期超 30%——这是击碎"搭便车"谬论的硬核数据。中国为全球稳定供应平价消费品、承接环境成本并投资"一带一路"，是付出巨额代价的净贡献者。',
+         s:'锚点 30%：中国对世界经济年均增长贡献率超 30%——有力击碎"搭便车"谬论的硬核数据。', sr:'06 道义论战层'},
+        {t:'bins', q:'中国的得失必须"辩证成对写"。请把七张卡片分别归入"战略收益"与"沉重代价"两栏：',
+         scene:'答辩厅两侧立着两栏表，陆敏把七张卡片递过来：「答辩人，收益三项、代价四项——一张都不能贴错栏。」',
+         bn:['战略收益（3 项）','沉重代价（4 项）'],
+         c:[{t:'史无前例的工业化崛起：成为世界第一制造业大国，建成全门类工业体系', b:0},
+            {t:'技术、管理与制度溢出：引入竞争机制，加速技术吸收与自主研发曲线', b:0},
+            {t:'融入价值链并跃居核心：从边缘加工厂晋升为东亚生产网络枢纽', b:0},
+            {t:'资源环境与劳工牺牲：早期高耗能高污染与廉价劳工，"拿子孙后代换美元"', b:1},
+            {t:'贫困化增长与外部依赖：处于微笑曲线底端，核心技术面临"卡脖子"风险', b:1},
+            {t:'贫富分化与内需压抑：收益过度向资本倾斜，居民消费率偏低阻碍内循环', b:1},
+            {t:'承担美元霸权金融风险：外汇储备投向美债面临资产缩水、被动贬值与安全风险', b:1}],
+         w:'收益三项：①史无前例的工业化崛起（世界第一制造业大国、全门类体系）②技术管理与制度溢出（加速技术吸收）③融入价值链并跃居核心（从边缘加工厂到东亚枢纽）。代价四项：①资源环境与劳工牺牲②贫困化增长与外部依赖（微笑曲线底端、卡脖子）③贫富分化与内需压抑（收益向资本倾斜、消费率偏低）④承担美元霸权金融风险（外储投美债的缩水与安全风险）。',
+         s:'中国收益三项：工业化崛起（世界第一制造业大国）· 技术管理与制度溢出 · 融入价值链并跃居核心；代价四项：资源环境与劳工牺牲 · 贫困化增长与外部依赖 · 贫富分化与内需压抑 · 承担美元霸权金融风险。', sr:'06 道义论战层'},
+        {t:'choice', q:'"贫困化增长"在本章指的是什么？',
+         scene:'林教授在微笑曲线图上把最底端那一段圈了出来：「答辩人，这一段的增长，代价写在哪里？」',
+         o:['处于微笑曲线底端的增长：出口规模扩大但贸易条件恶化、收益微薄，核心技术受制于人面临"卡脖子"风险——中国早期处于价值链底端时的处境',
+            '经济总量增长但人均收入下降，即通常所说的"增产不增收"',
+            '贫困国家通过出口初级产品实现的高速增长',
+            '发达国家向发展中国家转移污染产业所导致的增长'], a:0,
+         w:'贫困化增长＝处于微笑曲线底端的增长：出口规模扩大但贸易条件恶化、收益微薄，核心技术受制于人（"卡脖子"）。这是中国四项代价之一，与"技术管理与制度溢出"这一收益构成辩证对照。',
+         s:'代价②：贫困化增长与外部依赖——处于微笑曲线底端，核心技术面临"卡脖子"风险。', sr:'06 道义论战层'},
+        {t:'cloze', q:'Q6 结论填空——从代价清单落到中国方案：',
+         scene:'答辩厅幕布上只剩最后一页空白，林教授示意：「答辩人，把出路写上去。」',
+         b:['双循环','一带一路','贫富分化','内需'],
+         d:['单循环','马歇尔计划','共同富裕','出口'],
+         text:'Q6 结论：中国推动构建"【0】"新发展格局与高质量共建"【1】"，正是为了彻底破除旧有不平等全球化的代价；而"【2】"这一项代价提示我们，收益过度向资本倾斜会压抑【3】、阻碍内循环。',
+         w:'结论落点：中国推动构建"双循环"新发展格局与高质量共建"一带一路"，正是为破除旧有不平等全球化的代价，迈向民本主义自主发展新路。代价③"贫富分化"的机理是收益过度向资本倾斜、压抑内需、阻碍内循环。',
+         s:'结论：中国推动"双循环"新发展格局与高质量共建"一带一路"，为彻底破除旧有不平等全球化的代价，迈向民本主义自主发展新路。', sr:'06 道义论战层'},
+        {t:'choice', q:'易混辨析：以下对"搭便车者"与"公共产品提供者"的区分，哪项准确？',
+         scene:'卡洛威把两个词条写在同一张纸的两面，陆敏赶紧按住：「一面是白享，一面是净付——请分辨。」',
+         o:['搭便车是不付成本白享福利；中国为全球稳定供应平价消费品、承接环境成本并投资"一带一路"，是付出巨额代价的净贡献者——反倒是靠印钞换实物的美国才是最大搭车者',
+            '只要从国际贸易中获益就是搭便车者，中国因此无法反驳该指控',
+            '公共产品只能由国际组织提供，主权国家不可能成为提供者',
+            '搭便车者与公共产品提供者是同一概念的不同译法'], a:0,
+         w:'搭便车＝不付成本白享福利；公共产品提供者＝付出成本供给他人。中国为全球供应平价消费品、承接环境成本、投资"一带一路"，是付出巨额代价的净贡献者；靠印钞换实物的美国才是最大搭车者。',
+         s:'搭便车是不付成本白享福利；中国为全球稳定供应平价消费品、承接环境成本并投资一带一路，是付出巨额代价的净贡献者。', sr:'06 道义论战层'},
+        {t:'choice', q:'⚠️撕开点：本章把全球化的表层叙事归结于哪一深层结构？',
+         scene:'答辩厅的灯暗了一格，林教授把最后一句话推到你面前：「答辩人，这一层写上去，才叫毕业。」',
+         o:['表面上谈的是经济规则与产业链重组，深层是美西方资本权力对国内分配危机的转嫁与霸权护持——低端时称"伙伴"、升级时称"搭便车"，标准随利益而变',
+            '纯粹是中美两国领导人个人风格差异所致',
+            '完全由技术演进决定，与政治权力和分配矛盾无关',
+            '根源在于中国操纵汇率，只要人民币大幅升值即可化解'], a:0,
+         w:'答题共同落点：表面是经济规则与产业链重组，深层是美西方资本权力对国内分配危机的转嫁与霸权护持。所以"伙伴"与"搭便车"的标签切换，随的是利益而非事实——这一层就是论述题的档次分。',
+         s:'答题共同落点：表面是经济规则与产业链重组，深层是美西方资本权力对国内分配危机的转嫁与霸权护持。', sr:'06 道义论战层'}
+      ]
+    },
+    { code:'07 · 综合突破与终极殿试', num:'柒', title:'终卷殿试', role:'全球化变迁首席研究员',
+      mentor:'hebingwen',
+      exam:'Q7 论述 + 全章终极大联考 · 九大数字锚点 · 八大易混辨析 · 终纲合龙',
+      brief:'最后一卷要过两道关：拉美镜鉴（三国死法＋四条教训＋中国三原则）与全章合龙。数字锚点极速抢答、易混辨析两组合龙、终纲一句封卷——四十年涨落在此收官。',
+      chips:['三国死法','中国三原则','美元潮汐','渐进有管理','货币局制度'],
+      items:[
+        {t:'bins', q:'拉美金融自由化的"三国死法"被打乱了。请把六张卡片归入智利、阿根廷、乌拉圭三栏：',
+         scene:'殿试案上摊开三国卷宗，何所长按住其中一册：「首席研究员，三国各有各的死法——一张都不能贴错栏。」',
+         bn:['智利（1975–1982）','阿根廷（80–90 年代）','乌拉圭（2002）'],
+         c:[{t:'"芝加哥男孩"主导，急速全面自由化', b:0},
+            {t:'一夜放开利率与资本账户，外债暴增＋汇率高估，1982 银行全面危机，政府被迫接管', b:0},
+            {t:'货币局制度：比索与美元硬等价', b:1},
+            {t:'丧失独立货币政策与汇率调节工具，产业丧失竞争力，2001 爆发史上最大主权违约', b:1},
+            {t:'区域金融中心放任，被阿根廷危机通过资金流传染', b:2},
+            {t:'2002 爆发全国性银行挤兑危机', b:2}],
+         w:'三国死法：智利（1975–1982）＝"芝加哥男孩"主导的急速全面自由化，一夜放开利率与资本账户，外债暴增＋汇率高估，1982 银行全面危机、政府被迫接管；阿根廷（80–90 年代）＝货币局制度硬盯美元，丧失独立货币政策与汇率调节工具，2001 爆发史上最大主权违约；乌拉圭（2002）＝区域金融中心放任，被阿根廷危机通过资金流传染，2002 爆发全国性银行挤兑。',
+         s:'Q7 三国死法：智利（1975–1982）"芝加哥男孩"急速全面自由化 → 1982 银行危机；阿根廷（80–90 年代）货币局制度硬盯美元 → 2001 史上最大主权违约；乌拉圭（2002）区域金融中心放任 → 被传染、全国银行挤兑。', sr:'07 综合殿试'},
+        {t:'multi', q:'拉美金融自由化的"四条共性教训"是哪四条？',
+         scene:'何所长在卷末列出四行批注位：「首席研究员，四条教训——按序背，一行都不能错位。」',
+         o:['金融不能脱离实体：无制造业支撑的金融繁荣必成泡影',
+            '资本账户不能过急放开：热钱快进快出引发金融海啸',
+            '汇率制度至关重要：硬盯美元＋丧失贬值调节＝死亡陷阱',
+            'IMF 条件性贷款是毒药：强制紧缩与私有化，实质是为下一轮跨国收割拆除主权防火墙',
+            '拉美失败纯属自身腐败与管理不善，与外部结构性陷阱无关',
+            '金融自由化程度越高，宏观经济就越稳定'], a:[0,1,2,3],
+         w:'四条共性教训：①金融不能脱离实体（无制造业支撑的金融繁荣必成泡影）②资本账户不能过急放开（热钱快进快出引发金融海啸）③汇率制度至关重要（硬盯美元＋丧失贬值调节＝死亡陷阱）④IMF 条件性贷款是毒药（强制紧缩与私有化，为下一轮跨国收割拆除防火墙）。后两项干扰项恰与结构性陷阱的判断相反。',
+         s:'四条共性教训：金融不能脱离实体 · 资本账户不能过急放开 · 汇率制度至关重要 · IMF 条件性贷款是毒药（为下一轮收割拆除防火墙）。', sr:'07 综合殿试'},
+        {t:'multi', q:'中国金融改革对拉美教训的"全面反向操作"——三原则是哪三条？',
+         scene:'何所长在三本卷宗的扉页写下"反向操作"四字，又留了三行：「首席研究员，把三道防线的名字刻上。」',
+         o:['渐进性：反智利式休克疗法，金融开放循序渐进',
+            '有管理：反放弃资本管制，保留资本账户防火墙与宏观审慎监管',
+            '守住制造业基本盘：金融服务实体经济，绝不搞自我空心化',
+            '全面放开：尽快实现资本账户完全自由兑换以吸引热钱',
+            '汇率硬盯美元：以固定汇率锚定货币信心、放弃独立货币政策'], a:[0,1,2],
+         w:'中国三原则（对拉美教训的全面反向操作）：①渐进性（反智利式休克疗法，金融开放循序渐进）②有管理（反放弃资本管制，保留资本账户防火墙与宏观审慎监管）③守住制造业基本盘（金融服务实体经济，绝不自我空心化）。后两项干扰项正是重蹈智利与阿根廷的覆辙。',
+         s:'中国三原则：渐进性（反休克疗法）· 有管理（保留资本账户防火墙与宏观审慎监管）· 守住制造业基本盘（金融服务实体经济、绝不空心化）。', sr:'07 综合殿试'},
+        {t:'timed', q:'数字锚点极速闪电战！在 50 秒内击破全章 8 组核心年份与区间：',
+         scene:'殿试大厅倒计时启动！全体考官起立凝视，首席研究员必须在 50 秒内斩落全章八组核心数字！',
+         secs:50,
+         rounds:[
+           {q:'新自由主义全球化全面铺开的起点年代：', o:['1980 年代','1930 年代','1971 年','2008 年'], a:0},
+           {q:'逆全球化全面爆发的政治元年：', o:['2016 年','2008 年','2020 年','2001 年'], a:0},
+           {q:'全球化由顺畅扩展转向内在调整的拐点：', o:['2008 年','2016 年','1997 年','1973 年'], a:0},
+           {q:'保罗·萨缪尔森提出"贸易福利永久损失"论文的年份：', o:['2004 年','1994 年','2014 年','1985 年'], a:0},
+           {q:'美元与黄金脱钩、布雷顿森林体系崩溃的年份：', o:['1971 年','1973 年','1968 年','1944 年'], a:0},
+           {q:'智利"芝加哥男孩"急速自由化到银行危机爆发的时间区间：', o:['1975–1982 年','1982–1990 年','1990–2001 年','1968–1975 年'], a:0},
+           {q:'阿根廷货币局制度瓦解、爆发史上最大主权违约的年份：', o:['2001 年','2002 年','1998 年','2008 年'], a:0},
+           {q:'乌拉圭被阿根廷危机传染、爆发全国银行挤兑的年份：', o:['2002 年','2001 年','1999 年','2008 年'], a:0}
+         ],
+         w:'全章核心锚点：1980 年代（全球化铺开起点）、2016 年（逆全球化政治元年）、2008 年（转折拐点）、2004 年（萨缪尔森论文）、1971 年（美元与黄金脱钩）、1975–1982 年（智利急进到危机）、2001 年（阿根廷主权违约）、2002 年（乌拉圭被传染）。另一项常考锚点是 30%（中国对世界经济增长贡献率）。',
+         s:'数字锚点：1980 年代 / 2016 年 / 2008 年 / 2004 年 / 1971 年 / 1975–1982 年 / 2001 年 / 2002 年 / 30%——精确锚点比笼统表述多一层分。', sr:'07 综合殿试'},
+        {t:'multi', q:'易混辨析第一组。以下判断正确的有？',
+         scene:'终审桌上并排五块牌子，何所长敲了敲第一块：「辨析考的不是背诵，是分寸——把对的牌子翻亮。」',
+         o:['脱钩是全盘切断的零和莽干（反噬自身难维系）；去风险是以国家安全为幌子的精准围堵（聚焦高端科技、隐蔽性与盟友号召力更强）',
+            '近岸外包侧重地理距离临近（如美向墨西哥转移产能）；友岸外包侧重政治制度与意识形态同盟',
+            '旧华盛顿共识是市场原教旨主义（去管制、反干预、私有化）；新华盛顿共识是经济民族主义与国家干预',
+            '溢出效应是政策无意中向外扩散的间接影响；转移效应是有意识的直接搬迁或技术让渡',
+            '友岸外包（Friendshoring）与近岸外包（Nearshoring）是同义词，可以互换使用'], a:[0,1,2,3],
+         w:'前四条全部正确；末条错误——友岸外包（Friendshoring）侧重政治制度与意识形态同盟，近岸外包（Nearshoring）侧重地理距离临近，两者不可互换。',
+         s:'易混辨析：脱钩≠去风险（莽干 vs 精算）· 近岸外包≠友岸外包（地理 vs 政治）· 旧华盛顿≠新华盛顿（市场原教旨 vs 经济民族主义）· 溢出效应≠转移效应（无意 vs 有意）。', sr:'07 综合殿试'},
+        {t:'multi', q:'易混辨析第二组。以下判断正确的有？',
+         scene:'五块牌子翻完又换上四块，何所长的声音沉了半度：「最后四块——三国死法与网络范式的分寸，全在这里。」',
+         o:['智利死于金融与资本账户一夜放开的急进主义；阿根廷死于固定汇率的僵化主义',
+            '搭便车是不付成本白享福利；中国付出巨额代价，是净贡献者而非搭便车者',
+            '资本空间修复侧重地理扩张与外迁化解资本过剩；创造性破坏侧重人为制造危机、淘汰落后产能并开启新技术垄断周期',
+            '雁行模式是日本独大的垂直单向梯队转移；多中心网络以中国为研发与制造枢纽、日韩台供关键件、东盟承接组装',
+            '智利与阿根廷的失败原因相同，都是货币局制度僵化所致'], a:[0,1,2,3],
+         w:'前四条全部正确；末条错误——智利死于急进主义（金融与资本账户一夜放开），阿根廷死于僵化主义（货币局硬盯美元丧失逆周期调节能力），两者死法不同。',
+         s:'易混辨析：智利失败≠阿根廷失败（急进 vs 僵化）· 搭便车者≠公共产品提供者 · 资本空间修复≠创造性破坏 · 雁行模式≠多中心网络。', sr:'07 综合殿试'},
+        {t:'choice', q:'⚠️出处告警：全章引用来源的分寸，以下哪项表述正确？',
+         scene:'陆敏抱来七册卷宗的来源登记表，何所长按住最后一页：「首席研究员，最后一道分寸题——谁的话，落在谁的头上。」',
+         o:['原著理论锚定＝翟东升《货币、权力与人》第一章与第四章（新自由主义伪科学本质、旧理论破产而新替代物未立、民本主义政治经济学），可放心挂名；萨缪尔森陷阱须点出 2004 年保罗·萨缪尔森论文；拉美镜鉴须落到美元潮汐两阶段收割的结构性陷阱',
+            '全章论断均属通用事实，答题无须标注任何出处',
+            '萨缪尔森陷阱是翟东升本人的原创理论，应写作"翟东升提出萨缪尔森陷阱"',
+            '拉美金融自由化失败纯属拉美自身腐败与管理不善，不涉及外部结构'], a:0,
+         w:'出处告警三处：①原著理论锚定——翟东升《货币、权力与人》第一、四章（新自由主义伪科学本质＝把贫富分化内化到各国国内；旧理论破产而新替代物未立；民本主义政治经济学是破局之路）②萨缪尔森陷阱——必须点出 2004 年保罗·萨缪尔森的论文结论 ③拉美镜鉴——须落到美元周期性潮汐收割的结构性陷阱，IMF 条件性贷款实为下一轮收割拆除防火墙。',
+         s:'出处告警：原著锚定＝翟东升《货币、权力与人》第一、四章；萨缪尔森陷阱＝2004 年保罗·萨缪尔森论文；拉美＝美元潮汐收割实验室（IMF 条件性贷款为下一轮收割拆除防火墙）。', sr:'07 综合殿试'},
+        {t:'cloze', q:'终卷合龙总决！请把七题主线一次补全：',
+         scene:'全体考官肃立，首席研究员铺开终卷，何所长示意落下最后一句总纲，封印退潮纪年！',
+         b:['范式','去风险','涨落','三项','制造业基本盘'],
+         d:['工具','脱钩','静止','四项','金融自由化'],
+         text:'七题一条主线：Q1 立概念（新自由主义四化＋全球化变迁）→ Q2 美国内政【0】转向（旧华盛顿→新华盛顿）→ Q3 对华策略由脱钩改【1】（手段变精、话术变软、遏制不变）→ Q4 东亚网络"换壳未换芯"→ Q5 四十年【2】大周期（80s 四因 ⇋ 2016 四因）→ Q6 车费之辩（收益【3】＋代价四项）→ Q7 拉美镜鉴，中国守【4】、渐进、有管理。',
+         w:'七题主线：立概念（四化＋全球化变迁）→ 内政范式转向（旧华盛顿→新华盛顿）→ 对华策略由脱钩改去风险 → 东亚网络换壳未换芯 → 四十年涨落大周期 → 车费之辩（收益三项＋代价四项）→ 拉美镜鉴（中国三原则：渐进、有管理、守住制造业基本盘）。一句主线通吃七题，这就是全章的背诵骨架。',
+         s:'七题主线（背诵顺序）：Q1 概念 → Q2 新旧共识 → Q3 脱钩去风险 → Q4 生产网络 → Q5 兴衰四因 → Q6 收益代价 → Q7 拉美镜鉴。', sr:'07 综合殿试'},
+        {t:'decision', q:'终极情景：终卷收束——哪一句能作为全章的总结陈词？',
+         scene:'终审大厅灯光聚拢，何所长推来最后一页空白：「首席研究员，全章收束只许一句——落笔封卷！」',
+         o:[{t:'新自由主义与全球化的四十年涨落，本质是美西方资本权力对国内分配危机的转嫁与霸权护持：80 年代以"四化"与美元松绑开出高潮，2016 年后民粹反噬、空间修复与地缘冲突令其逆转；对华则从脱钩走向去风险的精准围堵。中国的答案是双循环、一带一路与渐进有管理的金融防线——以民本主义换掉伪科学，绝不被牵着鼻子走', ok:true},
+            {t:'全球化已经彻底终结，中国应立即关闭资本账户、退出所有多边机制，转入全面自给自足', ok:false},
+            {t:'新自由主义是普世真理，中国的唯一出路是全面照搬华盛顿共识、放开资本账户实现彻底自由化', ok:false}],
+         w:'总结陈词模板：定性（四十年涨落＝资本权力转嫁＋霸权护持）→ 兴起（80 年代四化＋美元松绑）→ 逆转（2016 后民粹反噬·空间修复·地缘冲突）→ 对华（脱钩→去风险的精准围堵）→ 出路（双循环＋一带一路＋渐进有管理的金融防线，以民本主义换掉伪科学）。与七题主线完全对齐。',
+         s:'全章收束：表面是经济规则与产业链重组，深层是美西方资本权力对国内分配危机的转嫁与霸权护持；出路在民本主义自主发展新路——双循环、一带一路、渐进有管理。', sr:'07 综合殿试'}
+      ]
+    }
+  ]; }
+
+  componentDidMount(){
+    this.initSave();
+    this.startCanvas();
+  }
+
+  componentWillUnmount(){
+    if(this.timerId) clearInterval(this.timerId);
+    if(this.animId) cancelAnimationFrame(this.animId);
+  }
+
+  initSave(){
+    try{
+      const raw = localStorage.getItem('deglobalization-game-v1');
+      if(raw){
+        const d = JSON.parse(raw);
+        const ci = d.ci || 0;
+        const chap = this.DATA[ci] || this.DATA[0];
+        this.setState({
+          hasSave:true,
+          ci: Math.min(ci, this.DATA.length-1),
+          wrong: d.wrong||[],
+          stats: d.stats||{},
+          rep: d.rep||0,
+          best: d.best||0,
+          examMode: !!d.examMode,
+          saveLabel: (chap.num+' · '+chap.title)
+        });
+      }
+    }catch(e){}
+  }
+
+  startCanvas(){
+    const cvs = this.bgRef.current;
+    if(!cvs) return;
+    const ctx = cvs.getContext('2d');
+    let t = 0;
+    const particles = [];
+    for(let i=0; i<34; i++){
+      particles.push({
+        x: Math.random(),
+        y: Math.random(),
+        s: 0.7 + Math.random()*1.6,
+        speed: 0.0006 + Math.random()*0.0014,
+        sway: Math.random()*Math.PI*2
+      });
+    }
+    // 供应链网络：三环节点，部分链路随时间淡出（脱钩）与重连（重构）
+    const nodes = [];
+    for(let i=0; i<27; i++){
+      const ring = i % 3;
+      nodes.push({
+        a: Math.random()*Math.PI*2,
+        r: 96 + ring*72 + Math.random()*44,
+        sp: (0.0008 + Math.random()*0.0015) * (ring%2 ? -1 : 1),
+        sz: 1.3 + Math.random()*1.7,
+        ph: Math.random()*Math.PI*2
+      });
+    }
+
+    const loop = ()=>{
+      this.animId = requestAnimationFrame(loop);
+      t += 0.02;
+      const w = cvs.width = window.innerWidth;
+      const h = cvs.height = window.innerHeight;
+      ctx.clearRect(0,0,w,h);
+
+      const G = '182,130,53'; // gold
+      const A = this.state.screen==='play' ? 0.2 : 0.4;
+
+      // 1. 潮汐曲线：振幅由慢速潮汐包络调制——涨潮转退潮
+      ctx.lineWidth = 1.2;
+      for(let k=0; k<3; k++){
+        const yBase = h * (0.27 + k*0.22);
+        const tide = 0.42 + 0.58 * (0.5 + 0.5*Math.sin(t*0.115 + k*0.85));
+        const amp = 11 + 21*tide;
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba('+G+','+(0.07*A).toFixed(3)+')';
+        for(let x=0; x<=w; x+=14){
+          const y = yBase + Math.sin(x*0.006 + t*(0.7+k*0.15))*amp
+                          + Math.sin(x*0.0023 - t*0.4)*8*tide;
+          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+
+      // 2. 供应链网络：节点环绕缓转，链路明灭——搬不走的枢纽
+      const cx = w*0.87, cy = h*0.25;
+      ctx.lineWidth = 1;
+      for(let i=0; i<nodes.length; i++){
+        for(let j=i+1; j<nodes.length; j++){
+          if(Math.abs(nodes[i].r - nodes[j].r) > 76) continue;
+          const ai = nodes[i].a + t*nodes[i].sp*60;
+          const aj = nodes[j].a + t*nodes[j].sp*60;
+          const x1 = cx+Math.cos(ai)*nodes[i].r, y1 = cy+Math.sin(ai)*nodes[i].r;
+          const x2 = cx+Math.cos(aj)*nodes[j].r, y2 = cy+Math.sin(aj)*nodes[j].r;
+          const fade = 0.28 + 0.72*(0.5 + 0.5*Math.sin(t*0.46 + i*0.7 + j*0.4));
+          ctx.globalAlpha = fade;
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba('+G+','+(0.055*A).toFixed(3)+')';
+          ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+      for(let i=0; i<nodes.length; i++){
+        const a = nodes[i].a + t*nodes[i].sp*60;
+        const x = cx+Math.cos(a)*nodes[i].r, y = cy+Math.sin(a)*nodes[i].r;
+        ctx.beginPath();
+        ctx.arc(x, y, nodes[i].sz, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+G+','+(0.3*A).toFixed(3)+')';
+        ctx.fill();
+      }
+
+      // 3. 底部基线：潮位线，潮头随时间向右推移后消退
+      const baseY = h*0.88;
+      const crestX = ((t*88) % (w+520)) - 260;
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba('+G+','+(0.12*A).toFixed(3)+')';
+      for(let x=0; x<=w; x+=7){
+        const n = Math.sin(x*0.021 + t*0.8)*5 + Math.sin(x*0.0043 - t*0.3)*7;
+        const d = x - crestX;
+        const crest = -74 * Math.exp(-(d*d)/2700);
+        const y = baseY + n + crest;
+        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+
+      // 4. 浮尘：缓缓上浮的粒子
+      for(let i=0; i<particles.length; i++){
+        const p = particles[i];
+        p.y -= p.speed;
+        if(p.y < -0.03){ p.y = 1.03; p.x = Math.random(); }
+        const px = p.x*w + Math.sin(t*0.5 + p.sway)*16;
+        const py = p.y*h;
+        ctx.beginPath();
+        ctx.arc(px, py, p.s, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+G+','+(0.3*A).toFixed(3)+')';
+        ctx.fill();
+      }
+    };
+    loop();
+  }
+
+  save(patch){
+    const s = Object.assign({}, this.state, patch||{});
+    try{
+      localStorage.setItem('deglobalization-game-v1', JSON.stringify({
+        ci: s.ci, wrong: s.wrong, stats: s.stats, rep: s.rep, best: s.best, examMode: !!s.examMode
+      }));
+    }catch(e){}
+  }
+
+  shuf(arr, seed){
+    const a = arr.map((v,i)=>({v,i}));
+    let s = (seed*2654435761)%2147483647 || 12345;
+    const r = ()=>{ s = (s*16807)%2147483647; return s/2147483647; };
+    for(let i=a.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+  ch(){ return this.DATA[this.state.ci]; }
+  it(){ const c=this.ch(); return c && c.items[this.state.qi]; }
+  seed(){ return this.seedOf(this.state.ci, this.state.qi, this.state.attempt); }
+  seedOf(ci,qi,at){ return (ci+1)*97 + (qi+1)*31 + (at||0)*7919; }
+  chapUnlocked(i){
+    if(i===0) return true;
+    const st = this.state.stats[i-1];
+    return !!(st && st.total && st.right/st.total >= 0.5);
+  }
+  resetQ(ci,qi,at){
+    const _ci = ci==null?this.state.ci:ci, _qi = qi==null?this.state.qi:qi;
+    const _at = at==null?(this.state.attempt||0):at;
+    const C=this.DATA[_ci];
+    const it=C && C.items[_qi];
+    let dv=50;
+    if(it && it.t==='dial'){
+      const sd=this.seedOf(_ci,_qi,_at);
+      dv = (sd%2) ? (6 + sd%(Math.max(1,Math.floor(it.zone[0]-4)))) : (it.zone[1]+4 + sd%(Math.max(1,Math.floor(94-it.zone[1]))));
+      dv = Math.max(2, Math.min(98, dv));
+    }
+    return { answered:false, correct:false, sel:null, multi:[], seq:[], bins:{}, held:null,
+      dv, tIdx:0, tHits:0, tRes:[], tLeft:(it&&it.t==='timed')?(it.secs||45):0,
+      sceneIdx:0, sceneCharIdx:0, peekQ:false };
+  }
+
+  answerStr(){
+    const it=this.it(), st=this.state;
+    if(!it) return '';
+    if(it.t==='choice'||it.t==='decision') return st.sel==null?'（未作答）':(it.t==='decision'?it.o[st.sel].t:it.o[st.sel]);
+    if(it.t==='tf') return st.sel==null?'（未作答）':(st.sel===0?'正确':'错误');
+    if(it.t==='multi') return (st.multi && st.multi.length) ? Array.from(new Set(st.multi.map(Number))).sort((a,b)=>a-b).map(i=>it.o[i]).join('；') : '（未作答）';
+    if(it.t==='order'||it.t==='flow'){ const b=this.bankRaw(); return st.seq.map(i=>b[i]?b[i].v:'').join(' → ') || '（未作答）'; }
+    if(it.t==='cloze'){ const b=this.bankRaw(); return st.seq.map(i=>i==null?'▢':b[i].v).join(' / ') || '（未作答）'; }
+    if(it.t==='bins'||it.t==='scale'){ const bn=it.bn; return it.c.map((c,i)=> c.t+'→'+(st.bins[i]!=null?bn[st.bins[i]]:'未放')).join('；'); }
+    if(it.t==='dial') return '刻度 '+st.dv+'（'+this.dialZoneLabel(st.dv,it)+'）';
+    if(it.t==='timed') return '答对 '+st.tHits+' / '+it.rounds.length+'（限时 '+(it.secs||45)+' 秒）';
+    return '';
+  }
+  dialZoneLabel(v,it){ const z=it.zone; return v<z[0]?it.labels[0]:(v>z[1]?it.labels[2]:it.labels[1]); }
+  rightStr(){
+    const it=this.it(); if(!it) return '';
+    if(it.t==='choice') return it.o[it.a];
+    if(it.t==='decision'){ const k=it.o.findIndex(o=>o.ok); return it.o[k].t; }
+    if(it.t==='tf') return it.a?'正确':'错误';
+    if(it.t==='multi') return Array.from(new Set((it.a||[]).map(Number))).sort((a,b)=>a-b).map(i=>it.o[i]).join('；');
+    if(it.t==='order'||it.t==='flow') return it.o.join(' → ');
+    if(it.t==='cloze') return it.b.join(' / ');
+    if(it.t==='bins'||it.t==='scale') return it.c.map(c=> c.t+'→'+it.bn[c.b]).join('；');
+    if(it.t==='dial') return '中段（'+it.labels[1]+'）';
+    if(it.t==='timed') return it.rounds.map(r=>r.q+'：'+r.o[r.a]).join('；');
+    return '';
+  }
+  bankRaw(){
+    const it=this.it(); if(!it) return [];
+    if(it.t==='order'||it.t==='flow') return this.shuf(it.o, this.seed());
+    if(it.t==='cloze') return this.shuf(it.b.concat(it.d||[]), this.seed());
+    return [];
+  }
+  isRight(){
+    const it=this.it(), st=this.state;
+    if(!it) return false;
+    if(it.t==='choice'||it.t==='tf') return it.t==='tf' ? (st.sel===(it.a?0:1)) : (st.sel===it.a);
+    if(it.t==='decision') return st.sel!=null && !!it.o[st.sel].ok;
+    if(it.t==='multi'){
+      const u = new Set((st.multi || []).map(Number));
+      const a = new Set((it.a || []).map(Number));
+      if(u.size !== a.size) return false;
+      for(const val of a){ if(!u.has(val)) return false; }
+      return true;
+    }
+    if(it.t==='order'||it.t==='flow'){ const b=this.bankRaw(); return st.seq.length===it.o.length && st.seq.every((bi,k)=> b[bi] && b[bi].v===it.o[k]); }
+    if(it.t==='cloze'){ const b=this.bankRaw(); return st.seq.length===it.b.length && st.seq.every((bi,k)=> bi!=null && b[bi].v===it.b[k]); }
+    if(it.t==='bins'||it.t==='scale') return it.c.every((c,i)=> st.bins[i]===c.b);
+    if(it.t==='dial') return st.dv>=it.zone[0] && st.dv<=it.zone[1];
+    if(it.t==='timed') return st.tHits >= Math.ceil(it.rounds.length*0.75);
+    return false;
+  }
+
+  recordAnswer(isCorr){
+    const it=this.it(), st=this.state;
+    if(!it) return;
+    const wr = st.wrong.filter(w=> !(w.ci===st.ci && w.qi===st.qi));
+    if(!isCorr){
+      wr.push({
+        ci: st.ci, qi: st.qi,
+        q: (it.t==='decision'?it.q:(it.t==='timed'?'限时抢答 · '+it.rounds.length+' 轮闪电战':(it.t==='cloze'?it.text:it.q))),
+        ans: this.answerStr(), right: this.rightStr(), why: it.w,
+        chCode: this.ch().code, qIdx: st.qi+1
+      });
+    }
+    const oldSt = st.stats[st.ci] || {total:0, right:0};
+    const newStats = Object.assign({}, st.stats, {
+      [st.ci]: { total: oldSt.total+1, right: oldSt.right + (isCorr?1:0) }
+    });
+    const streak = isCorr ? (st.streak+1) : 0;
+    const best = Math.max(st.best, streak);
+    const gain = isCorr ? (st.peekQ ? 5 : (10 + Math.min(streak,5)*2)) : 0;
+    const rep = Math.max(0, st.rep + (isCorr?gain:-8));
+
+    this.setState({ wrong:wr, stats:newStats, rep, streak, best });
+    this.save({ wrong:wr, stats:newStats, rep, best });
+  }
+
+  // ---------------- Handlers ----------------
+  onStart = ()=>{
+    this.setState(Object.assign({
+      screen:'map', ci:0, qi:0, confirmNew:false,
+      stats:{}, wrong:[], rep:0, streak:0, best:0
+    }, this.resetQ(0,0,0)));
+    this.save({ ci:0, wrong:[], stats:{}, rep:0, best:0 });
+  };
+  onResume = ()=>{
+    this.setState({ screen:'map' });
+  };
+  onCancelNew = ()=>{
+    this.setState({ confirmNew:false });
+  };
+  onToggleExam = ()=>{
+    const em = !this.state.examMode;
+    this.setState({ examMode:em });
+    this.save({ examMode:em });
+  };
+  onBackToMap = ()=>{
+    if(this.timerId){ clearInterval(this.timerId); this.timerId=null; }
+    this.setState({ screen:'map', fromReview:false });
+  };
+  onOpenReview = ()=>{
+    this.setState({ screen:'review' });
+  };
+  onClearWrong = ()=>{
+    this.setState({ wrong:[] });
+    this.save({ wrong:[] });
+  };
+  onRestartAll = ()=>{
+    try{ localStorage.removeItem('deglobalization-game-v1'); }catch(e){}
+    this.setState(Object.assign({
+      screen:'title', ci:0, qi:0, hasSave:false, saveLabel:'',
+      stats:{}, wrong:[], rep:0, streak:0, best:0
+    }, this.resetQ(0,0,0)));
+  };
+
+  onBeginChapter = ()=>{
+    // 检查是否有剧情对白
+    const scenes = this.SCENES[this.state.ci];
+    if(scenes && scenes.length && !this.state.examMode && !this.state.fromReview){
+      this.setState({ screen:'scene', sceneIdx:0 });
+    } else {
+      this.startPlay();
+    }
+  };
+
+  onSceneAdvance = ()=>{
+    const scenes = this.SCENES[this.state.ci];
+    if(!scenes) return this.startPlay();
+    const next = this.state.sceneIdx + 1;
+    if(next < scenes.length){
+      this.setState({ sceneIdx: next });
+    } else {
+      this.startPlay();
+    }
+  };
+  onSceneSkip = (e)=>{
+    if(e && e.stopPropagation) e.stopPropagation();
+    this.startPlay();
+  };
+
+  startPlay = ()=>{
+    this.setState(Object.assign({ screen:'play' }, this.resetQ(this.state.ci, this.state.qi, this.state.attempt)));
+    const it = this.it();
+    if(it && it.t==='timed'){
+      this.startTimer();
+    }
+  };
+
+  startTimer = ()=>{
+    if(this.timerId) clearInterval(this.timerId);
+    const it = this.it();
+    const secs = it ? (it.secs||45) : 45;
+    this.setState({ tLeft:secs, tIdx:0, tHits:0, tOn:true, tRes:[] });
+    this.timerId = setInterval(()=>{
+      const left = this.state.tLeft - 1;
+      if(left <= 0){
+        clearInterval(this.timerId);
+        this.timerId = null;
+        this.setState({ tLeft:0, tOn:false, answered:true, correct: this.isRight() });
+        this.recordAnswer(this.isRight());
+      } else {
+        this.setState({ tLeft:left });
+      }
+    }, 1000);
+  };
+
+  onCheck = ()=>{
+    const corr = this.isRight();
+    this.setState({ answered:true, correct:corr });
+    this.recordAnswer(corr);
+  };
+  onResetQ = ()=>{
+    this.setState(Object.assign({ attempt: (this.state.attempt||0)+1 }, this.resetQ(this.state.ci, this.state.qi, (this.state.attempt||0)+1)));
+    const it = this.it();
+    if(it && it.t==='timed') this.startTimer();
+  };
+
+  onNext = ()=>{
+    const c = this.ch();
+    const nextQi = this.state.qi + 1;
+    if(nextQi < c.items.length){
+      this.setState(Object.assign({ qi:nextQi, attempt:0 }, this.resetQ(this.state.ci, nextQi, 0)));
+      const it = c.items[nextQi];
+      if(it && it.t==='timed') this.startTimer();
+    } else {
+      // 封卷结算
+      if(this.timerId){ clearInterval(this.timerId); this.timerId=null; }
+      this.setState({ screen:'result' });
+    }
+  };
+
+  onNextChapter = ()=>{
+    const nextCi = this.state.ci + 1;
+    if(nextCi < this.DATA.length){
+      this.setState(Object.assign({
+        ci:nextCi, qi:0, attempt:0, screen:'intro'
+      }, this.resetQ(nextCi, 0, 0)));
+      this.save({ ci:nextCi });
+    } else {
+      this.setState({ screen:'review' });
+    }
+  };
+
+  // ---------------- Render Props & View Models ----------------
+  renderVals(){
+    const st = this.state;
+    const c = this.ch() || this.DATA[0];
+    const it = this.it() || c.items[0];
+
+    // Background & Theme styling
+    let curBgUrl = '../../art/bg-00.webp';
+    let bgOpacity = '0.45';
+    let bgFilter = 'brightness(0.7) contrast(1.05)';
+    let bgOverlay = 'radial-gradient(circle at 50% 50%, rgba(28,26,23,0.65), rgba(28,26,23,0.92))';
+
+    if(st.screen === 'title'){
+      curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.45'; bgFilter = 'brightness(0.7) contrast(1.05)';
+      bgOverlay = 'radial-gradient(circle at 50% 50%, rgba(28,26,23,0.65), rgba(28,26,23,0.92))';
+    } else if(st.screen === 'map' || st.screen === 'review'){
+      curBgUrl = '../../art/bg-00.webp'; bgOpacity = '0.22'; bgFilter = 'sepia(0.18) brightness(0.95)';
+      bgOverlay = 'linear-gradient(to bottom, rgba(243,242,242,0.92), rgba(243,242,242,0.96))';
+    } else {
+      const bgIdx = Math.max(1, Math.min(7, st.ci + 1));
+      curBgUrl = '../../art/bg-0' + bgIdx + '.webp';
+      if(st.screen === 'intro'){
+        bgOpacity = '0.42'; bgFilter = 'brightness(0.65)';
+        bgOverlay = 'radial-gradient(circle at 40% 50%, rgba(28,26,23,0.7), rgba(28,26,23,0.92))';
+      } else if(st.screen === 'scene'){
+        bgOpacity = '0.78'; bgFilter = 'brightness(0.85)';
+        bgOverlay = 'linear-gradient(to bottom, rgba(28,26,23,0.28) 0%, rgba(28,26,23,0.68) 60%, rgba(28,26,23,0.92) 100%)';
+      } else if(st.screen === 'play'){
+        bgOpacity = '0.15'; bgFilter = 'sepia(0.12) brightness(1.02)';
+        bgOverlay = 'linear-gradient(to bottom, rgba(243,242,242,0.93), rgba(243,242,242,0.97))';
+      } else if(st.screen === 'result'){
+        bgOpacity = '0.28'; bgFilter = 'sepia(0.1)';
+        bgOverlay = 'linear-gradient(to bottom, rgba(243,242,242,0.9), rgba(243,242,242,0.95))';
+      }
+    }
+
+    const darkGround = (st.screen==='title'||st.screen==='intro'||st.screen==='scene') ? 'block' : 'none';
+
+    // Title View Model
+    const titleStats = [
+      { n:'7', l:'卷' },
+      { n:'47', l:'考题全收录' },
+      { n:'6', l:'层图谱' },
+      { n:'9', l:'数字锚点' }
+    ];
+    const examLabel = st.examMode ? '当前：沉浸应试模考（跳过前导剧情）' : '当前：经典剧情模式（带导师对白）';
+    const examDesc = st.examMode ? '关闭剧情对白，直入答题战场，适合考前极速过关。' : '开启导师剧情，跟随何所长、林教授走过四十年全球化涨落账本，代入感更强。';
+    const examFg = st.examMode ? '#b68235' : 'rgba(243,242,242,.75)';
+    const examBd = st.examMode ? '#b68235' : 'rgba(243,242,242,.28)';
+
+    // Map View Model
+    const mapRows = this.DATA.map((ch, idx)=>{
+      const un = this.chapUnlocked(idx);
+      const stat = st.stats[idx];
+      const done = stat ? stat.right : 0;
+      const tot = ch.items.length;
+      const pct = Math.round((done / tot) * 100);
+      return {
+        idx,
+        code: ch.code.split(' · ')[0],
+        num: ch.num,
+        title: ch.title,
+        roleLine: '· ' + ch.role,
+        chips: ch.chips,
+        locked: !un,
+        cursor: un ? 'pointer' : 'not-allowed',
+        rowOpacity: un ? '1' : '0.42',
+        rowBg: 'transparent',
+        numColor: un ? '#b68235' : '#bab6b6',
+        stateText: !un ? '未解锁' : (stat ? done + ' / ' + tot : '未开卷'),
+        stateColor: !un ? '#9b9797' : (pct === 100 ? '#b68235' : '#7d7979'),
+        pct: pct + '%',
+        onOpen: un ? ()=>{
+          this.setState(Object.assign({
+            ci: idx, qi: 0, attempt: 0, screen: 'intro'
+          }, this.resetQ(idx, 0, 0)));
+        } : ()=>{}
+      };
+    });
+
+    // Intro View Model
+    const intro = {
+      code: c.code, num: c.num, title: c.title, role: c.role,
+      brief: c.brief, exam: c.exam, count: '' + c.items.length
+    };
+
+    // Scene View Model
+    const scenes = this.SCENES[st.ci] || [];
+    const curScene = scenes[Math.min(st.sceneIdx, scenes.length-1)] || { speaker:'hebingwen', emotion:'idle', text:'' };
+    const spk = this.CHARACTERS[curScene.speaker] || this.CHARACTERS.hebingwen;
+
+    const prevScene = st.sceneIdx > 0 ? scenes[st.sceneIdx-1] : null;
+    const activeSpeakers = Array.from(new Set(scenes.map(s=>s.speaker)));
+    const nFig = activeSpeakers.length;
+    const breathePhase = -(Date.now() % 5200);
+
+    const sceneFigures = activeSpeakers.map((spkKey, i)=>{
+      const f = this.CHARACTERS[spkKey] || this.CHARACTERS.hebingwen;
+      const isSpeaking = (spkKey === curScene.speaker);
+      const justTookOver = isSpeaking && !!prevScene && prevScene.speaker !== spkKey;
+      const emotion = isSpeaking ? curScene.emotion : 'idle';
+      const imgSrc = f[emotion] || f.idle;
+      const tilt = nFig < 2 ? 0 : ((i - (nFig-1)/2) / Math.max(1, (nFig-1)/2)) * 1.6;
+      const rest = isSpeaking
+        ? 'translateY(-14px) rotate(0deg) scale(1.03)'
+        : 'translateY(0px) rotate(' + tilt.toFixed(2) + 'deg) scale(0.96)';
+      let anim = 'none';
+      if(st.sceneIdx === 0) anim = 'fxCardRise .52s ' + (i*90) + 'ms ease both';
+      else if(justTookOver) anim = 'fxCardFlip .46s cubic-bezier(.2,.7,.3,1) both';
+
+      return {
+        slot: 'char-slot-' + f.id + '-' + emotion,
+        src: imgSrc,
+        ph: f.name,
+        role: f.role.split('·')[0],
+        op: isSpeaking ? '1' : '0.42',
+        rest,
+        anim,
+        breathe: isSpeaking ? ('fxCardBreathe 5.2s ease-in-out ' + breathePhase + 'ms infinite') : 'none',
+        filter: isSpeaking ? 'none' : 'saturate(0.5) brightness(0.7) contrast(0.96)',
+        shadow: isSpeaking
+          ? '0 22px 46px rgba(18,14,9,.58), 0 1px 0 rgba(255,255,255,.5) inset'
+          : '0 8px 22px rgba(18,14,9,.42)',
+        rule: isSpeaking ? 'rgba(182,130,53,.85)' : 'rgba(182,130,53,.35)',
+        nameColor: isSpeaking ? '#7d5411' : '#6b6659'
+      };
+    });
+
+    const sceneName = spk.name;
+    const sceneRole = spk.role;
+    const sceneNameColor = '#b68235';
+    const sceneText = curScene.text;
+    const sceneCount = (st.sceneIdx+1) + ' / ' + scenes.length;
+
+    // Play View Model
+    const playChapterTitle = c.num + ' · ' + c.title;
+    const playRole = c.role;
+    const progressText = (st.qi+1) + ' / ' + c.items.length;
+    const progressPct = Math.round((st.qi+1)/c.items.length*100) + '%';
+    const repText = '' + st.rep;
+    const streakOn = st.streak >= 2;
+    const streakText = '' + st.streak;
+    const playCode = c.code;
+    const playBrief = c.brief;
+    const playChips = c.chips;
+    const mentorChar = this.CHARACTERS[c.mentor];
+    const playCharSlot = 'mentor-' + mentorChar.id;
+    const playCharSrc = mentorChar.idle;
+    const playCharName = mentorChar.name;
+    const playCharTitle = mentorChar.role;
+    const playCharStatusColor = st.answered ? (st.correct?'#0F6E56':'#7a2f2f') : '#b68235';
+    const playCharStatusText = st.answered
+      ? (st.correct ? '「论证扎实，准予归档。」' : '「立论有误，重新核账！」')
+      : '考官凝视中……';
+
+    const dots = c.items.map((itX, k)=>{
+      const isPast = k < st.qi;
+      const isCur = k === st.qi;
+      return {
+        n: '' + (k+1),
+        bd: isCur ? '#b68235' : (isPast ? 'rgba(32,31,29,.2)' : 'rgba(32,31,29,.12)'),
+        bg: isCur ? 'rgba(182,130,53,.15)' : (isPast ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'),
+        fg: isCur ? '#7d5411' : (isPast ? '#201f1d' : '#9b9797')
+      };
+    });
+
+    // Question-Specific View Model
+    let kindLabel = '核心考题';
+    if(it.t==='choice') kindLabel = '学术单选';
+    else if(it.t==='decision') kindLabel = '情境决策';
+    else if(it.t==='tf') kindLabel = '是非辨析';
+    else if(it.t==='multi') kindLabel = '核心多选';
+    else if(it.t==='order'||it.t==='flow') kindLabel = '机制排序';
+    else if(it.t==='cloze') kindLabel = '真题填空';
+    else if(it.t==='bins') kindLabel = '矩阵分箱';
+    else if(it.t==='dial') kindLabel = '仪表刻度';
+    else if(it.t==='timed') kindLabel = '限时抢答';
+
+    const q = {
+      no: '第 ' + (st.qi+1) + ' 题',
+      kindLabel,
+      text: (it.t==='decision'?it.q:(it.t==='cloze'?'阅读下文并补全空缺要点：':it.q)),
+      scene: it.scene,
+      hasScene: !!it.scene,
+      hint: it.hint,
+      hasHint: !!it.hint,
+      why: it.w,
+      src: it.s,
+      srcRef: it.sr,
+      hasSrc: !!it.s,
+      isOptions: (it.t==='choice'||it.t==='decision'||it.t==='tf'),
+      isMulti: it.t==='multi',
+      isOrder: (it.t==='order'||it.t==='flow'),
+      isCloze: it.t==='cloze',
+      isBins: it.t==='bins',
+      isDial: it.t==='dial',
+      isTimed: it.t==='timed',
+      showCheck: !st.answered && (it.t==='multi'||it.t==='order'||it.t==='flow'||it.t==='cloze'||it.t==='bins'||it.t==='dial'),
+      showReset: st.answered && !st.correct,
+      showPeek: !st.answered && !st.peekQ,
+      showPeeked: st.peekQ,
+      checkDisabled: false,
+      checkOpacity: '1',
+      peekLabel: '翻看速查卡（不计声望）',
+      peekRef: it.sr,
+      peekSrc: it.s,
+      onPeek: ()=>{ this.setState({ peekQ:true }); }
+    };
+
+    // Options (Choice / TF / Decision / Multi)
+    if(q.isOptions || q.isMulti){
+      let opts = [];
+      if(it.t==='tf'){
+        opts = [
+          { text:'正确', idx:0, isA: it.a===true },
+          { text:'错误', idx:1, isA: it.a===false }
+        ];
+      } else if(it.t==='decision'){
+        opts = it.o.map((o,idx)=>({ text: o.t, idx, isA: !!o.ok }));
+      } else if(it.t==='multi'){
+        const aSet = new Set((it.a||[]).map(Number));
+        opts = it.o.map((text,idx)=>({ text, idx, isA: aSet.has(idx) }));
+      } else {
+        opts = it.o.map((text,idx)=>({ text, idx, isA: idx===it.a }));
+      }
+
+      q.options = opts.map(o=>{
+        const isChosen = q.isMulti ? (st.multi||[]).includes(o.idx) : (st.sel===o.idx);
+        let bd = 'rgba(32,31,29,.16)';
+        let bar = 'transparent';
+        let bg = 'rgba(255,255,255,0.6)';
+        let fg = '#201f1d';
+        let mark = String.fromCharCode(65 + o.idx);
+        let mkColor = '#7d7979';
+
+        if(st.answered){
+          if(o.isA){
+            bd = '#0F6E56'; bar = '#0F6E56'; bg = 'rgba(15,110,86,0.08)'; fg = '#0F6E56'; mkColor = '#0F6E56';
+          } else if(isChosen){
+            bd = '#7a2f2f'; bar = '#7a2f2f'; bg = 'rgba(122,47,47,0.08)'; fg = '#7a2f2f'; mkColor = '#7a2f2f';
+          }
+        } else if(isChosen){
+          bd = '#b68235'; bar = '#b68235'; bg = 'rgba(182,130,53,0.09)'; fg = '#7d5411'; mkColor = '#b68235';
+        }
+
+        return {
+          mark, text: o.text, bd, bar, bg, fg, mkColor,
+          onClick: ()=>{
+            if(st.answered) return;
+            if(q.isMulti){
+              const cur = st.multi || [];
+              const next = cur.includes(o.idx) ? cur.filter(x=>x!==o.idx) : cur.concat(o.idx);
+              this.setState({ multi:next });
+            } else {
+              this.setState({ sel: o.idx });
+              // 单选直接核对
+              setTimeout(()=>{
+                const corr = (it.t==='tf') ? (o.idx===(it.a?0:1)) : (it.t==='decision'?it.o[o.idx].ok:(o.idx===it.a));
+                this.setState({ answered:true, correct:corr });
+                this.recordAnswer(corr);
+              }, 120);
+            }
+          }
+        };
+      });
+    }
+
+    // Order / Flow
+    if(q.isOrder){
+      const bank = this.bankRaw();
+      const nSlots = it.o.length;
+      q.slots = Array.from({length:nSlots}).map((_,k)=>{
+        const bi = st.seq[k];
+        const has = bi!=null && bank[bi];
+        return {
+          n: '' + (k+1),
+          label: has ? bank[bi].v : '（点击下方备选项填入）',
+          fg: has ? '#201f1d' : '#9b9797',
+          bg: has ? 'rgba(255,255,255,0.85)' : 'rgba(234,233,233,0.3)',
+          bd: has ? '#b68235' : 'rgba(32,31,29,.2)',
+          borderStyle: has ? 'solid' : 'dashed',
+          onClick: ()=>{
+            if(st.answered || bi==null) return;
+            const seq = st.seq.slice();
+            seq.splice(k, 1);
+            this.setState({ seq });
+          }
+        };
+      });
+      q.bank = bank.map((b,idx)=>{
+        const used = st.seq.includes(idx);
+        return {
+          label: b.v, used,
+          op: used ? '0.28' : '1',
+          bg: used ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.7)',
+          onClick: ()=>{
+            if(st.answered || used || st.seq.length>=nSlots) return;
+            this.setState({ seq: st.seq.concat(idx) });
+          }
+        };
+      });
+    }
+
+    // Cloze
+    if(q.isCloze){
+      const bank = this.bankRaw();
+      const nBlanks = it.b.length;
+      // 解析 it.text 中的 【0】 【1】 ...
+      const tokens = it.text.split(/(【\d+】)/g);
+      q.parts = tokens.map((tok,k)=>{
+        const m = tok.match(/【(\d+)】/);
+        if(m){
+          const bIdx = parseInt(m[1], 10);
+          const valBi = st.seq[bIdx];
+          const has = valBi!=null && bank[valBi];
+          return {
+            isBlank: true, isText: false,
+            label: has ? bank[valBi].v : '【 ▢ 】',
+            fg: has ? '#7d5411' : '#9b9797',
+            bg: has ? 'rgba(182,130,53,.12)' : 'rgba(255,255,255,0.6)',
+            bd: has ? '#b68235' : 'rgba(32,31,29,.25)',
+            borderStyle: has ? 'solid' : 'dashed',
+            w: '92px',
+            onClick: ()=>{
+              if(st.answered || valBi==null) return;
+              const seq = st.seq.slice();
+              seq[bIdx] = null;
+              this.setState({ seq });
+            }
+          };
+        } else {
+          return { isBlank:false, isText:true, text: tok };
+        }
+      });
+
+      q.bank = bank.map((b,idx)=>{
+        const used = (st.seq||[]).includes(idx);
+        return {
+          label: b.v, used,
+          op: used ? '0.28' : '1',
+          bg: used ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.7)',
+          onClick: ()=>{
+            if(st.answered || used) return;
+            // 找第一个空的 slot
+            const seq = (st.seq||[]).slice();
+            for(let i=0; i<nBlanks; i++){
+              if(seq[i]==null){
+                seq[i] = idx;
+                this.setState({ seq });
+                return;
+              }
+            }
+          }
+        };
+      });
+    }
+
+    // Bins
+    if(q.isBins){
+      const cards = it.c.map((card,idx)=>{
+        const b = st.bins[idx];
+        const isHeld = st.held === idx;
+        return {
+          idx, label: card.t, b, isHeld,
+          bd: isHeld ? '#b68235' : 'rgba(32,31,29,.16)',
+          bg: isHeld ? 'rgba(182,130,53,.14)' : 'rgba(255,255,255,0.7)',
+          fg: '#201f1d',
+          onClick: (e)=>{
+            if(e && e.stopPropagation) e.stopPropagation();
+            if(st.answered) return;
+            if(st.held === idx){
+              this.setState({ held:null });
+            } else {
+              this.setState({ held:idx });
+            }
+          }
+        };
+      });
+      q.loose = cards.filter(cc=> cc.b==null);
+      q.noLoose = q.loose.length === 0;
+      q.binCols = 'repeat(' + it.bn.length + ', 1fr)';
+      q.bins = it.bn.map((name, bIdx)=>{
+        const inThis = cards.filter(cc=> cc.b===bIdx);
+        const isTarget = st.held!=null;
+        return {
+          name,
+          titleColor: '#7d5411',
+          bg: 'rgba(248,244,244,.7)',
+          bd: isTarget ? '#b68235' : 'rgba(32,31,29,.16)',
+          borderStyle: isTarget ? 'dashed' : 'solid',
+          cards: inThis,
+          onClick: ()=>{
+            if(st.answered || st.held==null) return;
+            const bins = Object.assign({}, st.bins, { [st.held]: bIdx });
+            this.setState({ bins, held:null });
+          }
+        };
+      });
+    }
+
+    // Dial
+    if(q.isDial){
+      const pct = Math.max(0, Math.min(100, st.dv));
+      q.dialPct = pct + '%';
+      q.dialTop = '100px';
+      q.curveOp = '0.7';
+      q.dialZones = [
+        { k: '01 · 偏低区间', label: it.labels[0], bg: pct<it.zone[0]?'rgba(182,130,53,.12)':'transparent', fg: pct<it.zone[0]?'#7d5411':'#605d5d', kColor: '#b68235' },
+        { k: '02 · 核心目标', label: it.labels[1], bg: (pct>=it.zone[0]&&pct<=it.zone[1])?'rgba(15,110,86,0.12)':'transparent', fg: (pct>=it.zone[0]&&pct<=it.zone[1])?'#0F6E56':'#605d5d', kColor: '#0F6E56' },
+        { k: '03 · 偏高区间', label: it.labels[2], bg: pct>it.zone[1]?'rgba(122,47,47,0.12)':'transparent', fg: pct>it.zone[1]?'#7a2f2f':'#605d5d', kColor: '#7a2f2f' }
+      ];
+      q.onTrack = (e)=>{
+        if(st.answered) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const val = Math.max(1, Math.min(99, Math.round((clickX / rect.width)*100)));
+        this.setState({ dv: val });
+      };
+    }
+
+    // Timed
+    if(q.isTimed){
+      const rounds = it.rounds || [];
+      const r = rounds[st.tIdx] || rounds[0];
+      q.timedIdxText = '第 ' + (st.tIdx+1) + ' / ' + rounds.length + ' 问';
+      q.timerText = st.tLeft + ' 秒';
+      q.timerPct = Math.round((st.tLeft/(it.secs||45))*100) + '%';
+      q.timerColor = st.tLeft <= 10 ? '#7a2f2f' : '#b68235';
+      q.timedPrompt = r.q;
+      q.timedOpts = r.o.map((optText, oIdx)=>({
+        text: optText,
+        onClick: ()=>{
+          if(!st.tOn || st.answered) return;
+          const isHit = (oIdx === r.a);
+          const nextHits = st.tHits + (isHit?1:0);
+          const nextIdx = st.tIdx + 1;
+          const tRes = (st.tRes||[]).concat(isHit);
+          if(nextIdx < rounds.length){
+            this.setState({ tIdx: nextIdx, tHits: nextHits, tRes });
+          } else {
+            // 全部答完
+            if(this.timerId){ clearInterval(this.timerId); this.timerId=null; }
+            const corr = nextHits >= Math.ceil(rounds.length*0.75);
+            this.setState({ tIdx: rounds.length-1, tHits: nextHits, tOn:false, tRes, answered:true, correct:corr });
+            this.recordAnswer(corr);
+          }
+        }
+      }));
+      q.timedMarks = rounds.map((_,k)=>{
+        const res = (st.tRes||[])[k];
+        let bg = 'rgba(32,31,29,.12)';
+        if(res===true) bg = '#0F6E56';
+        else if(res===false) bg = '#7a2f2f';
+        else if(k===st.tIdx) bg = '#b68235';
+        return { bg };
+      });
+    }
+
+    // Answer feedback
+    const verdictColor = st.correct ? '#0F6E56' : '#7a2f2f';
+    const verdictWord = st.correct ? '立论成立' : '立论存疑';
+    const snark = st.correct
+      ? (st.streak>=3 ? '连对如潮，四十年涨落一目了然。' : '论证扎实，结构之眼已然睁开。')
+      : '立论存疑，对照速查卡重新核账。';
+    const nextLabel = (st.qi+1 < c.items.length) ? '下一题' : '封卷结算';
+
+    // Result View Model
+    const statC = st.stats[st.ci] || {total:1, right: (st.correct?1:0)};
+    const rPct = Math.round((statC.right/Math.max(1,statC.total))*100);
+    const pass = rPct >= 60;
+    const sealColor = pass ? '#b68235' : '#7a2f2f';
+    const grade = rPct >= 90 ? '通关 · 优等' : (rPct >= 60 ? '通关 · 合格' : '折戟 · 需重练');
+    const rolePassComments = [
+      '四化座次归位！非调私自福一化不漏，全球化分与合已然分清，准予晋升范式观测线！',
+      '范式转换观测合格！五维对比表一维不差，MMT 的美元霸权底气看得透彻！',
+      '脱钩去风险推演通过！四维差异成对写，萨缪尔森陷阱一针见血，手段变精话术变软！',
+      '东亚地图测绘达标！四条演变特征排布无误，CICE 与多中心网络分寸精准！',
+      '四十年两页账合龙！80s 四因与 2016 四因一字不错，2008 拐点与 2016 元年分明！',
+      '论战答辩立案成功！四点反驳有力，收益三项与代价四项辩证成对！',
+      '殿试金卷合龙！首席研究员以「三国死法＋四条教训＋中国三原则」封印退潮纪年！'
+    ];
+    const roleFailComments = [
+      '四化席位错乱！新自由主义的四化没钉牢，全球化的分与合也混了，名解分析分全丢！',
+      '范式没转过来！把涓滴与财政纪律答成了新共识，五维对比表需重背！',
+      '策略定性跑偏！把去风险答成了战略软化，四维差异与四条原因都要重辨！',
+      '地图画歪了！四条演变特征错位，雁行与多中心的范式分野没守住！',
+      '两页账翻乱！80s 与 2016 的四因互相串栏，2008 与 2016 的角色也混了！',
+      '答辩失守！反驳四点不全，收益与代价贴错栏，30% 的硬数据没记住！',
+      '终审未达标！三国死法与四条教训错位，中国三原则与出处分寸都要重整！'
+    ];
+    const comment = pass ? (rolePassComments[st.ci] || '全卷收尾，逻辑自成体系。') : (roleFailComments[st.ci] || '本卷失分较多，建议翻看错题本重温速查卡。');
+    const wrongInThis = st.wrong.filter(w=> w.ci===st.ci);
+
+    const result = {
+      code: c.code, title: c.title,
+      charSlot: 'result-char-' + mentorChar.id,
+      charSrc: pass ? mentorChar.ok : mentorChar.no,
+      charName: mentorChar.name,
+      sealColor, pct: rPct + '%', grade, comment,
+      repText: '' + st.rep, bestText: '' + st.best,
+      modeText: st.examMode ? '极速应试' : '剧情研习',
+      hasWrong: wrongInThis.length > 0,
+      wrongN: '' + wrongInThis.length + ' 题',
+      wrongList: wrongInThis,
+      nextActionLabel: (st.ci+1 < this.DATA.length) ? '进下一卷（' + this.DATA[st.ci+1].title + '）' : '进入终卷总览'
+    };
+
+    // Review View Model
+    const hasWrongTotal = st.wrong.length > 0;
+    const noWrongTotal = !hasWrongTotal;
+    const wrongLedger = st.wrong.map(w=> Object.assign({}, w, {
+      onRedo: ()=>{
+        this.setState(Object.assign({
+          ci: w.ci, qi: w.qi, screen: 'play', fromReview: true
+        }, this.resetQ(w.ci, w.qi, 0)));
+      }
+    }));
+    const allDone = Object.keys(st.stats).length >= this.DATA.length && this.DATA.every((_,i)=> st.stats[i] && st.stats[i].right/st.stats[i].total >= 0.5);
+    const chainWords = ['四化：非调私自福','旧华盛顿→新华盛顿','脱钩→去风险 · 萨缪尔森陷阱','换壳未换芯 · CICE','80s 四因 ⇋ 2016 四因','收益三项 · 代价四项','三国死法 · 中国三原则'];
+
+    return {
+      darkGround, curBgUrl, bgOpacity, bgFilter, bgOverlay, bgRef: this.bgRef,
+      isTitle: st.screen==='title',
+      isMap: st.screen==='map',
+      isIntro: st.screen==='intro',
+      isScene: st.screen==='scene',
+      isPlay: st.screen==='play',
+      isResult: st.screen==='result',
+      isReview: st.screen==='review',
+
+      // Title
+      hasSave: st.hasSave, saveLabel: st.saveLabel, confirmNew: st.confirmNew,
+      onStart: this.onStart, onResume: this.onResume, onCancelNew: this.onCancelNew,
+      onToggleExam: this.onToggleExam, examLabel, examDesc, examFg, examBd,
+      titleStats,
+
+      // Map
+      repText, wrongCount: '' + st.wrong.length, bestText: '' + st.best,
+      onOpenReview: this.onOpenReview, mapRows,
+
+      // Intro
+      intro, onBeginChapter: this.onBeginChapter, onBackToMap: this.onBackToMap,
+
+      // Scene
+      sceneFigures, sceneName, sceneRole, sceneNameColor, sceneCount, sceneText,
+      onSceneAdvance: this.onSceneAdvance, onSceneSkip: this.onSceneSkip,
+
+      // Play
+      playChapterTitle, playRole, progressText, progressPct, streakOn, streakText,
+      playCharSlot, playCharSrc, playCharName, playCharTitle, playCharStatusColor, playCharStatusText,
+      playCode, playBrief, playChips, dots,
+      q, answered: st.answered, verdictColor, verdictWord, snark, nextLabel,
+      onCheck: this.onCheck, onResetQ: this.onResetQ, onNext: this.onNext,
+
+      // Result
+      result, onNextChapter: this.onNextChapter,
+
+      // Review
+      hasWrongTotal, noWrongTotal, wrongLedger, allDone, chainWords,
+      onClearWrong: this.onClearWrong, onRestartAll: this.onRestartAll
+    };
+  }
+}
+</script>
+<!-- 读者共建组件：评论区 + 纠错入口（由 scripts/inject-community.mjs 注入/维护） -->
+<div id="community-root" data-theme="transparent_dark"></div>
+<script src="/community.js" defer></script>
+</body>
+</html>

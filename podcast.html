@@ -704,8 +704,8 @@
     <script>
         // 音频托管基址（可配置）
         //  · 留空 ''        = 用仓库内相对路径（本地预览 / 若 mp3 仍在仓库时）
-        //  · 设为下载基址    = 从 GitHub Releases 加载，mp3 不再占用仓库体积
-        const AUDIO_BASE = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        //  · 设为下载基址    = 从 GitHub Releases 加载（默认采用国内加速镜像直连），mp3 不再占用仓库体积
+        const AUDIO_BASE = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
         // 中文文件名的 political-science 资产改用 ASCII 别名（GitHub 上传 API 不支持多字节名）
         const ASSET_MAP = {
             'podcasts/political-science/名词解释_30题必背.mp3': 'political-science__noun-explanation-30.mp3',

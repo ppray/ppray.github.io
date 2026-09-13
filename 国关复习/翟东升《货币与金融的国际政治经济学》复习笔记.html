@@ -21,7 +21,7 @@
 <meta property="article:author" content="ppray">
 <meta property="article:section" content="国际政治经济学">
 <meta property="article:published_time" content="2026-06-03">
-<meta property="article:modified_time" content="2026-09-08">
+<meta property="article:modified_time" content="2026-09-13">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="翟东升《货币与金融的国际政治经济学》复习笔记｜13 专题 103 题全解析">
 <meta name="twitter:description" content="中国人民大学翟东升《货币与金融的国际政治经济学》课程复习笔记：13 个专题、103 道题逐题作答（名词解释 35 · 简答 39 · 论述 29），涵盖外汇储备、人民币汇率与国际化、金本位、布雷顿森林与牙买加体系、中心—外围体系、美元霸权、全球金融危机史与外资和中国工业化，附答题框架与图解。">
@@ -45,7 +45,7 @@
         "@id": "https://ppray.github.io/%E5%9B%BD%E5%85%B3%E5%A4%8D%E4%B9%A0/%E7%BF%9F%E4%B8%9C%E5%8D%87%E3%80%8A%E8%B4%A7%E5%B8%81%E4%B8%8E%E9%87%91%E8%9E%8D%E7%9A%84%E5%9B%BD%E9%99%85%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E3%80%8B%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0.html"
       },
       "datePublished": "2026-06-03",
-      "dateModified": "2026-09-08",
+      "dateModified": "2026-09-13",
       "author": {
         "@type": "Person",
         "name": "ppray",
@@ -723,6 +723,57 @@ html.dark blockquote.ans-block {
 html.dark blockquote.ans-block p > strong:first-child {
   color: #34d399;
 }
+/* ===== 答案块内部排版分级（配合 JS 打的 ans-lead / ans-sec / ans-item / ans-note 类） ===== */
+/* 导语「答：……」：答案总起句，绿色加粗加大，下加虚线与正文分隔 */
+blockquote.ans-block p.ans-lead {
+  color: #047857;
+  font-size: 1.04em;
+  margin: 3px 0 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.45);
+}
+blockquote.ans-block p.ans-lead > strong:first-child { color: #047857; }
+html.dark blockquote.ans-block p.ans-lead,
+html.dark blockquote.ans-block p.ans-lead > strong:first-child { color: #34d399; }
+html.dark blockquote.ans-block p.ans-lead { border-bottom-color: rgba(52, 211, 153, 0.4); }
+
+/* 小节标题「一、……」：次级标题——墨色加粗加大 + 绿色竖标，与导语、条目拉开层级 */
+blockquote.ans-block p.ans-sec {
+  color: var(--text-main);
+  font-size: 1.06em;
+  margin: 18px 0 7px;
+  letter-spacing: 0.2px;
+}
+blockquote.ans-block p.ans-sec::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 0.92em;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #10b981, #059669);
+  margin-right: 9px;
+  vertical-align: -0.06em;
+}
+blockquote.ans-block p.ans-sec > strong:first-child { color: inherit; }
+html.dark blockquote.ans-block p.ans-sec > strong:first-child { color: inherit; }
+
+/* 条目「1. ……」：整体缩进一级、行距收紧，采分点标签保持主题绿 */
+blockquote.ans-block p.ans-item {
+  margin: 6px 0;
+  padding-left: 1.4em;
+  font-size: 0.97em;
+  line-height: 1.78;
+}
+
+/* 口诀 / 记忆公式 / 结论注：弱化为辅助注，突出主干层级 */
+blockquote.ans-block p.ans-note {
+  margin: 10px 0 4px;
+  font-size: 0.9em;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+blockquote.ans-block ul, blockquote.ans-block ol { margin: 8px 0 10px; }
+blockquote.ans-block li { margin: 4px 0; font-size: 0.97em; }
+blockquote.ans-block > :last-child { margin-bottom: 2px; }
 
 /* 首屏导览 note（第一个 h2 之前） */
 blockquote.intro-note {
@@ -22895,7 +22946,18 @@ Import Substitution Industrialization，<span class="hl">发展中国家以政�
       if (t.indexOf('考场标准作答') !== -1) {
         h5.classList.add('ans-head');
         var bq = h5.nextElementSibling;
-        if (bq && bq.tagName === 'BLOCKQUOTE') bq.classList.add('ans-block');
+        if (bq && bq.tagName === 'BLOCKQUOTE') {
+          bq.classList.add('ans-block');
+          // 答案段落分级：导语 / 小节标题 / 编号条目 / 辅助注，供 CSS 拉开字号与缩进层级
+          Array.prototype.forEach.call(bq.children, function (p) {
+            if (p.tagName !== 'P') return;
+            var tx = (p.textContent || '').trim();
+            if (/^答\s*[:：]/.test(tx)) p.classList.add('ans-lead');
+            else if (/^[一二三四五六七八九十]+\s*、/.test(tx)) p.classList.add('ans-sec');
+            else if (/^(\d{1,2}\s*[\.、]|[①-⑳])/.test(tx)) p.classList.add('ans-item');
+            else p.classList.add('ans-note');
+          });
+        }
       } else if (t.indexOf('深度复习笔记') !== -1) {
         h5.classList.add('notes-head');
       }
@@ -23374,8 +23436,10 @@ window.__QA_MANIFEST_INLINE = [{"idx":1,"file":"mfipe-qa-001.mp3","topic":"外�
 (function () {
   'use strict';
   // MP3 托管在 GitHub Releases（与 podcast.html 的 AUDIO_BASE 同一约定）；
+  // 国内直接访问 GitHub Releases 常遇 DNS 污染/阻断，默认使用国内加速镜像（ghproxy.net），备用 ghfast.top；
   // manifest.json 随仓库发布，本地开发时若 Releases 还没传则回退相对路径。
-  var AUDIO_BASE = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+  var AUDIO_BASE = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+  var AUDIO_BACKUP = 'https://ghfast.top/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
   var AUDIO_LOCAL = '../podcasts/mfipe-qa/';
   var MANIFEST_URL = new URL('../podcasts/mfipe-qa/manifest.json', location.href).href;
   var INLINE_MANIFEST = window.__QA_MANIFEST_INLINE || [];  // 内嵌清单副本（file:// / 离线兜底）
@@ -23522,7 +23586,7 @@ window.__QA_MANIFEST_INLINE = [{"idx":1,"file":"mfipe-qa-001.mp3","topic":"外�
   // 而不是置 null 导致点击按钮静默无反应。
   function probeAudioBase(done) {
     var isFile = location.protocol === 'file:';
-    var candidates = (isFile ? [AUDIO_LOCAL, AUDIO_BASE] : [AUDIO_BASE, AUDIO_LOCAL])
+    var candidates = (isFile ? [AUDIO_LOCAL, AUDIO_BASE, AUDIO_BACKUP] : [AUDIO_BASE, AUDIO_BACKUP, AUDIO_LOCAL])
       .map(function (c) { return c.replace(/\/$/, ''); });
     var i = 0;
     (function tryNext() {
@@ -23640,15 +23704,18 @@ window.__QA_MANIFEST_INLINE = [{"idx":1,"file":"mfipe-qa-001.mp3","topic":"外�
   });
   audio.addEventListener('error', function () {
     if (cur < 0) return;
-    // 换源重试：Releases 失败 → 本地（file:// 本地打开/离线场景），反向亦然；每轮只换一次
+    // 换源重试：主加速镜像失败 → 备用镜像/本地；每轮换源重试一次
     if (!retriedBase && audioBase) {
       retriedBase = true;
-      var nextBase = (audioBase === AUDIO_BASE) ? AUDIO_LOCAL.replace(/\/$/, '') : AUDIO_BASE;
+      var isFile = location.protocol === 'file:';
+      var nextBase = (audioBase === AUDIO_BASE)
+        ? (isFile ? AUDIO_LOCAL.replace(/\/$/, '') : AUDIO_BACKUP)
+        : AUDIO_BASE;
       audioBase = nextBase;
       clearTimeout(startWatch);
       ui.title.textContent = nextBase === AUDIO_BASE
-        ? '正在切换到 GitHub Releases 音源…'
-        : '正在切换到本地音源…';
+        ? '正在切换到主加速镜像音源…'
+        : (isFile ? '正在切换到本地音源…' : '正在切换到备用镜像音源…');
       playIdx(cur, false);
       return;
     }
