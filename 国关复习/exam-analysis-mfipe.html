@@ -146,16 +146,16 @@
       <span class="label">模拟套卷</span>
     </div>
     <div class="stat-box">
-      <span class="num">59</span>
-      <span class="label">名词解释（去重约50）</span>
+      <span class="num">62</span>
+      <span class="label">名词解释（合并后35）</span>
     </div>
     <div class="stat-box">
       <span class="num">45</span>
-      <span class="label">简答题（去重约40）</span>
+      <span class="label">简答题（合并后39）</span>
     </div>
     <div class="stat-box">
-      <span class="num">26</span>
-      <span class="label">论述题（去重约22）</span>
+      <span class="num">30</span>
+      <span class="label">论述题（合并后29）</span>
     </div>
   </div>
   <div class="highlight-box">
@@ -174,11 +174,11 @@
       <table>
         <tr><th>题型</th><th>题量</th><th>建议分值</th><th>占比</th></tr>
         <tr><td>名词解释</td><td>5-7题</td><td>4分×6=24分</td><td>24%</td></tr>
-        <tr><td>简答题</td><td>4-5题</td><td>8分×5=40分</td><td>40%</td></tr>
-        <tr><td>论述题</td><td>2-3题</td><td>18分×2=36分</td><td>36%</td></tr>
-        <tr style="font-weight:700;background:#f1f3f5"><td>合计</td><td>11-15题</td><td>100分</td><td>100%</td></tr>
+        <tr><td>简答题</td><td>3-5题</td><td>8分×5=40分</td><td>40%</td></tr>
+        <tr><td>论述题</td><td>3题（每卷恒定）</td><td>18分×2=36分</td><td>36%</td></tr>
+        <tr style="font-weight:700;background:#f1f3f5"><td>合计</td><td>13-15题</td><td>100分</td><td>100%</td></tr>
       </table>
-      <p style="color:var(--muted);font-size:0.85rem;margin-top:8px">* 题量波动较大，论述题个别套卷为2题，主流为2-3题。</p>
+      <p style="color:var(--muted);font-size:0.85rem;margin-top:8px">* 实测10卷题量：名词解释5-7题、简答3-5题、论述恒为3题（10卷合计：名词62 · 简答45 · 论述30）。</p>
     </div>
     <div class="chart-container-sm">
       <canvas id="typeChart"></canvas>
@@ -189,23 +189,27 @@
 <!-- 高频考点 -->
 <div class="card">
   <h2>三、高频考点热力分布（五星必背）</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-top:-8px;margin-bottom:12px">
+    统计口径：逐卷统计模拟-01～10 全部 <strong>137 道题面</strong>（含名词解释），每题按主考点归入一个主题（2026-09-15 逐卷复核）。若仅计简答+论述大题，前三为 人民币汇率 10 · 国际货币体系 10 · 央行操作 10。
+  </p>
   <div class="grid-2">
     <div>
       <table>
         <tr><th>考点主题</th><th>出现频次</th><th>优先级</th></tr>
-        <tr><td>人民币汇率（阶段/高低估值/升值影响/操纵论）</td><td>8次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>外汇储备（成因/政治含义/代价/微观制度/剥夺补贴）</td><td>7次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>国际货币体系演变（金本位→布雷顿森林→牙买加）</td><td>7次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>人民币国际化（策略/步骤/机遇期/日元教训）</td><td>6次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>金融危机案例（拉美/亚洲/次贷/欧债）</td><td>6次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>美元霸权/国际货币份额/特里芬难题/铸币税</td><td>5次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>央行货币政策操作（公开市场/存准/对冲/池子）</td><td>5次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>新自由主义全球化/逆全球化/华盛顿共识</td><td>5次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>中心-外围体系/三外路线/出口导向/依附理论</td><td>5次+</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
-        <tr><td>外资企业/FDI政策演变/产业转移</td><td>4次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
-        <tr><td>中美经贸关系（脱钩→去风险/贸易战/东亚网络）</td><td>4次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
-        <tr><td>一带一路/债务经济学/储蓄转变</td><td>3次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
-        <tr><td>老龄化/技术进步对汇率影响</td><td>3次</td><td class="priority-3">⭐⭐⭐</td></tr>
+        <tr><td>国际货币体系演变（金本位→布雷顿森林→牙买加）</td><td>19次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>央行货币政策操作（公开市场/存准/对冲/池子）</td><td>18次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>人民币汇率（阶段/高低估值/升值影响/操纵论）</td><td>16次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>中心-外围体系/三外路线/出口导向/依附理论</td><td>12次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>外汇储备（成因/政治含义/代价/微观制度/剥夺补贴）</td><td>10次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>金融危机案例（拉美/亚洲/次贷/欧债）</td><td>10次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>美元霸权/国际货币份额/特里芬难题/铸币税</td><td>10次</td><td class="priority-5">⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>外资企业/FDI政策演变/产业转移</td><td>9次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>中美经贸关系（脱钩→去风险/贸易战/东亚网络）</td><td>9次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>人民币国际化（策略/步骤/机遇期/日元教训）</td><td>7次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>一带一路/债务经济学/储蓄转变</td><td>5次</td><td class="priority-4">⭐⭐⭐⭐</td></tr>
+        <tr><td>新自由主义全球化/逆全球化/华盛顿共识</td><td>4次</td><td class="priority-3">⭐⭐⭐</td></tr>
+        <tr><td>老龄化/技术进步对汇率影响</td><td>2次</td><td class="priority-3">⭐⭐⭐</td></tr>
+        <tr><td>其他散点名词（资源诅咒/滞涨/资产泡沫/康波周期等）</td><td>6次</td><td style="color:var(--muted)">—</td></tr>
       </table>
     </div>
     <div class="chart-container">
@@ -407,12 +411,12 @@
     <tr>
       <td>汇率政策全套餐</td>
       <td>名词（浮动/固定汇率/购买力平价）+ 简答（汇率阶段/高低估值利弊）+ 论述（汇率制度选择/操纵论）</td>
-      <td>01,04,06,07,08,09</td>
+      <td>04,06,07,08,09</td>
     </tr>
     <tr>
       <td>外汇储备双线</td>
       <td>简答（政治含义/代价/微观制度）+ 论述（成因及产生过程/剥夺补贴分析）</td>
-      <td>02,04,06,07,08,10</td>
+      <td>02,06,07,08,10</td>
     </tr>
     <tr>
       <td>国际货币体系演进</td>
@@ -422,17 +426,17 @@
     <tr>
       <td>金融危机案例库</td>
       <td>名词（次贷危机/欧债/拉美危机）+ 简答（危机传导/历次罗列）+ 论述（成因对策比较）</td>
-      <td>03,05,08,09,10</td>
+      <td>03,08,09,10</td>
     </tr>
     <tr>
       <td>人民币国际化专题</td>
       <td>名词（人民币国际化/货币互换/CICE）+ 简答（策略步骤/机遇期）+ 论述（日元教训/体系位置）</td>
-      <td>03,06,07</td>
+      <td>06,07</td>
     </tr>
     <tr>
       <td>当代热点追踪</td>
       <td>名词（友岸外包/去风险化/华盛顿共识）+ 简答（QE后美元涨/拜登经济学/东亚网络变化）+ 论述（新自由主义→逆全球化/搭便车反驳）</td>
-      <td>01,05,08,09,10</td>
+      <td>01,05,10</td>
     </tr>
   </table>
 </div>
@@ -465,7 +469,7 @@
 </div>
 
 <div class="footer">
-  本报告基于10套模拟卷试题及MD答案整理版自动生成 · 供复习参考 · 祝考试顺利
+  本报告基于10套模拟卷试题及MD答案整理版自动生成 · 考频数据已于 2026-09-15 逐卷复核（137题面=名词62+简答45+论述30） · 供复习参考 · 祝考试顺利
 </div>
 
 </div>
@@ -489,15 +493,15 @@ new Chart(document.getElementById('typeChart'), {
   }
 });
 
-// 高频考点横向条形图
+// 高频考点横向条形图（2026-09-15 逐卷复核：137题面按主考点归类）
 new Chart(document.getElementById('heatChart'), {
   type: 'bar',
   data: {
-    labels: ['人民币汇率', '外汇储备', '国际货币体系', '人民币国际化', '金融危机史', '美元霸权', '央行操作', '新自由主义/全球化', '中心-外围/三外路线', '中美博弈', '外资/FDI', '一带一路'],
+    labels: ['国际货币体系', '央行操作', '人民币汇率', '中心-外围/三外', '外汇储备', '金融危机', '美元霸权', '外资/FDI', '中美经贸', '人民币国际化', '一带一路/债务', '新自由主义', '老龄化汇率', '其他散点'],
     datasets: [{
       label: '出现频次',
-      data: [8, 7, 7, 6, 6, 5, 5, 5, 5, 4, 4, 3],
-      backgroundColor: ['#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#fd7e14','#fd7e14','#fd7e14'],
+      data: [19, 18, 16, 12, 10, 10, 10, 9, 9, 7, 5, 4, 2, 6],
+      backgroundColor: ['#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#dc3545','#fd7e14','#fd7e14','#fd7e14','#fd7e14','#fd7e14','#fd7e14','#adb5bd'],
       borderRadius: 4
     }]
   },
@@ -506,7 +510,7 @@ new Chart(document.getElementById('heatChart'), {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: false } },
-    scales: { x: { beginAtZero: true, max: 10 } }
+    scales: { x: { beginAtZero: true, max: 20 } }
   }
 });
 
