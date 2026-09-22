@@ -1,19 +1,20 @@
 {
- "generated": "2026-09-22 00:13",
- "drawdown": -0.0184,
+ "generated": "2026-09-22 23:41",
+ "drawdown": -0.0033,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
-  "financial": 0.0,
-  "rates_debt": 0.33,
+  "financial": 0.14,
+  "rates_debt": 0.5,
   "services": 0.0,
-  "inflation_energy": 0.75
+  "inflation_energy": 0.5
  },
  "evidence": [
-  "SPY 距高点回撤 -1.8%(高点 2026-08-13)",
+  "SPY 距高点回撤 -0.3%(高点 2026-08-13)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[rates_debt +2] 股债相关性转正(0.39),债券失去避险功能",
-  "[inflation_energy +2] 油价逆势大涨(USO +23.0%)",
-  "[inflation_energy +1] 能源板块逆势跑赢(XLE相对 +7.2%)"
+  "[financial +1] 银行股领跌(XLF相对 -5.3%)",
+  "[rates_debt +2] 股债相关性转正(0.42),债券失去避险功能",
+  "[rates_debt +1] 公用事业领跌(XLU相对 -7.0%)",
+  "[inflation_energy +2] 油价逆势大涨(USO +15.2%)"
  ]
 }
