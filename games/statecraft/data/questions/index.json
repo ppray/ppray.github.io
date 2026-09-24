@@ -1,0 +1,407 @@
+{
+ "note": "由 scripts/statecraft/extract-questions.mjs 生成，勿手改。",
+ "total": {
+  "auto": 815,
+  "cards": 315,
+  "meta": 66
+ },
+ "sources": [
+  {
+   "id": "fx-reserves",
+   "label": "外储纪年（games/fx-reserves）",
+   "items": 62
+  },
+  {
+   "id": "fx-rate",
+   "label": "汇改纪年（games/fx-rate）",
+   "items": 64
+  },
+  {
+   "id": "rmb-intl",
+   "label": "出海纪年（games/rmb-intl）",
+   "items": 61
+  },
+  {
+   "id": "gold-std",
+   "label": "金锚纪年（games/gold-std）",
+   "items": 61
+  },
+  {
+   "id": "bretton",
+   "label": "潮汐纪年（games/bretton）",
+   "items": 61
+  },
+  {
+   "id": "center-periphery",
+   "label": "圈层纪年（games/center-periphery）",
+   "items": 54
+  },
+  {
+   "id": "monetary-tools",
+   "label": "水阀纪年（games/monetary-tools）",
+   "items": 54
+  },
+  {
+   "id": "crisis-history",
+   "label": "危机纪年（games/crisis-history）",
+   "items": 59
+  },
+  {
+   "id": "us-hegemony",
+   "label": "特权纪年（games/us-hegemony）",
+   "items": 54
+  },
+  {
+   "id": "deglobalization",
+   "label": "退潮纪年（games/deglobalization）",
+   "items": 54
+  },
+  {
+   "id": "cycles",
+   "label": "长波纪年（games/cycles）",
+   "items": 49
+  },
+  {
+   "id": "authored-fdi",
+   "label": "外资(FDI)与中国工业化（据 外资FDI与中国工业化-关键词速查卡 补写）",
+   "items": 23
+  },
+  {
+   "id": "authored-regional",
+   "label": "区域合作与特定项目（据 区域合作与特定项目-关键词速查卡 补写）",
+   "items": 12
+  },
+  {
+   "id": "authored-politics",
+   "label": "政治学原理（据 quiz-questions.js 政治学条目 补写）",
+   "items": 14
+  },
+  {
+   "id": "mfipe",
+   "label": "国关复习/mfipe-data.js（翟东升课程 14 章名词·简答·论述）",
+   "items": 101
+  },
+  {
+   "id": "quiz",
+   "label": "quiz-questions.js（政治学 + IPE 模拟卷）",
+   "items": 347
+  }
+ ],
+ "byChapter": {
+  "fx-reserves": {
+   "auto": 63,
+   "cards": 18,
+   "types": {
+    "choice": 27,
+    "cloze": 11,
+    "tf": 5,
+    "bins": 10,
+    "order": 3,
+    "multi": 4,
+    "dial": 1,
+    "decision": 2,
+    "card": 18
+   }
+  },
+  "fx-rate": {
+   "auto": 70,
+   "cards": 21,
+   "types": {
+    "choice": 25,
+    "tf": 5,
+    "bins": 11,
+    "cloze": 17,
+    "order": 4,
+    "multi": 3,
+    "decision": 4,
+    "dial": 1,
+    "card": 21
+   }
+  },
+  "gold-std": {
+   "auto": 64,
+   "cards": 12,
+   "types": {
+    "order": 4,
+    "bins": 8,
+    "choice": 28,
+    "cloze": 13,
+    "tf": 9,
+    "dial": 1,
+    "decision": 1,
+    "card": 12
+   }
+  },
+  "rmb-intl": {
+   "auto": 66,
+   "cards": 16,
+   "types": {
+    "choice": 29,
+    "multi": 2,
+    "tf": 8,
+    "cloze": 14,
+    "order": 4,
+    "bins": 8,
+    "decision": 1,
+    "card": 16
+   }
+  },
+  "bretton": {
+   "auto": 65,
+   "cards": 16,
+   "types": {
+    "choice": 29,
+    "tf": 8,
+    "cloze": 13,
+    "bins": 7,
+    "order": 5,
+    "decision": 3,
+    "card": 16
+   }
+  },
+  "center-periphery": {
+   "auto": 56,
+   "cards": 11,
+   "types": {
+    "choice": 20,
+    "tf": 7,
+    "bins": 8,
+    "cloze": 9,
+    "decision": 6,
+    "multi": 2,
+    "order": 3,
+    "dial": 1,
+    "card": 11
+   }
+  },
+  "monetary-tools": {
+   "auto": 64,
+   "cards": 31,
+   "types": {
+    "choice": 25,
+    "cloze": 14,
+    "decision": 4,
+    "multi": 8,
+    "tf": 5,
+    "order": 3,
+    "dial": 1,
+    "bins": 4,
+    "card": 31
+   }
+  },
+  "crisis-history": {
+   "auto": 64,
+   "cards": 23,
+   "types": {
+    "choice": 32,
+    "bins": 3,
+    "cloze": 11,
+    "multi": 8,
+    "order": 4,
+    "tf": 3,
+    "decision": 2,
+    "dial": 1,
+    "card": 23
+   }
+  },
+  "fdi": {
+   "auto": 29,
+   "cards": 16,
+   "types": {
+    "choice": 11,
+    "multi": 3,
+    "cloze": 9,
+    "bins": 2,
+    "tf": 2,
+    "order": 2,
+    "card": 16
+   }
+  },
+  "us-hegemony": {
+   "auto": 63,
+   "cards": 20,
+   "types": {
+    "bins": 2,
+    "choice": 29,
+    "cloze": 14,
+    "order": 4,
+    "multi": 7,
+    "tf": 4,
+    "dial": 1,
+    "decision": 2,
+    "card": 20
+   }
+  },
+  "cycles": {
+   "auto": 51,
+   "cards": 6,
+   "types": {
+    "bins": 6,
+    "choice": 25,
+    "cloze": 9,
+    "tf": 1,
+    "multi": 6,
+    "dial": 1,
+    "order": 2,
+    "decision": 1,
+    "card": 6
+   }
+  },
+  "deglobalization": {
+   "auto": 60,
+   "cards": 18,
+   "types": {
+    "bins": 6,
+    "choice": 28,
+    "cloze": 13,
+    "multi": 9,
+    "tf": 1,
+    "order": 1,
+    "dial": 1,
+    "decision": 1,
+    "card": 18
+   }
+  },
+  "regional": {
+   "auto": 13,
+   "cards": 7,
+   "types": {
+    "choice": 6,
+    "bins": 2,
+    "multi": 2,
+    "cloze": 2,
+    "tf": 1,
+    "card": 7
+   }
+  },
+  "general": {
+   "auto": 2,
+   "cards": 35,
+   "types": {
+    "cloze": 2,
+    "card": 35
+   }
+  },
+  "politics": {
+   "auto": 85,
+   "cards": 65,
+   "types": {
+    "choice": 12,
+    "bins": 1,
+    "multi": 1,
+    "cloze": 71,
+    "card": 65
+   }
+  }
+ },
+ "byConcept": {
+  "reserves": {
+   "auto": 160,
+   "cards": 88
+  },
+  "sterilization": {
+   "auto": 59,
+   "cards": 30
+  },
+  "trilemma": {
+   "auto": 12,
+   "cards": 8
+  },
+  "fx-regime": {
+   "auto": 206,
+   "cards": 110
+  },
+  "monetary-tools": {
+   "auto": 85,
+   "cards": 50
+  },
+  "distribution": {
+   "auto": 25,
+   "cards": 13
+  },
+  "dollar-tide": {
+   "auto": 99,
+   "cards": 48
+  },
+  "dollar-hegemony": {
+   "auto": 156,
+   "cards": 78
+  },
+  "currency-intl": {
+   "auto": 128,
+   "cards": 59
+  },
+  "crisis": {
+   "auto": 155,
+   "cards": 72
+  },
+  "debt": {
+   "auto": 95,
+   "cards": 58
+  },
+  "center-periphery": {
+   "auto": 102,
+   "cards": 52
+  },
+  "gold-standard": {
+   "auto": 136,
+   "cards": 37
+  },
+  "bretton-woods": {
+   "auto": 89,
+   "cards": 29
+  },
+  "cycles": {
+   "auto": 118,
+   "cards": 48
+  },
+  "neoliberal": {
+   "auto": 75,
+   "cards": 40
+  },
+  "trade-war": {
+   "auto": 74,
+   "cards": 40
+  },
+  "sanctions": {
+   "auto": 56,
+   "cards": 25
+  },
+  "fdi": {
+   "auto": 63,
+   "cards": 41
+  },
+  "regional": {
+   "auto": 53,
+   "cards": 35
+  },
+  "power": {
+   "auto": 9,
+   "cards": 4
+  },
+  "legitimacy": {
+   "auto": 12,
+   "cards": 8
+  },
+  "political-culture": {
+   "auto": 9,
+   "cards": 11
+  },
+  "participation": {
+   "auto": 13,
+   "cards": 11
+  },
+  "state-capacity": {
+   "auto": 7,
+   "cards": 15
+  },
+  "ir": {
+   "auto": 11,
+   "cards": 16
+  },
+  "socialism": {
+   "auto": 33,
+   "cards": 36
+  }
+ }
+}

@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "庙算 · 执政模拟。仅用于让 Node 把本目录的 .js 当作 ES module（平衡测试、校验脚本复用同一份模拟内核）。"
+}

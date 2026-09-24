@@ -53,7 +53,7 @@
   </url>
   <url>
     <loc>https://ppray.github.io/games/</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -67,13 +67,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ppray.github.io/games/statecraft/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ppray.github.io/games/us-hegemony/</loc>
     <lastmod>2026-09-09</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ppray.github.io/</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <priority>1.0</priority>
   </url>
   <url>

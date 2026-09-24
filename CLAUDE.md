@@ -134,6 +134,24 @@ node scripts/prerender-mfipe.mjs --check  # 只检查是否过期（CI 用），
   其 checkout 必须保留 `fetch-depth: 0`，否则 `git log` 取不到日期，全站 lastmod 会被刷成当天。
   新增预渲染页时，工作流的 `paths` 与运行步骤、以及 `gen-sitemap.mjs` 里的 `extras` 都要同步加。
 
+### 《庙算》执政模拟（games/statecraft/）
+
+独立旗舰页游，自有视觉风格（不用纪年系列的 DCLogic/support.js——它每次 setState 整棵重建 DOM）。
+Preact + htm 已 vendor 在 `games/statecraft/vendor/`，无构建步骤；`games/statecraft/package.json` 只为让 Node 把 .js 当 ES module。
+
+- 模拟内核 `js/sim/` 是纯函数（`step()` 旧状态进、新状态 + 因果账本出），浏览器、庙算推演、Node 平衡测试共用同一份。
+- 事件卡 `data/events.js` 是声明式条件/效果，只能引用 `js/sim/defs.js` 的 `PATHS`；国家虚构，但每张卡的 `mirror`（历史镜鉴）必须是真实国家的真实案例。
+- 题库由脚本从全站抽取，**修改任何纪年页游的 DATA、`quiz-questions.js` 或 `国关复习/mfipe-data.js` 后要重抽**（CI `statecraft.yml` 也会自动重抽并提交）：
+
+```bash
+node scripts/statecraft/extract-questions.mjs          # 重抽题库（每章自动判分题低于下限会失败）
+node scripts/statecraft/extract-questions.mjs --check  # 只检查是否过期
+node scripts/statecraft/validate.mjs                   # 事件/概念/剧本/题库引用完整性，{valid, errors[]}
+node scripts/statecraft/balance.mjs                    # 四种策略各 400 局，带 PASS/FAIL 平衡目标；改模型或事件后必跑
+```
+
+- 无页游的两章（FDI、区域合作）与政治学情境题在 `data/authored/*.js`，内容只能取自对应速查卡 / quiz-questions.js 原文。
+
 ### SEO / GEO 资产
 - `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。
 - `sitemap.xml` 由脚本生成，新增内容页后重跑：`node scripts/gen-sitemap.mjs`

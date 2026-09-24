@@ -1,0 +1,66 @@
+# 《庙算》执政模拟的数据流水线：题库是从全站抽出来的，源头一改就要重抽。
+#
+# 路径：.github/workflows/statecraft.yml
+# 手动触发：仓库 Actions 页面 → statecraft → Run workflow
+#
+# 1. 重抽题库：games/*/index.html（纪年页游 DATA）、quiz-questions.js、国关复习/mfipe-data.js
+#    → games/statecraft/data/questions/*.json。抽取脚本自带「每章自动判分题数量」下限，重点章被删空会直接失败。
+# 2. 数据校验：事件、概念表、剧本、题库之间的引用完整性（validate.mjs，返回 {valid, errors[]}）。
+# 3. 平衡冒烟：四种策略各跑 60 局完整游戏，只检查不崩溃、不出 NaN；完整平衡报告请本地跑
+#    node scripts/statecraft/balance.mjs（默认每种 400 局，带 PASS/FAIL 目标）。
+# 三步都通过且题库有变化时才提交；任何一步失败都不会推送半成品。
+
+name: statecraft
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "games/*/index.html"
+      - "quiz-questions.js"
+      - "国关复习/mfipe-data.js"
+      - "games/statecraft/**"
+      - "scripts/statecraft/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: statecraft
+  cancel-in-progress: false
+
+jobs:
+  statecraft:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 重抽题库
+        run: node scripts/statecraft/extract-questions.mjs
+
+      - name: 数据校验
+        run: node scripts/statecraft/validate.mjs
+
+      - name: 平衡冒烟
+        run: node scripts/statecraft/balance.mjs --smoke
+
+      - name: 提交变更
+        run: |
+          if git diff --quiet; then
+            echo "题库已是最新，无需提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/statecraft/data/questions
+          git commit -m "chore(statecraft): 同步题库"
+          git push

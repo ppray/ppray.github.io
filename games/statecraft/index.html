@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>庙算 · 执政模拟 —— 在一轮美元潮汐里治理一个国家</title>
+<meta name="description" content="《庙算》是一款以国际政治经济学为规则的执政模拟游戏：你是虚构国家「华胥」的首席执政官，在美元潮汐的放水、吹泡、收水、收割中处理内政、外交、经济、舆论与金融危机。每次拍板前召对内阁，答对一道真题即可看到各选项两季后的推演。题库覆盖翟东升《货币与金融的国际政治经济学》全部 14 章与政治学原理。">
+<link rel="canonical" href="https://ppray.github.io/games/statecraft/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0d0f12">
+<meta property="og:type" content="website">
+<meta property="og:title" content="庙算 · 执政模拟">
+<meta property="og:description" content="在一轮美元潮汐里执政十二个季度：三元悖论、外汇储备、货币错配、IMF 药方与舆论管控。答对真题，才能看见后果。">
+<meta property="og:url" content="https://ppray.github.io/games/statecraft/">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["VideoGame", "LearningResource"],
+  "name": "庙算 · 执政模拟",
+  "alternateName": "Statecraft",
+  "url": "https://ppray.github.io/games/statecraft/",
+  "inLanguage": "zh-CN",
+  "genre": ["Simulation", "Strategy", "Educational"],
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "learningResourceType": "Educational game",
+  "educationalLevel": "Graduate",
+  "teaches": ["三元悖论", "外汇储备与外汇占款", "冲销", "美元潮汐", "货币错配与原罪", "金融危机", "IMF 结构调整", "货币国际化", "中心-外围体系", "政治合法性", "政治参与"],
+  "isBasedOn": "翟东升《货币与金融的国际政治经济学》；政治学学科综合水平考试大纲",
+  "description": "以国际政治经济学为规则的执政模拟：玩家治理虚构国家华胥，在美元周期中处理经济、外交、舆论与危机事件；每张事件卡附真实国家的历史镜鉴，召对内阁时从全站题库抽取真题。",
+  "author": { "@type": "Person", "name": "ppray" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 等宽数字字体：非阻塞加载，拿不到就回退到系统等宽字体 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="css/statecraft.css">
+<link rel="modulepreload" href="vendor/htm-preact.js">
+<link rel="modulepreload" href="js/main.js">
+<script>document.documentElement.className = 'js';</script>
+<style>
+  .js #about { display: none; }
+  #about { max-width: 760px; margin: 0 auto; padding: 48px 20px; color: #e9e3d6; line-height: 1.9; }
+  #about h1 { font-family: var(--serif); font-size: 44px; letter-spacing: .12em; margin: 0 0 8px; }
+  /* 读者共建按钮让出底部政令台 */
+  .community-fab { bottom: 236px !important; }
+  @media (max-width: 860px) { .community-fab { bottom: 18px !important; } }
+</style>
+</head>
+<body>
+<!-- 给不执行脚本的读者与抓取器：游戏的静态说明 -->
+<section id="about">
+  <h1>庙算</h1>
+  <p><b>执政模拟 · 夫未战而庙算胜者，得算多也。</b></p>
+  <p>你是虚构国家「华胥」的首席执政官。华胥是一个靠「外贸 + 外资 + 外汇」三件套完成工业化的制造业出口国。你就任时美联储利率为 0.25%，热钱涌入；五到七个季度后美联储开始加息，潮水退去。你要在十二个季度里处理内政、外交、经济、舆论与金融危机，守住五大利益集团（出口商、金融资本、产业工人、储户与中产、地方与国企）的支持。</p>
+  <h2>规则即理论</h2>
+  <ul>
+    <li><b>三元悖论</b>：钉住汇率、资本自由流动、货币政策独立三者不可兼得。</li>
+    <li><b>美元潮汐</b>：放水 → 吹泡 → 收水 → 收割。</li>
+    <li><b>外汇占款与冲销</b>：外储增加会投放基础货币；冲销有成本，并会推高利率、吸引更多热钱。</li>
+    <li><b>货币错配（原罪）</b>：收入是本币、债务是美元，贬值会放大债务；潮水退去时短期外债到期不续形成「急停」。</li>
+    <li><b>剥夺与补贴</b>：每项政策都有受益者和买单者。</li>
+    <li><b>舆论管控的代价</b>：管得越严，报纸越好看，连执政者看到的数据也越失真。</li>
+  </ul>
+  <h2>召对与题库</h2>
+  <p>每张事件卡都附一段真实国家的「历史镜鉴」：泰国与韩国 1997、英镑 1992、香港与马来西亚 1998、日本广场协议、2013 年缩减恐慌、2022 年俄罗斯外储冻结、清迈倡议、希腊 2009 年数据修正等。拍板之前可以召对内阁：答对一道真题，就能看到每个选项两个季度后的推演。题库覆盖翟东升《货币与金融的国际政治经济学》全部 14 章（外汇储备、人民币汇率、金本位、人民币国际化、布雷顿森林与牙买加体系、中心-外围、货币政策工具、金融危机史、外资与中国工业化、美元霸权、经济周期、新自由主义与全球化、区域合作）以及政治学原理。</p>
+  <p><a href="/games/">← 研学游戏馆</a></p>
+</section>
+<noscript><p style="text-align:center;color:#e0563d;padding:20px">《庙算》需要启用 JavaScript 才能游玩。</p></noscript>
+<div id="app"></div>
+<script type="module" src="js/main.js"></script>
+<!-- 读者共建组件：评论区 + 纠错入口（由 scripts/inject-community.mjs 注入/维护） -->
+<div id="community-root" data-theme="transparent_dark"></div>
+<script src="/community.js" defer></script>
+</body>
+</html>

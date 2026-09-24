@@ -29,6 +29,17 @@
   .todo{border:1px dashed rgba(182,130,53,.3);border-radius:4px;padding:24px 22px;display:flex;flex-direction:column;justify-content:center;}
   .todo .title{font-family:'Noto Serif SC',serif;font-size:16px;color:rgba(243,242,242,.45);}
   .todo .desc{font-family:'Noto Serif SC',serif;font-size:12.5px;color:rgba(243,242,242,.3);margin-top:8px;line-height:1.7;}
+.flagship{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;text-decoration:none;color:#e9e3d6;
+    margin-bottom:22px;padding:26px 26px;border:1px solid rgba(194,58,36,.55);border-radius:4px;position:relative;overflow:hidden;
+    background:radial-gradient(420px 220px at 100% 0%,rgba(127,163,122,.16),transparent 70%),#0d0f12;transition:border-color .18s,transform .18s;}
+  .flagship:hover{border-color:#e0563d;transform:translateY(-2px);}
+  .flagship .fs-seal{width:64px;height:64px;border:3px solid #e0563d;border-radius:6px;display:grid;place-items:center;transform:rotate(-6deg);
+    color:#e0563d;font-family:'Noto Serif SC',serif;font-weight:900;font-size:30px;}
+  .flagship .fs-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.32em;color:#c49a52;text-transform:uppercase;}
+  .flagship .fs-title{font-family:'Noto Serif SC',serif;font-weight:900;font-size:30px;letter-spacing:.12em;margin:4px 0 6px;}
+  .flagship .fs-desc{font-family:'Noto Serif SC',serif;font-size:13px;line-height:1.8;color:rgba(233,227,214,.7);}
+  .flagship .fs-go{font-family:'Noto Serif SC',serif;font-size:13px;letter-spacing:.12em;color:#fff7ee;background:#c23a24;padding:10px 16px;border-radius:3px;white-space:nowrap;}
+  @media (max-width:640px){.flagship{grid-template-columns:auto 1fr;}.flagship .fs-go{grid-column:1/-1;text-align:center;}}
   .back{display:inline-block;margin-top:34px;font-family:'Noto Serif SC',serif;font-size:13px;color:rgba(243,242,242,.5);
     text-decoration:none;letter-spacing:.1em;}
   .back:hover{color:var(--gold);}
@@ -40,6 +51,15 @@
   <h1>研学游戏馆</h1>
   <div class="sub">把复习题做成能玩的东西 · 每局一个子目录，陆续上架</div>
   <div class="rule"></div>
+  <a class="flagship" href="statecraft/">
+    <div class="fs-seal">庙</div>
+    <div>
+      <div class="fs-eyebrow">Flagship · 执政模拟</div>
+      <div class="fs-title">庙算</div>
+      <div class="fs-desc">不再是通关答题，而是治理一个国家：你是虚构国家「华胥」的首席执政官，在一轮完整的美元潮汐里执政十二个季度，处理内政、外交、经济、舆论与金融危机。三元悖论、冲销成本、货币错配、IMF 药方都是游戏规则；每张事件卡附真实国家的历史镜鉴。拍板前召对内阁——题库接入上面全部十一局与翟东升课程十四章、政治学原理，答对一题，才能看见各选项两季之后的局面。</div>
+    </div>
+    <span class="fs-go">就任 →</span>
+  </a>
   <div class="grid">
     <a class="card" href="fx-reserves/">
       <div class="num">壹</div>
@@ -109,7 +129,7 @@
     </a>
     <div class="todo">
       <div class="title">下一局 · 筹备中</div>
-      <div class="desc">区域合作与特定项目、外资 FDI 与中国工业化……目录约定：games/&lt;英文短名&gt;/index.html。</div>
+      <div class="desc">区域合作与特定项目、外资 FDI 与中国工业化……（这两章的考点已先接入《庙算》的题库）目录约定：games/&lt;英文短名&gt;/index.html。</div>
     </div>
   </div>
   <a class="back" href="/">← 回首页</a>
