@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-26 00:00",
- "drawdown": -0.0113,
+ "generated": "2026-09-29 01:07",
+ "drawdown": -0.0059,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
@@ -10,13 +10,13 @@
   "inflation_energy": 0.75
  },
  "evidence": [
-  "SPY 距高点回撤 -1.1%(高点 2026-08-13)",
+  "SPY 距高点回撤 -0.6%(高点 2026-08-13)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[rates_debt +1] 国债下跌(TLT -3.5%)",
+  "[rates_debt +1] 国债下跌(TLT -3.6%)",
   "[rates_debt +2] 股债相关性转正(0.48),债券失去避险功能",
-  "[rates_debt +1] 地产领跌(XLRE相对 -5.8%)",
-  "[rates_debt +1] 公用事业领跌(XLU相对 -8.8%)",
-  "[inflation_energy +2] 油价逆势大涨(USO +22.4%)",
+  "[rates_debt +1] 地产领跌(XLRE相对 -6.5%)",
+  "[rates_debt +1] 公用事业领跌(XLU相对 -9.0%)",
+  "[inflation_energy +2] 油价逆势大涨(USO +18.6%)",
   "[inflation_energy +1] 利率与油价齐升而股票下跌"
  ]
 }
