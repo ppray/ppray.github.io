@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "猎潮 · 华尔街收割模拟。仅用于让 Node 把本目录的 .js 当作 ES module（校验、平衡脚本复用同一份内核与关卡数据）。"
+}

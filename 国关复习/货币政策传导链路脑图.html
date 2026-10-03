@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>货币政策传导链路脑图 · 从工具到就业与通胀</title>
+<style>
+  :root{
+    --primary:#185FA5; --primary-soft:#E6F1FB;
+    --text-main:#1e293b; --text-muted:#64748b;
+    --border:#e2e8f0; --code-bg:#f8fafc;
+    --warn:#A32D2D; --warn-bg:#FCEBEB;
+    --ok:#0F6E56; --ok-bg:#E1F5EE;
+    --amber:#BA7517; --amber-bg:#FAEEDA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    max-width:1280px;margin:0 auto;padding:32px 24px 64px;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--text-main);line-height:1.75;font-size:15px;background:#fff;
+  }
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:.5px;}
+  .sub{color:var(--text-muted);font-size:13px;margin-bottom:24px;}
+  h2{
+    font-size:18px;margin:36px 0 14px;padding-left:10px;
+    border-left:4px solid var(--primary);
+  }
+  h3{font-size:15px;margin:22px 0 8px;color:var(--primary);}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left;}
+  th{background:var(--code-bg);font-weight:600;white-space:nowrap;}
+  tbody tr:nth-child(even){background:#fcfdfe;}
+  .kw{font-weight:600;color:var(--primary);white-space:nowrap;}
+  .hl{background:#fef08a;padding:0 3px;border-radius:2px;}
+  .tip{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px;}
+  .warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px;}
+  .mnemonic{
+    background:var(--primary-soft);border:1px dashed var(--primary);
+    padding:10px 14px;margin:10px 0;border-radius:6px;
+    font-weight:600;font-size:14.5px;
+  }
+  ul{margin:8px 0;padding-left:22px;}
+  li{margin:4px 0;}
+
+  .mapwrap{
+    border:1px solid var(--border);border-radius:8px;padding:8px;
+    background:#fff;margin:14px 0;overflow-x:auto;
+  }
+  .maphint{font-size:13px;color:var(--text-muted);margin:6px 2px 10px;}
+  svg .hit{cursor:pointer;}
+  svg .hit:hover rect{stroke-width:2;}
+  svg .node{transition:opacity .18s;}
+  svg .node.dim{opacity:.16;}
+  .mapbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;}
+  button{
+    font:inherit;font-size:13px;padding:5px 14px;border-radius:6px;
+    border:1px solid var(--primary);background:#fff;color:var(--primary);cursor:pointer;
+  }
+  button:hover{background:var(--primary-soft);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);align-items:center;}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px;}
+
+  @media print{
+    body{padding:0;font-size:12.5pt;max-width:none;}
+    h2{page-break-after:avoid;} table,.mapwrap{page-break-inside:avoid;}
+    button,.mapbar,.maphint{display:none;}
+    @page{size:A4 landscape;margin:10mm;}
+  }
+</style>
+</head>
+<body>
+
+<h1>货币政策传导链路脑图</h1>
+<div class="sub">
+  从具体工具 → 传导渠道 → 总需求 → 就业与通胀 · 配套 Q9「货币政策背后的政治考量」·
+  点击任一工具或渠道可高亮其整条关联链路
+</div>
+
+<div class="warn">
+  <b>⚠️ 出处告警（答题前必读）</b><br>
+  ① <b>五条传导渠道</b>（利率 / 信贷 / 资产价格 / 汇率 / 预期）出自<b>标准货币经济学</b>——米什金《货币金融学》第 24 章「货币政策传导机制」、Bernanke-Gertler 金融加速器（1995）、Taylor（1995）、蒙代尔-弗莱明模型。<b>这些不是翟东升原著术语</b>，是本课的技术底座。<br>
+  ② <b>翟东升的原创贡献在最后一环</b>：他把「总需求 → 就业/通胀」这条技术链，落到<b>谁受益、谁受损</b>的分配问题上（「羊毛出在哪些羊身上」）。<br>
+  ③ 「中国传导特殊性」（间接融资为主、国企软预算约束、利率渠道打折）属<b>学界共识 + 备考归纳口径</b>，非原著原文。<br>
+  <b>建议答法</b>：先用标准传导机制拿技术分，再挂翟东升的分配结论拿分析分，两者分界写清楚。
+</div>
+
+<h2>一、全链路脑图</h2>
+
+<div class="mapbar">
+  <button id="btnReset">显示全部</button>
+  <div class="legend">
+    <span><i style="background:#E6F1FB;border:1px solid #185FA5"></i>政策工具</span>
+    <span><i style="background:#FAEEDA;border:1px solid #BA7517"></i>传导渠道</span>
+    <span><i style="background:#185FA5"></i>总需求</span>
+    <span><i style="background:#E1F5EE;border:1px solid #0F6E56"></i>就业（工薪受益）</span>
+    <span><i style="background:#FCEBEB;border:1px solid #A32D2D"></i>通胀（债权人受损）</span>
+    <span><i style="background:#F1EFE8;border:1px solid #5F5E5A"></i>约束与政治</span>
+  </div>
+</div>
+<div class="maphint">点击带边框的节点：工具 ↔ 渠道会双向高亮，其余淡出。再点一次或按「显示全部」复位。</div>
+
+<div class="mapwrap">
+<svg id="map" viewBox="0 0 1440 800" width="100%" role="img" aria-label="货币政策传导链路脑图：由政策工具经五条传导渠道汇入总需求，再分别影响就业与通胀，并受时滞、NAIRU 与中国特殊性约束">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="140" y="34" font-size="14" font-weight="600" fill="#185FA5" text-anchor="middle">① 政策工具</text>
+  <text x="450" y="34" font-size="14" font-weight="600" fill="#BA7517" text-anchor="middle">② 传导渠道</text>
+  <text x="715" y="34" font-size="14" font-weight="600" fill="#185FA5" text-anchor="middle">③ 总需求</text>
+  <text x="955" y="34" font-size="14" font-weight="600" fill="#0F6E56" text-anchor="middle">④ 最终结果</text>
+  <text x="1270" y="34" font-size="14" font-weight="600" fill="#5F5E5A" text-anchor="middle">⑤ 约束与政治</text>
+
+  <g fill="none" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#ar)">
+    <path d="M250 132 C275 132 285 188 310 188"/>
+    <path d="M250 132 C275 132 285 396 310 396"/>
+    <path d="M250 132 C275 132 285 500 310 500"/>
+    <path d="M250 132 C275 132 285 604 310 604"/>
+    <path d="M250 304 C275 304 285 188 310 188"/>
+    <path d="M250 304 C275 304 285 292 310 292"/>
+    <path d="M250 460 C275 460 285 292 310 292"/>
+    <path d="M250 584 C275 584 285 292 310 292"/>
+    <path d="M250 692 C275 692 285 500 310 500"/>
+    <path d="M590 188 C615 188 625 385 650 385"/>
+    <path d="M590 292 C615 292 625 385 650 385"/>
+    <path d="M590 396 C615 396 625 385 650 385"/>
+    <path d="M590 500 C615 500 625 385 650 385"/>
+    <path d="M590 604 C615 604 625 385 650 385"/>
+    <path d="M780 385 C805 385 815 330 840 330"/>
+    <path d="M780 385 C805 385 815 470 840 470"/>
+  </g>
+
+  <g class="hit node" data-key="t1" data-link="c1,c3,c4,c5">
+    <rect x="30" y="56" width="220" height="24" rx="4" fill="#185FA5"/>
+    <text x="42" y="68" font-size="13" font-weight="600" fill="#fff" dominant-baseline="central">价格型 · 管资金价格</text>
+    <rect x="30" y="84" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="98" font-size="12.5" fill="#0C447C" dominant-baseline="central">政策利率↓（7 天逆回购）</text>
+    <rect x="30" y="116" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="130" font-size="12.5" fill="#0C447C" dominant-baseline="central">LPR · 贷款利率↓</text>
+    <rect x="30" y="148" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="162" font-size="12.5" fill="#0C447C" dominant-baseline="central">再贴现率↓</text>
+    <rect x="30" y="180" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="194" font-size="12.5" fill="#0C447C" dominant-baseline="central">走廊：SLF↑ / 超额准利率↓</text>
+  </g>
+
+  <g class="hit node" data-key="t2" data-link="c1,c2">
+    <rect x="30" y="228" width="220" height="24" rx="4" fill="#185FA5"/>
+    <text x="42" y="240" font-size="13" font-weight="600" fill="#fff" dominant-baseline="central">数量型 · 管资金规模</text>
+    <rect x="30" y="256" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="270" font-size="12.5" fill="#0C447C" dominant-baseline="central">降准（RRR↓）</text>
+    <rect x="30" y="288" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="302" font-size="12.5" fill="#0C447C" dominant-baseline="central">OMO / MLF 净投放↑</text>
+    <rect x="30" y="320" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="334" font-size="12.5" fill="#0C447C" dominant-baseline="central">再贷款 · PSL 额度↑</text>
+    <rect x="30" y="352" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="366" font-size="12.5" fill="#0C447C" dominant-baseline="central">央票发行↓ / 到期不续</text>
+  </g>
+
+  <g class="hit node" data-key="t3" data-link="c2">
+    <rect x="30" y="400" width="220" height="24" rx="4" fill="#185FA5"/>
+    <text x="42" y="412" font-size="13" font-weight="600" fill="#fff" dominant-baseline="central">结构性 · 定向直达</text>
+    <rect x="30" y="428" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="442" font-size="12.5" fill="#0C447C" dominant-baseline="central">定向降准</text>
+    <rect x="30" y="460" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="474" font-size="12.5" fill="#0C447C" dominant-baseline="central">支农支小再贷款</text>
+    <rect x="30" y="492" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="506" font-size="12.5" fill="#0C447C" dominant-baseline="central">碳减排支持工具</text>
+  </g>
+
+  <g class="hit node" data-key="t4" data-link="c2">
+    <rect x="30" y="540" width="220" height="24" rx="4" fill="#185FA5"/>
+    <text x="42" y="552" font-size="13" font-weight="600" fill="#fff" dominant-baseline="central">宏观审慎 · 直接管量</text>
+    <rect x="30" y="568" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="582" font-size="12.5" fill="#0C447C" dominant-baseline="central">信贷额度 · 窗口指导</text>
+    <rect x="30" y="600" width="220" height="28" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+    <text x="42" y="614" font-size="12.5" fill="#0C447C" dominant-baseline="central">LTV · 首付比 · 资本充足</text>
+  </g>
+
+  <g class="hit node" data-key="t5" data-link="c4">
+    <rect x="30" y="648" width="220" height="24" rx="4" fill="#BA7517"/>
+    <text x="42" y="660" font-size="13" font-weight="600" fill="#fff" dominant-baseline="central">汇率与外部 · 被动投放</text>
+    <rect x="30" y="676" width="220" height="28" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.6"/>
+    <text x="42" y="690" font-size="12.5" fill="#854F0B" dominant-baseline="central">外汇干预（购汇 / 售汇）</text>
+    <rect x="30" y="708" width="220" height="28" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.6"/>
+    <text x="42" y="722" font-size="12.5" fill="#854F0B" dominant-baseline="central">资本管制松紧</text>
+  </g>
+
+  <g class="hit node" data-key="c1" data-link="t1,t2">
+    <rect x="310" y="150" width="280" height="76" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+    <text x="324" y="170" font-size="13.5" font-weight="600" fill="#854F0B" dominant-baseline="central">① 利率渠道</text>
+    <text x="324" y="192" font-size="12.5" fill="#854F0B" dominant-baseline="central">实际利率↓ → 投资、耐用品消费↑</text>
+    <text x="324" y="212" font-size="12" fill="#BA7517" dominant-baseline="central">凯恩斯 / IS-LM 传统渠道</text>
+  </g>
+  <g class="hit node" data-key="c2" data-link="t2,t3,t4">
+    <rect x="310" y="254" width="280" height="76" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+    <text x="324" y="274" font-size="13.5" font-weight="600" fill="#854F0B" dominant-baseline="central">② 信贷渠道</text>
+    <text x="324" y="296" font-size="12.5" fill="#854F0B" dominant-baseline="central">可贷资金↑、净值↑ → 融资溢价↓</text>
+    <text x="324" y="316" font-size="12" fill="#BA7517" dominant-baseline="central">银行贷款 + 资产负债表（金融加速器）</text>
+  </g>
+  <g class="hit node" data-key="c3" data-link="t1">
+    <rect x="310" y="358" width="280" height="76" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+    <text x="324" y="378" font-size="13.5" font-weight="600" fill="#854F0B" dominant-baseline="central">③ 资产价格渠道</text>
+    <text x="324" y="400" font-size="12.5" fill="#854F0B" dominant-baseline="central">托宾 q↑ → 投资↑；财富效应 → 消费↑</text>
+    <text x="324" y="420" font-size="12" fill="#BA7517" dominant-baseline="central">股价、房价是最关键的抵押品</text>
+  </g>
+  <g class="hit node" data-key="c4" data-link="t1,t5">
+    <rect x="310" y="462" width="280" height="76" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+    <text x="324" y="482" font-size="13.5" font-weight="600" fill="#854F0B" dominant-baseline="central">④ 汇率渠道</text>
+    <text x="324" y="504" font-size="12.5" fill="#854F0B" dominant-baseline="central">本币贬值 → 净出口 NX↑</text>
+    <text x="324" y="524" font-size="12" fill="#BA7517" dominant-baseline="central">蒙代尔-弗莱明；受资本管制约束</text>
+  </g>
+  <g class="hit node" data-key="c5" data-link="t1">
+    <rect x="310" y="566" width="280" height="76" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+    <text x="324" y="586" font-size="13.5" font-weight="600" fill="#854F0B" dominant-baseline="central">⑤ 预期渠道</text>
+    <text x="324" y="608" font-size="12.5" fill="#854F0B" dominant-baseline="central">通胀预期↑ → 实际利率↓ → 当期支出↑</text>
+    <text x="324" y="628" font-size="12" fill="#BA7517" dominant-baseline="central">前瞻指引；只有未预期的部分有效</text>
+  </g>
+
+  <g>
+    <rect x="650" y="340" width="130" height="90" rx="8" fill="#185FA5"/>
+    <text x="715" y="368" font-size="14" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="central">总需求 AD ↑</text>
+    <text x="715" y="392" font-size="12.5" fill="#E6F1FB" text-anchor="middle" dominant-baseline="central">C + I + G + NX</text>
+    <text x="715" y="414" font-size="12.5" fill="#E6F1FB" text-anchor="middle" dominant-baseline="central">产出缺口转正</text>
+  </g>
+
+  <g>
+    <rect x="840" y="280" width="230" height="100" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+    <text x="860" y="310" font-size="14" font-weight="600" fill="#085041" dominant-baseline="central">就业 ↑　失业 ↓</text>
+    <text x="860" y="334" font-size="12.5" fill="#0F6E56" dominant-baseline="central">订单↑ → 企业扩产 → 雇佣↑</text>
+    <text x="860" y="360" font-size="13" font-weight="600" fill="#085041" dominant-baseline="central">→ 工薪阶层受益</text>
+  </g>
+  <g>
+    <rect x="840" y="420" width="230" height="100" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="860" y="450" font-size="14" font-weight="600" fill="#791F1F" dominant-baseline="central">通胀 ↑</text>
+    <text x="860" y="474" font-size="12.5" fill="#A32D2D" dominant-baseline="central">资源紧张 → 工资与物价螺旋</text>
+    <text x="860" y="500" font-size="13" font-weight="600" fill="#791F1F" dominant-baseline="central">→ 债权人受损</text>
+  </g>
+  <g>
+    <rect x="840" y="560" width="230" height="76" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+    <text x="860" y="586" font-size="13.5" font-weight="600" fill="#2C2C2A" dominant-baseline="central">短期此消彼长</text>
+    <text x="860" y="608" font-size="12.5" fill="#5F5E5A" dominant-baseline="central">菲利普斯曲线（1958 / 1960）</text>
+    <text x="860" y="626" font-size="12" fill="#5F5E5A" dominant-baseline="central">长期垂直 → 回到 NAIRU</text>
+  </g>
+
+  <rect x="1120" y="125" width="300" height="490" rx="10" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="1270" y="146" font-size="12" fill="#64748b" text-anchor="middle" dominant-baseline="central">作用于全链路</text>
+
+  <g>
+    <rect x="1140" y="160" width="260" height="66" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+    <text x="1156" y="184" font-size="13.5" font-weight="600" fill="#2C2C2A" dominant-baseline="central">时滞 6–18 个月</text>
+    <text x="1156" y="206" font-size="12" fill="#5F5E5A" dominant-baseline="central">利率→投资→就业最慢，故须前瞻操作</text>
+  </g>
+  <g>
+    <rect x="1140" y="244" width="260" height="88" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+    <text x="1156" y="270" font-size="13.5" font-weight="600" fill="#2C2C2A" dominant-baseline="central">长期：NAIRU</text>
+    <text x="1156" y="294" font-size="12" fill="#5F5E5A" dominant-baseline="central">失业终将回归自然率，扩张只留下</text>
+    <text x="1156" y="314" font-size="12" fill="#5F5E5A" dominant-baseline="central">更高的通胀 → 长期货币中性</text>
+  </g>
+  <g>
+    <rect x="1140" y="350" width="260" height="112" rx="6" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="1156" y="376" font-size="13.5" font-weight="600" fill="#791F1F" dominant-baseline="central">中国特殊性（本题加分点）</text>
+    <text x="1156" y="400" font-size="12" fill="#A32D2D" dominant-baseline="central">间接融资为主 → 信贷渠道权重最大</text>
+    <text x="1156" y="422" font-size="12" fill="#A32D2D" dominant-baseline="central">国企软预算约束 → 利率渠道打折</text>
+    <text x="1156" y="444" font-size="12" font-weight="600" fill="#791F1F" dominant-baseline="central">→ 倒逼央行偏爱数量型工具</text>
+  </g>
+  <g>
+    <rect x="1140" y="480" width="260" height="104" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+    <text x="1156" y="506" font-size="13.5" font-weight="600" fill="#085041" dominant-baseline="central">政治：目标函数写什么</text>
+    <text x="1156" y="530" font-size="12" fill="#0F6E56" dominant-baseline="central">美联储双重（就业+物价）</text>
+    <text x="1156" y="550" font-size="12" fill="#0F6E56" dominant-baseline="central">ECB 单一（物价优先）</text>
+    <text x="1156" y="570" font-size="12" fill="#0F6E56" dominant-baseline="central">人民银行：币值优先，增长从属</text>
+  </g>
+
+  <rect x="30" y="756" width="1380" height="36" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.6"/>
+  <text x="720" y="774" font-size="13" fill="#0C447C" text-anchor="middle" dominant-baseline="central">一句话：所有渠道汇入同一个总需求 → 就业与通胀<tspan font-weight="600">同向</tspan>变化 → 这就是「要就业还是稳物价」这一政治取舍的机制根源</text>
+</svg>
+</div>
+
+<script>
+(function(){
+  var svg = document.getElementById('map');
+  var nodes = Array.prototype.slice.call(svg.querySelectorAll('.node'));
+  var btn = document.getElementById('btnReset');
+  function reset(){
+    nodes.forEach(function(n){ n.classList.remove('dim'); });
+  }
+  function activate(el){
+    reset();
+    var keys = [el.getAttribute('data-key')];
+    (el.getAttribute('data-link')||'').split(',').forEach(function(k){ if(k) keys.push(k); });
+    nodes.forEach(function(n){
+      if(keys.indexOf(n.getAttribute('data-key')) === -1) n.classList.add('dim');
+    });
+  }
+  nodes.forEach(function(el){
+    el.addEventListener('click', function(){ activate(el); });
+  });
+  btn.addEventListener('click', reset);
+  svg.addEventListener('click', function(e){
+    if(!e.target.closest('.node')) reset();
+  });
+})();
+</script>
+
+<h2>二、五条传导渠道详解</h2>
+
+<table>
+<thead><tr><th style="width:14%">渠道</th><th style="width:34%">机制链条</th><th style="width:20%">关键变量</th><th>在中国是否有效</th></tr></thead>
+<tbody>
+<tr><td class="kw">① 利率</td><td>政策利率↓ → 市场利率↓ → <b>实际利率</b>↓ → 投资↑、住房与耐用品消费↑ → AD↑</td><td>实际利率 = 名义 − 预期通胀</td><td><b>打折</b>：地方融资平台与部分国企对利率不敏感（软预算约束）</td></tr>
+<tr><td class="kw">② 信贷</td><td>准备金↑/资本↑ → 可贷资金↑；资产价↑ → 企业净值↑ → 逆向选择↓ → <b>外部融资溢价</b>↓ → 贷款↑ → AD↑</td><td>外部融资溢价、抵押品价值</td><td><b>最有效</b>：间接融资为主，银行是主渠道</td></tr>
+<tr><td class="kw">③ 资产价格</td><td>利率↓ → 股价房价↑ → <b>托宾 q</b>↑（市值/重置成本）→ 投资↑；<b>财富效应</b> → 消费↑</td><td>托宾 q、居民财富</td><td>有效，但房价渠道权重大于股价</td></tr>
+<tr><td class="kw">④ 汇率</td><td>利率↓ → 资本外流 → <b>本币贬值</b> → 净出口↑ → AD↑</td><td>名义/实际有效汇率</td><td><b>受约束</b>：资本管制削弱利率—汇率联动；且贬值会与「稳汇率」目标冲突</td></tr>
+<tr><td class="kw">⑤ 预期</td><td>政策信号 → <b>通胀预期</b>↑ → 实际利率↓ → 提前支出 → AD↑</td><td>通胀预期、央行信誉</td><td>逐步增强：2015 年后政策利率的信号作用上升</td></tr>
+</tbody>
+</table>
+
+<h2>三、宽松与紧缩：同一条链的反向运行</h2>
+
+<table>
+<thead><tr><th style="width:22%">环节</th><th style="width:39%">扩张（宽松）</th><th>紧缩</th></tr></thead>
+<tbody>
+<tr><td class="kw">工具</td><td>降息、降准、净投放、放宽信贷、本币贬值</td><td>加息、提准、正回购/发央票、收紧信贷、本币升值</td></tr>
+<tr><td class="kw">渠道</td><td>实际利率↓、可贷资金↑、资产价↑、本币贬、预期↑</td><td>五个渠道全部反向</td></tr>
+<tr><td class="kw">总需求</td><td>AD↑，产出缺口转正</td><td>AD↓，产出缺口转负</td></tr>
+<tr><td class="kw">就业</td><td><b>失业↓</b> → 工薪阶层受益</td><td><b>失业↑</b> → 工薪阶层受损</td></tr>
+<tr><td class="kw">通胀</td><td><b>通胀↑</b> → 债权人受损</td><td><b>通胀↓</b> → 债权人受益</td></tr>
+<tr><td class="kw">长期</td><td>失业回 NAIRU，只留下更高通胀</td><td>失业回 NAIRU，只留下更低温胀</td></tr>
+</tbody>
+</table>
+
+<div class="tip">
+<b>关键洞察</b>：就业与通胀<b>同向</b>变动，因为它们共享同一个源头——总需求。所以「取舍」不是两个目标打架，而是<b>同一个动作同时带来一好一坏</b>：想要就业改善，就得接受通胀上升；想要物价稳定，就得接受失业上升。这就是所有政治冲突的机制根源。
+</div>
+
+<h2>四、政治：每一步都在问「谁买单」</h2>
+
+<table>
+<thead><tr><th style="width:20%">央行取向</th><th style="width:16%">被保护者</th><th style="width:16%">被牺牲者</th><th>制度载体</th></tr></thead>
+<tbody>
+<tr><td class="kw">物价稳定优先</td><td>债权人、富裕阶层</td><td>工薪阶层（承担失业）</td><td>ECB 单一 mandate；人民银行「币值稳定…并以此促进增长」</td></tr>
+<tr><td class="kw">充分就业优先</td><td>工薪阶层</td><td>债权人（承担未预期通胀）</td><td>美联储双重 mandate（Humphrey-Hawkins 1978）</td></tr>
+<tr><td class="kw">汇率稳定优先</td><td>出口集团</td><td>消费者、储蓄者</td><td>中国 2012 年前的出口导向模式</td></tr>
+</tbody>
+</table>
+
+<div class="mnemonic">
+口诀：<b>「一个源头、两条腿、三层政治」</b> —— 一个源头（总需求）、两条腿（就业与通胀同向）、三层政治（保物价＝保债权人，保就业＝保工薪，保汇率＝保出口商）
+</div>
+
+<h3>为什么中国偏爱数量型工具？答案就在这条链上</h3>
+
+<div class="tip">
+因为中国的<b>利率渠道打折</b>——国企与地方融资平台对利率不敏感，降息未必带来投资收缩或扩张的可预期反应。既然「价格」这条路不好使，央行就只能直接管「量」：降准、信贷额度、窗口指导、定向工具。<br>
+<span class="hl">这一条同时回答了 Q2（为什么用存准不用利率）和 Q3 的口径问题</span>——不是技术偏好，是传导机制被制度结构扭曲后的必然选择。
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>猎潮 · 华尔街收割模拟 —— 在六场真实金融危机里做那个收割的人</title>
+<meta name="description" content="《猎潮》是一款以国际政治经济学为规则的交易模拟游戏：你坐在华尔街交易台上，用做空、主权 CDS、波动率与抄底仓位，经历 1982 拉美债务危机、1990 日本资产泡沫、1997 亚洲金融风暴、1998 俄罗斯违约与长期资本管理公司、2008 次贷危机、2012 欧债危机。方向是确定的，难的是进场时机、杠杆与退出。">
+<link rel="canonical" href="https://ppray.github.io/games/harvest/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0b0e13">
+<meta property="og:type" content="website">
+<meta property="og:title" content="猎潮 · 华尔街收割模拟">
+<meta property="og:description" content="六场真实危机，七回合推演。太早会被持仓成本磨死，跑晚了会被政策反杀——德拉吉一句话能轧平整整一年的浮盈。">
+<meta property="og:url" content="https://ppray.github.io/games/harvest/">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["VideoGame", "LearningResource"],
+  "name": "猎潮 · 华尔街收割模拟",
+  "alternateName": "Harvest",
+  "url": "https://ppray.github.io/games/harvest/",
+  "inLanguage": "zh-CN",
+  "genre": ["Simulation", "Strategy", "Educational"],
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "learningResourceType": "Educational game",
+  "educationalLevel": "Graduate",
+  "teaches": ["主权债务危机", "美元潮汐", "三元悖论", "外汇储备与资本管制", "货币错配与原罪", "主权 CDS", "证券化与次贷", "流动性枯竭与强平", "IMF 药方", "欧洲主权债务重组", "中心-外围体系"],
+  "isBasedOn": "翟东升《货币与金融的国际政治经济学》；1982—2012 年全球金融危机史",
+  "description": "以国际政治经济学为规则的交易模拟：玩家在六场真实金融危机中管理权益、保证金与监管热度，用做空、信用保护、波动率与抄底仓位获利。每关附史实复盘与出处口径告警。",
+  "author": { "@type": "Person", "name": "ppray" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 等宽数字字体：非阻塞加载，拿不到就回退到系统等宽字体 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="css/harvest.css">
+<link rel="modulepreload" href="vendor/htm-preact.js">
+<link rel="modulepreload" href="js/main.js">
+<script>document.documentElement.className = 'js';</script>
+<style>
+  .js #about { display: none; }
+  #about { max-width: 780px; margin: 0 auto; padding: 48px 20px; color: #e9e3d6; line-height: 1.9; }
+  #about h1 { font-family: var(--serif); font-size: 44px; letter-spacing: .12em; margin: 0 0 8px; }
+  #about h2 { font-family: var(--serif); font-size: 20px; letter-spacing: .08em; margin: 28px 0 8px; }
+  #about li { margin-bottom: 6px; }
+  .community-fab { bottom: 20px !important; }
+</style>
+</head>
+<body>
+<!-- 给不执行脚本的读者与抓取器：游戏的静态说明 -->
+<section id="about">
+  <h1>猎潮</h1>
+  <p><b>华尔街收割模拟 · 收割者从不制造危机，只等它发生。</b></p>
+  <p>《庙算》让你治理一个被美元潮汐冲刷的国家；《猎潮》是它的另一面——你坐在交易台这一侧。起始权益 1 亿美元，六场真实危机各七回合：1982 年拉美债务危机、1990 年日本资产泡沫破裂、1997 年亚洲金融风暴、1998 年俄罗斯违约与长期资本管理公司崩溃、2008 年次贷危机、2012 年欧债危机。</p>
+  <h2>规则即理论</h2>
+  <ul>
+    <li><b>三元悖论</b>：钉住汇率、资本自由流动、货币政策独立三者不可兼得——1997 年的泰国就是被这条规则判了刑。</li>
+    <li><b>货币错配（原罪）</b>：收入是本币、债务是美元，贬值会放大债务负担；储备耗尽即汇率承诺失效。</li>
+    <li><b>持仓成本</b>：做空要付利差与借券费，买 CDS 要付保费。太早进场会被时间磨死——保尔森 2006 年建仓，熬了一年多才等到兑现。</li>
+    <li><b>流动性即生死</b>：1998 年长期资本管理公司押对了几乎所有方向，仍因杠杆与流动性枯竭而崩溃。方向对也会死。</li>
+    <li><b>政策风险无法对冲</b>：2008 年 9 月美国证监会禁止卖空 799 只金融股，2012 年德拉吉一句「不惜一切代价」把全欧洲的空头轧平。跑得掉才算赚到。</li>
+    <li><b>收割的一半来自抄底</b>：危机末期解锁的不良资产与折价债，收益率往往高于做空。</li>
+  </ul>
+  <h2>与《庙算》互为镜像</h2>
+  <p>同一轮潮汐，两副面孔：《庙算》里你是被收割的执政官，《猎潮》里你是收割的执行者。两局共用同一套题库（翟东升《货币与金融的国际政治经济学》十四章与政治学原理），拍板前召对答对真题，才能看到下一回合的推演。</p>
+  <h2>出处纪律</h2>
+  <p>每关结算通报附「史实复盘」与「⚠️ 出处与口径告警」：区分史实共识、教材通用术语与备考归纳口径（如「美元潮汐」属翟东升式归纳，非教科书通用术语），并标明游戏化简化之处（例如 1982 年并不存在主权 CDS）。</p>
+  <p><a href="/games/">← 研学游戏馆</a></p>
+</section>
+<noscript><p style="text-align:center;color:#d9503a;padding:20px">《猎潮》需要启用 JavaScript 才能游玩。</p></noscript>
+<div id="app"></div>
+<script type="module" src="js/main.js"></script>
+<!-- 读者共建组件：评论区 + 纠错入口（由 scripts/inject-community.mjs 注入/维护） -->
+<div id="community-root" data-theme="transparent_dark"></div>
+<script src="/community.js" defer></script>
+</body>
+</html>

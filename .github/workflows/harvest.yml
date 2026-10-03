@@ -1,0 +1,47 @@
+# 《猎潮》交易模拟的数据流水线：关卡数据是手写的史实，改动后必须自检。
+#
+# 路径：.github/workflows/harvest.yml
+# 手动触发：仓库 Actions 页面 → harvest → Run workflow
+#
+# 1. 数据校验：关卡结构、每回合 mv 只引用本关工具、复盘 ≥4 条、⚠️ 出处告警 ≥2 条、
+#    评级分档闭合，并用内核跑四种策略检查不炸、不 NaN（scripts/harvest/validate.mjs）。
+# 2. 平衡冒烟：五种策略各跑 30 局，检查空仓≈100、完美时机≥190、梭哈<完美时机
+#    （scripts/harvest/balance.mjs --smoke）。完整平衡报告请本地跑 node scripts/harvest/balance.mjs。
+# 两步都通过才算绿。
+
+name: harvest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "games/harvest/**"
+      - "scripts/harvest/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: harvest
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 数据校验
+        run: node scripts/harvest/validate.mjs
+
+      - name: 平衡冒烟
+        run: node scripts/harvest/balance.mjs --smoke

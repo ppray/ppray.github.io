@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>货币政策背后的政治考量 · 脑图（Q9）</title>
+<style>
+  :root{
+    --primary:#185FA5; --primary-soft:#E6F1FB;
+    --text-main:#1e293b; --text-muted:#64748b;
+    --border:#e2e8f0; --code-bg:#f8fafc;
+    --warn:#A32D2D; --warn-bg:#FCEBEB;
+    --ok:#0F6E56; --ok-bg:#E1F5EE;
+    --amber:#BA7517; --amber-bg:#FAEEDA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    max-width:1120px;margin:0 auto;padding:32px 24px 64px;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--text-main);line-height:1.75;font-size:15px;background:#fff;
+  }
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:.5px;}
+  .sub{color:var(--text-muted);font-size:13px;margin-bottom:24px;}
+  h2{font-size:18px;margin:32px 0 12px;padding-left:10px;border-left:4px solid var(--primary);}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;vertical-align:top;text-align:left;}
+  th{background:var(--code-bg);font-weight:600;white-space:nowrap;}
+  tbody tr:nth-child(even){background:#fcfdfe;}
+  .kw{font-weight:600;color:var(--primary);white-space:nowrap;}
+  .hl{background:#fef08a;padding:0 3px;border-radius:2px;}
+  .tip{background:var(--ok-bg);border-left:4px solid var(--ok);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px;}
+  .warn{background:var(--warn-bg);border-left:4px solid var(--warn);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px;}
+  .mnemonic{background:var(--primary-soft);border:1px dashed var(--primary);padding:10px 14px;margin:10px 0;border-radius:6px;font-weight:600;font-size:14.5px;}
+
+  .mapwrap{border:1px solid var(--border);border-radius:8px;padding:8px;background:#fff;margin:14px 0;overflow-x:auto;}
+  .maphint{font-size:13px;color:var(--text-muted);margin:6px 2px 10px;}
+  svg .hit{cursor:pointer;}
+  svg .hit:hover rect{stroke-width:2;}
+  svg .node{transition:opacity .18s;}
+  svg .node.dim{opacity:.16;}
+
+  @media print{
+    body{padding:0;font-size:12.5pt;max-width:none;}
+    h2{page-break-after:avoid;} table,.mapwrap{page-break-inside:avoid;}
+    .maphint{display:none;}
+    @page{size:A4 landscape;margin:10mm;}
+  }
+</style>
+</head>
+<body>
+
+<h1>货币政策背后的政治考量</h1>
+<div class="sub">
+  翟东升《货币与金融的国际政治经济学》· Q9 [简] · 出处《货币、权力与人》第 3 章第 2 节「政治视角下的央行与货币」· 出现 1 次（卷 4）
+</div>
+
+<div class="warn">
+  <b>⚠️ 出处与口径告警</b><br>
+  ① 本题的<b>采分点是四大政治考量</b>，不是传导机制。顶部那条灰色的背景链只是解释「为什么会产生取舍」，一句话带过即可，<b>不要展开成米什金的五条传导渠道</b>——那不是翟东升的内容，也不是本题的分数所在。<br>
+  ② 教材口径提醒：笔记原句「低通胀有利于债权人」有瑕疵，准确说法是<b>「低于预期的通胀或未预期的通缩」有利于债权人</b>（费雪效应：预期到的通胀已计入名义利率）。工薪阶层同样受益于物价稳定，真正的冲突在于<b>不可兼得时牺牲谁</b>。<br>
+  ③ 每层的<b>「撕开点」才是分析分</b>。只答四个维度＝及格；答出「谁的利益被优先照顾」＝高分。
+</div>
+
+<div class="mapwrap">
+<svg id="map" viewBox="0 0 1000 648" width="100%" role="img" aria-label="货币政策背后的四大政治考量脑图：通胀与就业、汇率政治、央行独立性、大国货币博弈，各含一对利益冲突与撕开点">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="24" font-size="12.5" fill="#64748b">背景（一句话带过）</text>
+
+  <g fill="none" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#ar)">
+    <path d="M240 66 L256 66"/>
+    <path d="M470 66 L486 66"/>
+    <path d="M700 66 L716 66"/>
+  </g>
+  <g font-size="12.5" fill="#475569">
+    <rect x="30" y="40" width="210" height="52" rx="6" fill="#F1EFE8" stroke="#94a3b8" stroke-width="0.8"/>
+    <text x="135" y="58" text-anchor="middle" dominant-baseline="central">货币政策：宽松 / 紧缩</text>
+    <text x="135" y="76" text-anchor="middle" font-size="11.5" dominant-baseline="central">降准、降息、信贷、汇率</text>
+
+    <rect x="260" y="40" width="210" height="52" rx="6" fill="#F1EFE8" stroke="#94a3b8" stroke-width="0.8"/>
+    <text x="365" y="58" text-anchor="middle" dominant-baseline="central">总需求 AD 变化</text>
+    <text x="365" y="76" text-anchor="middle" font-size="11.5" dominant-baseline="central">产出缺口转正 / 转负</text>
+
+    <rect x="490" y="40" width="210" height="52" rx="6" fill="#F1EFE8" stroke="#94a3b8" stroke-width="0.8"/>
+    <text x="595" y="58" text-anchor="middle" dominant-baseline="central">就业与通胀<tspan font-weight="600">同向</tspan>变动</text>
+    <text x="595" y="76" text-anchor="middle" font-size="11.5" dominant-baseline="central">共享同一个源头</text>
+
+    <rect x="720" y="40" width="210" height="52" rx="6" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="825" y="58" text-anchor="middle" font-weight="600" fill="#791F1F" dominant-baseline="central">无法两全 → 必须取舍</text>
+    <text x="825" y="76" text-anchor="middle" font-size="11.5" fill="#A32D2D" dominant-baseline="central">这就是政治的入口</text>
+  </g>
+
+  <path d="M135 92 C135 170 120 210 120 290" fill="none" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+
+  <text x="30" y="130" font-size="12.5" fill="#64748b">本题主干</text>
+
+  <g>
+    <rect x="30" y="294" width="180" height="104" rx="10" fill="#185FA5"/>
+    <text x="120" y="322" font-size="15" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="central">货币政策背后的</text>
+    <text x="120" y="344" font-size="15" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="central">政治考量</text>
+    <text x="120" y="372" font-size="12" fill="#E6F1FB" text-anchor="middle" dominant-baseline="central">谁制定货币政策，</text>
+    <text x="120" y="390" font-size="12" fill="#E6F1FB" text-anchor="middle" dominant-baseline="central">谁的利益被优先照顾</text>
+  </g>
+
+  <g fill="none" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#ar)">
+    <path d="M210 326 C230 326 235 182 246 182"/>
+    <path d="M210 336 C230 336 235 290 246 290"/>
+    <path d="M210 356 C230 356 235 398 246 398"/>
+    <path d="M210 366 C230 366 235 506 246 506"/>
+  </g>
+
+  <g class="hit node" data-key="a1" data-link="s1">
+    <rect x="250" y="140" width="340" height="84" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+    <text x="266" y="164" font-size="14" font-weight="600" fill="#0C447C" dominant-baseline="central">① 通胀与就业　·　国内 · 内容</text>
+    <text x="266" y="188" font-size="12.5" fill="#185FA5" dominant-baseline="central">债权人 / 富裕阶层　vs　工薪阶层</text>
+    <text x="266" y="208" font-size="12" fill="#185FA5" dominant-baseline="central">不可兼得：要就业，还是稳物价</text>
+  </g>
+  <g class="hit node" data-key="a2" data-link="s2">
+    <rect x="250" y="248" width="340" height="84" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+    <text x="266" y="272" font-size="14" font-weight="600" fill="#0C447C" dominant-baseline="central">② 汇率政治　·　国内兼国际 · 内容</text>
+    <text x="266" y="296" font-size="12.5" fill="#185FA5" dominant-baseline="central">出口集团　vs　消费者 / 对外投资者</text>
+    <text x="266" y="316" font-size="12" fill="#185FA5" dominant-baseline="central">汇率不只是对外价格，更是内部分配</text>
+  </g>
+  <g class="hit node" data-key="a3" data-link="s3">
+    <rect x="250" y="356" width="340" height="84" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+    <text x="266" y="380" font-size="14" font-weight="600" fill="#085041" dominant-baseline="central">③ 央行独立性　·　国内 · 制度</text>
+    <text x="266" y="404" font-size="12.5" fill="#0F6E56" dominant-baseline="central">技术官僚 / 金融精英　vs　民主问责</text>
+    <text x="266" y="424" font-size="12" fill="#0F6E56" dominant-baseline="central">独立不是自然状态，是政治安排</text>
+  </g>
+  <g class="hit node" data-key="a4" data-link="s4">
+    <rect x="250" y="464" width="340" height="84" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+    <text x="266" y="488" font-size="14" font-weight="600" fill="#0C447C" dominant-baseline="central">④ 大国货币博弈　·　国际 · 内容</text>
+    <text x="266" y="512" font-size="12.5" fill="#185FA5" dominant-baseline="central">中心国（美国）　vs　外围国（新兴市场）</text>
+    <text x="266" y="532" font-size="12" fill="#185FA5" dominant-baseline="central">美联储决策的溢出效应</text>
+  </g>
+
+  <g fill="none" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#ar)">
+    <path d="M590 182 C610 182 615 182 626 182"/>
+    <path d="M590 290 C610 290 615 290 626 290"/>
+    <path d="M590 398 C610 398 615 398 626 398"/>
+    <path d="M590 506 C610 506 615 506 626 506"/>
+  </g>
+
+  <g class="hit node" data-key="s1" data-link="a1">
+    <rect x="630" y="140" width="340" height="84" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="646" y="164" font-size="13" font-weight="600" fill="#791F1F" dominant-baseline="central">撕开点：取舍时牺牲谁</text>
+    <text x="646" y="188" font-size="12" fill="#A32D2D" dominant-baseline="central">紧缩保债权人 → 工薪阶层承担失业</text>
+    <text x="646" y="208" font-size="12" fill="#A32D2D" dominant-baseline="central">宽松保就业 → 债权人承担未预期通胀</text>
+  </g>
+  <g class="hit node" data-key="s2" data-link="a2">
+    <rect x="630" y="248" width="340" height="84" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="646" y="272" font-size="13" font-weight="600" fill="#791F1F" dominant-baseline="central">撕开点：汇率是内部分配工具</text>
+    <text x="646" y="296" font-size="12" fill="#A32D2D" dominant-baseline="central">贬值补贴出口商，账单由消费者与储蓄者付</text>
+    <text x="646" y="316" font-size="12" fill="#A32D2D" dominant-baseline="central">中国 2012 年前长期偏向出口集团</text>
+  </g>
+  <g class="hit node" data-key="s3" data-link="a3">
+    <rect x="630" y="356" width="340" height="84" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="646" y="380" font-size="13" font-weight="600" fill="#791F1F" dominant-baseline="central">撕开点：谁的声音写进目标函数</text>
+    <text x="646" y="404" font-size="12" fill="#A32D2D" dominant-baseline="central">美联储双重目标 / ECB 单一目标</text>
+    <text x="646" y="424" font-size="12" fill="#A32D2D" dominant-baseline="central">人民银行在党的领导下服务经济发展目标</text>
+  </g>
+  <g class="hit node" data-key="s4" data-link="a4">
+    <rect x="630" y="464" width="340" height="84" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+    <text x="646" y="488" font-size="13" font-weight="600" fill="#791F1F" dominant-baseline="central">撕开点：事实上的全球央行</text>
+    <text x="646" y="512" font-size="12" fill="#A32D2D" dominant-baseline="central">美联储利率决定全球资本流向</text>
+    <text x="646" y="532" font-size="12" fill="#A32D2D" dominant-baseline="central">外围国承受以邻为壑的溢出，却无投票权</text>
+  </g>
+
+  <rect x="30" y="576" width="940" height="52" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+  <text x="500" y="596" font-size="13.5" font-weight="600" fill="#085041" text-anchor="middle" dominant-baseline="central">翟东升落点：中国货币政策长期服务出口集团与增长目标，2012 年后转向服务「共同富裕」与居民消费者</text>
+  <text x="500" y="616" font-size="12" fill="#0F6E56" text-anchor="middle" dominant-baseline="central">背诵总纲：谁制定货币政策，谁的利益被优先照顾　·　四把锁：债对工 · 出对消 · 官对民 · 中对边</text>
+</svg>
+</div>
+
+<div class="maphint">点击任一维度或其撕开点，可高亮这一对关联（其余淡出）；点击空白处或「显示全部」复位。</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('map');
+  var nodes=Array.prototype.slice.call(svg.querySelectorAll('.node'));
+  function reset(){ nodes.forEach(function(n){ n.classList.remove('dim'); }); }
+  function activate(el){
+    reset();
+    var keys=[el.getAttribute('data-key')];
+    (el.getAttribute('data-link')||'').split(',').forEach(function(k){ if(k) keys.push(k); });
+    nodes.forEach(function(n){ if(keys.indexOf(n.getAttribute('data-key'))===-1) n.classList.add('dim'); });
+  }
+  nodes.forEach(function(el){ el.addEventListener('click', function(){ activate(el); }); });
+  svg.addEventListener('click', function(e){ if(!e.target.closest('.node')) reset(); });
+})();
+</script>
+
+<h2>答题模板（可直接背）</h2>
+
+<table>
+<thead><tr><th style="width:8%">序</th><th style="width:22%">维度</th><th style="width:34%">一对矛盾</th><th>撕开点</th></tr></thead>
+<tbody>
+<tr><td class="kw">①</td><td class="kw">通胀与就业</td><td>债权人 / 富裕阶层 vs 工薪阶层</td><td>不可兼得时牺牲谁：紧缩保债权人，工薪承担失业</td></tr>
+<tr><td class="kw">②</td><td class="kw">汇率政治</td><td>出口集团 vs 消费者 / 对外投资者</td><td>汇率是对外价格，更是<b>内部利益分配工具</b></td></tr>
+<tr><td class="kw">③</td><td class="kw">央行独立性</td><td>技术官僚 / 金融精英 vs 民主问责</td><td>独立性是<b>政治安排</b>，非自然状态；目标函数写什么，就默认保护谁</td></tr>
+<tr><td class="kw">④</td><td class="kw">大国货币博弈</td><td>中心国（美国）vs 外围国（新兴市场）</td><td>美联储是事实上的<b>全球央行</b>，外围国承受溢出却无投票权</td></tr>
+</tbody>
+</table>
+
+<div class="mnemonic">
+四把锁：<b>债对工 · 出对消 · 官对民 · 中对边</b>　——　记住四个「vs」，四个维度就锁死了
+</div>
+
+<div class="tip">
+<b>答题节奏</b>：开头一句总纲（谁制定货币政策，谁的利益被优先照顾）→ 四个维度各写「一对矛盾 + 一句撕开点」→ 结尾落翟东升的转向判断（2012 年前服务出口集团，2012 年后转向共同富裕与居民消费者）。<b>传导机制一句话带过即可</b>，写多了反而挤掉分析分。
+</div>
+
+</body>
+</html>

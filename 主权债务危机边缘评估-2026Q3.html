@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主权债务危机边缘评估 · 2022 加息周期以来的账单（2026Q3）</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1d2129; --ink2:#4e5969; --ink3:#86909c;
+    --line:#e5e6eb; --red:#c0392b; --red-l:#fdeceb; --amber:#d97706; --amber-l:#fef4e6;
+    --green:#0f8a5f; --green-l:#e8f6f0; --blue:#2563eb; --blue-l:#eaf1fe;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 64px}
+  h1{font-size:28px;margin:0 0 6px;letter-spacing:-.3px}
+  .sub{color:var(--ink3);font-size:13px;margin-bottom:24px}
+  h2{font-size:20px;margin:40px 0 14px;padding-left:11px;border-left:4px solid var(--red)}
+  h3{font-size:16px;margin:24px 0 10px;color:var(--ink)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+  .tldr{border-left:4px solid var(--red);background:var(--red-l)}
+  .tldr ol{margin:8px 0 0;padding-left:20px}
+  .tldr li{margin-bottom:10px}
+  .kpi{display:flex;flex-direction:column;gap:2px}
+  .kpi .v{font-size:26px;font-weight:700;letter-spacing:-.5px}
+  .kpi .l{font-size:12px;color:var(--ink3)}
+  .kpi .s{font-size:11px;color:var(--ink3);margin-top:2px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+  th{background:#f2f3f5;font-weight:600;color:var(--ink2);font-size:12px}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
+  .t-red{background:var(--red-l);color:var(--red)}
+  .t-amb{background:var(--amber-l);color:var(--amber)}
+  .t-grn{background:var(--green-l);color:var(--green)}
+  .t-blu{background:var(--blue-l);color:var(--blue)}
+  .chart{width:100%;height:340px}
+  .src{font-size:11px;color:var(--ink3);margin-top:8px;line-height:1.6}
+  .src a{color:var(--blue);text-decoration:none}
+  .chain{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .node{flex:1;min-width:150px;background:#fafbfc;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .node .n1{font-size:12px;color:var(--ink3);margin-bottom:4px}
+  .node .n2{font-size:14px;font-weight:600}
+  .node .n3{font-size:11px;color:var(--ink2);margin-top:5px;line-height:1.5}
+  .arw{display:flex;align-items:center;color:var(--ink3);font-size:18px}
+  .warn{background:var(--amber-l);border:1px solid #f5d9a8;border-radius:8px;padding:14px 18px;font-size:13px}
+  .warn b{color:var(--amber)}
+  ul.tight{margin:6px 0;padding-left:20px}
+  ul.tight li{margin-bottom:7px;font-size:13.5px}
+  .note{font-size:12px;color:var(--ink3);background:#fafbfc;border-radius:6px;padding:10px 14px;margin-top:10px}
+  .disc{margin-top:36px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);padding-top:16px}
+  .rank{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .rank .no{flex:0 0 30px;height:30px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .rank .bd{flex:1}
+  .rank .nm{font-weight:700;font-size:15px}
+  .rank .ds{font-size:12.5px;color:var(--ink2);margin-top:2px}
+  .rank .dt{font-size:11.5px;color:var(--ink3);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>主权债务危机边缘评估：2022 年加息周期以来的账单</h1>
+  <div class="sub">数据截至 2026-09-28 · 评级 / 收益率 / 债务率口径均标注来源与时点 · 非实时行情</div>
+
+  <!-- ============ TL;DR ============ -->
+  <div class="card tldr">
+    <h3 style="margin-top:0">结论先行</h3>
+    <ol>
+      <li><b>2022 年那批"危机国"已经出清，边缘名单换人了。</b>斯里兰卡（2022）、加纳（2022）、赞比亚（2020）、埃塞俄比亚（2023）已进入或完成重组；<b>最新掉下去的是塞内加尔</b>——2026 年 6 月 5 亿美元欧元债票息宽限期后未付，标普 9 月 4 日下调至 <span class="tag t-red">CC</span>，拟重组近 50 亿美元欧元债。</li>
+      <li><b>如果只能点一个国家：埃及。</b>它不是"最穷"的，但是"最大、最不能倒、也最难救"的那一个——2026 年一季度到期 280 亿美元（约当外汇储备的 53%）、利息支出吞掉一半以上财政收入、债务平均期限仅 3–4 年、总融资需求峰值达 GDP 的 42%。</li>
+      <li><b>发达市场第一次出现真正的"边缘"候选：法国。</b>法德 10 年期利差 2026-09-18 首破 100bp（2012 年欧债危机高峰以来首次），9-24 盘中冲至 <b>112.3bp</b>；年内低点是 2-25 的 <b>54.8bp</b>——<b>八个月翻倍</b>。2026 年 9 月法国 10Y（约 4.19%）已高于意大利 BTP（约 4.17%），约 2005 年以来首次。市场正在把法国从"核心"重新定价为"边缘"。</li>
+      <li><b>英国不是最接近危机，而是融资成本最高。</b>10 年期 5.07%（G7 最高）、财政缓冲从 236 亿英镑缩至约 100–170 亿英镑——它的问题是"负反馈循环"，不是"违约"。</li>
+      <li><b>关键增量判断：这不是 2022 加息周期的尾声，而是第二轮紧缩的开头。</b>美联储 2026-09-16 加息 25bp 至 3.75–4.00%、欧央行 9-10 加息至存款利率 2.50%、日央行 9-18 加息至 1.25%。2020–2021 年票息约 3.2% 的疫情债，如今要在 6.5%+ 的利率环境里滚——这是 2022 年加息周期递出的账单，2026 年才到期。</li>
+    </ol>
+  </div>
+
+  <!-- ============ KPI ============ -->
+  <div class="grid3">
+    <div class="card kpi">
+      <div class="v" style="color:var(--red)">1.4 万亿美元</div>
+      <div class="l">2026Q2–2027Q1 到期墙</div>
+      <div class="s">23 个新兴经济体 · IMF 口径</div>
+    </div>
+    <div class="card kpi">
+      <div class="v" style="color:var(--red)">+340 bp</div>
+      <div class="l">全球借贷成本抬升幅度</div>
+      <div class="s">2022 年美联储启动加息以来</div>
+    </div>
+    <div class="card kpi">
+      <div class="v" style="color:var(--amber)">3.99%</div>
+      <div class="l">全球政府债平均收益率</div>
+      <div class="s">2026-09-23 彭博全球综合国债指数 · 2007 年来最高</div>
+    </div>
+  </div>
+
+  <!-- ============ 传导链 ============ -->
+  <h2>一、传导链：2022 年的加息，为什么 2026 年才爆</h2>
+  <div class="card">
+    <div class="chain">
+      <div class="node">
+        <div class="n1">起点 · 2022-03</div>
+        <div class="n2">美联储启动加息</div>
+        <div class="n3">全球借贷成本累计抬升约 <b>340bp</b>；美元指数自 2023 年初走强约 <b>18%</b></div>
+      </div>
+      <div class="arw">→</div>
+      <div class="node">
+        <div class="n1">存量 · 2020–2021</div>
+        <div class="n2">疫情期低息债</div>
+        <div class="n3">新兴市场发行约 <b>8900 亿美元</b>美元债，平均票息约 <b>3.2%</b>，期限 5–7 年</div>
+      </div>
+      <div class="arw">→</div>
+      <div class="node">
+        <div class="n1">触发器 · 2026</div>
+        <div class="n2">到期墙集中兑付</div>
+        <div class="n3">基准收益率 <b>6.5%+</b>，旧债必须以两倍成本再融资</div>
+      </div>
+      <div class="arw">→</div>
+      <div class="node">
+        <div class="n1">放大器</div>
+        <div class="n2">第二大贷款人撤退</div>
+        <div class="n3">中国新增开发性贷款 2025 年下降约 <b>73%</b>，从放款人变为收款人</div>
+      </div>
+      <div class="arw">→</div>
+      <div class="node">
+        <div class="n1">结果</div>
+        <div class="n2">IMF 点名 8–12 国</div>
+        <div class="n3">2026-04 全球主权债务圆桌会：需同时重组的高风险国名单</div>
+      </div>
+    </div>
+    <div class="src">来源：IMF 2026-04 全球主权债务圆桌会 / 全球金融稳定报告；BIS 与多家机构对银行敞口的测算；S&P African Sovereign Outlook。经二手媒体（informedclearly 等）转述，属非一手来源，需核实原文。</div>
+
+    <div class="warn" style="margin-top:16px">
+      <b>⚠️ 关键的二次点火：2026 年 9 月，主要央行重新开始加息。</b>
+      美联储 2026-09-16 上调 25bp 至 <b>3.75–4.00%</b>（三年来首次，主席 Kevin Warsh）；欧央行 2026-09-10 上调 25bp，存款便利利率至 <b>2.50%</b>；日央行 2026-09-18 上调 25bp 至 <b>1.25%</b>；英央行 2026-09-17 以 6:3 维持 3.75%，但有 <b>3 名委员主张加息至 4%</b>。
+      市场已定价 10–12 月进一步紧缩的可能。这意味着"2022 加息周期"并未结束，而是中断后重启——压力的绝对水平高于 2023 年。
+      <span style="display:block;margin-top:6px;font-size:12px;color:var(--ink3)">来源：FXMethods Global Bond Rates &amp; Monetary Policy Outlook（2026-09-25）；Canaccord Wealth（2026-09-28）。</span>
+    </div>
+  </div>
+
+  <!-- ============ 评分卡 ============ -->
+  <h2>二、危机边缘评分卡：五国横向打分</h2>
+  <div class="card">
+    <p style="font-size:13.5px;margin-top:0">
+      六个维度各 0–5 分，<b>分数越高＝越接近危机</b>。评分为本报告依据下列公开指标做的<b>加权编制（半定量口径）</b>，不是评级机构原始输出；右侧表格列出每项的原始依据，可自行复核。
+      塞内加尔已实际违约，不进入"边缘"打分，单列于下节。
+    </p>
+    <div id="c3" class="chart" style="height:420px"></div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>维度（0–5）</th><th>埃及</th><th>突尼斯</th><th>巴基斯坦</th><th>肯尼亚</th><th>玻利维亚</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>偿债负担</td><td class="num">5</td><td class="num">4</td><td class="num">5</td><td class="num">5</td><td class="num">4</td></tr>
+        <tr><td>流动性薄</td><td class="num">4</td><td class="num">4</td><td class="num">5</td><td class="num">3</td><td class="num">4</td></tr>
+        <tr><td>再融资墙</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">4</td></tr>
+        <tr><td>市场准入关闭</td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">2</td><td class="num">4</td></tr>
+        <tr><td>政治修复失效</td><td class="num">3</td><td class="num">5</td><td class="num">3</td><td class="num">3</td><td class="num">4</td></tr>
+        <tr><td>外部兜底缺失</td><td class="num">2</td><td class="num">5</td><td class="num">2</td><td class="num">3</td><td class="num">1</td></tr>
+        <tr style="background:#fafbfc"><td><b>合计（/30）</b></td>
+          <td class="num"><b style="color:var(--red)">22</b></td>
+          <td class="num"><b style="color:var(--red)">27</b></td>
+          <td class="num"><b>22</b></td>
+          <td class="num"><b>19</b></td>
+          <td class="num"><b>21</b></td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <b>读法提醒（这很重要）：</b>突尼斯总分最高（27），但它"已经"在危机里了——市场准入关闭、IMF 协议冻结、靠央行与国内银行透支维持，属于<b>慢性偿付能力衰竭</b>，爆发方式更可能是通胀与货币贬值，而非某一天的一笔违约公告。
+      <b>埃及总分 22 排第二，但它是唯一一个有"硬到期日"的国家</b>——2026Q1 到期 280 亿美元、平均期限 3–4 年，一旦滚动失败就是明确的违约事件，且体量足以传染。这就是我把<b>埃及</b>列为"第一名"、把突尼斯列为"最确定恶化"的原因：一个是<b>风险最大</b>，一个是<b>危险最急</b>。
+    </div>
+  </div>
+
+  <!-- ============ 新兴市场分层 ============ -->
+  <h2>三、新兴市场：四层分层（已违约 / 边缘 / 高困境 / 修复中）</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>国家</th><th>分层</th><th>政府债务/GDP</th><th>最锋利的一个指标</th><th>最新评级</th><th>状态 / 时点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>塞内加尔</b></td><td><span class="tag t-red">已违约</span></td><td class="num">132.3%（2026E）</td>
+          <td>2026-06-15 到期 5 亿美元欧元债票息宽限期后未付</td>
+          <td>标普 <b>CC</b>（2026-09-04 由 CCC+ 下调）；穆迪 Caa2（2026-08-28）</td>
+          <td>拟重组近 50 亿美元欧元债；IMF 22 亿美元／36 个月 ECF 已达工作人员级协议</td>
+        </tr>
+        <tr>
+          <td><b>埃塞俄比亚</b></td><td><span class="tag t-red">已违约</span></td><td class="num">37–43%</td>
+          <td>2023-12 唯一 10 亿美元欧元债券付息违约</td>
+          <td>惠誉 <b>RD</b>（限制性违约）</td>
+          <td>2026-06-29 新初步协议：8.8 亿新债换 10 亿旧债（12% 本金减记），票息降至 6.15%；OCC 2026-08 认可待遇可比性</td>
+        </tr>
+        <tr>
+          <td><b>埃及</b></td><td><span class="tag t-red">边缘 · 第一名</span></td><td class="num">85.6–87%（FY25/26）</td>
+          <td><b>利息支出 &gt; 财政收入 50%</b>；2026Q1 到期 280 亿美元；融资需求峰值 42% of GDP；债务平均期限 3–4 年</td>
+          <td>标普 B/稳定；穆迪 Caa1 正面；惠誉 B 稳定</td>
+          <td>IMF 80 亿 EFF 第七次审议 2026-07 完成（累计放款约 73 亿）；<b>第八次（最终）审议 2026-11 月中</b></td>
+        </tr>
+        <tr>
+          <td><b>突尼斯</b></td><td><span class="tag t-red">边缘 · 最确定恶化</span></td><td class="num">82–85%</td>
+          <td><b>税收的 93% 被工资、利息、补贴吃掉</b>；IMF 19 亿美元协议 2022 年达成但执董会从未批准</td>
+          <td>惠誉 B−/稳定（2026 确认）</td>
+          <td>2026-07 靠央行贷款偿还 7.5 亿欧元欧元债；银行不良率 14.7%（2025Q1）</td>
+        </tr>
+        <tr>
+          <td><b>巴基斯坦</b></td><td><span class="tag t-amb">边缘</span></td><td class="num">70.1%（FY26，含 IMF）</td>
+          <td><b>储备进口覆盖仅约 2.5 个月</b>（SBP 170.8 亿，2026-08-13）；偿债占联邦总支出 42.9%</td>
+          <td>标普 B/稳定（2026-07 上调）；穆迪 B3（四年新高）；惠誉 B−</td>
+          <td>2026-04-08 按期偿还 13 亿美元欧元债；FY26-27 外部融资需求 211.97 亿美元</td>
+        </tr>
+        <tr>
+          <td><b>玻利维亚</b></td><td><span class="tag t-amb">边缘 · 2026 最接近</span></td><td class="num">外债 143.58 亿美元（26.5% of GDP，2026-06-30）</td>
+          <td>财政赤字 9.2% of GDP；2025-11 就职时央行现金储备仅 <b>6800 万美元</b>；本币浮动后贬值约 76%</td>
+          <td>标普 <b>CCC+</b>（2026-03 双级上调，罕见）</td>
+          <td>IMF 19 亿美元／36 个月 ECF 已由国会通过（第 1765 号法律，2026-09-20），<b>执董会截至 9-25 未投票</b></td>
+        </tr>
+        <tr>
+          <td><b>肯尼亚</b></td><td><span class="tag t-amb">高债务困境风险</span></td><td class="num">68.5–69.4%（2026-06）</td>
+          <td><b>偿债／收入比 68–71%</b>（IMF 建议上限 30%）；PV 公共外债／出口 182.2%（超 180% 阈值）</td>
+          <td>穆迪 B3（2026-01 由 Caa1 上调）；惠誉 B−；标普 B</td>
+          <td>2026-02 成功发行 23 亿美元双档欧元债（票息 7.875%/8.7%，两年前为 10.375%）</td>
+        </tr>
+        <tr>
+          <td><b>阿根廷</b></td><td><span class="tag t-amb">2027 才是考验</span></td><td class="num">—</td>
+          <td>国家风险 9-26 报 <b>602bp</b>，较 7 月中 402bp 反弹 50%；2027 年到期本息超 300 亿美元＋大选</td>
+          <td>标普／惠誉 B−</td>
+          <td>2026 年余下到期约 192 亿美元（再融资超额完成约 37 亿）；2028–2031 每年对 IMF 至少 95 亿</td>
+        </tr>
+        <tr>
+          <td><b>斯里兰卡</b></td><td><span class="tag t-blu">重组收尾</span></td><td class="num">国债约 990 亿；外债 375 亿</td>
+          <td>近 99% 债权人、逾 94% 外债重组完成；<b>2028 年偿付高峰</b></td>
+          <td>—</td>
+          <td>IMF 第七次审查（2026-09-10~23）<b>未达成</b>协议；IMF 仍评"债务可持续性风险高"</td>
+        </tr>
+        <tr>
+          <td><b>加纳</b></td><td><span class="tag t-grn">修复样本</span></td><td class="num">42.2%（2026-02）→ 45.0%（2026-06）</td>
+          <td>2022 违约、2024 完成重组（外部债减记 37%）；2026Q1 赤字仅 0.1% of GDP、初级盈余 1.2%</td>
+          <td>惠誉 <b>B/稳定</b>（2026-09-25 上调）；穆迪 Caa1 正面；标普 B−</td>
+          <td>2026-05 完成 ECF 第六次审议；目标 2028 年降至中等风险</td>
+        </tr>
+        <tr>
+          <td><b>赞比亚</b></td><td><span class="tag t-grn">重组完成</span></td><td class="num">—</td>
+          <td>2026-06 债务换能源：6 亿非行贷款回购 13.6 亿欧元债，97.85% 接受，不构成困境交换</td>
+          <td>标普 CCC+/稳定；惠誉上调</td>
+          <td>外债偿付／财政收入从 70% 降至约 15%；本币债 2026 年美元计价回报 36%（EM 居首）</td>
+        </tr>
+        <tr>
+          <td><b>厄瓜多尔</b></td><td><span class="tag t-grn">修复最好</span></td><td class="num">65.7%（2026-06 广义口径）</td>
+          <td>2026-01 重返国际市场发行 40 亿美元（票息 8.75%/9.25%），认购超 120 亿</td>
+          <td>标普 B−/B 稳定</td>
+          <td>EMBI 从 2020 年峰值 2016bp 降至 460bp；利息支出 3.3% of GDP 已超经济增速</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="src">
+      来源：IMF（WEO／Fiscal Monitor／各国审议与 DSA）、世界银行、S&amp;P／Moody's／Fitch 评级公告、各国央行与财政部公报、Bloomberg／Reuters 转述。
+      各国"债务/GDP"存在一般政府总债务、含地方、含央行持仓等多口径，年度与时点不完全一致，跨年比较需谨慎；媒体转述数据需核实原文。
+    </div>
+  </div>
+
+  <!-- ============ 储备图 ============ -->
+  <div class="grid2">
+    <div class="card">
+      <h3>外汇储备进口覆盖月数（&lt;3 个月为警戒）</h3>
+      <div id="c2" class="chart" style="height:300px"></div>
+      <div class="src">来源：巴基斯坦国家银行（2026-08-13）、突尼斯央行（2026-04）、埃及央行／IMF、肯尼亚央行（2025 年末）。玻利维亚净储备 41.4 亿美元（2026-08，八成以上为黄金）未给出进口月数，故不入图。</div>
+    </div>
+    <div class="card">
+      <h3>为什么是埃及：四项"物理极限"指标</h3>
+      <table>
+        <thead><tr><th>指标</th><th class="num">埃及</th><th>阈值 / 对照</th></tr></thead>
+        <tbody>
+          <tr><td>利息支出／财政收入</td><td class="num" style="color:var(--red)"><b>&gt;50%</b></td><td>IMF 通常视 20–25% 为压力区</td></tr>
+          <tr><td>2026Q1 到期外债</td><td class="num"><b>280 亿美元</b></td><td>≈ 外汇储备（约 530 亿）的 53%</td></tr>
+          <tr><td>总融资需求峰值</td><td class="num"><b>42% of GDP</b></td><td>2030 年前难降至 30% 以下</td></tr>
+          <tr><td>债务平均剩余期限</td><td class="num"><b>3–4 年</b></td><td>前沿市场常见 6–8 年</td></tr>
+          <tr><td>外债／GDP</td><td class="num">40.3%（2025-12）</td><td>已达政府目标</td></tr>
+        </tbody>
+      </table>
+      <div class="note">埃及不是"债最多"的（85.6–87% 低于突尼斯、肯尼亚同级），但它是<b>最需要不断再融资</b>的那一个——短期限＋高付息＋硬到期日，使它成为唯一一个"哪个月都可能出事"的国家。</div>
+    </div>
+  </div>
+
+  <!-- ============ 发达市场 ============ -->
+  <h2>四、发达市场：法国是真正的边际变化</h2>
+  <div class="card">
+    <div id="c1" class="chart" style="height:360px"></div>
+    <div class="src">来源：Gloriarms《G7 Long-Term Interest Rates 2020–2026》，数据取 2026-09-16~18 同日同口径；交叉核对 FXMethods（2026-09-25）、腾讯财经环球市场播报（2026-09-22／23）。收益率随市场实时波动，此处为上述时点快照。</div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>国家</th><th>债务/GDP</th><th>2026 财政赤字</th><th>10Y 收益率</th><th>核心症结</th><th>定位</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>法国</b></td><td class="num">117.5%（2026Q1）→ <b>119.3%（2026E）</b>→ 121.7%（2027E）</td>
+          <td class="num"><b>5.4%</b></td><td class="num">4.28%</td>
+          <td>2024 提前大选后三足鼎立，两届政府被不信任投票推翻；2026 年预算靠宪法特别条款绕过议会通过</td>
+          <td><span class="tag t-red">趋势最差</span></td>
+        </tr>
+        <tr>
+          <td><b>英国</b></td><td class="num">93.8–94.1%（2026-08）</td><td class="num">3.8–4.2%</td><td class="num" style="color:var(--red)"><b>5.07%</b></td>
+          <td>G7 绝对融资成本最高；财政缓冲从 236 亿英镑缩至约 100–170 亿；约 23% 国债与通胀挂钩</td>
+          <td><span class="tag t-amb">成本最高</span></td>
+        </tr>
+        <tr>
+          <td><b>意大利</b></td><td class="num">137.1%（2025）→ 138.5%（2026E）</td><td class="num">3.1%（2025）</td><td class="num">4.43%</td>
+          <td>存量欧元区第一（将超希腊），但维持初级盈余 0.8%、赤字降至 3%；穆迪 9-25 确认 Baa2/稳定</td>
+          <td><span class="tag t-blu">高存量·改善流量</span></td>
+        </tr>
+        <tr>
+          <td><b>日本</b></td><td class="num">204%（IMF）／230–240%（含地方，国内口径）</td><td class="num">2.2–3.4%</td><td class="num">2.99%</td>
+          <td>2026-09-24 10Y 升至 3.075%，1996 年 8 月来最高；但利息支出仅约 1.5% of GDP、本土消化、r−g 有利</td>
+          <td><span class="tag t-blu">存量极端·结构安全</span></td>
+        </tr>
+        <tr>
+          <td>美国（参照）</td><td class="num">125%（IMF）</td><td class="num">—</td><td class="num">4.94%</td>
+          <td>联邦债务约 40 万亿美元；2026-09-16 加息 25bp 至 3.75–4.00%</td>
+          <td><span class="tag t-grn">储备货币兜底</span></td>
+        </tr>
+        <tr>
+          <td>德国（参照）</td><td class="num">65%（IMF）</td><td class="num">—</td><td class="num">3.50%</td>
+          <td>欧元区无风险基准；2026-09-15 10Y 触及 3.57%，2009 年 6 月来最高</td>
+          <td><span class="tag t-grn">基准</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>法德 / 意德 10 年期利差（2026-09-24）</h3>
+      <div id="c4a" class="chart" style="height:260px"></div>
+      <div class="src">来源：腾讯财经环球市场播报（2026-09-23／24）、World Government Bonds（截至 2026-09-28）。法德利差 9-18 首破 100bp，为 2012 年欧债危机高峰以来首次；9-24 盘中 112.3bp。</div>
+    </div>
+    <div class="card">
+      <h3>法国 30Y 相对意大利的利差：从 −120bp 收敛到 −3bp</h3>
+      <div id="c4b" class="chart" style="height:260px"></div>
+      <div class="src">来源：Bankingnews / 欧元区主权债市场综述（2026-09）。负值表示法国收益率低于意大利；收敛至 −3bp 意味着法国长端已基本追平意大利。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>法国为什么是"第一边缘候选"：三个可验证的事实</h3>
+    <ul class="tight">
+      <li><b>市场已经把法国定价到意大利水平。</b>法德 10Y 利差 111bp（2026-09-24）、意德 89bp —— 法国的信用风险溢价<b>已经高于意大利</b>。</li>
+      <li><b>没有政治修复路径。</b>总理勒科尔尼须在 10 月初提交 2027 年预算（目标削减支出 540 亿欧元），最终投票定于 <b>11 月 17 日</b>；2024-12 与 2025-09 两届政府已因不信任投票倒台。ING 的表述是"时间不是法国债券的朋友"。</li>
+      <li><b>评级已被下调。</b>惠誉 2025-09-12 将法国长期外币评级由 AA− 降至 <b>A+</b>；穆迪 Aa3／负面展望。</li>
+    </ul>
+    <div class="warn" style="margin-top:12px">
+      <b>但必须说清楚边界：</b>法国不是塞内加尔。它有欧央行的反碎片化工具（TPI）与 ESM 兜底，本币是欧元、本币计价、本土与本区域投资者消化，重演 2012 年"欧元区存亡危机"的概率低。
+      法国的风险形态是<b>财政主导（fiscal dominance）＋长期增长被利息挤出</b>，而不是某一天的一笔违约。真正要盯的是：若 2027 年债务率走向 121.7% 而赤字仍在 5% 以上，市场会开始质疑 ECB 是否被迫在通胀未回 2% 的情况下买单——那才是欧元区真正的压力测试。
+    </div>
+  </div>
+
+  <!-- ============ 法德利差专章 ============ -->
+  <h2>四之二、法德利差意味着什么：欧元区唯一的"信用体温计"</h2>
+  <div class="card">
+    <h3>机械定义：剔除了所有噪音之后，只剩信用</h3>
+    <p style="font-size:13.5px;margin-top:0">
+      法德利差 = 法国 10 年期 OAT 收益率 − 德国 10 年期 Bund 收益率。同一货币、同一央行、同一通胀区，
+      <b>两边唯一剩下的变量就是"市场信不信法国还得起钱"</b>——汇率、货币政策、通胀预期这些噪音全部被抵消掉了。
+      这是欧元区能找到的最干净的一根主权信用刻度尺。
+    </p>
+    <table>
+      <thead><tr><th>利差水平</th><th>时点 / 区间</th><th>市场在说什么</th></tr></thead>
+      <tbody>
+        <tr><td class="num">0–20 bp</td><td>2005–2007</td><td>法德<b>没有信用区别</b>，市场视法国为准核心</td></tr>
+        <tr><td class="num">20–50 bp</td><td>常态良性区</td><td>正常溢价，不构成任何警报</td></tr>
+        <tr><td class="num">约 71 bp</td><td>2007 年以来长期均值</td><td>中枢水平</td></tr>
+        <tr><td class="num">85.2 bp</td><td>2024-06-28（首轮投票前）</td><td>2012 年欧债危机以来最阔，政治风险定价</td></tr>
+        <tr><td class="num">54.8 bp</td><td>2026-02-25（年内低点）</td><td>年初市场仍认为风险可控</td></tr>
+        <tr><td class="num" style="color:var(--red)"><b>111.2 bp</b></td><td>2026-09-23（9-24 盘中 112.3）</td><td><b>八个月翻倍</b>；法国 10Y 已高于意大利 BTP，约 2005 年来首次</td></tr>
+        <tr><td class="num">190.2 bp</td><td>2011-11-15（欧债危机峰值）</td><td>欧元区差点散伙的时刻——当前仍远低于此</td></tr>
+      </tbody>
+    </table>
+    <div class="src">来源：World Government Bonds 长序列（2007-04-30 起，截至 2026-09-28）；法国参议院财政委员会报告（AFT 数据）；Eurostat Maastricht 口径交叉验证（2025 年 OAT 年均 3.35% vs Bund 2.59%）。媒体转述数值需核实原文。</div>
+  </div>
+
+  <div class="card">
+    <h3>被忽略的技术细节：利差是两端共同决定的</h3>
+    <ul class="tight">
+      <li><b>2024 年 6 月那次跳升，德国端贡献更大。</b>法国 OAT 仅上行约 2bp，而 Bund 作为避险资产下行 9bp（一度跌至 2.36%）——是"分母塌了"把利差撑开的，不是法国单方面被抛售。</li>
+      <li><b>2026 年反过来了。</b>德国 2025 年放弃"黑零"、推出约 5000 亿欧元基建与国防基金，Bund 供给激增推高德债收益率。<b>即使法国什么都不做，利差的分母也在往上抬。</b></li>
+      <li><b>读法提醒：</b>看到利差走阔就默认"法国的锅"是错的，必须先拆两端。这也是为什么 2026 年这一次比 2024 年更值得警惕——这次是分子分母同向恶化。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>最关键的一层：TPI 悖论——有保险，但保单不覆盖这次事故</h3>
+    <table>
+      <thead><tr><th>欧央行工具</th><th>设计目的</th><th>对法国的适用性</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>TPI</b>（传导保护工具，2022-07 设立）</td>
+          <td>应对"<b>无基本面依据的</b>无序市场动态"，二级市场购买 1–10 年期公共部门证券，规模不设上限</td>
+          <td><span class="tag t-red">资格存实质障碍</span> 第一项累积条件要求"不处于超额赤字程序（EDP）"，而<b>法国自 2024-06 起正在 EDP 之中</b>；且本次利差走阔被普遍视为反映真实财政恶化，属"基本面驱动"，<b>不在 TPI 支持范围</b></td>
+        </tr>
+        <tr>
+          <td><b>PEPP 灵活再投资</b></td>
+          <td>第一道防线，到期本金可跨辖区灵活再投资</td>
+          <td><span class="tag t-amb">可用但有限</span> 欧央行已停止净买入（QT），仅剩结构性腾挪空间</td>
+        </tr>
+        <tr>
+          <td><b>OMT</b>（直接货币交易，2012）</td>
+          <td>终极后盾，从未启用</td>
+          <td><span class="tag t-red">门槛更高</span> 要求受援国接受 <b>ESM 正式救助计划</b>，政治上对法国几乎不可行</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="warn" style="margin-top:12px">
+      <b>核心判断：法国不会违约，但也不会被救。</b>TPI 自 2022 年设立以来<b>从未被实际激活过一次</b>——它是威慑，不是承诺。
+      法国恰好卡在最尴尬的位置：够大，所以不能倒；但又是基本面问题，所以工具不覆盖。
+      其风险形态不是违约，而是<b>财政主导（fiscal dominance）</b>：利息支出挤掉所有其他开支、增长被永久压低、市场年复一年要求更高的期限溢价。
+      <br><br>
+      <b>反向声音：</b>111bp 仍远低于 2011 年的 190bp 峰值，且法国有欧元本币、欧元区投资者基础与 PEPP 灵活再投资托底。
+      <b>这不是 2012 重演，而是一个缓慢的、短期不可逆的信用降级。</b>汇丰 Chris Attfield 认为 <b>120bp</b> 是下一个心理关口。
+    </div>
+    <div class="src">来源：欧洲央行 TPI 设计文件（2022-07-21 理事会批准）、欧盟委员会 EDP 程序公告（2024-06-19 对法启动）、Reuters／Bloomberg 对 TPI 未激活状态的报道。</div>
+  </div>
+
+  <!-- ============ 法国危机传导 ============ -->
+  <h2>四之三、假如法国真的发生债务危机：账单怎么落到法国头上</h2>
+  <div class="card">
+    <p><b>先界定"危机"。</b>截至 2026 年 9 月，法国尚未进入急性偿付事件——拍卖仍能清算、市场准入未中断、评级仍在投资级（标普 A+、穆迪 Aa3 负面）。
+      市场定价的是<b>"慢性可信度侵蚀"</b>：利差每上一个台阶就下不来，融资成本逐年抬升。所以本节推演的不是"法国某天宣布还不上钱"，
+      而是<b>利差进一步失控（120–150bp 区间）时，代价如何在法国内部与欧元区分摊</b>。</p>
+
+    <h3>传导闭环：四步之后回到原点，但利息永久更贵</h3>
+    <ol class="tight">
+      <li><b>国债利息变贵</b> → 政府借钱成本上升，赤字更大；</li>
+      <li><b>银行融资跟着变贵</b> → 法国银行比大多数欧洲同业更依赖批发融资，定价锚定主权，房贷与企业贷随之涨价；</li>
+      <li><b>企业与家庭缩手</b> → 少投资、少买房、少招人；</li>
+      <li><b>经济变冷、税收变少</b> → 赤字进一步扩大 → 回到第 1 步。</li>
+    </ol>
+    <div class="warn" style="margin-top:12px">
+      <b>闭环的关键在法国当前的 r &gt; g。</b>2026 年 GDP 增速仅约 0.4%–0.7%，而债务平均成本已升至约 <b>3.5%</b>。
+      利息增速快于经济增速，债务/GDP 比会<b>自动上升</b>——不需要新增任何一笔开支。
+    </div>
+
+    <h3>分摊表：谁承担什么</h3>
+    <table>
+      <thead>
+        <tr><th>承担方</th><th>当前（2026-09）</th><th>危机深化后</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>国家财政</b></td>
+          <td>债务 3.536 万亿欧元（2026Q1，117.5% GDP）；2026 上半年付息 345 亿欧元、同比 +19%；利息/GDP 2.2%→2.6%</td>
+          <td>2027 年利息/GDP 升至 2.8%，2030 年前后付息逼近 1000 亿欧元，<b>成为预算中仅次于教育的最大单项</b></td>
+        </tr>
+        <tr>
+          <td><b>银行体系</b></td>
+          <td>持本国国债约 9.8%–10.5%；EBA 测算 100bp 冲击下 CET1 受损 <b>44bp</b>（意大利 90bp，法国为四大经济体中最轻）</td>
+          <td>直接持仓不是主要风险，<b>批发融资成本与股价才是</b>：本土营收占比 BNP 26%、法兴 41%、农信 47%，越依赖本土越脆弱</td>
+        </tr>
+        <tr>
+          <td><b>企业</b></td>
+          <td>SME 新贷 3.47%、大型企业 3.25%（2026-01，央行口径）</td>
+          <td>长期融资普遍升至 5.5%+，小微可能破 7%；欧元区 SAFE 调查已有净 42% 企业报告融资成本上升</td>
+        </tr>
+        <tr>
+          <td><b>家庭房贷</b></td>
+          <td>新增房贷平均 3.27%（2026-06）；20 年期市场利率约 3.5%，半年内 +50bp</td>
+          <td>新增房贷升至 4.6%+，刚需群体月供增加约 8%–10%；触及法定高利贷上限（≥20 年期 5.29%）而被拒贷的比例上升</td>
+        </tr>
+        <tr>
+          <td><b>养老金</b></td>
+          <td>养老金支出占 GDP 约 14%（OECD 均值 7.7% 的两倍）；退休年龄 64 岁改革已暂停至 2028 年 1 月</td>
+          <td>COR 把 2070 年缺口上修至 GDP 的 2.4%；最可能的调整是<b>冻结点数或削减指数化</b>，实际购买力受损</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>三个反直觉之处</h3>
+    <ul class="tight">
+      <li><b>一、法国国债最大的持有人不是法国人，是外国人——56%–57%，欧元区主要经济体里最高</b>（2022 年还是 49.1%；美国国债外资占比仅 32.1%）。
+        短期国库券 BTF 的外资占比高达 81.3%，是最容易跑掉的一层。同时法国<b>缺少英荷式养老基金"压舱石"</b>：本国养老金持有仅约 1%。</li>
+      <li><b>二、真正的第一受害者是银行股，不是国债持有人。</b>2025-08-26 利差单日走阔 14bp，法国三大行当日暴跌 8%–10%；2026-08-27 再跌 3.3%–4.3%，领跌 CAC40。
+        更值得警惕的信号是：2026 年法国银行的<b>抵押担保债券收益率已经低于法国国债本身</b>——市场认为法国银行比法国政府更可靠。</li>
+      <li><b>三、法国是"大到不能救"，不是"大到不能倒"。</b>ESM 最大放贷能力约 5000 亿欧元，而法国年再融资需求超 3000 亿、债务 3.3 万亿；
+        法国还是 ESM 第二大股东（出资 20.2%，仅次于德国），<b>对自己的救助方案拥有事实上的否决权</b>。法国经济体量约为希腊危机时的 15 倍。</li>
+    </ul>
+
+    <h3>外溢：法国这次不是"接收者"，而是"输出者"</h3>
+    <p>机构情景推演给出：若发生"法国财政事件"（概率约 25%），OAT-Bund 走阔至 <b>140bp</b>，同时把意德利差推至 <b>200bp</b>、西德推至 <b>130bp</b>，
+      欧洲银行股相对全球同业 6 个月内跑输 <b>15%–20%</b>。欧盟本身也将受影响——欧盟委员会到 2026 年末累计发行近 1 万亿欧元共同债券，法国评级下调会推高欧盟整体融资成本。</p>
+    <div class="warn" style="margin-top:12px">
+      <b>最大的政治变量是 2027 年总统大选。</b>目前主要参选方均未把修复赤字作为核心纲领：勒庞主张把部分人群退休年龄降至 60 岁，
+      梅朗雄主张<b>直接注销法国央行代欧央行持有的约 6000 亿欧元债务</b>（约占债务 18%）——后者等于变相货币融资，欧盟条约明文禁止，若真推进将直接冲击欧元区成员资格。
+      <br><br>
+      <b>结论：法国危机的形态不是"某天还不上钱"，而是"每年多付一笔利息，从学校、医院、养老金里扣出来"。</b>
+      它不会成为 2012 重演，但会让法国长期处在"必须每季度向市场重新证明自己"的状态。
+    </div>
+    <div class="src">来源：AFT 法国国库署（2026-08-31 可流通债务 2.9038 万亿、平均期限 8 年 142 天、OAT 加权平均发行利率 3.50%；2026 年 OAT 到期赎回 1758 亿、总融资需求 3057 亿、中长期净发行计划 3100 亿）；法国央行 Webstat 与 ECB 投资者结构表（2026Q1：非居民 57%、央行 17%、保险 12%、银行 10%、养老金 1%）；法国央行 2026-06 金融稳定报告；EBA 压力测算（100bp 主权曲线冲击的 CET1 敏感度）；法国央行企业信贷与房贷利率统计（2026-01／06）；COR 退休指导委员会 2026 年草案；Argus／ING 情景推演；法国参议院 2025-09-24 债务结构报告。情景概率为机构主观赋值，非客观频率。</div>
+  </div>
+
+  <!-- ============ 反向声音 ============ -->
+  <h2>五、反向声音：我的判断可能错在哪</h2>
+  <div class="card">
+    <ul class="tight">
+      <li>
+        <b>反方一：市场并不认为埃及会违约。</b>埃及主权利差 2026 年 8 月降至 2014 年以来最低；海湾资金明确兜底（Ras El Hekma 350 亿美元、Alam El Roum 300 亿美元项目、约 180 亿央行存款）；IMF 80 亿 EFF 已放款约 73 亿。
+        <br><span style="color:var(--ink2)">我的分歧点：市场定价的是"官方部门愿意兜底"，我定价的是"滚动再融资的物理极限"。这两者在 12 个月内的绝大多数情形下不冲突——但只要海湾国家自身的财政因油价波动收紧一次，冲突就发生。这是条件性判断，不是确定性判断。</span>
+      </li>
+      <li>
+        <b>反方二：最大的单一变量是油价，不是债务本身。</b>本轮长端上行的直接触发是美伊冲突推高油价（布伦特一度超 100–107 美元）。若中东局势缓和、油价回落至 80 美元以下，通胀回落 → 央行停止加息 → 全球长端回落 50bp 以上 → 1.4 万亿美元到期墙的压力会显著缓解。
+        <br><span style="color:var(--ink2)">这意味着"谁在危机边缘"这个问题的答案，高度依赖于一个债务国完全无法控制的外部变量。</span>
+      </li>
+      <li>
+        <b>反方三：日本被长期误判，这次可能也是。</b>债务率 200%+ 但利息支出仅约 1.5% of GDP、本土机构持有、r−g 有利、债务率连续六年下降（1997 年以来首次）。过去三十年每一次"日本债务危机论"都被证伪。
+        <br><span style="color:var(--ink2)">真正的分水岭是 10Y 能否守住 3%——若长期站上 3%，"增速高于融资成本"这个核心假设开始失效。目前 3.075%，刚在线上。</span>
+      </li>
+      <li>
+        <b>反方四：中国的角色被低估了。</b>新增开发性贷款下降 73%，中国从放款人变成收款人——它现在是埃塞俄比亚、赞比亚、巴基斯坦重组谈判桌上的<b>债权人</b>。G20 共同框架的进展速度，很大程度上取决于中方是否接受减记。这是债务危机里被媒体最少讨论、但权重最高的变量之一。
+      </li>
+    </ul>
+  </div>
+
+  <!-- ============ 监控清单 ============ -->
+  <h2>六、未来 90 天监控清单</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>时间</th><th>事件</th><th>为什么关键</th><th>触发后的读法</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10 初</td><td>法国 2027 年预算提交（削减 540 亿欧元）</td><td>法国财政整固可信度的唯一检验</td><td>被否决或大幅缩水 → 法德利差上冲 120bp+</td></tr>
+        <tr><td>2026-10-28</td><td>英国秋季预算（财政大臣希利首份）</td><td>财政缓冲仅剩约 100–170 亿英镑</td><td>加税幅度不足 → 30Y 上破 6%</td></tr>
+        <tr><td>2026-11-17</td><td>法国 2027 预算最终投票</td><td>倒阁风险与利差的直接开关</td><td>政府再被推翻 → 欧元区系统性重定价</td></tr>
+        <tr><td>2026-11 月中</td><td><b>埃及 IMF 第八次（最终）审议</b></td><td>80 亿 EFF 的收官，也是市场信心的锚</td><td>延期或缩水 → 埃及是第一个要重估的名字</td></tr>
+        <tr><td>待定</td><td>玻利维亚 IMF 执董会投票</td><td>截至 2026-09-25 仍未公布日期</td><td>否决 → 玻利维亚 2026 年违约概率大幅上升</td></tr>
+        <tr><td>Q4 2026</td><td>塞内加尔 50 亿欧元债重组谈判 + IMF 22 亿 ECF</td><td>2026 年唯一新增违约案例的收尾方式</td><td>会成为后续非洲重组的模板或被否先例</td></tr>
+        <tr><td>Q4 2026</td><td>埃塞俄比亚欧元债正式交换落地</td><td>OCC 2026-08 已认可待遇可比性</td><td>落地则非洲"最后一单"收官</td></tr>
+        <tr><td>10–12 月</td><td>美联储 / 欧央行 / 英央行是否继续加息</td><td>这是所有变量的放大器</td><td>再加 25bp → 到期墙压力整体上一个台阶</td></tr>
+        <tr><td>持续</td><td>布伦特原油与霍尔木兹海峡通航</td><td>通胀 → 央行 → 长端的源头</td><td>回落至 80 美元下方 → 本轮压力显著缓解</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 一句话答复 ============ -->
+  <div class="card tldr">
+    <h3 style="margin-top:0">如果长官只要一个答案</h3>
+    <div class="rank">
+      <div class="no">1</div>
+      <div class="bd">
+        <div class="nm">埃及 —— 新兴市场侧"最处于危机边缘"的国家</div>
+        <div class="ds">不是因为债最多，而是因为<b>最需要不断再融资</b>：利息吃掉一半以上财政收入、债务平均期限 3–4 年、2026Q1 到期 280 亿美元≈储备 53%。它有海湾与 IMF 兜底，所以概率不是最高；但一旦出事，传染性最大。</div>
+        <div class="dt">决定性时点：2026-11 月中 IMF 第八次（最终）审议</div>
+      </div>
+    </div>
+    <div class="rank">
+      <div class="no">2</div>
+      <div class="bd">
+        <div class="nm">法国 —— 发达市场侧唯一新进入"边缘"讨论的名字</div>
+        <div class="ds">法德利差破 100bp（2012 年来首次）、长端追平意大利、评级降至 A+、议会无法产出预算。不会违约，但正在被市场从"核心"重新分类为"边缘"。</div>
+        <div class="dt">决定性时点：2026-11-17 预算投票</div>
+      </div>
+    </div>
+    <div class="rank">
+      <div class="no">3</div>
+      <div class="bd">
+        <div class="nm">塞内加尔 —— 已经掉下去的那个（2026 年最新案例）</div>
+        <div class="ds">2026-06 欧元债票息违约，标普 CC，债务/GDP 预计 132.3%。它标志着非洲债务危机从"2022 年那一批"进入了"第二批"。</div>
+        <div class="dt">观察点：50 亿欧元债重组方案与 IMF 22 亿 ECF 能否落地</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disc">
+    <b>数据说明：</b>本报告全部数字来自公开检索（IMF／世界银行／各国央行与财政部／S&amp;P、Moody's、Fitch 公告／Bloomberg、Reuters 等媒体转述），已在表格内标注时点与口径。
+    多口径数据（一般政府债务 vs 含地方 vs 含央行持仓；财年 vs 自然年）已尽量分别标注，跨源比较请统一口径。媒体与研报转述属非一手来源，结论性引用需核实原文。收益率数据为 2026-09 下旬快照，随市场实时变动。<br><br>
+    <b>免责声明</b>：以上内容基于公开数据和量化分析，仅供参考，不构成投资建议。市场有风险，投资需谨慎。任何投资决策应结合个人风险承受能力、资金状况和投资目标独立判断，必要时咨询持牌专业机构。过往表现不预示未来收益。
+  </div>
+
+</div>
+
+<script>
+var C = {
+  red:'#c0392b', amber:'#d97706', green:'#0f8a5f', blue:'#2563eb',
+  gray:'#86909c', ink:'#4e5969'
+};
+
+// 图1：发达经济体主权收益率
+echarts.init(document.getElementById('c1')).setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  legend: { data: ['10年期', '30年期'], top: 0, textStyle: { color: C.ink } },
+  grid: { left: 50, right: 24, top: 44, bottom: 40 },
+  xAxis: {
+    type: 'category',
+    data: ['英国', '美国', '意大利', '法国', '德国', '日本'],
+    axisLabel: { color: C.ink, fontSize: 12 }
+  },
+  yAxis: {
+    type: 'value', name: '收益率 %', min: 0, max: 7,
+    nameTextStyle: { color: C.gray },
+    axisLabel: { color: C.ink, formatter: '{value}%' },
+    splitLine: { lineStyle: { color: '#eef0f3' } }
+  },
+  series: [
+    { name: '10年期', type: 'bar', barGap: '10%', itemStyle: { color: C.red, borderRadius: [3, 3, 0, 0] },
+      data: [5.07, 4.94, 4.43, 4.28, 3.50, 2.99] },
+    { name: '30年期', type: 'bar', itemStyle: { color: '#f0a49b', borderRadius: [3, 3, 0, 0] },
+      data: [5.94, 5.29, 5.35, 5.04, 3.95, 4.05] }
+  ]
+});
+
+// 图2：储备进口覆盖月数
+echarts.init(document.getElementById('c2')).setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: function (v) { return v + ' 个月'; } },
+  grid: { left: 70, right: 40, top: 20, bottom: 30 },
+  xAxis: { type: 'value', min: 0, max: 7, axisLabel: { color: C.ink, formatter: '{value}月' },
+    splitLine: { lineStyle: { color: '#eef0f3' } } },
+  yAxis: { type: 'category', data: ['肯尼亚', '埃及', '突尼斯', '巴基斯坦'],
+    axisLabel: { color: C.ink, fontSize: 12 } },
+  series: [{
+    type: 'bar', barWidth: 22,
+    data: [
+      { value: 5.3, itemStyle: { color: C.amber } },
+      { value: 5.0, itemStyle: { color: C.amber } },
+      { value: 3.3, itemStyle: { color: C.amber } },
+      { value: 2.5, itemStyle: { color: C.red } }
+    ],
+    label: { show: true, position: 'right', formatter: '{c} 月', color: C.ink, fontSize: 12 },
+    markLine: {
+      symbol: 'none',
+      data: [{ xAxis: 3, label: { formatter: '3 个月警戒线', color: C.red, fontSize: 11 },
+        lineStyle: { color: C.red, type: 'dashed' } }]
+    }
+  }]
+});
+
+// 图3：危机边缘雷达
+echarts.init(document.getElementById('c3')).setOption({
+  tooltip: { trigger: 'item' },
+  legend: { data: ['埃及', '突尼斯', '巴基斯坦', '肯尼亚', '玻利维亚'], top: 0, textStyle: { color: C.ink } },
+  radar: {
+    center: ['50%', '56%'], radius: '64%',
+    axisName: { color: C.ink, fontSize: 12 },
+    splitLine: { lineStyle: { color: '#e5e6eb' } },
+    splitArea: { areaStyle: { color: ['#fafbfc', '#ffffff'] } },
+    axisLine: { lineStyle: { color: '#e5e6eb' } },
+    indicator: [
+      { name: '偿债负担', max: 5 },
+      { name: '流动性薄', max: 5 },
+      { name: '再融资墙', max: 5 },
+      { name: '市场准入关闭', max: 5 },
+      { name: '政治修复失效', max: 5 },
+      { name: '外部兜底缺失', max: 5 }
+    ]
+  },
+  series: [{
+    type: 'radar',
+    symbolSize: 4,
+    data: [
+      { name: '埃及', value: [5, 4, 5, 3, 3, 2],
+        lineStyle: { color: C.red, width: 3 }, itemStyle: { color: C.red },
+        areaStyle: { color: 'rgba(192,57,43,0.18)' } },
+      { name: '突尼斯', value: [4, 4, 4, 5, 5, 5],
+        lineStyle: { color: C.amber, width: 2 }, itemStyle: { color: C.amber },
+        areaStyle: { color: 'rgba(217,119,6,0.10)' } },
+      { name: '巴基斯坦', value: [5, 5, 4, 3, 3, 2],
+        lineStyle: { color: C.blue, width: 2 }, itemStyle: { color: C.blue } },
+      { name: '肯尼亚', value: [5, 3, 3, 2, 3, 3],
+        lineStyle: { color: C.green, width: 2 }, itemStyle: { color: C.green } },
+      { name: '玻利维亚', value: [4, 4, 4, 4, 4, 1],
+        lineStyle: { color: C.gray, width: 2 }, itemStyle: { color: C.gray } }
+    ]
+  }]
+});
+
+// 图4a：法德 / 意德 10Y 利差
+echarts.init(document.getElementById('c4a')).setOption({
+  tooltip: { trigger: 'axis', valueFormatter: function (v) { return v + ' bp'; } },
+  grid: { left: 56, right: 24, top: 24, bottom: 30 },
+  xAxis: { type: 'category', data: ['法国 - 德国', '意大利 - 德国'], axisLabel: { color: C.ink } },
+  yAxis: { type: 'value', min: 0, max: 130, name: 'bp', nameTextStyle: { color: C.gray },
+    axisLabel: { color: C.ink }, splitLine: { lineStyle: { color: '#eef0f3' } } },
+  series: [{
+    type: 'bar', barWidth: '42%',
+    data: [
+      { value: 111, itemStyle: { color: C.red, borderRadius: [3, 3, 0, 0] } },
+      { value: 89, itemStyle: { color: C.amber, borderRadius: [3, 3, 0, 0] } }
+    ],
+    label: { show: true, position: 'top', formatter: '{c} bp', color: C.ink, fontWeight: 'bold' }
+  }]
+});
+
+// 图4b：法意 30Y 利差收敛
+echarts.init(document.getElementById('c4b')).setOption({
+  tooltip: { trigger: 'axis', valueFormatter: function (v) { return v + ' bp'; } },
+  grid: { left: 60, right: 24, top: 24, bottom: 30 },
+  xAxis: { type: 'category', data: ['2022 年均值', '2026 年'], axisLabel: { color: C.ink } },
+  yAxis: { type: 'value', min: -140, max: 20, name: 'bp', nameTextStyle: { color: C.gray },
+    axisLabel: { color: C.ink }, splitLine: { lineStyle: { color: '#eef0f3' } } },
+  series: [{
+    type: 'bar', barWidth: '40%',
+    data: [
+      { value: -120, itemStyle: { color: C.blue, borderRadius: [0, 0, 3, 3] } },
+      { value: -3, itemStyle: { color: C.red, borderRadius: [0, 0, 3, 3] } }
+    ],
+    label: { show: true, position: 'bottom', formatter: '{c} bp', color: C.ink, fontWeight: 'bold' }
+  }]
+});
+</script>
+</body>
+</html>
