@@ -1,24 +1,23 @@
 {
- "generated": "2026-10-03 00:35",
- "drawdown": -0.0154,
+ "generated": "2026-10-06 01:49",
+ "drawdown": -0.0014,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
   "financial": 0.14,
-  "rates_debt": 0.83,
+  "rates_debt": 0.67,
   "services": 0.33,
   "inflation_energy": 0.75
  },
  "evidence": [
-  "SPY 距高点回撤 -1.5%(高点 2026-08-13)",
+  "SPY 距高点回撤 -0.1%(高点 2026-08-13)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[financial +1] 银行股领跌(XLF相对 -6.4%)",
-  "[rates_debt +1] 国债下跌(TLT -5.2%)",
-  "[rates_debt +2] 股债相关性转正(0.49),债券失去避险功能",
-  "[rates_debt +1] 地产领跌(XLRE相对 -7.5%)",
-  "[rates_debt +1] 公用事业领跌(XLU相对 -7.7%)",
-  "[services +2] 航空出行股领跌(JETS相对 -10.3%)",
-  "[inflation_energy +2] 油价逆势大涨(USO +20.0%)",
+  "[financial +1] 银行股领跌(XLF相对 -7.0%)",
+  "[rates_debt +1] 国债下跌(TLT -5.9%)",
+  "[rates_debt +2] 股债相关性转正(0.47),债券失去避险功能",
+  "[rates_debt +1] 公用事业领跌(XLU相对 -8.4%)",
+  "[services +2] 航空出行股领跌(JETS相对 -12.3%)",
+  "[inflation_energy +2] 油价逆势大涨(USO +15.2%)",
   "[inflation_energy +1] 利率与油价齐升而股票下跌"
  ]
 }
