@@ -1,23 +1,17 @@
 {
- "generated": "2026-10-06 01:49",
- "drawdown": -0.0014,
+ "generated": "2026-10-07 00:52",
+ "drawdown": 0.0,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
-  "financial": 0.14,
-  "rates_debt": 0.67,
-  "services": 0.33,
-  "inflation_energy": 0.75
+  "financial": 0.0,
+  "rates_debt": 0.33,
+  "services": 0.0,
+  "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -0.1%(高点 2026-08-13)",
+  "SPY 距高点回撤 0.0%(高点 2026-10-06)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[financial +1] 银行股领跌(XLF相对 -7.0%)",
-  "[rates_debt +1] 国债下跌(TLT -5.9%)",
-  "[rates_debt +2] 股债相关性转正(0.47),债券失去避险功能",
-  "[rates_debt +1] 公用事业领跌(XLU相对 -8.4%)",
-  "[services +2] 航空出行股领跌(JETS相对 -12.3%)",
-  "[inflation_energy +2] 油价逆势大涨(USO +15.2%)",
-  "[inflation_energy +1] 利率与油价齐升而股票下跌"
+  "[rates_debt +2] 股债相关性转正(0.46),债券失去避险功能"
  ]
 }
