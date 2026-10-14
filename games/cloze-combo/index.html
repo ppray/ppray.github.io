@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>填空连击 · 必背四章挖空速记 —— 翟东升《货币与金融的国际政治经济学》</title>
+<meta name="description" content="《填空连击》把翟东升《货币与金融的国际政治经济学》考频最高的四章（外汇储备、人民币汇率、金本位制度、人民币国际化）做成挖空连击：68 题、235 个空，涵盖骨架词、数字锚点、答题口诀、排序链条与考场总纲。点词卡按顺序填空，连击越长越快；答错不扣分，只有一次全对才算掌握。默认研学风格，可切换街机风格。">
+<link rel="canonical" href="https://ppray.github.io/games/cloze-combo/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#3b6bff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="填空连击 · 必背四章挖空速记">
+<meta property="og:description" content="外汇储备、人民币汇率、金本位、人民币国际化：68 道挖空与排序题，口诀、数字锚点与考场总纲一次过。">
+<meta property="og:url" content="https://ppray.github.io/games/cloze-combo/">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["VideoGame", "LearningResource"],
+  "name": "填空连击 · 必背四章挖空速记",
+  "url": "https://ppray.github.io/games/cloze-combo/",
+  "inLanguage": "zh-CN",
+  "genre": ["Educational", "Arcade"],
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "learningResourceType": "Educational game",
+  "educationalLevel": "Graduate",
+  "teaches": ["外汇储备与外汇占款", "铸币税", "人民币汇率七阶段", "汇率低估的代价", "汇率操纵认定", "金本位制度", "金汇兑本位制", "黄金输送点", "人民币国际化", "货币互换", "SDR"],
+  "isBasedOn": "翟东升《货币与金融的国际政治经济学》",
+  "description": "翟东升《货币与金融的国际政治经济学》必背四章的挖空连击练习：外汇储备、人民币汇率、金本位制度、人民币国际化，共 68 题、235 个空（纪年页游手写的挖空题与排序题，加上取自关键词速查卡的数字锚点）。",
+  "author": { "@type": "Person", "name": "ppray" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 字体全部非阻塞：拿不到就用系统黑体。Dela Gothic One 只取数字和符号，避免和中文字形混排 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&text=0123456789%24%25.%2C%3A%2F%C3%97%2B-%E2%80%93!%3F%E2%80%A6ABCDEFGHIJKLMNOPQRSTUVWXYZ%C2%A5%E2%82%AC%C2%A3&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&family=Noto+Serif+SC:wght@600;700&family=ZCOOL+QingKe+HuangYou&display=swap" media="print" onload="this.media='all'">
+<style>
+  :root{
+    --ink:#1b1d4d; --ink-2:#55578a; --ink-3:#8a8cb5;
+    --paper:#fff8ec; --white:#fff;
+    --blue:#3b6bff; --blue-d:#2a4fd6; --blue-soft:#d9e4ff;
+    --pink:#ff7ab6; --pink-soft:#ffd0e4;
+    --yellow:#ffd23f; --yellow-soft:#fff1b8;
+    --mint:#3fdcb0; --mint-soft:#d3f7ec;
+    --violet:#a77bff; --violet-soft:#efe6ff;
+    --red:#ff4f6d;
+    --round:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --chunky:"Dela Gothic One","ZCOOL QingKe HuangYou","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --num:"Dela Gothic One","Noto Sans SC","PingFang SC",sans-serif;
+    --outline:3px 0 0 var(--ink),-3px 0 0 var(--ink),0 3px 0 var(--ink),0 -3px 0 var(--ink),2px 2px 0 var(--ink),-2px 2px 0 var(--ink),2px -2px 0 var(--ink),-2px -2px 0 var(--ink);
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;min-height:100vh;background:var(--paper);color:var(--ink);font-family:var(--round);font-weight:700;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  button{font:inherit;color:inherit;cursor:pointer}
+  button:disabled{cursor:default}
+  button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var(--yellow);outline-offset:3px}
+  [hidden]{display:none!important}
+
+  /* ── 底纸：方格练习本 + 两团色块；画布层叠在它上面 */
+  #paper{position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(circle at 12% 18%,rgba(255,122,182,.16) 0 120px,transparent 121px),
+      radial-gradient(circle at 88% 78%,rgba(59,107,255,.12) 0 160px,transparent 161px),
+      linear-gradient(rgba(59,107,255,.11) 1.5px,transparent 1.5px) 0 0/26px 26px,
+      linear-gradient(90deg,rgba(59,107,255,.11) 1.5px,transparent 1.5px) 0 0/26px 26px,
+      var(--paper)}
+  #paper::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity 1.2s;
+    background:radial-gradient(circle at 50% 42%,rgba(255,210,63,.42),transparent 68%)}
+  body.l6 #paper::after{opacity:1}
+  #bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+  #fx{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none}
+  #cutins{position:fixed;inset:0;z-index:55;pointer-events:none;overflow:hidden}
+  #flash{position:fixed;inset:0;z-index:56;background:#fff;opacity:0;pointer-events:none}
+  #flash.go{animation:flash .45s ease-out}
+  @keyframes flash{from{opacity:.65}to{opacity:0}}
+
+  body.in-game{overflow:hidden}
+  body.in-game #screen-title,body.in-game #community-root,body.in-game #busuanzi_container,
+  body.in-game .community-fab{display:none!important}
+
+  /* ── 通用按钮：粗描边 + 实心下投影，按下去就「压扁」 */
+  .big-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;min-height:78px;
+    padding:12px 18px;border:4px solid var(--ink);border-radius:22px;background:var(--blue);color:#fff;
+    font-family:var(--chunky);font-weight:400;font-size:30px;letter-spacing:.06em;line-height:1.1;
+    text-shadow:0 3px 0 var(--ink);box-shadow:0 7px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+  .big-btn small{font-family:var(--round);font-weight:700;font-size:13px;letter-spacing:.08em;text-shadow:none;opacity:.92}
+  .big-btn:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+  .big-btn:disabled{background:#9aa3c8}
+  .sub-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:8px 18px;
+    border:3px solid var(--ink);border-radius:18px;background:#fff;box-shadow:0 5px 0 var(--ink);
+    font-size:16px;font-weight:900;transition:transform .08s,box-shadow .08s}
+  .sub-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+  .sub-btn b{font-family:var(--num);font-weight:400;color:var(--pink);font-size:20px}
+  .icon-btn{flex:none;width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;
+    box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;font-size:19px;font-weight:900;line-height:1;padding:0}
+  .icon-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+  .icon-btn[aria-pressed="true"]{background:var(--pink-soft)}
+  .mute-btn{position:relative}
+  .mute-btn[aria-pressed="true"]::after{content:"";position:absolute;width:28px;height:3.5px;border-radius:2px;background:var(--red);transform:rotate(-45deg)}
+  .icon-btn svg{width:22px;height:22px}
+
+  /* ── 分段开关：风格 / 声音 / 背景音乐 / 动效（文字标明，不靠图标猜） */
+  .seg{display:inline-flex;flex:none;border:3px solid var(--ink);border-radius:999px;overflow:hidden;background:#fff;box-shadow:0 4px 0 var(--ink)}
+  .seg button{padding:7px 13px;border:0;background:transparent;font-size:14px;font-weight:900;line-height:1.2}
+  .seg button+button{border-left:2px solid var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--blue);color:#fff}
+  .settings .set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:2px dashed rgba(27,29,77,.15);font-weight:700}
+  .settings h2+.set-row{border-top:0}
+  .settings .seg{box-shadow:0 3px 0 var(--ink)}
+  .settings .seg button{padding:5px 12px;font-size:13px}
+  .set-note{margin:8px 0 0;font-size:12px;color:var(--ink-2)}
+
+  /* ═════════════ 标题页 ═════════════ */
+  #screen-title{max-width:460px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px 20px;
+    display:flex;flex-direction:column;gap:16px}
+  .t-top{display:flex;align-items:center;gap:10px}
+  .t-back{margin-right:auto;display:inline-flex;align-items:center;gap:4px;padding:9px 14px;border:3px solid var(--ink);
+    border-radius:999px;background:#fff;box-shadow:0 4px 0 var(--ink);color:var(--ink);text-decoration:none;font-size:14px}
+  .t-back:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+
+  .logo{position:relative;margin:34px auto 4px;display:grid;justify-items:center;line-height:1;font-family:var(--chunky);
+    font-weight:400;--fs:clamp(72px,23vw,108px)}
+  .logo-burst{position:absolute;left:50%;top:40%;width:calc(var(--fs)*2.55);height:calc(var(--fs)*2.55);
+    transform:translate(-50%,-50%);z-index:-1;filter:drop-shadow(0 6px 0 rgba(27,29,77,.9))}
+  .logo-burst g{animation:spin 30s linear infinite;transform-origin:0 0}
+  .logo-top{display:flex;font-size:var(--fs)}
+  .logo-top i{font-style:normal;display:inline-block;
+    text-shadow:5px 0 0 var(--ink),-5px 0 0 var(--ink),0 5px 0 var(--ink),0 -5px 0 var(--ink),4px 4px 0 var(--ink),-4px 4px 0 var(--ink),4px -4px 0 var(--ink),-4px -4px 0 var(--ink),0 12px 0 var(--ink);
+    animation:bob 2.6s ease-in-out infinite}
+  .logo-top i:nth-child(1){color:var(--blue);--r:-7deg}
+  .logo-top i:nth-child(2){color:var(--pink);--r:6deg;animation-delay:-1.3s}
+  .logo-ribbon{position:relative;margin-top:calc(var(--fs)*-.08);padding:.2em 1.1em .32em;font-size:calc(var(--fs)*.5);color:#fff;
+    letter-spacing:.2em;text-indent:.2em;text-shadow:var(--outline),0 5px 0 var(--ink)}
+  .logo-ribbon svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1;overflow:visible}
+  .logo-bits b{position:absolute;left:50%;top:50%;font-family:var(--num);font-weight:400;font-size:calc(var(--fs)*.34);color:var(--c);
+    transform:translate(-50%,-50%) translate(calc(var(--fs) * var(--x)),calc(var(--fs) * var(--y))) rotate(var(--r));text-shadow:var(--outline);animation:float 3.4s ease-in-out infinite}
+  .logo-bits b:nth-child(2){animation-delay:-.8s}.logo-bits b:nth-child(3){animation-delay:-1.7s}.logo-bits b:nth-child(4){animation-delay:-2.5s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes bob{0%,100%{transform:rotate(var(--r)) translateY(0)}50%{transform:rotate(var(--r)) translateY(-6px)}}
+  @keyframes float{0%,100%{margin-top:0}50%{margin-top:-8px}}
+
+  .t-sub{margin:0;text-align:center;font-size:14px;line-height:1.75;color:var(--ink-2)}
+  .t-sub b{color:var(--ink);font-weight:900}
+  .t-sub .facts{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:999px;background:var(--ink);color:#fff;font-size:12.5px;letter-spacing:.04em}
+  .records{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .records div{border:3px solid var(--ink);border-radius:14px;background:#fff;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px}
+  .records small{font-size:11px;color:var(--ink-2)}
+  .records b{font-family:var(--num);font-weight:400;font-size:18px;white-space:nowrap}
+  .review-btn{width:100%;background:var(--pink-soft)}
+  .review-btn b{color:var(--ink)}
+
+  .sec-title{margin:6px 0 -4px;font-family:var(--chunky);font-weight:400;font-size:20px;letter-spacing:.06em}
+  .sec-title small{font-family:var(--round);font-size:12px;font-weight:700;color:var(--ink-2);letter-spacing:0;margin-left:6px}
+  .chapters{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ch-card{position:relative;align-items:stretch;text-align:left;border:3px solid var(--ink);border-radius:18px;background:#fff;box-shadow:0 5px 0 var(--ink);
+    padding:12px 12px 10px;display:flex;flex-direction:column;gap:6px;overflow:hidden;transition:transform .08s,box-shadow .08s}
+  .ch-card:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+  .ch-card::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:var(--c);border-bottom:3px solid var(--ink)}
+  .ch-card .ch-name{margin-top:8px;font-family:var(--chunky);font-weight:400;font-size:20px;line-height:1.15}
+  .ch-card .ch-meta{font-size:11.5px;color:var(--ink-2);font-weight:700}
+  .ch-bar{height:12px;border:2.5px solid var(--ink);border-radius:99px;background:var(--violet-soft);overflow:hidden}
+  .ch-bar i{display:block;height:100%;width:0;background:var(--mint);transition:width .5s}
+  .ch-num{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:var(--ink-2)}
+  .ch-num b{font-family:var(--num);font-weight:400;font-size:15px;color:var(--ink)}
+  .ch-card.all{background:var(--yellow-soft)}
+  .ch-card.all .ch-name::after{content:" ★";color:var(--yellow);text-shadow:var(--outline)}
+
+  .panel{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:14px 16px;font-size:13.5px;line-height:1.75;font-weight:500}
+  .panel h2{margin:0 0 6px;font-family:var(--chunky);font-weight:400;font-size:18px;letter-spacing:.06em}
+  .panel ol,.panel ul{margin:0;padding-left:1.3em}
+  .panel li+li{margin-top:2px}
+  .panel b{font-weight:900}
+  .panel a{color:var(--blue-d);font-weight:700}
+  .panel .kbd{display:inline-block;min-width:1.5em;padding:0 .35em;border:2px solid var(--ink);border-radius:6px;font-family:var(--num);font-weight:400;font-size:11px;line-height:1.5;text-align:center}
+  .src-list{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:6px}
+  .src-list a{padding:3px 10px;border:2px solid var(--ink);border-radius:999px;text-decoration:none;font-size:12.5px;background:var(--blue-soft);color:var(--ink)}
+  .credit{font-size:11.5px;color:var(--ink-2);margin-top:8px}
+  .load-err{border-color:var(--red);background:#ffe8ec}
+
+  /* ═════════════ 对局 / 结算：固定全屏 ═════════════ */
+  .stage-screen{position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;width:min(100vw,460px);height:100vh;height:100dvh;
+    display:none;flex-direction:column;z-index:10}
+  .stage-screen.is-active{display:flex}
+  .play{gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom))}
+
+  .hud{display:flex;align-items:center;gap:8px}
+  .pips{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  .pips i{width:15px;height:15px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;transition:transform .2s}
+  .pips i.ok{background:var(--blue)}
+  .pips i.miss{background:var(--pink)}
+  .pips i.cur{background:var(--yellow);transform:scale(1.2)}
+  .pips .extra-tag{font-family:var(--chunky);font-weight:400;font-size:15px;padding:3px 12px;border:3px solid var(--ink);border-radius:999px;background:var(--yellow);white-space:nowrap}
+  .pips .extra-tag b{font-family:var(--num);font-weight:400}
+  .clock{flex:none;display:flex;align-items:baseline;gap:6px;padding:5px 12px;border:3px solid var(--ink);border-radius:999px;background:#fff;box-shadow:0 3px 0 var(--ink)}
+  .clock span{font-size:11px;color:var(--ink-2);white-space:nowrap}
+  .clock b{font-family:var(--num);font-weight:400;font-size:19px;min-width:3.1ch;text-align:right}
+  .clock.hurry{background:var(--red);color:#fff}
+  .clock.hurry span{color:#fff}
+
+  .hud2{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
+  .tally{display:flex;flex-direction:column;gap:5px}
+  .tally>span{display:flex;align-items:baseline;gap:4px;padding:1px 10px;border:3px solid var(--ink);border-radius:999px;background:#fff;font-size:12px;white-space:nowrap}
+  .tally b{font-family:var(--num);font-weight:400;font-size:17px}
+  .tally small{font-size:11px;color:var(--ink-2)}
+  .tally .ng b{color:var(--violet)}
+  .combo{justify-self:center;position:relative;display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:5px;align-items:center;
+    padding:3px 12px 11px;border:3px solid var(--ink);border-radius:16px;background:#fff;opacity:.35;transition:opacity .2s,background .2s}
+  .combo.on{opacity:1;background:var(--pink-soft)}
+  .combo.max{background:var(--yellow)}
+  .combo b{grid-row:1/3;font-family:var(--num);font-weight:400;font-size:28px;line-height:1.05}
+  .combo small{align-self:end;font-size:12px;white-space:nowrap;line-height:1.2}
+  .combo .mult{align-self:start;font-family:var(--num);font-weight:400;font-size:11px;color:var(--blue-d);white-space:nowrap;line-height:1.3;min-height:1.3em}
+  .combo .track{position:absolute;left:9px;right:9px;bottom:4px;height:4px;border-radius:2px;background:rgba(27,29,77,.15);overflow:hidden}
+  .combo .track i{display:block;height:100%;background:var(--ink);transform-origin:left center;transform:scaleX(0)}
+  .combo.low .track i{background:var(--red)}
+  .reserve{display:flex;flex-direction:column;align-items:flex-end;min-width:98px;padding:3px 12px 4px;border:3px solid var(--ink);border-radius:16px;
+    background:var(--yellow);box-shadow:0 5px 0 var(--ink)}
+  .reserve small{font-size:11px}
+  .reserve b{font-family:var(--num);font-weight:400;font-size:20px;line-height:1.15;white-space:nowrap}
+  body.l5 .reserve{animation:gold 1.4s ease-in-out infinite}
+  @keyframes gold{50%{box-shadow:0 5px 0 var(--ink),0 0 0 6px rgba(255,210,63,.55)}}
+  .bump{animation:bump .3s cubic-bezier(.2,1.8,.4,1)}
+  @keyframes bump{40%{transform:scale(1.22)}}
+
+  .card-wrap{position:relative;flex:1;min-height:0;display:flex;margin-top:6px}
+  .card-wrap::before{content:"";position:absolute;inset:-8px;border-radius:33px;border:5px dotted var(--yellow);opacity:0;transition:opacity .4s;pointer-events:none}
+  body.l4 .card-wrap::before{opacity:1;animation:marquee .9s steps(2) infinite}
+  @keyframes marquee{50%{border-color:var(--pink)}}
+  .card-wrap.kick{animation:kick .2s ease-out}
+  @keyframes kick{30%{transform:translate(0,4px) scale(.992)}}
+  .bunting{position:absolute;left:14px;right:14px;top:-17px;height:30px;z-index:3;opacity:0;transform:translateY(-10px);transition:opacity .5s,transform .5s;pointer-events:none}
+  body.l2 .bunting{opacity:1;transform:none}
+  .card{position:relative;flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;padding:14px 16px 12px;border:4px solid var(--ink);
+    border-radius:26px;background:#fff;box-shadow:0 8px 0 var(--ink);overflow:hidden}
+  body.l3 .card{box-shadow:0 8px 0 var(--ink),0 0 0 6px var(--blue-soft)}
+  .card.enter{animation:cardIn .34s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.97)}}
+  .card-top{display:flex;align-items:center;gap:8px}
+  .chip{flex:none;padding:3px 11px;border-radius:999px;background:var(--blue);color:#fff;font-size:13px;white-space:nowrap}
+  .kind-tag{flex:none;padding:1px 8px;border:2.5px solid var(--ink);border-radius:999px;background:var(--yellow-soft);font-size:11.5px;white-space:nowrap}
+  .q-from{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px;color:var(--ink-2)}
+  .qno{flex:none;font-family:var(--chunky);font-weight:400;font-size:15px;white-space:nowrap}
+  .q-title{margin:10px 0 0;font-size:16.5px;font-weight:900;line-height:1.45}
+  .q-tip{margin:4px 0 0;font-size:12px;font-weight:700;color:var(--blue-d)}
+  .q-tip::before{content:"Tip ";font-family:var(--num);font-weight:400;font-size:10px;padding:1px 5px;margin-right:4px;border-radius:5px;background:var(--blue-soft);color:var(--blue-d)}
+  .passage-wrap{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin:8px -4px 0;padding:0 4px 6px;
+    scrollbar-width:thin;scrollbar-color:var(--blue-soft) transparent}
+  .passage{margin:0;font-size:18px;line-height:2.1;font-weight:500;color:#2a2c5e;word-break:break-word}
+  .slot{display:inline-block;vertical-align:baseline;min-width:var(--w,3em);max-width:100%;margin:0 .14em;padding:0 .35em;
+    border-bottom:3px solid var(--ink);line-height:1.45;text-align:center;font-weight:900;color:var(--ink);border-radius:7px 7px 0 0}
+  .slot-t:empty::after{content:"\00a0"}
+  .slot.cur{background:var(--yellow-soft);border:2.5px dashed var(--ink);border-radius:9px;animation:breathe 1.2s ease-in-out infinite}
+  @keyframes breathe{50%{background:var(--yellow)}}
+  .slot.done{min-width:0;background:var(--blue-soft);border:0;border-bottom:3px solid var(--blue);border-radius:7px;color:var(--blue-d)}
+  .slot.pop{animation:pop .36s cubic-bezier(.2,1.7,.4,1)}
+  @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.18)}}
+  .slot.nope{background:var(--violet-soft);border:2.5px dashed var(--violet);border-radius:9px;color:var(--violet);animation:shake .32s}
+  @keyframes shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+  .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .steps li{display:flex;align-items:baseline;gap:8px}
+  .steps .step-n{flex:none;min-width:1.2em;font-weight:700;color:var(--ink-2)}
+  .steps .slot{flex:1;min-width:0;max-width:none;margin:0;text-align:left}
+  .r-sent .steps{gap:2px}
+  .step{display:flex;align-items:center;gap:8px;min-height:22px;margin:6px 0 0;font-size:12.5px;color:var(--ink-2)}
+  .step b{font-family:var(--num);font-weight:400;color:var(--ink)}
+  .memo{margin-top:8px;padding:8px 12px;border:3px solid var(--ink);border-radius:14px;background:var(--mint-soft);font-size:13.5px;line-height:1.7;font-weight:500;animation:cardIn .3s ease-out}
+  .memo b{font-family:var(--chunky);font-weight:400;margin-right:6px}
+  .stamp{position:absolute;right:16px;bottom:8px;z-index:2;padding:3px 12px;border:4px solid var(--red);border-radius:14px;background:rgba(255,255,255,.6);
+    color:var(--red);font-family:var(--chunky);font-weight:400;font-size:32px;letter-spacing:.08em;opacity:0;transform:rotate(-12deg) scale(0);pointer-events:none}
+  .stamp.clean{color:var(--blue);border-color:var(--blue)}
+  .stamp.show{animation:stamp .45s cubic-bezier(.2,1.6,.4,1) forwards}
+  @keyframes stamp{from{opacity:0;transform:rotate(-30deg) scale(2.2)}to{opacity:1;transform:rotate(-12deg) scale(1)}}
+
+  .bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense;gap:9px 8px;padding-top:6px}
+  .word{position:relative;min-height:52px;padding:6px 8px 6px 20px;border:3px solid var(--ink);border-radius:16px;background:#fff;
+    box-shadow:0 5px 0 var(--ink);font-size:16px;font-weight:900;line-height:1.25;word-break:break-word;
+    transition:transform .07s,box-shadow .07s,opacity .2s}
+  .bank.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .word.xlong{grid-column:1/-1}
+  .word .k{position:absolute;left:6px;top:4px;font-family:var(--num);font-weight:400;font-size:10px;color:var(--ink-3)}
+  .word:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+  .word.used{opacity:.2;transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+  .word.nope{background:var(--violet-soft);border-color:var(--violet);animation:shake .32s}
+  .word.hint{background:var(--yellow-soft);animation:glow .9s ease-in-out infinite}
+  @keyframes glow{50%{box-shadow:0 5px 0 var(--ink),0 0 0 6px var(--yellow)}}
+  .next-btn{grid-column:1/-1;position:relative;overflow:hidden;min-height:64px;font-size:26px}
+  .next-btn .auto{position:absolute;left:0;bottom:0;height:7px;width:0;background:var(--yellow)}
+  .next-btn .auto.run{width:100%;transition:width var(--ms) linear}
+
+  /* 层级越高越热闹：l1…l6 由「跨境收付」的量级决定，一局之内只升不降（只有街机风格会显示出来） */
+  body.l2 .chip{background:var(--pink)}
+  body.l6 .chip{background:linear-gradient(90deg,var(--blue),var(--pink),var(--yellow))}
+
+  /* ── 切入横幅 */
+  .cut{position:absolute;left:-8%;right:-8%;top:34%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 0 14px;
+    background:var(--blue);border-block:5px solid var(--ink);color:#fff;transform:rotate(-4deg);animation:cut 1.15s cubic-bezier(.2,1,.3,1) forwards}
+  .cut b{font-family:var(--chunky);font-weight:400;font-size:clamp(34px,11vw,56px);line-height:1.1;letter-spacing:.04em;text-shadow:var(--outline),0 5px 0 var(--ink);white-space:nowrap}
+  .cut small{font-size:14px;letter-spacing:.06em}
+  .cut.pink{background:var(--pink)}
+  .cut.gold{background:var(--yellow);color:var(--ink)}
+  .cut.gold b{color:#fff}
+  @keyframes cut{0%{transform:rotate(-4deg) translateX(105%)}16%,78%{transform:rotate(-4deg) translateX(0)}100%{transform:rotate(-4deg) translateX(-105%)}}
+
+  /* ═════════════ 结算 ═════════════ */
+  .result{padding:calc(10px + env(safe-area-inset-top)) 0 0}
+  .r-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 16px 18px;display:flex;flex-direction:column;gap:14px}
+  .r-head{display:flex;justify-content:center}
+  .r-mode{padding:4px 14px;border:3px solid var(--ink);border-radius:999px;background:#fff;font-size:13px}
+  .r-score{position:relative;margin:4px auto 0;display:flex;align-items:baseline;gap:6px;padding:10px 26px 6px;border:4px solid var(--ink);border-radius:26px;background:var(--yellow);box-shadow:0 8px 0 var(--ink)}
+  .r-score b{font-family:var(--num);font-weight:400;font-size:64px;line-height:1;color:#fff;text-shadow:var(--outline),0 6px 0 var(--ink)}
+  .r-score small{font-family:var(--chunky);font-weight:400;font-size:24px}
+  .r-break{margin:4px 0 0;text-align:center;font-size:13px;color:var(--ink-2)}
+  .r-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .r-stats>div{position:relative;display:flex;flex-direction:column;gap:2px;padding:8px 12px;border:3px solid var(--ink);border-radius:16px;background:#fff}
+  .r-stats small{font-size:11.5px;color:var(--ink-2)}
+  .r-stats b{font-family:var(--num);font-weight:400;font-size:22px;white-space:nowrap}
+  .r-stats i{font-style:normal;font-size:11.5px;color:var(--ink-2)}
+  .new{position:absolute;right:-6px;top:-10px;padding:1px 8px;border:2.5px solid var(--ink);border-radius:999px;background:var(--pink);color:#fff;font-size:11px;transform:rotate(8deg)}
+  .r-extra{display:flex;flex-direction:column;gap:6px;text-align:center;font-size:13px;color:var(--ink-2)}
+  .r-extra .big-btn{background:var(--pink);animation:glowP 1.2s ease-in-out infinite}
+  @keyframes glowP{50%{box-shadow:0 7px 0 var(--ink),0 0 0 7px rgba(255,122,182,.4)}}
+  .r-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .r-item{border:3px solid var(--ink);border-radius:16px;background:#fff;padding:10px 12px;font-size:13.5px;line-height:1.75;font-weight:500}
+  .r-item.miss{background:#fff5fa;border-color:var(--pink);box-shadow:inset 6px 0 0 var(--pink)}
+  .r-row{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--ink-2)}
+  .r-row .tag{padding:1px 8px;border-radius:999px;background:var(--blue-soft);color:var(--ink)}
+  .r-row .r-link{color:var(--blue-d);text-decoration:none}
+  .r-row .mark{margin-left:auto;font-weight:900}
+  .r-item.miss .mark{color:var(--pink)}
+  .r-item.clean .mark{color:var(--blue)}
+  .r-q{margin:4px 0 2px;font-weight:900;font-size:14px}
+  .r-sent{margin:0}
+  .r-sent mark{background:var(--blue-soft);color:var(--blue-d);font-weight:900;border-radius:5px;padding:0 .25em}
+  .r-item.miss .r-sent mark{background:var(--pink-soft);color:#b0306e}
+  .r-memo{margin:6px 0 0;padding:4px 10px;border-radius:10px;background:var(--mint-soft);font-size:12.5px}
+  .r-item details{margin-top:6px;font-size:12.5px;color:var(--ink-2)}
+  .r-item summary{cursor:pointer;font-weight:900;color:var(--blue-d)}
+  .r-item details p{margin:4px 0 0;white-space:pre-line}
+  .r-actions{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom));
+    border-top:3px solid var(--ink);background:var(--paper)}
+  .r-actions .big-btn{min-height:60px;font-size:22px}
+
+  /* ── 确认框 */
+  .modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(27,29,77,.45)}
+  .modal-card{width:min(340px,100%);display:flex;flex-direction:column;gap:12px;padding:20px;border:4px solid var(--ink);border-radius:24px;background:#fff;box-shadow:0 8px 0 var(--ink);text-align:center;animation:cardIn .25s ease-out}
+  .modal-card p{margin:0;font-family:var(--chunky);font-weight:400;font-size:24px}
+  .modal-card small{font-size:13px;color:var(--ink-2);font-weight:500;line-height:1.6}
+  .modal-card .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  .modal-card .big-btn{min-height:54px;font-size:20px}
+
+  /* 小屏：给词卡让出空间 */
+  @media (max-height:700px){
+    .passage{font-size:16px;line-height:1.95}
+    .q-title{font-size:15px;margin-top:6px}
+    .word{min-height:44px;font-size:14.5px;border-radius:14px;padding:4px 6px 4px 18px}
+    .bank{gap:7px 6px}
+    .combo b{font-size:23px}
+    .reserve b{font-size:17px}
+    .card{padding:10px 12px}
+  }
+  /* 再小一档（iPhone SE 一代这类 568 高的屏）：HUD 和词卡再收一点，保证题卡留得出 160px */
+  @media (max-height:600px){
+    .play{gap:6px;padding-top:calc(6px + env(safe-area-inset-top))}
+    .hud .icon-btn{width:38px;height:38px;font-size:16px}
+    .clock{padding:3px 10px}
+    .clock b{font-size:16px}
+    .pips{gap:4px}
+    .pips i{width:12px;height:12px;border-width:2px}
+    .tally{gap:4px}
+    .tally>span{font-size:11px;padding:0 8px}
+    .tally b{font-size:14px}
+    .combo{padding:2px 10px 9px}
+    .combo b{font-size:20px}
+    .reserve{min-width:84px;padding:2px 10px 3px}
+    .reserve b{font-size:15px}
+    .card-wrap{margin-top:2px}
+    .card{padding:8px 12px;border-radius:20px}
+    .q-title{font-size:14px;margin-top:4px}
+    .q-tip{font-size:11px}
+    .passage{font-size:15px;line-height:1.85}
+    .memo{font-size:12.5px;padding:6px 10px}
+    .step{margin-top:3px;font-size:11.5px;min-height:18px}
+    .bank{gap:6px}
+    .word{min-height:40px;font-size:13.5px;padding:3px 6px 3px 16px;border-radius:12px}
+    .next-btn{min-height:52px;font-size:22px}
+  }
+  body.calm .slot.cur,body.calm .logo-burst g,body.calm .logo-top i,body.calm .logo-bits b,body.calm .word.hint,
+  body.calm .card-wrap::before,body.calm .reserve,body.calm .r-extra .big-btn{animation:none!important}
+  @media (prefers-reduced-motion:reduce){.logo-burst g,.logo-top i,.logo-bits b{animation:none}}
+
+  /* ═════════════ 研学风格（默认）═════════════
+     同一套玩法换一张安静的纸面：宋体标题、墨色加一点金，细线代替粗描边和实心投影。
+     只覆写外观；逻辑、节奏、计分与街机风格完全一致。特效只在一题做完与里程碑时出现（app.js 的 arcade() 分支）。
+     颜色变量按语义重映射（--blue 墨蓝、--yellow 金、--violet 失误红……），没单独覆写的规则也会跟着变。 */
+  body.skin-scholar{
+    --ink:#23262f; --ink-2:#5c606e; --ink-3:#9a9ca7; --paper:#f3efe7; --line:#ddd5c6; --card:#fdfbf7;
+    --blue:#2f4e86; --blue-d:#243d6b; --blue-soft:#e6ecf6;
+    --pink:#8c4b62; --pink-soft:#f3e6ea;
+    --yellow:#a8742a; --yellow-soft:#f6eedd;
+    --mint:#3f7a5a; --mint-soft:#e7f1ea;
+    --violet:#b0574f; --violet-soft:#f8ebe8;
+    --red:#b23a2e;
+    --round:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --chunky:"Noto Serif SC","Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+    --num:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    --outline:0 0 0 transparent;
+    --soft:0 1px 2px rgba(35,38,47,.06),0 8px 22px rgba(35,38,47,.07);
+    font-weight:500;
+  }
+  body.skin-scholar #paper{background:radial-gradient(ellipse at 50% -10%,rgba(255,255,255,.75),transparent 62%),var(--paper)}
+  body.skin-scholar #paper::after,body.skin-scholar #bg,body.skin-scholar .bunting,body.skin-scholar .card-wrap::before,
+  body.skin-scholar .logo-burst,body.skin-scholar .logo-bits,body.skin-scholar .logo-ribbon svg{display:none}
+  body.skin-scholar :is(button,a,summary):focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+  /* 字重：宋体标题用 700；数字用等宽数码 */
+  body.skin-scholar :is(.big-btn,.sec-title,.ch-card .ch-name,.panel h2,.qno,.stamp,.cut b,.r-score small,.modal-card p,.memo b,.logo-top,.logo-ribbon){font-weight:700}
+  body.skin-scholar :is(.clock b,.tally b,.combo b,.reserve b,.records b,.r-stats b,.ch-num b,.r-score b,.pips .extra-tag b,.combo .mult,.sub-btn b,.step b){font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* 细线代替粗描边，去掉实心下投影和描边字 */
+  body.skin-scholar :is(.big-btn,.sub-btn,.icon-btn,.t-back,.records div,.ch-card,.panel,.word,.card,.clock,.tally>span,.combo,.reserve,.r-mode,.r-stats>div,.r-item,.modal-card,.kind-tag,.src-list a,.panel .kbd,.pips .extra-tag,.seg,.r-score){border:1px solid var(--line);box-shadow:none;text-shadow:none}
+  body.skin-scholar .big-btn{border-color:transparent;border-radius:12px;background:var(--blue);color:#fff;font-size:21px;letter-spacing:.22em;box-shadow:var(--soft)}
+  body.skin-scholar .big-btn small{letter-spacing:.06em;font-weight:500}
+  body.skin-scholar .big-btn:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+  body.skin-scholar .big-btn:disabled{background:#a9b0c2}
+  body.skin-scholar .sub-btn{border-radius:10px;background:var(--card);font-weight:600}
+  body.skin-scholar .sub-btn:active,body.skin-scholar .icon-btn:active,body.skin-scholar .ch-card:active,body.skin-scholar .t-back:active{transform:translateY(1px);box-shadow:none}
+  body.skin-scholar .icon-btn{background:var(--card);color:var(--ink-2)}
+  body.skin-scholar .icon-btn[aria-pressed="true"]{background:var(--violet-soft)}
+  body.skin-scholar .seg{background:var(--card)}
+  body.skin-scholar .seg button{font-weight:600;color:var(--ink-2)}
+  body.skin-scholar .seg button+button{border-left:1px solid var(--line)}
+  body.skin-scholar .seg button[aria-pressed="true"]{background:var(--blue);color:#fff}
+  body.skin-scholar .settings .set-row{border-top:1px solid var(--line);font-weight:600}
+  body.skin-scholar .settings h2+.set-row{border-top:0}
+
+  /* 标题页 */
+  body.skin-scholar .t-back{background:transparent;color:var(--ink-2);font-weight:500}
+  body.skin-scholar .logo{display:flex;align-items:center;justify-content:center;margin:20px auto 0;--fs:clamp(40px,12vw,52px)}
+  body.skin-scholar .logo-top i,body.skin-scholar .logo-ribbon{color:var(--ink);text-shadow:none;animation:none;letter-spacing:.12em}
+  body.skin-scholar .logo-ribbon{margin:0;padding:0;font-size:var(--fs);text-indent:0}
+  body.skin-scholar .logo::after{content:"速记";align-self:center;margin-left:.3em;padding:.22em .2em;border-radius:3px;background:var(--red);color:#fff;
+    font-family:var(--chunky);font-weight:700;font-size:calc(var(--fs)*.26);line-height:1.15;letter-spacing:.06em;writing-mode:vertical-rl}
+  body.skin-scholar .t-sub .facts{background:transparent;border:1px solid var(--line);color:var(--ink-2)}
+  body.skin-scholar .records div{border-radius:10px;background:var(--card)}
+  body.skin-scholar .review-btn{background:var(--violet-soft);border-color:#ecd2cc}
+  body.skin-scholar .sec-title{letter-spacing:.08em}
+  body.skin-scholar .ch-card{border-radius:12px;background:var(--card)}
+  body.skin-scholar .ch-card::before{height:3px;border-bottom:0}
+  body.skin-scholar .ch-bar{height:6px;border:0;background:#ebe4d6}
+  body.skin-scholar .ch-card.all{background:var(--yellow-soft)}
+  body.skin-scholar .ch-card.all .ch-name::after{color:var(--yellow);text-shadow:none}
+  body.skin-scholar .panel{border-radius:12px;background:var(--card)}
+  body.skin-scholar .src-list a{background:var(--blue-soft);border-color:#d3dcec}
+
+  /* 对局 */
+  body.skin-scholar .pips i{width:10px;height:10px;border:1.5px solid #c8c0b0;background:transparent}
+  body.skin-scholar .pips i.ok{background:var(--blue);border-color:var(--blue)}
+  body.skin-scholar .pips i.miss{background:var(--violet);border-color:var(--violet)}
+  body.skin-scholar .pips i.cur{background:var(--yellow);border-color:var(--yellow);transform:none}
+  body.skin-scholar .pips .extra-tag{background:var(--yellow-soft);font-family:var(--round);font-size:13px;font-weight:600}
+  body.skin-scholar .clock{background:var(--card)}
+  body.skin-scholar .clock.hurry{background:var(--red);border-color:var(--red)}
+  body.skin-scholar .tally>span{background:var(--card)}
+  body.skin-scholar .combo{border-radius:12px;background:var(--card);opacity:.55}
+  body.skin-scholar .combo.on{opacity:1;background:var(--blue-soft);border-color:#cfd9ea}
+  body.skin-scholar .combo.max{background:var(--yellow-soft);border-color:#e6d3ad}
+  body.skin-scholar .combo .track{background:#e6e0d4}
+  body.skin-scholar .combo .track i{background:var(--blue)}
+  body.skin-scholar .combo.low .track i{background:var(--violet)}
+  body.skin-scholar .reserve{border-radius:12px;background:var(--card);animation:none}
+  body.skin-scholar .reserve b{color:var(--yellow)}
+  body.skin-scholar .reserve small{color:var(--ink-2)}
+  body.skin-scholar .card-wrap.kick{animation:none}
+  body.skin-scholar .card{border-radius:16px;background:var(--card);box-shadow:var(--soft)}
+  body.skin-scholar .chip{background:var(--blue)}
+  body.skin-scholar .kind-tag{background:var(--yellow-soft);border-color:#e6d3ad;color:var(--yellow)}
+  body.skin-scholar .q-title{font-family:var(--chunky);font-weight:700}
+  body.skin-scholar .q-tip::before{content:"提示";font-family:var(--round);font-size:10.5px}
+  body.skin-scholar .passage{color:#2b2e38}
+  body.skin-scholar .slot{border-bottom:2px solid var(--ink-3);border-radius:4px 4px 0 0}
+  body.skin-scholar .slot.cur{background:var(--yellow-soft);border:1.5px dashed var(--yellow);border-radius:6px;animation:breatheS 1.4s ease-in-out infinite}
+  @keyframes breatheS{50%{background:#efe1c2}}
+  body.skin-scholar .slot.done{background:var(--blue-soft);border:0;border-bottom:2px solid var(--blue);border-radius:5px}
+  body.skin-scholar .slot.nope{border:1.5px dashed var(--violet);border-radius:6px}
+  body.skin-scholar .slot.pop{animation:popS .3s ease-out}
+  @keyframes popS{50%{transform:scale(1.06)}}
+  body.skin-scholar .bump{animation:bumpS .3s ease-out}
+  @keyframes bumpS{40%{transform:scale(1.06)}}
+  body.skin-scholar .memo{border:0;border-left:3px solid var(--mint);border-radius:8px}
+  /* 印章：朱红方印。一次通过用朱红，做完但出过错用灰 */
+  body.skin-scholar .stamp{border:2px solid var(--red);border-radius:6px;background:rgba(253,251,247,.75);color:var(--red);
+    font-family:var(--chunky);font-size:17px;letter-spacing:.16em;padding:5px 9px}
+  body.skin-scholar .stamp:not(.clean){border-color:var(--ink-3);color:var(--ink-2)}
+  body.skin-scholar .stamp.show{animation:sealIn .35s ease-out forwards}
+  @keyframes sealIn{from{opacity:0;transform:rotate(-8deg) scale(1.3)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+  body.skin-scholar .word{border-radius:10px;background:var(--card);box-shadow:0 1px 0 rgba(35,38,47,.05);font-weight:600}
+  body.skin-scholar .word .k{color:var(--ink-3)}
+  body.skin-scholar .word:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+  body.skin-scholar .word.used{opacity:.28;transform:none;box-shadow:none}
+  body.skin-scholar .word.nope{background:var(--violet-soft);border-color:var(--violet)}
+  body.skin-scholar .word.hint{background:var(--yellow-soft);border-color:var(--yellow);animation:glowS 1s ease-in-out infinite}
+  @keyframes glowS{50%{box-shadow:0 0 0 4px rgba(168,116,42,.25)}}
+  body.skin-scholar .next-btn{font-size:20px}
+  body.skin-scholar .next-btn .auto{background:var(--yellow)}
+
+  /* 提示条代替横幅：居中、不遮题 */
+  body.skin-scholar .cut{left:50%;right:auto;top:15%;width:max-content;max-width:calc(100vw - 32px);padding:10px 20px;border:1px solid var(--line);border-radius:12px;
+    background:rgba(253,251,247,.97);color:var(--ink);box-shadow:var(--soft);transform:translateX(-50%);animation:toast 1.5s ease forwards;white-space:normal;text-align:center}
+  body.skin-scholar .cut b{white-space:normal}
+  body.skin-scholar .cut b{font-family:var(--chunky);font-size:20px;letter-spacing:.06em;text-shadow:none}
+  body.skin-scholar .cut small{font-size:12.5px;color:var(--ink-2)}
+  body.skin-scholar .cut.gold b{color:var(--yellow)}
+  body.skin-scholar .cut.pink b{color:var(--blue)}
+  @keyframes toast{0%{opacity:0;transform:translate(-50%,-8px)}14%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
+
+  /* 结算 */
+  body.skin-scholar .r-mode{background:var(--card)}
+  body.skin-scholar .r-score{border-radius:16px;background:var(--card);box-shadow:var(--soft)}
+  body.skin-scholar .r-score b{font-family:var(--chunky);font-size:54px;color:var(--blue);text-shadow:none}
+  body.skin-scholar .r-score small{font-size:20px}
+  body.skin-scholar .r-stats>div{border-radius:12px;background:var(--card)}
+  body.skin-scholar .new{border:0;background:var(--yellow);color:#fff;transform:none;font-weight:600}
+  body.skin-scholar .r-extra .big-btn{background:var(--yellow);animation:none}
+  body.skin-scholar .r-item{border-radius:12px;background:var(--card)}
+  body.skin-scholar .r-item.miss{background:#fcf5f3;border-color:#ecd5cf;box-shadow:inset 3px 0 0 var(--violet)}
+  body.skin-scholar .r-item.miss .mark{color:var(--violet)}
+  body.skin-scholar .r-item.miss .r-sent mark{background:var(--violet-soft);color:#8d3f37}
+  body.skin-scholar .r-actions{border-top:1px solid var(--line);background:var(--paper)}
+  body.skin-scholar .modal{background:rgba(35,38,47,.35)}
+  body.skin-scholar .modal-card{border-radius:16px;background:var(--card);box-shadow:var(--soft)}
+
+  /* 研学风格自己的小屏档：上面覆写的尺寸优先级更高，不单独收会把街机的小屏规则压过去 */
+  @media (max-height:700px){
+    body.skin-scholar .big-btn{min-height:60px;font-size:19px}
+    body.skin-scholar .next-btn{min-height:54px}
+  }
+  @media (max-height:600px){
+    body.skin-scholar .big-btn{min-height:52px;font-size:17px}
+    body.skin-scholar .next-btn{min-height:48px}
+    body.skin-scholar .r-score b{font-size:44px}
+  }
+</style>
+</head>
+<body>
+<script>
+  // 先定风格再出画面：默认研学，本机存过「街机」才切；读不到存储（隐私模式等）也按研学
+  (function () {
+    var skin = 'scholar';
+    try { var d = JSON.parse(localStorage.getItem('clozeCombo.v1') || 'null'); if (d && d.skin === 'arcade') skin = 'arcade'; } catch (e) {}
+    document.body.classList.add('skin-' + skin);
+  })();
+</script>
+<div id="paper" aria-hidden="true"></div>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<main id="app">
+  <!-- ═════ 标题 ═════ -->
+  <section id="screen-title" class="screen is-active" aria-labelledby="logo">
+    <div class="t-top">
+      <a class="t-back" href="/games/">‹ 研学游戏馆</a>
+      <div class="seg" data-set="skin" role="group" aria-label="风格"><button type="button" data-v="scholar" aria-pressed="true">研学</button><button type="button" data-v="arcade" aria-pressed="false">街机</button></div>
+    </div>
+
+    <h1 id="logo" class="logo" aria-label="填空连击">
+      <svg class="logo-burst" viewBox="-100 -100 200 200" aria-hidden="true"><g>
+        <path d="M0-96 14-60 50-82 42-42 86-46 58-14 96 8 56 22 76 60 34 52 26 92 0 62-26 92-34 52-76 60-56 22-96 8-58-14-86-46-42-42-50-82-14-60Z" fill="#ffd23f" stroke="#1b1d4d" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M0-58 10-34 34-46 28-22 56-18 34 2 50 26 22 26 18 54 0 36-18 54-22 26-50 26-34 2-56-18-28-22-34-46-10-34Z" fill="#ff7ab6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/>
+      </g></svg>
+      <span class="logo-top" aria-hidden="true"><i>填</i><i>空</i></span>
+      <span class="logo-ribbon" aria-hidden="true"><svg viewBox="0 0 300 70" preserveAspectRatio="none"><path d="M4 22 34 16 28 36 40 58 6 62 18 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M296 22 266 16 272 36 260 58 294 62 282 42Z" fill="#2a4fd6" stroke="#1b1d4d" stroke-width="4" stroke-linejoin="round"/><path d="M30 10Q150-4 270 10L270 56Q150 42 30 56Z" fill="#3b6bff" stroke="#1b1d4d" stroke-width="4.5" stroke-linejoin="round"/><path d="M42 18Q150 6 258 18" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" opacity=".7"/></svg>连击</span>
+      <span class="logo-bits" aria-hidden="true"><b style="--x:-1.32;--y:-.72;--r:-16deg;--c:#3fdcb0">$</b><b style="--x:1.32;--y:-.78;--r:14deg;--c:#a77bff">¥</b><b style="--x:-1.28;--y:.62;--r:10deg;--c:#ff4f6d">€</b><b style="--x:1.28;--y:.58;--r:-12deg;--c:#ffd23f">£</b></span>
+    </h1>
+
+    <p class="t-sub">翟东升《<b>货币与金融的国际政治经济学</b>》<br>考频最高的必背四章：挖空、排序与数字锚点<br><span class="facts" id="facts">68 题 · 235 个空</span></p>
+
+    <div class="records" aria-label="个人纪录">
+      <div><small>最高分</small><b id="best-score">—</b></div>
+      <div><small>最长连击</small><b id="best-combo">0</b></div>
+      <div><small>收付纪录</small><b id="best-res">—</b></div>
+    </div>
+
+    <button type="button" class="big-btn" id="start-mix" disabled>开始连击<small id="start-sub">题库加载中…</small></button>
+    <button type="button" class="sub-btn review-btn" id="start-review" hidden>错题复习 <b id="review-count">0</b></button>
+
+    <h2 class="sec-title">单章通关<small>点一章，把这章的挖空全部过一遍</small></h2>
+    <div class="chapters" id="chapters"></div>
+
+    <section class="panel" aria-labelledby="howto-title">
+      <h2 id="howto-title">玩法</h2>
+      <ol>
+        <li>按顺序点词卡补全句子；电脑上可以按词卡左上角的 <span class="kbd">1</span>…<span class="kbd">0</span> <span class="kbd">-</span> 键。标「按顺序」的是排序题，把步骤按先后填进去。</li>
+        <li>每填对一个空就 <b>+1 连击</b>，跨题累积。连击越长，右上角的「跨境收付」涨得越快（最高 ×2）；街机风格下画面和音乐也会越来越热闹。</li>
+        <li>选错<b>不扣分</b>，只断连击，也没有 Game Over；同一个空错两次，正确的词卡会亮起来。</li>
+        <li>做完一局就是 <b>100 分</b>；一次全对的题达到 80%，可以挑战 <b>90 秒加时赛</b>，每多做一题加分越来越多。</li>
+        <li>只有一次全对才算掌握；出过错的题自动进<b>错题复习</b>，下次一次做对才会移出。</li>
+      </ol>
+    </section>
+
+    <section class="panel settings" aria-labelledby="set-title">
+      <h2 id="set-title">设置</h2>
+      <div class="set-row"><span>风格</span><div class="seg" data-set="skin" role="group" aria-label="风格"><button type="button" data-v="scholar" aria-pressed="true">研学</button><button type="button" data-v="arcade" aria-pressed="false">街机</button></div></div>
+      <div class="set-row"><span>声音</span><div class="seg" data-set="sound" role="group" aria-label="声音"><button type="button" data-v="on" aria-pressed="true">开</button><button type="button" data-v="off" aria-pressed="false">关</button></div></div>
+      <div class="set-row"><span>背景音乐</span><div class="seg" data-set="bgm" role="group" aria-label="背景音乐"><button type="button" data-v="off" aria-pressed="true">关</button><button type="button" data-v="on" aria-pressed="false">开</button></div></div>
+      <div class="set-row"><span>动效</span><div class="seg" data-set="motion" role="group" aria-label="动效"><button type="button" data-v="full" aria-pressed="true">标准</button><button type="button" data-v="calm" aria-pressed="false">减弱</button></div></div>
+      <p class="set-note">背景音乐默认关；街机风格配上背景音乐，连击越长，音乐越热闹。设置只保存在本机浏览器。</p>
+    </section>
+
+    <section class="panel" aria-labelledby="src-title">
+      <h2 id="src-title">题从哪来</h2>
+      <p style="margin:0">大部分题取自四部纪年页游里手写的挖空题和排序题：各章的骨架词、数字锚点、答题口诀、因果链条和考场总纲。另有 15 道补充题，直接取自各章关键词速查卡的「数字锚点」与口诀，补上纪年里没挖空的部分；它们都与史实核对过，速查卡写法已经过时的地方（如美方汇率操纵标准）在解析里注明。想看前因后果，回原文：</p>
+      <div class="src-list" id="src-list"><a href="/games/fx-reserves/">外储纪年</a><a href="/games/fx-rate/">汇改纪年</a><a href="/games/gold-std/">金锚纪年</a><a href="/games/rmb-intl/">出海纪年</a><a href="/国关复习/外汇储备-关键词速查卡.html">外汇储备速查卡</a><a href="/国关复习/人民币汇率-关键词速查卡.html">人民币汇率速查卡</a><a href="/国关复习/金本位制度-关键词速查卡.html">金本位速查卡</a><a href="/国关复习/人民币国际化-关键词速查卡.html">人民币国际化速查卡</a><a href="/games/statecraft/">庙算 · 执政模拟</a></div>
+      <p class="credit">玩法手感致敬 <a href="https://github.com/grmchn/dopa-drill" rel="noopener">grmchn/dopa-drill</a>（ドパドリル，MIT）：逐格即时判定、连击越长演出越夸张、答错不扣分。本页代码为重写。记录只保存在本机浏览器里。</p>
+    </section>
+  </section>
+
+  <!-- ═════ 对局 ═════ -->
+  <section id="screen-play" class="stage-screen play" aria-label="对局">
+    <header class="hud">
+      <div class="pips" id="pips" aria-hidden="true"></div>
+      <div class="clock" id="clock-box"><span id="clock-label">目标 5:00</span><b id="clock">0:00</b></div>
+      <button type="button" class="icon-btn mute-btn" aria-pressed="false" aria-label="关闭声音">♪</button>
+      <button type="button" class="icon-btn" id="quit" aria-label="结束这一局">✕</button>
+    </header>
+    <div class="hud2">
+      <div class="tally"><span>答对 <b id="ok">0</b><small id="ok-total">/10</small></span><span class="ng"><span data-w="ng">失误</span> <b id="ng">0</b></span></div>
+      <div class="combo" id="combo-box" aria-hidden="true"><b id="combo">0</b><small>连击</small><span class="mult" id="combo-mult"></span><i class="track"><i id="combo-bar"></i></i></div>
+      <div class="reserve" id="reserve-box"><small>跨境收付</small><b id="reserve">¥1</b></div>
+    </div>
+    <div class="card-wrap" id="card-wrap">
+      <svg class="bunting" viewBox="0 0 400 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3Q200 26 400 3" fill="none" stroke="#1b1d4d" stroke-width="2.5"/><g id="flags"></g></svg>
+      <section class="card" id="card" aria-labelledby="q-title">
+        <div class="card-top"><span class="chip" id="q-chapter">外汇储备</span><span class="kind-tag" id="q-kind" hidden>按顺序</span><span class="q-from" id="q-from"></span><span class="qno" id="qno">第1题</span></div>
+        <h2 class="q-title" id="q-title"></h2>
+        <p class="q-tip" id="q-tip" hidden></p>
+        <div class="passage-wrap" id="passage-wrap"><div class="passage" id="passage"></div><div class="memo" id="memo" hidden></div></div>
+        <p class="step" id="step" aria-live="polite"></p>
+        <div class="stamp" id="stamp" aria-hidden="true"></div>
+      </section>
+    </div>
+    <div class="bank" id="bank" role="group" aria-label="词卡"></div>
+  </section>
+
+  <!-- ═════ 结算 ═════ -->
+  <section id="screen-result" class="stage-screen result" aria-labelledby="r-score-label">
+    <div class="r-scroll" id="r-scroll">
+      <div class="r-head"><span class="r-mode" id="r-mode">四章混合</span></div>
+      <div class="r-score" id="r-score-box"><b id="r-score">100</b><small id="r-score-label">分</small></div>
+      <p class="r-break" id="r-break"></p>
+      <div class="r-stats" id="r-stats"></div>
+      <div class="r-extra" id="r-extra"></div>
+      <h2 class="sec-title">本局复盘<small>出错的排在前面</small></h2>
+      <ol class="r-list" id="r-list"></ol>
+    </div>
+    <div class="r-actions"><button type="button" class="big-btn" id="r-again">再来一局</button><button type="button" class="sub-btn" id="r-home">返回</button></div>
+  </section>
+</main>
+
+<div class="modal" id="quit-modal" hidden role="dialog" aria-modal="true" aria-labelledby="quit-title">
+  <div class="modal-card">
+    <p id="quit-title">结束这一局？</p>
+    <small>已经做完的题会记进掌握进度和错题复习，这一局不计分。</small>
+    <div class="row"><button type="button" class="sub-btn" id="quit-yes">结束</button><button type="button" class="big-btn" id="quit-no">继续</button></div>
+  </div>
+</div>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="cutins" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
+<script src="app.js" defer></script>
+
+<!-- 读者共建组件：评论区 + 纠错入口（由 scripts/inject-community.mjs 注入/维护） -->
+<div id="community-root"></div>
+<script src="/community.js" defer></script>
+<!-- 不蒜子站点访问统计 -->
+<div id="busuanzi_container" style="text-align:center;font-size:11px;color:#999;padding:6px 0 10px;opacity:.85;line-height:1.6;">
+  本站总访问 <span id="busuanzi_value_site_pv"></span> 次 · 访客 <span id="busuanzi_value_site_uv"></span> 人
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -21,6 +21,7 @@ on:
       - "国关复习/mfipe-data.js"
       - "games/statecraft/**"
       - "scripts/statecraft/**"
+      - "games/cloze-combo/supplement.mjs"
   workflow_dispatch: {}
 
 permissions:

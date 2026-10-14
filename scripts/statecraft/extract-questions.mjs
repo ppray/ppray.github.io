@@ -259,10 +259,62 @@ const index = {
   sources, byChapter, byConcept,
 };
 
+// 《填空连击》（games/cloze-combo）的题源，三类：
+//   1. 必背四章各自纪年页游里手写的挖空题（骨架词、数字锚点、口诀、总纲）；
+//   2. 同样四部页游里手写的排序题，转成「按顺序填」（同一组步骤出现两次的只留一道）；
+//   3. games/cloze-combo/supplement.mjs：取自速查卡的数字锚点与缺口口诀。
+// 模拟卷填空是按关键词投票归章的，会混进一价定律、资源诅咒这类不属于该章核心的词，所以不收。
+const MUST = C.CHAPTERS.filter(ch => ch.level === 'must');
+const mustIds = new Set(MUST.map(ch => ch.id));
+const ownMust = it => it.level === 'must' && it.src === it.chapter;
+const CIRCLED = '①②③④⑤⑥⑦⑧⑨⑩';
+const stepText = x => (typeof x === 'string' ? x : (x && x.t) || '');
+const coreClozes = bank.filter(it => ownMust(it) && it.t === 'cloze')
+  .map(({ id, chapter, from, link, q, hint, p, b, d, w, s }) => ({ id, chapter, kind: 'cloze', from, link, q, hint, p, b, d, w, s }));
+const coreOrders = new Map();
+for (const it of bank.filter(it => ownMust(it) && it.t === 'order')) {
+  const steps = it.o.map(stepText);
+  const key = `${it.chapter}|${steps.join('|')}`;
+  const seen = coreOrders.get(key);
+  // 同一组步骤出现两次（七阶段、六步）：留第一道，记忆点取写得更全的那条
+  if (seen) { if ((it.s || '').length > seen.s.length) seen.s = it.s; continue; }
+  const p = [];
+  steps.forEach((_, k) => { if (k) p.push('\n'); p.push(`${CIRCLED[k] || `${k + 1}.`} `, k); });
+  coreOrders.set(key, {
+    id: it.id, chapter: it.chapter, kind: 'order', from: it.from, link: it.link,
+    q: it.q.replace(/^(终局)?开闸(放水)?[：:]\s*/, ''), // 「开闸」「撞闸」是纪年页游的玩法用语，hint 也都是这一类，不带过来
+    p, b: steps, d: [], w: it.w || '', s: it.s || '',
+  });
+}
+const { default: SUPPLEMENT } = await import(pathToFileURL(path.join(ROOT, 'games/cloze-combo/supplement.mjs')));
+const core = [...coreClozes, ...coreOrders.values(), ...SUPPLEMENT];
+const coreIds = new Set();
+for (const it of core) {
+  const tag = `《填空连击》${it.id || '(无 id)'}`;
+  if (!it.id || coreIds.has(it.id)) errors.push(`${tag}：id 缺失或重复`);
+  coreIds.add(it.id);
+  if (!mustIds.has(it.chapter)) errors.push(`${tag}：章节「${it.chapter}」不是必背章`);
+  const b = Array.isArray(it.b) ? it.b : [], d = Array.isArray(it.d) ? it.d : [];
+  const slots = Array.isArray(it.p) ? it.p.filter(Number.isInteger) : [];
+  if (!b.length || slots.length !== b.length || slots.some((v, k) => v !== k)) errors.push(`${tag}：空位应按 0…${b.length - 1} 从左到右各出现一次，实际是 [${slots.join(',')}]`);
+  if (new Set(b).size !== b.length) errors.push(`${tag}：同一题里有重复答案，按词卡判定会出错`);
+  const overlap = d.filter(x => b.includes(x));
+  if (overlap.length) errors.push(`${tag}：干扰项与答案重合（${overlap.join('、')}）`);
+  if (new Set([...b, ...d]).size > 11) errors.push(`${tag}：词卡超过 11 张，键盘 1…0、- 键不够分`);
+  if (!it.q || !it.s) errors.push(`${tag}：缺少题干 q 或记忆点 s`);
+}
+for (const ch of MUST) if (!coreClozes.some(it => it.chapter === ch.id)) errors.push(`《填空连击》必背章「${ch.label}」没有纪年挖空题`);
+const coreCloze = {
+  note: '由 scripts/statecraft/extract-questions.mjs 生成，勿手改。供 games/cloze-combo 使用。',
+  chapters: MUST.map(ch => ({ id: ch.id, label: ch.label, freq: ch.freq, gameTitle: ch.gameTitle, link: `/games/${ch.game}/` })),
+  items: core,
+};
+
 const files = {
   'bank.json': JSON.stringify({ items: bank }),
   'cards.json': JSON.stringify({ items: cards }),
   'index.json': JSON.stringify(index, null, 1) + '\n',
+  'core-cloze.json': JSON.stringify(coreCloze),
 };
 
 console.log(`自动判分 ${bank.length} 道 · 闪卡 ${cards.length} 张`);

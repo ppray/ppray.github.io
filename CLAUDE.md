@@ -152,6 +152,19 @@ node scripts/statecraft/balance.mjs                    # 四种策略各 400 局
 
 - 无页游的两章（FDI、区域合作）与政治学情境题在 `data/authored/*.js`，内容只能取自对应速查卡 / quiz-questions.js 原文。
 
+### 《填空连击》（games/cloze-combo/）
+
+dopa-drill 式的挖空连击页（`index.html` + `app.js`，无依赖、无构建）。只练必背四章（`concepts.js` 里 `level: 'must'`），题源三类：
+各章纪年页游里手写的挖空题与排序题（`src === chapter`；排序题转成「按顺序填」，同一组步骤重复的只留一道），以及
+`games/cloze-combo/supplement.mjs` 里的补充题。模拟卷填空靠关键词投票归章，会混进非本章核心的词，所以不收。
+
+- 题源 `games/statecraft/data/questions/core-cloze.json` 由 `extract-questions.mjs` 顺带生成，与题库共用 `--check` 和 CI 提交；页面运行时 fetch，不另存副本。改了四部必背纪年页游的 DATA 或 `supplement.mjs` 后都要重抽。
+- `supplement.mjs` 只能取自对应速查卡 / 复习笔记原文；与史实核对后不一致的以核实结果为准，并在 `w` 里写明速查卡原来的说法。每个空只能有一个正确词卡（干扰项在任何常见口径下都得是错的），不出「日本、德国」这种可以互换顺序的空；id 手写且稳定。抽题脚本会校验章节、空位顺序、答案重复、干扰项与答案重合、词卡数量。
+- 两套外观：研学（默认）与街机，只差 CSS、`WORDS` 措辞表和 `arcade()` 特效分支，逻辑与计分完全相同。`<body>` 开头的内联脚本在 `app.js` 之前读出风格，避免闪一下街机皮肤。计数器是「跨境收付」（封顶 52.3 万亿元＝2023 年全年银行代客人民币跨境收付），不要换回「外储」——外储一章的总纲就是「不是攒下的钱，是向美元体系交的贡」。
+- 题目 id 是文本哈希，原文一改 id 就变；页面加载时会丢掉 localStorage（`clozeCombo.v1`）里已不存在的 id。
+- 页面自带浅色 `#community-root`（注入脚本会跳过它），对局与结算时隐藏悬浮「💬 讨论」按钮和不蒜子。
+- `?test` 会暴露 `window.__cc`（状态与 `choose` / `loadItem` / `timeUp` 等），供无头浏览器做自动对局测试。
+
 ### SEO / GEO 资产
 - `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。
 - `sitemap.xml` 由脚本生成，新增内容页后重跑：`node scripts/gen-sitemap.mjs`
