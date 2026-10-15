@@ -1,22 +1,22 @@
-/* 填空连击 —— 翟东升《货币与金融的国际政治经济学》必背四章挖空速记
+/* 填空连击 —— 翟东升《货币与金融的国际政治经济学》模拟卷全考点挖空
  *
  * 手感致敬 grmchn/dopa-drill（ドパドリル，MIT）：逐格即时判定、连击跨题累积、
  * 演出随进度只升不降、答错只断连击不扣分。代码为本站重写，不含原作源码。
  *
- * 题源：/games/statecraft/data/questions/core-cloze.json
- *   由 scripts/statecraft/extract-questions.mjs 生成：必背四章纪年页游里手写的挖空题与排序题，
- *   加上 games/cloze-combo/supplement.mjs 里取自速查卡的补充题。勿手改。
+ * 题源：/games/cloze-combo/bank.json（scripts/cloze-combo/build.mjs 从 bank/*.mjs 生成，勿手改）。
+ *   题目只取自 10 套模拟卷的 137 道题面：名词挖定义里的关键词，简答 / 论述挖复习笔记「考场标准作答」的采分点；
+ *   每道题的 from 标出它考过哪几卷，构建时保证每道题面的每一问都至少有一道题。
  * 风格：研学（默认）/ 街机。两套只差外观、措辞和特效开关，逻辑、节奏与计分完全相同（见 arcade()）。
  * 记录：localStorage「clozeCombo.v1」（v: 2），只在本机。
  */
 (() => {
   'use strict';
 
-  const DATA_URL = '/games/statecraft/data/questions/core-cloze.json';
+  const DATA_URL = '/games/cloze-combo/bank.json';
   const STORE_KEY = 'clozeCombo.v1';
   const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'];
   const CIRCLED = '①②③④⑤⑥⑦⑧⑨⑩';
-  const BASIC_N = 10;            // 四章混合一局的题数；单章通关 = 该章全部
+  const BASIC_N = 10;            // 随机混合一局的题数；单章通关 = 该章全部
   const REVIEW_N = 10;
   const REVIEW_MAX = 40;
   const EXTRA_MS = 90000;
@@ -28,8 +28,16 @@
   const MILESTONES = [[4, '1 万元'], [6, '100 万元'], [8, '1 亿元'], [10, '100 亿元'], [12, '1 万亿元'], [13, '10 万亿元']];
   const COMBO_MARKS = [10, 20, 30, 50, 75, 100];
   const CHAPTER_COLORS = {
-    arcade: { 'fx-reserves': '#3b6bff', 'fx-rate': '#ff7ab6', 'gold-std': '#ffd23f', 'rmb-intl': '#3fdcb0' },
-    scholar: { 'fx-reserves': '#2f4e86', 'fx-rate': '#8c4b62', 'gold-std': '#a8742a', 'rmb-intl': '#3f7a5a' },
+    arcade: {
+      'gold-std': '#ffd23f', bretton: '#ff9f43', 'us-hegemony': '#ff4f6d', 'center-periphery': '#a77bff', 'fx-reserves': '#3b6bff',
+      'fx-rate': '#ff7ab6', 'monetary-tools': '#2ec4ff', 'crisis-history': '#ff6b3d', fdi: '#7ed957', 'rmb-intl': '#3fdcb0',
+      deglobalization: '#c58cff', regional: '#00c2a8', cycles: '#ffb3c7', addenda: '#9aa4ff',
+    },
+    scholar: {
+      'gold-std': '#a8742a', bretton: '#8a5a2b', 'us-hegemony': '#8c3b3b', 'center-periphery': '#5b4a86', 'fx-reserves': '#2f4e86',
+      'fx-rate': '#8c4b62', 'monetary-tools': '#2f6f86', 'crisis-history': '#9a4a2a', fdi: '#4f7a3a', 'rmb-intl': '#3f7a5a',
+      deglobalization: '#6a4f86', regional: '#2f7a72', cycles: '#86566a', addenda: '#5a6286',
+    },
   };
   // 两套风格的措辞：街机沿用 dopa-drill 的口吻，研学用考场上的说法
   const WORDS = {
@@ -64,7 +72,8 @@
     [(it) => { const s = it.p.filter(Number.isInteger); return s.length === it.b.length && s.every((v, k) => v === k); },
       (it) => `空位应按 0…${it.b.length - 1} 从左到右各出现一次，实际是 [${it.p.filter(Number.isInteger).join(',')}]`],
     [(it) => it.d == null || (Array.isArray(it.d) && it.d.every((x) => typeof x === 'string')), () => '干扰项 d 必须是字符串数组'],
-    [(it) => new Set(it.b).size === it.b.length, () => '同一题里有重复答案，按词卡判定会出错'],
+    [(it) => it.g == null || (Array.isArray(it.g) && it.g.every((grp) => Array.isArray(grp) && grp.length >= 2 && grp.every((k) => Number.isInteger(k) && k >= 0 && k < it.b.length))),
+      () => '可互换空位组 g 不合法'],
   ];
   function validateItem(it, ctx) {
     if (!it || typeof it !== 'object') return { valid: false, errors: ['题目不是对象'] };
@@ -98,7 +107,7 @@
   }
   let DB = loadDB();
   function saveDB() { try { localStorage.setItem(STORE_KEY, JSON.stringify(DB)); } catch (e) { /* 隐私模式等：照玩，只是不留记录 */ } }
-  // 题目 id 是文本哈希，原文一改 id 就变：丢掉已经不存在的记录
+  // 题库里已经没有的题（删了或改了 id），记录一并丢掉
   function pruneDB(ids) {
     for (const k of Object.keys(DB.items)) if (!ids.has(k)) delete DB.items[k];
     DB.review = DB.review.filter((k) => ids.has(k));
@@ -419,15 +428,16 @@
     const rc = DB.review.length;
     $('#start-review').hidden = !rc; $('#review-count').textContent = rc;
     if (!S.ready) return;
-    const total = S.items.length;
-    $('#facts').textContent = `${total} 题 · ${S.items.reduce((n, it) => n + it.b.length, 0)} 个空 · 已掌握 ${S.items.filter((it) => isMastered(it.id)).length}`;
+    const total = S.items.length, mastered = S.items.filter((it) => isMastered(it.id)).length;
+    // 题数只在这一处（运行时算出来），页面其他地方不写死
+    $('#facts').textContent = `${total} 题 · ${S.items.reduce((n, it) => n + it.b.length, 0)} 个空 · 已掌握 ${mastered}`;
     $('#start-mix').disabled = false;
-    $('#start-sub').textContent = `四章混合 · ${Math.min(BASIC_N, total)} 题 · 没掌握的优先`;
+    $('#start-sub').textContent = `随机 ${Math.min(BASIC_N, total)} 题 · 没掌握的优先`;
     $('#chapters').innerHTML = S.chapters.map((ch) => {
       const list = S.items.filter((it) => it.chapter === ch.id), m = list.filter((it) => isMastered(it.id)).length;
       return `<button type="button" class="ch-card${m === list.length && list.length ? ' all' : ''}" data-ch="${esc(ch.id)}" style="--c:${CHAPTER_COLORS[DB.skin][ch.id] || '#a77bff'}">
         <span class="ch-name">${esc(ch.label)}</span>
-        <span class="ch-meta">考频 ${esc(ch.freq || '—')} · ${esc(ch.gameTitle || '')}</span>
+        <span class="ch-meta">${list.length} 题${ch.papers ? ` · 模拟卷考过 ${ch.papers} 道题面` : ''}</span>
         <span class="ch-bar"><i style="width:${list.length ? (m / list.length) * 100 : 0}%"></i></span>
         <span class="ch-num"><span>已掌握</span><b>${m}/${list.length}</b></span>
       </button>`;
@@ -455,6 +465,7 @@
     if (mode === 'chapter') return shuffle(S.items.filter((it) => it.chapter === chapterId));
     return pickMix();
   }
+  const MODE_LABEL = { mix: '随机混合', review: '错题复习' };
   function startRun(mode, chapterId) {
     if (!S.ready) return;
     const queue = buildQueue(mode, chapterId);
@@ -472,7 +483,7 @@
     show('play');
     el.clockLabel.textContent = `目标 ${fmtClock(S.target)}`; el.clock.textContent = '0:00'; el.clockBox.classList.remove('hurry');
     el.bank.innerHTML = ''; el.passage.textContent = ''; el.title.textContent = ''; el.tip.hidden = true; el.memo.hidden = true; el.step.textContent = '';
-    el.chapter.textContent = mode === 'chapter' ? (S.chapterById.get(chapterId) || {}).label || '' : mode === 'review' ? '错题复习' : '四章混合';
+    el.chapter.textContent = mode === 'chapter' ? (S.chapterById.get(chapterId) || {}).label || '' : MODE_LABEL[mode] || '';
     el.from.textContent = ''; el.qno.textContent = '';
     renderPips(); updateHud();
     const intro = mode === 'review' ? `错题复习 · ${queue.length} 题` : `${queue.length} 题 · 目标 ${fmtClock(S.target)}`;
@@ -502,7 +513,10 @@
   function loadItem(it) {
     if (S.screen !== 'play' || !it) return;
     S.item = it; S.slot = 0; S.slotMiss = 0; S.itemMiss = 0; S.waitNext = false; S.autoAt = 0;
-    S.words = shuffle([...new Set([...it.b, ...(it.d || [])])]);
+    S.expect = it.b.slice();
+    S.groupOf = new Map();
+    for (const grp of it.g || []) for (const k of grp) S.groupOf.set(k, grp);
+    S.words = shuffle([...it.b, ...(it.d || []).filter((x) => !it.b.includes(x))]);
     S.used = new Set();
     const ch = S.chapterById.get(it.chapter) || {};
     el.chapter.textContent = ch.label || '';
@@ -552,7 +566,7 @@
   // 连击时限：第一个空要先读题，按全文长度放宽；之后按两个空之间的文字量
   function windowFor(slot) {
     const p = S.item.p;
-    const read = 30 * S.item.b[slot].length; // 词卡也要读：排序题的步骤动辄十几个字
+    const read = 30 * S.expect[slot].length; // 词卡也要读：排序题的步骤动辄十几个字
     if (slot === 0) return clamp(5000 + 45 * (textOf(p).length + S.item.q.length) + read, 6000, 12000);
     let on = false, chars = 0;
     for (const x of p) { if (x === slot - 1) on = true; else if (x === slot) break; else if (on && typeof x === 'string') chars += x.length; }
@@ -566,13 +580,22 @@
     const w = S.words[i];
     if (w == null || S.used.has(i)) return;
     sound.ensure();
-    if (w === S.item.b[S.slot]) good(i); else bad(i);
+    let ok = w === S.expect[S.slot];
+    // 可互换的一组空（例如「___ + ___ + ___ = 0」）：选了同组后面某个空的答案也算对，两个空的期望互换
+    const grp = !ok && S.groupOf.get(S.slot);
+    if (grp) {
+      const j = grp.find((k) => k > S.slot && S.expect[k] === w);
+      if (j != null) { S.expect[j] = S.expect[S.slot]; S.expect[S.slot] = w; ok = true; }
+    }
+    if (ok) good(i); else bad(i);
   }
+  // 当前空位一张还没用过的正确词卡（提示发光用；测试钩子也用它）
+  const answerIndex = () => S.words.findIndex((x, n) => x === S.expect[S.slot] && !S.used.has(n));
   function good(i) {
     const btn = bankBtns[i], slotEl = slotEls[S.slot], it = S.item;
     S.used.add(i); btn.classList.add('used'); btn.disabled = true; btn.classList.remove('hint', 'nope');
     clearTimeout(S.nopeTimer);
-    slotEl.classList.remove('cur', 'nope'); slotEl.querySelector('.slot-t').textContent = it.b[S.slot];
+    slotEl.classList.remove('cur', 'nope'); slotEl.querySelector('.slot-t').textContent = S.words[i];
     slotEl.classList.add('done'); slotEl.classList.remove('pop'); void slotEl.offsetWidth; slotEl.classList.add('pop');
     S.combo++; S.maxCombo = Math.max(S.maxCombo, S.combo);
     const m = it.b.length, s = S.slot + 1;
@@ -609,7 +632,7 @@
     slotEl.classList.remove('nope'); void slotEl.offsetWidth; slotEl.classList.add('nope'); t.textContent = S.words[i];
     clearTimeout(S.nopeTimer);
     S.nopeTimer = setTimeout(() => { if (!slotEl.classList.contains('done')) { t.textContent = ''; slotEl.classList.remove('nope'); } btn.classList.remove('nope'); }, 650);
-    if (S.slotMiss >= 2) { const k = S.words.indexOf(S.item.b[S.slot]); if (bankBtns[k]) bankBtns[k].classList.add('hint'); }
+    if (S.slotMiss >= 2) { const k = answerIndex(); if (bankBtns[k]) bankBtns[k].classList.add('hint'); }
     bump(el.ng.parentElement);
     sound.wrong();
     updateHud();
@@ -635,7 +658,8 @@
     }
     sound.complete(clean);
     if (it.s) {
-      el.memo.innerHTML = `<b>记忆</b>${esc(it.s)}`; el.memo.hidden = false;
+      el.memo.innerHTML = `<b>记忆</b>${esc(it.s)}`;
+      el.memo.hidden = false;
       // 记忆点放得下就滚到底；比可视区还高时，把它的开头对齐到顶部，从头读
       requestAnimationFrame(() => {
         const wrap = el.passageWrap, top = el.memo.offsetTop - wrap.offsetTop - 6;
@@ -812,7 +836,7 @@
     show('result');
     const final = kind === 'final', score = final ? 100 + S.extraPts : 100;
     const basic = S.log.filter((l) => l.phase === 'basic'), clean = basic.filter((l) => l.clean).length;
-    const modeLabel = S.mode === 'chapter' ? `单章通关 · ${(S.chapterById.get(S.chapter) || {}).label || ''}` : S.mode === 'review' ? '错题复习' : '四章混合';
+    const modeLabel = S.mode === 'chapter' ? `单章通关 · ${(S.chapterById.get(S.chapter) || {}).label || ''}` : MODE_LABEL[S.mode] || '';
     $('#r-mode').textContent = modeLabel;
     $('#r-score').textContent = score;
     $('#r-break').textContent = final ? `基本 100 + 加时 ${S.extraSolved} 题 ${S.extraPts}` : '全部做完 · 基本分 100';
@@ -833,7 +857,7 @@
     $('#r-list').innerHTML = rows.map((l) => {
       const it = l.it, ch = S.chapterById.get(it.chapter) || {};
       return `<li class="r-item ${l.clean ? 'clean' : 'miss'}">
-        <div class="r-row"><span class="tag">${esc(ch.label || '')}</span>${l.phase === 'extra' ? '<span>加时</span>' : ''}${it.link ? `<a class="r-link" href="${esc(it.link)}">原文 ›</a>` : ''}<span class="mark">${l.clean ? `✓ ${W().clean}` : `✗ ${W().ng} ${l.misses}`}</span></div>
+        <div class="r-row"><span class="tag">${esc(ch.label || '')}</span>${it.from ? `<span class="r-from">${esc(it.from)}</span>` : ''}${l.phase === 'extra' ? '<span>加时</span>' : ''}${it.link ? `<a class="r-link" href="${esc(it.link)}">原文 ›</a>` : ''}<span class="mark">${l.clean ? `✓ ${W().clean}` : `✗ ${W().ng} ${l.misses}`}</span></div>
         <p class="r-q">${esc(it.q)}</p>
         <div class="r-sent">${sentenceHTML(it)}</div>
         ${it.s ? `<p class="r-memo">记忆：${esc(it.s)}</p>` : ''}
@@ -924,7 +948,7 @@
       const p = document.createElement('section');
       p.className = 'panel load-err';
       p.innerHTML = `<h2>题库加载失败</h2>没能读取 <code>${esc(DATA_URL)}</code>（${esc(e.message)}）。本地预览请用静态服务器打开仓库根目录（例如 <code>python3 -m http.server</code>），不要直接双击 HTML。`;
-      $('#start-mix').after(p);
+      $('#start-review').after(p);
       return;
     }
     const chapters = Array.isArray(data && data.chapters) ? data.chapters.filter((c) => c && typeof c.id === 'string') : [];
@@ -941,6 +965,6 @@
     if (!S.ready) $('#start-sub').textContent = '题库是空的';
   }
 
-  if (TEST) window.__cc = { S, get DB() { return DB; }, get bgmRunning() { return !!sound.timer; }, choose, goNext, startRun, startExtra, timeUp, loadItem };
+  if (TEST) window.__cc = { S, get DB() { return DB; }, get bgmRunning() { return !!sound.timer; }, choose, goNext, startRun, startExtra, timeUp, loadItem, answer: answerIndex };
   init();
 })();

@@ -1,0 +1,57 @@
+# 《填空连击》题库：games/cloze-combo/bank/*.mjs（手写）→ games/cloze-combo/bank.json（页面读取）
+#
+# 路径：.github/workflows/cloze-combo.yml
+# 手动触发：仓库 Actions 页面 → cloze-combo → Run workflow
+#
+# 构建脚本先校验再生成，任何一层不过就失败、不提交：
+#   1. 考纲 ↔ 复习笔记：笔记（读页面里的 md-source）的每道题都要有模拟卷题面指向它，名词组的每个词都要在考纲里；
+#   2. 每道题的空位、词卡数量、干扰项；
+#   3. 10 套模拟卷 137 道题面的每个考点都至少有一道题。
+# 复习笔记改了题目标题而考纲没跟上，这里会直接报错——去 games/cloze-combo/bank/syllabus.mjs 对一遍。
+
+name: cloze-combo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "games/cloze-combo/bank/**"
+      - "scripts/cloze-combo/**"
+      - "国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.html"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cloze-combo
+  cancel-in-progress: false
+
+jobs:
+  cloze-combo:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 校验并生成题库
+        run: node scripts/cloze-combo/build.mjs
+
+      - name: 提交变更
+        run: |
+          if git diff --quiet; then
+            echo "题库已是最新，无需提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add games/cloze-combo/bank.json
+          git commit -m "chore(cloze-combo): 同步题库"
+          git push

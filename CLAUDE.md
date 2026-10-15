@@ -154,16 +154,22 @@ node scripts/statecraft/balance.mjs                    # 四种策略各 400 局
 
 ### 《填空连击》（games/cloze-combo/）
 
-dopa-drill 式的挖空连击页（`index.html` + `app.js`，无依赖、无构建）。只练必背四章（`concepts.js` 里 `level: 'must'`），题源三类：
-各章纪年页游里手写的挖空题与排序题（`src === chapter`；排序题转成「按顺序填」，同一组步骤重复的只留一道），以及
-`games/cloze-combo/supplement.mjs` 里的补充题。模拟卷填空靠关键词投票归章，会混进非本章核心的词，所以不收。
+dopa-drill 式的挖空连击页（`index.html` + `app.js`，无依赖）。题库只取自 10 套模拟卷（模拟-01～10）的 137 道题面，不用任何页游的题：
 
-- 题源 `games/statecraft/data/questions/core-cloze.json` 由 `extract-questions.mjs` 顺带生成，与题库共用 `--check` 和 CI 提交；页面运行时 fetch，不另存副本。改了四部必背纪年页游的 DATA 或 `supplement.mjs` 后都要重抽。
-- `supplement.mjs` 只能取自对应速查卡 / 复习笔记原文；与史实核对后不一致的以核实结果为准，并在 `w` 里写明速查卡原来的说法。每个空只能有一个正确词卡（干扰项在任何常见口径下都得是错的），不出「日本、德国」这种可以互换顺序的空；id 手写且稳定。抽题脚本会校验章节、空位顺序、答案重复、干扰项与答案重合、词卡数量。
+```bash
+node scripts/cloze-combo/build.mjs          # 校验并生成 games/cloze-combo/bank.json（页面运行时 fetch）
+node scripts/cloze-combo/build.mjs --check  # 只检查是否过期（CI 用）
+node scripts/cloze-combo/build.mjs --draft  # 写题途中用：缺章节文件、考点没覆盖只警告
+```
+
+- `bank/syllabus.mjs`：137 道题面 → 考点（简答 / 论述是复习笔记题号 `<专题>.<题号>[.<分问>]`，一道题面问几件事就拆几个分问；名词是 `名:<词条>`），加上词条 → 笔记题的 `TERMS`。卷 8、卷 9 的题面以复习笔记的逐卷核验为准——`quiz-questions.js` 里这两卷有 16 道题面与笔记对不上，不采用。
+- `bank/<章节>.mjs`：手写的挖空题，每道用 `cover` 标出覆盖的考点；内容取自复习笔记的「考场标准作答」与名词定义。13 个专题一章一个文件，补遗独有的名词与两道补遗简答在 `addenda.mjs`；专题与补遗重复的名词只写一道，放在专题里。
+- 三层校验，任何一层不过都不生成：考纲 ↔ 笔记（读复习笔记 HTML 里的 md-source：笔记每道题都要有题面指向它、名词组每个词都要在 `TERMS` 里、题量 62 / 45 / 30）；题目本身（空位顺序、≤ 11 张词卡、干扰项不与答案重合、`g` 可互换空位组合法）；覆盖（每个考点至少一道题）。CI `cloze-combo.yml` 在题库或复习笔记改动后重建并提交。**改了复习笔记的题目标题，要同步 `syllabus.mjs`。**
+- 出题规则：挖概念词、题面保留含义，不挖只剩缩写的口诀字；每个空只能有一个正确词卡——干扰项在任何常见口径下都得是错的，近义词、另一种口径也成立的说法不能当干扰项（如 1994 年贬值 33% 与美元升值 50%）；有出处争议或已过时的说法写进解析 `w`，不做唯一正确的词卡；顺序无关的并列项用 `g` 标成可互换。构建输出的「复查清单」列出答案出现在题面里、干扰项与答案互相包含的题，新增题后逐条看过。
+- id 手写且稳定，改了答案就换新 id；页面加载时会丢掉 localStorage（`clozeCombo.v1`）里已不存在的 id。
 - 两套外观：研学（默认）与街机，只差 CSS、`WORDS` 措辞表和 `arcade()` 特效分支，逻辑与计分完全相同。`<body>` 开头的内联脚本在 `app.js` 之前读出风格，避免闪一下街机皮肤。计数器是「跨境收付」（封顶 52.3 万亿元＝2023 年全年银行代客人民币跨境收付），不要换回「外储」——外储一章的总纲就是「不是攒下的钱，是向美元体系交的贡」。
-- 题目 id 是文本哈希，原文一改 id 就变；页面加载时会丢掉 localStorage（`clozeCombo.v1`）里已不存在的 id。
 - 页面自带浅色 `#community-root`（注入脚本会跳过它），对局与结算时隐藏悬浮「💬 讨论」按钮和不蒜子。
-- `?test` 会暴露 `window.__cc`（状态与 `choose` / `loadItem` / `timeUp` 等），供无头浏览器做自动对局测试。
+- `?test` 会暴露 `window.__cc`（状态与 `choose` / `answer` / `loadItem` / `timeUp` 等），供无头浏览器做自动对局测试：逐章 `startRun('chapter', id)` 后循环 `choose(answer())`，应零失误走到结算页。
 
 ### SEO / GEO 资产
 - `robots.txt`（含 `Sitemap:` 行，显式对 AI 抓取器开放）、`llms.txt`（给 LLM 的内容地图）为手工维护。

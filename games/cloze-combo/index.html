@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>填空连击 · 必背四章挖空速记 —— 翟东升《货币与金融的国际政治经济学》</title>
-<meta name="description" content="《填空连击》把翟东升《货币与金融的国际政治经济学》考频最高的四章（外汇储备、人民币汇率、金本位制度、人民币国际化）做成挖空连击：68 题、235 个空，涵盖骨架词、数字锚点、答题口诀、排序链条与考场总纲。点词卡按顺序填空，连击越长越快；答错不扣分，只有一次全对才算掌握。默认研学风格，可切换街机风格。">
+<title>填空连击 · 模拟卷全考点挖空 —— 翟东升《货币与金融的国际政治经济学》</title>
+<meta name="description" content="《填空连击》把翟东升《货币与金融的国际政治经济学》10 套模拟卷的 137 道题面（名词解释 62、简答 45、论述 30）全部做成挖空连击：名词挖定义里的关键词，简答与论述挖考场标准作答的采分点，论述题按分问拆开，每道题标明考过哪几卷。覆盖金本位、布雷顿森林与牙买加体系、美元霸权、中心-外围、外汇储备、人民币汇率、货币政策工具、金融危机史、外资与工业化、人民币国际化、新自由主义与全球化等 13 个专题与补遗。答错不扣分，只有一次全对才算掌握。">
 <link rel="canonical" href="https://ppray.github.io/games/cloze-combo/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#3b6bff">
 <meta property="og:type" content="website">
-<meta property="og:title" content="填空连击 · 必背四章挖空速记">
-<meta property="og:description" content="外汇储备、人民币汇率、金本位、人民币国际化：68 道挖空与排序题，口诀、数字锚点与考场总纲一次过。">
+<meta property="og:title" content="填空连击 · 模拟卷全考点挖空">
+<meta property="og:description" content="10 套模拟卷、137 道题面，名词定义与简答论述的采分点全部挖空，每道题标明考过哪几卷。">
 <meta property="og:url" content="https://ppray.github.io/games/cloze-combo/">
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary">
@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": ["VideoGame", "LearningResource"],
-  "name": "填空连击 · 必背四章挖空速记",
+  "name": "填空连击 · 模拟卷全考点挖空",
   "url": "https://ppray.github.io/games/cloze-combo/",
   "inLanguage": "zh-CN",
   "genre": ["Educational", "Arcade"],
@@ -26,9 +26,9 @@
   "playMode": "SinglePlayer",
   "learningResourceType": "Educational game",
   "educationalLevel": "Graduate",
-  "teaches": ["外汇储备与外汇占款", "铸币税", "人民币汇率七阶段", "汇率低估的代价", "汇率操纵认定", "金本位制度", "金汇兑本位制", "黄金输送点", "人民币国际化", "货币互换", "SDR"],
+  "teaches": ["金本位制度", "布雷顿森林体系", "特里芬难题", "美元霸权", "中心-外围体系", "外汇储备", "外汇占款", "铸币税", "人民币汇率", "公开市场操作", "存款准备金", "金融危机史", "外商直接投资", "人民币国际化", "新自由主义", "最优货币区"],
   "isBasedOn": "翟东升《货币与金融的国际政治经济学》",
-  "description": "翟东升《货币与金融的国际政治经济学》必背四章的挖空连击练习：外汇储备、人民币汇率、金本位制度、人民币国际化，共 68 题、235 个空（纪年页游手写的挖空题与排序题，加上取自关键词速查卡的数字锚点）。",
+  "description": "翟东升《货币与金融的国际政治经济学》10 套模拟卷 137 道题面的挖空连击练习：名词解释挖定义关键词，简答与论述挖复习笔记考场标准作答的采分点，每道题面的每一问都有题。",
   "author": { "@type": "Person", "name": "ppray" }
 }
 </script>
@@ -274,7 +274,8 @@
   .stamp{position:absolute;right:16px;bottom:8px;z-index:2;padding:3px 12px;border:4px solid var(--red);border-radius:14px;background:rgba(255,255,255,.6);
     color:var(--red);font-family:var(--chunky);font-weight:400;font-size:32px;letter-spacing:.08em;opacity:0;transform:rotate(-12deg) scale(0);pointer-events:none}
   .stamp.clean{color:var(--blue);border-color:var(--blue)}
-  .stamp.show{animation:stamp .45s cubic-bezier(.2,1.6,.4,1) forwards}
+  .stamp.show{animation:stamp .45s cubic-bezier(.2,1.6,.4,1) forwards,stampOut .5s ease 2.2s forwards}
+  @keyframes stampOut{to{opacity:0}} /* 盖完章两秒后淡出，别一直压着记忆点和完整名词解释 */
   @keyframes stamp{from{opacity:0;transform:rotate(-30deg) scale(2.2)}to{opacity:1;transform:rotate(-12deg) scale(1)}}
 
   .bank{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense;gap:9px 8px;padding-top:6px}
@@ -331,6 +332,7 @@
   .r-row{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--ink-2)}
   .r-row .tag{padding:1px 8px;border-radius:999px;background:var(--blue-soft);color:var(--ink)}
   .r-row .r-link{color:var(--blue-d);text-decoration:none}
+  .r-row .r-from{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
   .r-row .mark{margin-left:auto;font-weight:900}
   .r-item.miss .mark{color:var(--pink)}
   .r-item.clean .mark{color:var(--blue)}
@@ -497,7 +499,7 @@
   body.skin-scholar .stamp{border:2px solid var(--red);border-radius:6px;background:rgba(253,251,247,.75);color:var(--red);
     font-family:var(--chunky);font-size:17px;letter-spacing:.16em;padding:5px 9px}
   body.skin-scholar .stamp:not(.clean){border-color:var(--ink-3);color:var(--ink-2)}
-  body.skin-scholar .stamp.show{animation:sealIn .35s ease-out forwards}
+  body.skin-scholar .stamp.show{animation:sealIn .35s ease-out forwards,stampOut .5s ease 2.2s forwards}
   @keyframes sealIn{from{opacity:0;transform:rotate(-8deg) scale(1.3)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
   body.skin-scholar .word{border-radius:10px;background:var(--card);box-shadow:0 1px 0 rgba(35,38,47,.05);font-weight:600}
   body.skin-scholar .word .k{color:var(--ink-3)}
@@ -577,7 +579,7 @@
       <span class="logo-bits" aria-hidden="true"><b style="--x:-1.32;--y:-.72;--r:-16deg;--c:#3fdcb0">$</b><b style="--x:1.32;--y:-.78;--r:14deg;--c:#a77bff">¥</b><b style="--x:-1.28;--y:.62;--r:10deg;--c:#ff4f6d">€</b><b style="--x:1.28;--y:.58;--r:-12deg;--c:#ffd23f">£</b></span>
     </h1>
 
-    <p class="t-sub">翟东升《<b>货币与金融的国际政治经济学</b>》<br>考频最高的必背四章：挖空、排序与数字锚点<br><span class="facts" id="facts">68 题 · 235 个空</span></p>
+    <p class="t-sub">翟东升《<b>货币与金融的国际政治经济学</b>》<br>10 套模拟卷 · 137 道题面 · 全部考点挖空<br><span class="facts" id="facts">题库加载中…</span></p>
 
     <div class="records" aria-label="个人纪录">
       <div><small>最高分</small><b id="best-score">—</b></div>
@@ -588,13 +590,14 @@
     <button type="button" class="big-btn" id="start-mix" disabled>开始连击<small id="start-sub">题库加载中…</small></button>
     <button type="button" class="sub-btn review-btn" id="start-review" hidden>错题复习 <b id="review-count">0</b></button>
 
-    <h2 class="sec-title">单章通关<small>点一章，把这章的挖空全部过一遍</small></h2>
+    <h2 class="sec-title">按专题通关<small>顺序同复习笔记：历史演变 → 现实结构 → 中国处境 → 破局之路</small></h2>
     <div class="chapters" id="chapters"></div>
 
     <section class="panel" aria-labelledby="howto-title">
       <h2 id="howto-title">玩法</h2>
       <ol>
-        <li>按顺序点词卡补全句子；电脑上可以按词卡左上角的 <span class="kbd">1</span>…<span class="kbd">0</span> <span class="kbd">-</span> 键。标「按顺序」的是排序题，把步骤按先后填进去。</li>
+        <li>每道题都出自模拟卷的一道题面：<b>名词</b>挖定义里的关键词，<b>简答 / 论述</b>挖考场标准作答的采分点；卡片右上角标着它考过哪几卷。</li>
+        <li>按顺序点词卡补全句子；电脑上可以按词卡左上角的 <span class="kbd">1</span>…<span class="kbd">0</span> <span class="kbd">-</span> 键。并列的几个空（如 SDR 篮子里的「日元、英镑」）先填哪个都行。</li>
         <li>每填对一个空就 <b>+1 连击</b>，跨题累积。连击越长，右上角的「跨境收付」涨得越快（最高 ×2）；街机风格下画面和音乐也会越来越热闹。</li>
         <li>选错<b>不扣分</b>，只断连击，也没有 Game Over；同一个空错两次，正确的词卡会亮起来。</li>
         <li>做完一局就是 <b>100 分</b>；一次全对的题达到 80%，可以挑战 <b>90 秒加时赛</b>，每多做一题加分越来越多。</li>
@@ -613,8 +616,8 @@
 
     <section class="panel" aria-labelledby="src-title">
       <h2 id="src-title">题从哪来</h2>
-      <p style="margin:0">大部分题取自四部纪年页游里手写的挖空题和排序题：各章的骨架词、数字锚点、答题口诀、因果链条和考场总纲。另有 15 道补充题，直接取自各章关键词速查卡的「数字锚点」与口诀，补上纪年里没挖空的部分；它们都与史实核对过，速查卡写法已经过时的地方（如美方汇率操纵标准）在解析里注明。想看前因后果，回原文：</p>
-      <div class="src-list" id="src-list"><a href="/games/fx-reserves/">外储纪年</a><a href="/games/fx-rate/">汇改纪年</a><a href="/games/gold-std/">金锚纪年</a><a href="/games/rmb-intl/">出海纪年</a><a href="/国关复习/外汇储备-关键词速查卡.html">外汇储备速查卡</a><a href="/国关复习/人民币汇率-关键词速查卡.html">人民币汇率速查卡</a><a href="/国关复习/金本位制度-关键词速查卡.html">金本位速查卡</a><a href="/国关复习/人民币国际化-关键词速查卡.html">人民币国际化速查卡</a><a href="/games/statecraft/">庙算 · 执政模拟</a></div>
+      <p style="margin:0">题目只取自《货币与金融的国际政治经济学》10 套模拟卷（模拟-01 ～ 10）的 137 道题面：名词解释 62、简答 45、论述 30。答案按复习笔记里每题的「考场标准作答」与名词定义挖空，一道题面问了几件事就拆成几道题；构建时逐条核对，保证每道题面的每一问都至少有一道题。卷 8、卷 9 的题面以复习笔记的逐卷核验为准。笔记里有出处争议的说法（如「普选权」论证、黄金输送点、汇率操纵的量化标准）在解析里注明。想看完整作答，点结算页每题的「原文」，或直接打开：</p>
+      <div class="src-list" id="src-list"><a href="/国关复习/翟东升《货币与金融的国际政治经济学》复习笔记.html">复习笔记</a><a href="/国关复习/exam-analysis-mfipe.html">10 套模拟卷应试分析</a><a href="/国关复习/理论框架与背诵路线图-打印版.html">理论框架与背诵路线图</a></div>
       <p class="credit">玩法手感致敬 <a href="https://github.com/grmchn/dopa-drill" rel="noopener">grmchn/dopa-drill</a>（ドパドリル，MIT）：逐格即时判定、连击越长演出越夸张、答错不扣分。本页代码为重写。记录只保存在本机浏览器里。</p>
     </section>
   </section>
