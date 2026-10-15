@@ -85,13 +85,20 @@ const splitAnswers = s => String(s).split(/、/).map(x => x.trim()).filter(Boole
 
 // 干扰项要「像」答案才有区分度：优先同尾字（…型/…性/…制）、同首字、长度相近的其他填空答案。
 // 纯确定性（按 id 哈希打破平局），保证 --check 可复现。
+// 但「像」不能像到也算对：同义词、或在常见口径下也成立的词，互相不能当干扰项。
+const SYNONYMS = [['实际资源', '真实资源'], ['基础货币', '高能货币'], ['收缩', '紧缩', '萎缩'], ['强势货币', '关键货币'], ['国际收支逆差', '贸易逆差'],
+  ['经常项目', '经常账户'], ['资本项目', '资本账户']];
+// 只在某一道题里也算对的，按题号排除（金融自由化本身就包括放松管制；「三化」常见提法里就有市场化）
+// 外汇占款那道写「2003—2014」，基础货币那道写「2003—2013 以外汇占款为主」，两种口径都有，2013 不能当干扰项
+const DISTRACTOR_EXCLUDE = { 'ipe-fill-09-24': ['去管制化'], 'ipe-fill-01-52': ['市场化'], 'ipe-fill-02-54': ['2013'] };
 function pickDistractors(id, ans, pool) {
+  const banned = new Set([...ans.flatMap(a => SYNONYMS.filter(g => g.includes(a)).flat()), ...(DISTRACTOR_EXCLUDE[id] || [])]);
   const avg = ans.reduce((n, a) => n + a.length, 0) / ans.length;
   const tails = new Set(ans.map(a => a.slice(-1))), heads = new Set(ans.map(a => a[0]));
   const isNum = ans.every(a => /^[\d.%～~\-—年月]+$/.test(a));
   const seed = parseInt(fnv(id), 36);
   const scored = pool
-    .filter(c => !ans.includes(c) && c.length <= 24 && !ans.some(a => a.includes(c) || c.includes(a)))
+    .filter(c => !ans.includes(c) && !banned.has(c) && c.length <= 24 && !ans.some(a => a.includes(c) || c.includes(a)))
     .filter(c => !isNum || /^[\d.%～~\-—年月]+$/.test(c))
     .map((c, i) => ({ c, score: (tails.has(c.slice(-1)) ? 3 : 0) + (heads.has(c[0]) ? 1 : 0) - Math.abs(c.length - avg) / 3 + ((seed + i * 7919) % 97) / 1000 }))
     .sort((x, y) => y.score - x.score);
