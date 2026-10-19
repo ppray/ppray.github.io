@@ -705,7 +705,14 @@
         // 音频托管基址（可配置）
         //  · 留空 ''        = 用仓库内相对路径（本地预览 / 若 mp3 仍在仓库时）
         //  · 设为下载基址    = 从 GitHub Releases 加载（默认采用国内加速镜像直连），mp3 不再占用仓库体积
-        const AUDIO_BASE = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        // 镜像故障自动切换：按顺序试，onerror 降级到下一个，最后直连 GitHub
+        const GH_RAW = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        const AUDIO_MIRRORS = [
+            'https://gh-proxy.com/' + GH_RAW,
+            'https://ghfast.top/' + GH_RAW,
+            GH_RAW,                                                     // 直连兜底
+        ];
+        const AUDIO_BASE = AUDIO_MIRRORS[0];
         // 中文文件名的 political-science 资产改用 ASCII 别名（GitHub 上传 API 不支持多字节名）
         const ASSET_MAP = {
             'podcasts/political-science/名词解释_30题必背.mp3': 'political-science__noun-explanation-30.mp3',
@@ -1184,6 +1191,20 @@
 
                 // Apply the current global speed to this player
                 audio.playbackRate = playbackRate;
+
+                // 镜像故障自动切换：加载失败（镜像挂了/断网）→ 换下一个镜像源重试，
+                // 全部失败停在最后一个源。当前源下标记在 dataset.mirrorIdx。
+                audio.addEventListener('error', () => {
+                    if (audio.tagName !== 'AUDIO') return;
+                    let idx = parseInt(audio.dataset.mirrorIdx || '0', 10);
+                    if (idx >= AUDIO_MIRRORS.length - 1) return;        // 已是最后一个源
+                    idx += 1;
+                    audio.dataset.mirrorIdx = String(idx);
+                    const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
+                    console.warn(`[podcast] 音频源加载失败，切换镜像 ${idx + 1}/${AUDIO_MIRRORS.length}: ${AUDIO_MIRRORS[idx]}/${asset}`);
+                    audio.querySelector('source').src = AUDIO_MIRRORS[idx] + '/' + asset;
+                    audio.load();                                       // 重新加载新源
+                });
 
                 // Restore saved position once metadata is available.
                 // preload="metadata" 让 loadedmetadata 在用户点播放之前就触发，
