@@ -23633,11 +23633,11 @@ window.__QA_MANIFEST_INLINE = [{"idx":1,"file":"mfipe-qa-017.mp3","topic":"金�
 <script id="qa-audio-player">
 (function () {
   'use strict';
-  // MP3 托管在 GitHub Releases（与 podcast.html 的 AUDIO_BASE 同一约定）；
-  // 国内直接访问 GitHub Releases 常遇 DNS 污染/阻断，默认使用国内加速镜像（ghproxy.net），备用 ghfast.top；
+  // MP3 托管在 GitHub Releases（与 podcast.html 同一个 podcast-audio Release）；
+  // 用 Releases 反代（URL 保留 .mp3），主用 ghfast.top，备用 ghproxy.net（2026-10 起首字节 14s+，沙特/英国实测）；
   // manifest.json 随仓库发布，本地开发时若 Releases 还没传则回退相对路径。
-  var AUDIO_BASE = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
-  var AUDIO_BACKUP = 'https://ghfast.top/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+  var AUDIO_BASE = 'https://ghfast.top/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+  var AUDIO_BACKUP = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
   var AUDIO_LOCAL = '../podcasts/mfipe-qa/';
   var MANIFEST_URL = new URL('../podcasts/mfipe-qa/manifest.json', location.href).href;
   var INLINE_MANIFEST = window.__QA_MANIFEST_INLINE || [];  // 内嵌清单副本（file:// / 离线兜底）
@@ -23952,9 +23952,9 @@ window.__QA_MANIFEST_INLINE = [{"idx":1,"file":"mfipe-qa-017.mp3","topic":"金�
         injectCardButtons();
         probeAudioBase(function (base) {
           audioBase = base;
-          ui.title.textContent = base === AUDIO_BASE
-            ? list.length + ' 题音频已就绪 · 点击任意 🔊 开始'
-            : list.length + ' 题音频已就绪（本地音源） · 点击任意 🔊 开始';
+          ui.title.textContent = base === AUDIO_LOCAL.replace(/\/$/, '')
+            ? list.length + ' 题音频已就绪（本地音源） · 点击任意 🔊 开始'
+            : list.length + ' 题音频已就绪 · 点击任意 🔊 开始';
           ui.dur.textContent = '';
         });
       })

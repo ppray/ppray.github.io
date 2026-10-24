@@ -702,10 +702,16 @@
     </div>
 
     <script>
-        // 音频托管基址（可配置）
-        //  · 留空 ''        = 用仓库内相对路径（本地预览 / 若 mp3 仍在仓库时）
-        //  · 设为下载基址    = 从 GitHub Releases 加载（默认采用国内加速镜像直连），mp3 不再占用仓库体积
-        const AUDIO_BASE = 'https://ghproxy.net/https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        // 音频托管：GitHub Releases（podcast-audio），mp3 不占用仓库体积。按顺序换源：
+        //  · GitHub 直链：海外最快、不依赖第三方；跳转后是无扩展名的签名 URL，个别手机浏览器可能不认，认不了会立即报错换源
+        //  · ghfast.top / ghproxy.net：Releases 反代，URL 保留 .mp3；ghproxy 2026-10 起首字节 14s+（沙特/英国实测），只作末位兜底
+        //  · 清空数组 = 用仓库内相对路径（本地预览 / 若 mp3 仍在仓库时）
+        const RELEASE_BASE = 'https://github.com/ppray/ppray.github.io/releases/download/podcast-audio';
+        const AUDIO_BASES = [RELEASE_BASE, 'https://ghfast.top/' + RELEASE_BASE, 'https://ghproxy.net/' + RELEASE_BASE];
+        const SOURCE_KEY = 'podcast_source_v1';   // 上次能播的音源序号，下次从它开始
+        const STALL_MS = 10000;                   // 点了播放仍无数据多久算挂起（镜像过载时不报错、只是不出字节）
+        let sourceIdx = parseInt(localStorage.getItem(SOURCE_KEY), 10);
+        if (!(sourceIdx >= 0 && sourceIdx < AUDIO_BASES.length)) sourceIdx = 0;
         // 中文文件名的 political-science 资产改用 ASCII 别名（GitHub 上传 API 不支持多字节名）
         const ASSET_MAP = {
             'podcasts/political-science/名词解释_30题必背.mp3': 'political-science__noun-explanation-30.mp3',
@@ -719,10 +725,10 @@
             'podcasts/political-science/简答题极简带背.mp3': 'political-science__short-answer-minimal.mp3',
         };
         // 其余文件（ipe / ipcs，纯 ASCII）规则：podcasts/<channel>/<name>.mp3 → <channel>__<name>.mp3
-        function audioUrl(file) {
-            if (!file || !AUDIO_BASE) return file;
+        function audioUrl(file, idx = sourceIdx) {
+            if (!file || !AUDIO_BASES.length) return file;
             const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
-            return AUDIO_BASE.replace(/\/$/, '') + '/' + asset;
+            return AUDIO_BASES[idx].replace(/\/$/, '') + '/' + asset;
         }
 
         // Channel Data
@@ -1131,10 +1137,11 @@
                             ${ep.file ? `
                                 <div class="audio-player-wrapper">
                                     <audio class="audio-player" controls preload="metadata"
-                                        data-file="${ep.file}" data-index="${index}">
+                                        data-file="${ep.file}" data-index="${index}" data-src="${sourceIdx}">
                                         <source src="${audioUrl(ep.file)}" type="audio/mpeg">
                                         您的浏览器不支持音频播放。
                                     </audio>
+                                    <div class="resume-hint" id="source-hint-${index}" style="display:none"></div>
                                     <div class="resume-hint" id="resume-hint-${index}"
                                         style="${getProgress(ep.file) > 5 ? '' : 'display:none'}">
                                         ⏸️ 上次听到 ${fmtTime(getProgress(ep.file))}，播放即从此处继续
@@ -1162,10 +1169,86 @@
             setupAudioEvents();
         }
 
+        // 换源：当前音源报错，或点了播放后 STALL_MS 内仍无数据（镜像过载时既不报错也不出字节），
+        // 就换下一个音源（从当前音源起轮一圈），保留播放位置与播放状态；真正播起来的音源记为首选。
+        // <source> 加载失败时 error 只在 <source> 上触发、不冒泡到 <audio>；播放中途断流才在 <audio> 上触发，两处都要听。
+        function setupSourceFailover(audio) {
+            const source = audio.querySelector('source');
+            const hint = document.getElementById(`source-hint-${audio.dataset.index}`);
+            if (!source || AUDIO_BASES.length < 2) return;
+            let switches = 0;      // 本轮已换源次数，播起来后清零
+            let failed = false;    // 一圈都失败：不再自动重试，等用户再点播放
+            let watchdog = 0;
+
+            const showHint = (text) => {
+                if (!hint) return;
+                hint.textContent = text;
+                hint.style.display = text ? '' : 'none';
+            };
+            // 切到第 idx 个音源：load() 会把进度归零、暂停，所以先记下再恢复
+            const useSource = (idx) => {
+                const pos = audio.currentTime;
+                const wasPlaying = !audio.paused;
+                audio.dataset.src = idx;
+                source.src = audioUrl(audio.dataset.file, idx);
+                audio.load();
+                if (pos > 0) {
+                    audio.addEventListener('loadedmetadata', () => { audio.currentTime = pos; }, { once: true });
+                }
+                if (wasPlaying) audio.play().catch(() => { });
+            };
+            const failover = () => {
+                clearTimeout(watchdog);
+                const cur = Number(audio.dataset.src) || 0;
+                if (switches >= AUDIO_BASES.length - 1) {
+                    failed = true;
+                    showHint('⚠️ 所有线路都加载失败，请检查网络后再点播放重试');
+                    return;
+                }
+                switches++;
+                const next = (cur + 1) % AUDIO_BASES.length;
+                showHint(`⏳ 线路 ${cur + 1} 加载失败，正在切换到线路 ${next + 1}…`);
+                useSource(next);
+            };
+            const arm = () => {
+                clearTimeout(watchdog);
+                watchdog = setTimeout(() => {
+                    if (!audio.paused && audio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) failover();
+                }, STALL_MS);
+            };
+
+            source.addEventListener('error', failover);
+            audio.addEventListener('error', failover);
+            audio.addEventListener('play', () => {
+                if (failed) {          // 用户在全部失败后再点播放：从首选音源重新轮一圈
+                    failed = false;
+                    switches = 0;
+                    showHint('⏳ 正在重新连接…');
+                    useSource(sourceIdx);
+                }
+                arm();
+            });
+            audio.addEventListener('waiting', arm);
+            audio.addEventListener('loadedmetadata', () => showHint(''));
+            audio.addEventListener('playing', () => {
+                clearTimeout(watchdog);
+                switches = 0;
+                failed = false;        // 判定全挂后当前线路又自己恢复了：别在下次点播放时无谓重载
+                showHint('');
+                const idx = Number(audio.dataset.src) || 0;
+                if (idx !== sourceIdx) {
+                    sourceIdx = idx;
+                    try { localStorage.setItem(SOURCE_KEY, String(idx)); } catch { }
+                }
+            });
+            ['pause', 'ended'].forEach(ev => audio.addEventListener(ev, () => clearTimeout(watchdog)));
+        }
+
         // Setup audio events
         function setupAudioEvents() {
             document.querySelectorAll('.audio-player').forEach((audio, index) => {
                 const file = audio.dataset.file;
+                setupSourceFailover(audio);
                 let lastSaved = 0;
                 let counted = false;     // 本次播放会话是否已计 1 次播放（ended 后重置）
                 let lastTick = null;     // 上次 timeupdate 的 currentTime，用于累计收听时长
