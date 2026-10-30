@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-29 01:06",
- "drawdown": -0.0121,
+ "generated": "2026-10-30 01:12",
+ "drawdown": -0.0087,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
@@ -10,9 +10,9 @@
   "inflation_energy": 0.25
  },
  "evidence": [
-  "SPY 距高点回撤 -1.2%(高点 2026-10-06)",
+  "SPY 距高点回撤 -0.9%(高点 2026-10-06)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[financial +1] 资金避险涌入国债(TLT +5.6%)",
+  "[financial +1] 资金避险涌入国债(TLT +4.8%)",
   "[inflation_energy +1] 能源板块逆势跑赢(XLE相对 +8.2%)"
  ]
 }
