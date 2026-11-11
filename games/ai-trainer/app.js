@@ -623,7 +623,7 @@
 
     // Show analysis
     $('#theory-ans-text').textContent = item.answer;
-    $('#theory-analysis-text').textContent = item.analysis || '暂无详细考点解析。';
+    $('#theory-analysis-text').innerHTML = item.analysis || '暂无详细考点解析。';
     $('#theory-analysis').style.display = 'flex';
 
     updateHUD();
@@ -793,7 +793,7 @@
   $('#btn-theory-show-ans').addEventListener('click', () => {
     const item = state.theory.list[state.theory.index];
     $('#theory-ans-text').textContent = item.answer;
-    $('#theory-analysis-text').textContent = item.analysis || '暂无解析。';
+    $('#theory-analysis-text').innerHTML = item.analysis || '暂无解析。';
     $('#theory-analysis').style.display = 'flex';
   });
   $('#btn-theory-fav').addEventListener('click', () => {
