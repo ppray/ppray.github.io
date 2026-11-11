@@ -118,6 +118,16 @@ body {
   color: #fff;
 }
 .btn-primary:hover { background: var(--blue-d); }
+
+.btn-toggle-on {
+  background: var(--mint-soft) !important;
+  border-color: #0b7a5a !important;
+  color: #0b7a5a !important;
+  box-shadow: 0 3px 0 #0b7a5a !important;
+}
+.btn-toggle-on:hover {
+  background: #c3f3e1 !important;
+}
 .btn-yellow {
   background: var(--yellow);
   color: var(--ink);

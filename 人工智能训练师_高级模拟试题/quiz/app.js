@@ -90,7 +90,8 @@
       list: [],
       index: 0,
       answered: false,
-      selected: null
+      selected: null,
+      isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true'
     },
     stats: {
       combo: 0,
@@ -495,22 +496,62 @@
     if (dirModal) dirModal.style.display = 'none';
   }
 
+  function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function updateShuffleBtnUI() {
+    const btn = $('#btn-theory-shuffle');
+    const reshuffleBtn = $('#btn-theory-reshuffle');
+    if (!btn) return;
+    if (state.theory.isRandom) {
+      btn.innerHTML = '🔀 随机出题：<b>开</b>';
+      btn.classList.add('btn-toggle-on');
+      if (reshuffleBtn) reshuffleBtn.style.display = 'inline-flex';
+    } else {
+      btn.innerHTML = '➡️ 题号顺序：<b>开</b>';
+      btn.classList.remove('btn-toggle-on');
+      if (reshuffleBtn) reshuffleBtn.style.display = 'none';
+    }
+  }
+
   // --- 7. Theory Quiz Logic (200 Questions) ---
-  function applyTheoryFilter() {
+  function applyTheoryFilter(keepIndex = false) {
+    let sourceList = [];
     if (state.theory.filter === 'all') {
-      state.theory.list = state.bank.theory;
+      sourceList = [...state.bank.theory];
     } else if (state.theory.filter === 'mistakes') {
-      state.theory.list = state.bank.theory.filter(t => state.stats.mistakeItems.has(t.id));
-      if (state.theory.list.length === 0) {
+      sourceList = state.bank.theory.filter(t => state.stats.mistakeItems.has(t.id));
+      if (sourceList.length === 0) {
         showToast('暂无理论错题！已切回全部题目');
         state.theory.filter = 'all';
-        state.theory.list = state.bank.theory;
+        sourceList = [...state.bank.theory];
       }
     } else {
-      state.theory.list = state.bank.theory.filter(t => t.chapter === state.theory.filter);
+      sourceList = state.bank.theory.filter(t => t.chapter === state.theory.filter);
     }
-    state.theory.index = 0;
+
+    if (state.theory.isRandom) {
+      state.theory.list = shuffleArray(sourceList);
+    } else {
+      state.theory.list = sourceList.sort((a, b) => parseInt(a.num, 10) - parseInt(b.num, 10));
+    }
+
+    if (!keepIndex) {
+      state.theory.index = 0;
+    } else {
+      if (state.theory.index >= state.theory.list.length) {
+        state.theory.index = 0;
+      }
+    }
+
     loadTheoryQuestion();
+    updateShuffleBtnUI();
   }
 
   function loadTheoryQuestion() {
@@ -766,6 +807,24 @@
     }
     updateHUD();
   });
+
+  const btnTheoryShuffle = $('#btn-theory-shuffle');
+  if (btnTheoryShuffle) {
+    btnTheoryShuffle.addEventListener('click', () => {
+      state.theory.isRandom = !state.theory.isRandom;
+      localStorage.setItem('aiTrainer_theoryRandom', state.theory.isRandom);
+      applyTheoryFilter();
+      showToast(state.theory.isRandom ? '🔀 已开启随机出题（全题库乱序）' : '📋 已切换为顺序刷题（按 001~200 题号）');
+    });
+  }
+
+  const btnTheoryReshuffle = $('#btn-theory-reshuffle');
+  if (btnTheoryReshuffle) {
+    btnTheoryReshuffle.addEventListener('click', () => {
+      applyTheoryFilter();
+      showToast('🎲 题目已重新随机打乱！');
+    });
+  }
 
   // Keyboard Shortcuts (1~6 for chips/options, Space for next, Esc for modal)
   window.addEventListener('keydown', e => {

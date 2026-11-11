@@ -138,7 +138,12 @@
         </div>
         <h2 class="item-title" id="theory-title">题目加载中...</h2>
       </div>
-      <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="theory-index-badge">1 / 200</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button id="btn-theory-shuffle" class="btn" style="font-size:12px; padding:5px 12px;" title="点击切换：顺序刷题 / 随机乱序刷题">
+          🔀 随机出题：关
+        </button>
+        <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="theory-index-badge">1 / 200</div>
+      </div>
     </div>
 
     <!-- Options List -->
@@ -158,6 +163,7 @@
       <div class="ctrl-group">
         <button id="btn-theory-fav" class="btn">⭐ 错题收藏</button>
         <button id="btn-theory-show-ans" class="btn btn-yellow">👁️ 直接看解析</button>
+        <button id="btn-theory-reshuffle" class="btn" title="重新随机打乱所有题目顺序" style="display:none;">🎲 重新打乱</button>
       </div>
       <div class="ctrl-group">
         <button id="btn-theory-prev" class="btn">◀ 上一题</button>
