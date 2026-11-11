@@ -327,6 +327,29 @@ body {
   justify-content: space-between;
   background: var(--paper);
 }
+.dir-nav-tabs {
+  background: #f8fafc;
+}
+.dir-nav-tabs .btn {
+  background: #e2e8f0;
+  color: var(--ink-2);
+  border: 2px solid var(--border);
+  box-shadow: none;
+  cursor: pointer;
+  transition: all .15s;
+}
+.dir-nav-tabs .btn:hover {
+  background: #cbd5e1;
+  color: var(--ink);
+}
+.dir-nav-tabs .btn.active {
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-bottom: 2.5px solid var(--yellow);
+  box-shadow: 0 -2px 0 var(--ink), 2px 0 0 var(--ink), -2px 0 0 var(--ink);
+  transform: translateY(2px);
+}
 .directory-body {
   padding: 16px 20px;
   overflow-y: auto;

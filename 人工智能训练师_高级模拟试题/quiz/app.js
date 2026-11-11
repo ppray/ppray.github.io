@@ -1,6 +1,7 @@
 /**
  * 人工智能训练师（三级／高级）全真模拟考试 · 刷题与实操采分点挖空连击
  * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及 200 道理论考题
+ * 支持全本地记忆功能：刷新页面/切换标签页无缝回到上次答题位置，完整记录答题历史与错题本
  * 参考 games/cloze-combo 交互架构与视觉手感
  */
 (() => {
@@ -73,35 +74,70 @@
 
   const sfx = new SoundFX();
 
-  // --- 2. Application State ---
+  // --- 2. Application State & Local Storage Recovery ---
+  const savedClozeHistory = JSON.parse(localStorage.getItem('aiTrainer_clozeHistory') || '{}');
+  const savedTheoryHistory = JSON.parse(localStorage.getItem('aiTrainer_theoryHistory') || '{}');
+
   const state = {
     bank: null,
-    mode: 'cloze', // 'cloze' | 'theory' | 'memorize'
+    mode: localStorage.getItem('aiTrainer_mode') || 'cloze', // 'cloze' | 'theory' | 'memorize'
     cloze: {
-      filter: 'all', // 'all' | '01' | '09' | '07' | 'mistakes'
+      filter: localStorage.getItem('aiTrainer_clozeFilter') || 'all', // 'all' | '01' | '09' | '07' | 'mistakes'
       list: [],
       index: 0,
       activeBlank: 0,
       filled: {}, // blankIdx -> { text, status: 'correct'|'revealed' }
-      chips: []
+      chips: [],
+      lastItemId: localStorage.getItem('aiTrainer_clozeItemId') || null
     },
     theory: {
-      filter: 'all',
+      filter: localStorage.getItem('aiTrainer_theoryFilter') || 'all',
       list: [],
       index: 0,
       answered: false,
       selected: null,
-      isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true'
+      isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true',
+      lastNum: localStorage.getItem('aiTrainer_theoryNum') || null
+    },
+    history: {
+      cloze: savedClozeHistory,   // itemId -> { filled: { [blankIdx]: { text, status } }, isCompleted: boolean }
+      theory: savedTheoryHistory  // itemId -> { answered: boolean, selected: string, isCorrect: boolean, timestamp: number }
     },
     stats: {
       combo: 0,
       maxCombo: parseInt(localStorage.getItem('aiTrainer_maxCombo') || '0', 10),
-      correctAttempts: 0,
-      totalAttempts: 0,
+      correctAttempts: parseInt(localStorage.getItem('aiTrainer_correctAttempts') || '0', 10),
+      totalAttempts: parseInt(localStorage.getItem('aiTrainer_totalAttempts') || '0', 10),
       passedItems: new Set(JSON.parse(localStorage.getItem('aiTrainer_passed') || '[]')),
       mistakeItems: new Set(JSON.parse(localStorage.getItem('aiTrainer_mistakes') || '[]'))
     }
   };
+
+  // Helper to persist all learning progress and history to browser localStorage
+  function saveHistory() {
+    try {
+      localStorage.setItem('aiTrainer_mode', state.mode);
+      localStorage.setItem('aiTrainer_clozeFilter', state.cloze.filter);
+      if (state.cloze.list[state.cloze.index]) {
+        localStorage.setItem('aiTrainer_clozeItemId', state.cloze.list[state.cloze.index].id);
+      }
+      localStorage.setItem('aiTrainer_clozeHistory', JSON.stringify(state.history.cloze));
+
+      localStorage.setItem('aiTrainer_theoryFilter', state.theory.filter);
+      if (state.theory.list[state.theory.index]) {
+        localStorage.setItem('aiTrainer_theoryNum', state.theory.list[state.theory.index].num);
+      }
+      localStorage.setItem('aiTrainer_theoryHistory', JSON.stringify(state.history.theory));
+
+      localStorage.setItem('aiTrainer_maxCombo', state.stats.maxCombo);
+      localStorage.setItem('aiTrainer_correctAttempts', state.stats.correctAttempts);
+      localStorage.setItem('aiTrainer_totalAttempts', state.stats.totalAttempts);
+      localStorage.setItem('aiTrainer_passed', JSON.stringify([...state.stats.passedItems]));
+      localStorage.setItem('aiTrainer_mistakes', JSON.stringify([...state.stats.mistakeItems]));
+    } catch (e) {
+      console.warn('Failed to save to localStorage:', e);
+    }
+  }
 
   // --- 3. DOM Elements ---
   const $ = s => document.querySelector(s);
@@ -149,12 +185,14 @@
 
     const passedCount = state.stats.passedItems.size;
     const mistakeCount = state.stats.mistakeItems.size;
-    statProgress.textContent = `${passedCount} 掌握 / ${mistakeCount} 错题`;
 
-    // Save
-    localStorage.setItem('aiTrainer_maxCombo', state.stats.maxCombo);
-    localStorage.setItem('aiTrainer_passed', JSON.stringify([...state.stats.passedItems]));
-    localStorage.setItem('aiTrainer_mistakes', JSON.stringify([...state.stats.mistakeItems]));
+    const clozeAnswered = Object.keys(state.history.cloze).length;
+    const theoryAnswered = Object.keys(state.history.theory).length;
+    const totalAnswered = clozeAnswered + theoryAnswered;
+
+    statProgress.textContent = `${totalAnswered} 已练 (${passedCount} 掌握) / ${mistakeCount} 错题`;
+
+    saveHistory();
   }
 
   // --- 4. Render Chapters Filters ---
@@ -190,6 +228,7 @@
           applyTheoryFilter();
         }
         renderChapterFilters();
+        saveHistory();
       });
       chapterScroll.appendChild(btn);
     });
@@ -213,12 +252,13 @@
         applyTheoryFilter();
       }
       renderChapterFilters();
+      saveHistory();
     });
     chapterScroll.appendChild(mistakeChip);
   }
 
   // --- 5. Cloze Mode Logic (24 Big Practical Questions) ---
-  function applyClozeFilter() {
+  function applyClozeFilter(keepIndex = false) {
     if (state.cloze.filter === 'all') {
       state.cloze.list = state.bank.practical;
     } else if (state.cloze.filter === 'mistakes') {
@@ -231,20 +271,44 @@
     } else {
       state.cloze.list = state.bank.practical.filter(it => it.paperKey === state.cloze.filter || it.chapter === state.cloze.filter);
     }
-    state.cloze.index = 0;
+
+    if (!keepIndex) {
+      state.cloze.index = 0;
+    } else if (state.cloze.index >= state.cloze.list.length) {
+      state.cloze.index = 0;
+    }
+
     loadClozeItem();
   }
 
   function loadClozeItem() {
     if (!state.cloze.list || state.cloze.list.length === 0) return;
     const item = state.cloze.list[state.cloze.index];
-    state.cloze.filled = {};
-    state.cloze.activeBlank = 0;
+
+    // Restore saved answers for this practical question
+    const saved = state.history.cloze[item.id];
+    if (saved && saved.filled) {
+      state.cloze.filled = { ...saved.filled };
+      // Move active blank to first unfilled slot
+      let firstUnfilled = 0;
+      let hasUnfilled = false;
+      for (let i = 0; i < item.b.length; i++) {
+        if (!state.cloze.filled[i]) {
+          firstUnfilled = i;
+          hasUnfilled = true;
+          break;
+        }
+      }
+      state.cloze.activeBlank = hasUnfilled ? firstUnfilled : 0;
+    } else {
+      state.cloze.filled = {};
+      state.cloze.activeBlank = 0;
+    }
 
     $('#cloze-title').textContent = item.title || item.q;
-    $('#cloze-tag-ch').textContent = item.tag || item.paperName;
+    $('#cloze-tag-ch').textContent = `${item.tag} · ${item.paperName || item.chapter}`;
     $('#cloze-tag-score').textContent = `${item.b.length} 处采分点挖空`;
-    $('#cloze-index-badge').textContent = `${state.cloze.index + 1} / ${state.cloze.list.length}`;
+    $('#cloze-index-badge').textContent = `第 ${item.index || state.cloze.index + 1} 题 / 共 ${state.cloze.list.length} 题`;
 
     const descEl = $('#cloze-desc');
     const promptText = item.prompt || item.desc;
@@ -257,6 +321,7 @@
 
     renderClozeBody(item);
     renderChipsForActiveBlank(item);
+    saveHistory();
   }
 
   function renderClozeBody(item) {
@@ -320,13 +385,18 @@
       chipsGrid.innerHTML = `
         <div style="width:100%; text-align:center; padding:16px; font-weight:800; color:#0b7a5a; font-size:16px;">
           🎉 本题 ${item.b.length} 处采分点全部攻克！
-          <div style="margin-top:8px;">
+          <div style="margin-top:10px; display:flex; justify-content:center; gap:12px;">
+            <button id="btn-done-redo" class="btn" style="padding:8px 16px;">🔄 清空重做本题</button>
             <button id="btn-done-next" class="btn btn-primary" style="padding:8px 20px;">进入下一题 ▶</button>
           </div>
         </div>`;
       const nextBtn = $('#btn-done-next');
       if (nextBtn) {
         nextBtn.addEventListener('click', () => $('#btn-cloze-next').click());
+      }
+      const redoBtn = $('#btn-done-redo');
+      if (redoBtn) {
+        redoBtn.addEventListener('click', () => $('#btn-cloze-redo').click());
       }
       return;
     }
@@ -394,6 +464,12 @@
 
       // Check if all filled
       const allDone = item.b.every((_, idx) => !!state.cloze.filled[idx]);
+      state.history.cloze[item.id] = {
+        filled: { ...state.cloze.filled },
+        isCompleted: allDone,
+        lastUpdated: Date.now()
+      };
+
       if (allDone) {
         state.stats.passedItems.add(item.id);
         state.stats.mistakeItems.delete(item.id);
@@ -412,6 +488,7 @@
       renderClozeBody(item);
       renderChipsForActiveBlank(item);
       updateHUD();
+      saveHistory();
     } else {
       // Wrong!
       sfx.playWrong();
@@ -419,71 +496,114 @@
       state.stats.mistakeItems.add(item.id);
       showToast('❌ 选错了，连击中断！仔细阅读题干语境～');
       updateHUD();
+      saveHistory();
     }
   }
 
-  // --- 6. 24 大题目录导航抽屉 ---
+  // --- 6. 24 大题目录导航抽屉（仅服务实操题） ---
   function renderDirectoryModal() {
     if (!dirBody) return;
     dirBody.innerHTML = '';
 
-    const papers = [
-      { key: '01', title: '01 卷 · 自动化营销模型业务（共 8 大题）' },
-      { key: '09', title: '09 卷 · 验证码识别模型与 RPA（共 8 大题）' },
-      { key: '07', title: '07 卷 · 自然场景吸烟检测模型（共 8 大题）' }
-    ];
-
     const currentItem = state.cloze.list[state.cloze.index];
+    if (!state.dirViewMode) state.dirViewMode = 'outline';
 
-    papers.forEach(p => {
+    const tabOutline = $('#dir-tab-outline');
+    const tabPapers = $('#dir-tab-papers');
+    if (tabOutline && tabPapers) {
+      tabOutline.classList.toggle('active', state.dirViewMode === 'outline');
+      tabPapers.classList.toggle('active', state.dirViewMode === 'papers');
+    }
+
+    function createItemButton(it) {
+      const btn = document.createElement('button');
+      const isActive = currentItem && currentItem.id === it.id;
+      const isPassed = state.stats.passedItems.has(it.id);
+      const isMistake = state.stats.mistakeItems.has(it.id);
+      const savedCloze = state.history.cloze[it.id];
+      const doneBlanks = savedCloze && savedCloze.filled ? Object.keys(savedCloze.filled).length : 0;
+
+      let statusText = `🎯 ${it.b.length} 采分点`;
+      if (isPassed) {
+        statusText = '✅ 已掌握';
+      } else if (isMistake) {
+        statusText = '❌ 有错题';
+      } else if (doneBlanks > 0) {
+        statusText = `✏️ 已填 ${doneBlanks}/${it.b.length}`;
+      }
+
+      btn.className = 'dir-item-btn' + (isActive ? ' active' : '');
+      const numPrefix = String(it.index).padStart(2, '0');
+      btn.innerHTML = `
+        <div class="dir-item-top">
+          <span class="dir-item-tag">#${numPrefix} · ${it.tag}</span>
+          <span class="dir-item-count">${statusText}</span>
+        </div>
+        <div class="dir-item-name">${it.title.replace(/^(\d{2}题\d+[:：]\s*)/, '')}</div>
+      `;
+
+      btn.addEventListener('click', () => {
+        if (state.mode !== 'cloze') {
+          const clozeTab = document.querySelector('.mode-tab[data-mode="cloze"]');
+          if (clozeTab) clozeTab.click();
+        }
+        state.cloze.filter = 'all';
+        state.cloze.list = state.bank.practical;
+        const foundIdx = state.bank.practical.findIndex(x => x.id === it.id);
+        state.cloze.index = foundIdx >= 0 ? foundIdx : 0;
+        renderChapterFilters();
+        loadClozeItem();
+        closeDirectoryModal();
+        showToast(`已跳转至第 ${numPrefix} 题：${it.title}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      return btn;
+    }
+
+    if (state.dirViewMode === 'outline') {
       const groupEl = document.createElement('div');
-      groupEl.innerHTML = `<div class="dir-group-title"><span>📘</span> <span>${p.title}</span></div>`;
+      groupEl.innerHTML = `
+        <div class="dir-group-title" style="justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>📋</span>
+            <span>考纲 01&09&07 连续 24 大题完整对照清单（共 24 题）</span>
+          </div>
+          <span style="font-size:12px; color:var(--ink-2); font-weight:700;">对齐考试标准顺序</span>
+        </div>`;
 
       const gridEl = document.createElement('div');
       gridEl.className = 'dir-grid';
 
-      const items = state.bank.practical.filter(it => it.paperKey === p.key);
-      items.forEach(it => {
-        const btn = document.createElement('button');
-        const isActive = currentItem && currentItem.id === it.id;
-        const isPassed = state.stats.passedItems.has(it.id);
-        const isMistake = state.stats.mistakeItems.has(it.id);
-
-        btn.className = 'dir-item-btn' + (isActive ? ' active' : '');
-        btn.innerHTML = `
-          <div class="dir-item-top">
-            <span class="dir-item-tag">${it.tag}</span>
-            <span class="dir-item-count">
-              ${isPassed ? '✅ 已掌握' : (isMistake ? '❌ 有错题' : `🎯 ${it.b.length} 采分点`)}
-            </span>
-          </div>
-          <div class="dir-item-name">${it.title.replace(/^(\d{2}题\d+[:：]\s*)/, '')}</div>
-        `;
-
-        btn.addEventListener('click', () => {
-          // Switch to cloze mode if not in cloze
-          if (state.mode !== 'cloze') {
-            const clozeTab = document.querySelector('.mode-tab[data-mode="cloze"]');
-            if (clozeTab) clozeTab.click();
-          }
-          // Set filter to 'all' or paperKey
-          state.cloze.filter = 'all';
-          state.cloze.list = state.bank.practical;
-          const foundIdx = state.cloze.list.findIndex(x => x.id === it.id);
-          state.cloze.index = foundIdx >= 0 ? foundIdx : 0;
-          renderChapterFilters();
-          loadClozeItem();
-          closeDirectoryModal();
-          showToast(`已跳转至：${it.title}`);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        gridEl.appendChild(btn);
+      state.bank.practical.forEach(it => {
+        gridEl.appendChild(createItemButton(it));
       });
 
       groupEl.appendChild(gridEl);
       dirBody.appendChild(groupEl);
-    });
+    } else {
+      const papers = [
+        { key: '01', title: '01 卷 · 自动化营销模型业务（共 8 大题）' },
+        { key: '09', title: '09 卷 · 验证码识别模型与 RPA（共 8 大题）' },
+        { key: '07', title: '07 卷 · 自然场景吸烟检测模型（共 8 大题）' }
+      ];
+
+      papers.forEach(p => {
+        const groupEl = document.createElement('div');
+        groupEl.innerHTML = `<div class="dir-group-title"><span>📘</span> <span>${p.title}</span></div>`;
+
+        const gridEl = document.createElement('div');
+        gridEl.className = 'dir-grid';
+
+        const items = state.bank.practical.filter(it => it.paperKey === p.key);
+        items.forEach(it => {
+          gridEl.appendChild(createItemButton(it));
+        });
+
+        groupEl.appendChild(gridEl);
+        dirBody.appendChild(groupEl);
+      });
+    }
   }
 
   function openDirectoryModal() {
@@ -496,6 +616,7 @@
     if (dirModal) dirModal.style.display = 'none';
   }
 
+  // --- 7. Theory Quiz Logic (200 Questions) ---
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -520,7 +641,6 @@
     }
   }
 
-  // --- 7. Theory Quiz Logic (200 Questions) ---
   function applyTheoryFilter(keepIndex = false) {
     let sourceList = [];
     if (state.theory.filter === 'all') {
@@ -544,10 +664,8 @@
 
     if (!keepIndex) {
       state.theory.index = 0;
-    } else {
-      if (state.theory.index >= state.theory.list.length) {
-        state.theory.index = 0;
-      }
+    } else if (state.theory.index >= state.theory.list.length) {
+      state.theory.index = 0;
     }
 
     loadTheoryQuestion();
@@ -557,8 +675,16 @@
   function loadTheoryQuestion() {
     if (!state.theory.list || state.theory.list.length === 0) return;
     const item = state.theory.list[state.theory.index];
-    state.theory.answered = false;
-    state.theory.selected = null;
+
+    // Check if previously answered in history
+    const saved = state.history.theory[item.id];
+    if (saved && saved.answered) {
+      state.theory.answered = true;
+      state.theory.selected = saved.selected;
+    } else {
+      state.theory.answered = false;
+      state.theory.selected = null;
+    }
 
     $('#theory-title').textContent = item.q;
     $('#theory-tag-ch').textContent = item.chapter || '理论知识';
@@ -578,12 +704,30 @@
       const key = keyMatch ? keyMatch[1] : String.fromCharCode(65 + i);
 
       btn.innerHTML = `<span class="theory-opt-key">${key}</span> <span>${optText}</span>`;
+
+      // If answered previously, display correct / wrong indicator
+      if (state.theory.answered) {
+        if (key === item.answer || item.answer.includes(key)) {
+          btn.classList.add('correct');
+        } else if (key === state.theory.selected && !saved?.isCorrect) {
+          btn.classList.add('wrong');
+        }
+      }
+
       btn.addEventListener('click', () => handleTheoryChoice(key, item, btn));
       optBox.appendChild(btn);
     });
 
-    // Hide analysis
-    $('#theory-analysis').style.display = 'none';
+    // Show analysis if answered
+    if (state.theory.answered) {
+      $('#theory-ans-text').textContent = item.answer;
+      $('#theory-analysis-text').innerHTML = item.analysis || '暂无详细考点解析。';
+      $('#theory-analysis').style.display = 'flex';
+    } else {
+      $('#theory-analysis').style.display = 'none';
+    }
+
+    saveHistory();
   }
 
   function handleTheoryChoice(chosenKey, item, clickedBtn) {
@@ -593,6 +737,14 @@
     state.stats.totalAttempts++;
 
     const isMatch = chosenKey.trim() === item.answer.trim() || item.answer.includes(chosenKey);
+
+    // Save history
+    state.history.theory[item.id] = {
+      answered: true,
+      selected: chosenKey,
+      isCorrect: isMatch,
+      timestamp: Date.now()
+    };
 
     const allBtns = $$('.theory-opt-btn');
     allBtns.forEach(btn => {
@@ -623,10 +775,11 @@
 
     // Show analysis
     $('#theory-ans-text').textContent = item.answer;
-    $('#theory-analysis-text').textContent = item.analysis || '暂无详细考点解析。';
+    $('#theory-analysis-text').innerHTML = item.analysis || '暂无详细考点解析。';
     $('#theory-analysis').style.display = 'flex';
 
     updateHUD();
+    saveHistory();
   }
 
   // --- 8. Memorize Mode Logic ---
@@ -687,6 +840,7 @@
       modeTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       state.mode = tab.dataset.mode;
+      saveHistory();
 
       viewCloze.style.display = state.mode === 'cloze' ? 'flex' : 'none';
       viewTheory.style.display = state.mode === 'theory' ? 'flex' : 'none';
@@ -699,7 +853,7 @@
     });
   });
 
-  // Directory Modal Triggers
+  // Directory Modal Triggers (Exclusively for Practical questions)
   if (btnOpenDir) {
     btnOpenDir.addEventListener('click', openDirectoryModal);
   }
@@ -712,6 +866,22 @@
     });
   }
 
+  // Directory View Mode Switch Tabs
+  const tabOutline = $('#dir-tab-outline');
+  const tabPapers = $('#dir-tab-papers');
+  if (tabOutline) {
+    tabOutline.addEventListener('click', () => {
+      state.dirViewMode = 'outline';
+      renderDirectoryModal();
+    });
+  }
+  if (tabPapers) {
+    tabPapers.addEventListener('click', () => {
+      state.dirViewMode = 'papers';
+      renderDirectoryModal();
+    });
+  }
+
   // Sound Toggle
   btnSound.addEventListener('click', () => {
     const isUnmuted = sfx.toggleMute();
@@ -720,17 +890,41 @@
   });
   if (sfx.muted) btnSound.textContent = '🔇';
 
-  // Reset Progress
+  // Reset Progress & All History
   btnReset.addEventListener('click', () => {
-    if (confirm('确定要清空做题进度与错题记录吗？')) {
+    if (confirm('确定要清空做题历史、作答进度与错题记录吗？')) {
       state.stats.combo = 0;
       state.stats.maxCombo = 0;
       state.stats.correctAttempts = 0;
       state.stats.totalAttempts = 0;
       state.stats.passedItems.clear();
       state.stats.mistakeItems.clear();
+      state.history.cloze = {};
+      state.history.theory = {};
+      state.cloze.filled = {};
+      state.cloze.activeBlank = 0;
+      state.cloze.index = 0;
+      state.theory.index = 0;
+      state.theory.answered = false;
+      state.theory.selected = null;
+
+      [
+        'aiTrainer_maxCombo',
+        'aiTrainer_correctAttempts',
+        'aiTrainer_totalAttempts',
+        'aiTrainer_passed',
+        'aiTrainer_mistakes',
+        'aiTrainer_clozeHistory',
+        'aiTrainer_theoryHistory',
+        'aiTrainer_clozeItemId',
+        'aiTrainer_theoryNum'
+      ].forEach(k => localStorage.removeItem(k));
+
       updateHUD();
-      showToast('做题记录已重置！');
+      if (state.mode === 'cloze') loadClozeItem();
+      else if (state.mode === 'theory') loadTheoryQuestion();
+      else if (state.mode === 'memorize') renderMemorizeView();
+      showToast('全部历史记录与做题进度已重置！');
     }
   });
 
@@ -752,16 +946,29 @@
     }
   });
   $('#btn-cloze-redo').addEventListener('click', () => {
-    loadClozeItem();
-    showToast('已重置本题状态');
+    const item = state.cloze.list[state.cloze.index];
+    if (item) {
+      delete state.history.cloze[item.id];
+      state.cloze.filled = {};
+      state.cloze.activeBlank = 0;
+      saveHistory();
+      loadClozeItem();
+      showToast('已重置本题作答状态，可重新练习');
+    }
   });
   $('#btn-cloze-reveal').addEventListener('click', () => {
     const item = state.cloze.list[state.cloze.index];
     item.b.forEach((ans, idx) => {
       state.cloze.filled[idx] = { text: ans, status: 'revealed' };
     });
+    state.history.cloze[item.id] = {
+      filled: { ...state.cloze.filled },
+      isCompleted: true,
+      lastUpdated: Date.now()
+    };
     renderClozeBody(item);
     renderChipsForActiveBlank(item);
+    saveHistory();
     showToast('本题采分点已全部揭晓');
   });
   $('#btn-cloze-hint').addEventListener('click', () => {
@@ -793,7 +1000,7 @@
   $('#btn-theory-show-ans').addEventListener('click', () => {
     const item = state.theory.list[state.theory.index];
     $('#theory-ans-text').textContent = item.answer;
-    $('#theory-analysis-text').textContent = item.analysis || '暂无解析。';
+    $('#theory-analysis-text').innerHTML = item.analysis || '暂无解析。';
     $('#theory-analysis').style.display = 'flex';
   });
   $('#btn-theory-fav').addEventListener('click', () => {
@@ -806,6 +1013,7 @@
       showToast('已加入错题本！');
     }
     updateHUD();
+    saveHistory();
   });
 
   const btnTheoryShuffle = $('#btn-theory-shuffle');
@@ -860,7 +1068,20 @@
     }
   });
 
-  // --- 10. Load Bank Data ---
+  // Automatically persist progress when user switches browser tab or closes page
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      saveHistory();
+    } else if (document.visibilityState === 'visible') {
+      updateHUD();
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    saveHistory();
+  });
+
+  // --- 10. Load Bank Data & Restore Session ---
   async function init() {
     try {
       if (window.AI_TRAINER_BANK) {
@@ -871,9 +1092,35 @@
       }
       console.log('Loaded AI Trainer Bank:', state.bank.meta);
 
-      applyClozeFilter();
-      applyTheoryFilter();
-      renderChapterFilters();
+      // 1. Restore Cloze state & last viewed question
+      applyClozeFilter(true);
+      if (state.cloze.lastItemId) {
+        const foundIdx = state.cloze.list.findIndex(it => it.id === state.cloze.lastItemId);
+        if (foundIdx >= 0) {
+          state.cloze.index = foundIdx;
+        }
+      }
+      loadClozeItem();
+
+      // 2. Restore Theory state & last viewed question
+      applyTheoryFilter(true);
+      if (state.theory.lastNum) {
+        const foundIdx = state.theory.list.findIndex(it => it.num === state.theory.lastNum);
+        if (foundIdx >= 0) {
+          state.theory.index = foundIdx;
+        }
+      }
+      loadTheoryQuestion();
+
+      // 3. Restore last active tab mode
+      const savedMode = localStorage.getItem('aiTrainer_mode') || 'cloze';
+      const targetTab = document.querySelector(`.mode-tab[data-mode="${savedMode}"]`);
+      if (targetTab) {
+        targetTab.click();
+      } else {
+        renderChapterFilters();
+      }
+
       updateHUD();
     } catch (e) {
       console.error('Failed to load bank:', e);

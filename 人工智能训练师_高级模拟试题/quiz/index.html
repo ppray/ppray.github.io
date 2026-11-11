@@ -74,14 +74,9 @@
     </div>
   </div>
 
-  <!-- Chapter / Section Scroll Filter & Directory Button -->
-  <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
-    <div class="chapter-scroll" id="chapter-filters" style="margin-bottom:0; flex:1;">
-      <!-- Rendered dynamically -->
-    </div>
-    <button id="btn-open-dir" class="drawer-toggle-btn" title="查看24道实操大题大纲目录">
-      📑 24大题大纲目录
-    </button>
+  <!-- Chapter / Section Scroll Filter -->
+  <div class="chapter-scroll" id="chapter-filters">
+    <!-- Rendered dynamically -->
   </div>
 
   <!-- View 1: Practical Cloze Combo Panel -->
@@ -95,7 +90,12 @@
         </div>
         <h2 class="item-title" id="cloze-title">题目加载中...</h2>
       </div>
-      <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="cloze-index-badge">1 / 59</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button id="btn-open-dir" class="drawer-toggle-btn" title="查看24道实操大题大纲目录">
+          📑 24大题大纲目录
+        </button>
+        <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="cloze-index-badge">1 / 24</div>
+      </div>
     </div>
 
     <!-- Scenario Background Context -->
@@ -194,11 +194,16 @@
       <div style="display:flex; align-items:center; gap:10px;">
         <span style="font-size:24px;">📑</span>
         <div>
-          <div style="font-size:18px; font-weight:900; color:var(--ink);">实操试卷 24 大题大纲目录（01 & 09 & 07卷）</div>
+          <div style="font-size:18px; font-weight:900; color:var(--ink);">实操技能考核 24 大题大纲目录（01 & 09 & 07卷）</div>
           <div style="font-size:12.5px; color:var(--ink-2); font-weight:700;">收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关</div>
         </div>
       </div>
       <button id="btn-close-dir" class="btn btn-icon" style="font-size:18px; width:36px; height:36px;" title="关闭">✕</button>
+    </div>
+    <!-- 目录模式切换 Tab -->
+    <div class="dir-nav-tabs" style="display:flex; gap:8px; padding:12px 20px 0 20px; border-bottom:2px solid var(--border); background:#fff;">
+      <button id="dir-tab-outline" class="btn active" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0;">📋 考纲原始 24 题顺序 (01&09&07 对照)</button>
+      <button id="dir-tab-papers" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0;">🗂️ 按考卷分组 (01卷 / 09卷 / 07卷 各 8 题)</button>
     </div>
     <div class="directory-body" id="dir-body">
       <!-- Generated dynamically: 01卷(8题)、09卷(8题)、07卷(8题) -->
