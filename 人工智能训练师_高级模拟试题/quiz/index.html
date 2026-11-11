@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>人工智能训练师（三级／高级）· 刷题与挖空连击</title>
+<meta name="description" content="人工智能训练师（三级/高级）全真模拟试题交互刷题系统：实操大题全采分点挖空连击自测、理论知识考核单选/判断题全收录、即时对错反馈与标准解析。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="brand-title">
+      <a href="/games/" class="btn btn-icon" title="返回游戏馆" style="text-decoration:none;">◀</a>
+      <div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="brand-name">人工智能训练师</span>
+          <span class="brand-badge">高级／三级</span>
+        </div>
+        <div style="font-size:12px; color:var(--ink-2); font-weight:700;">国家职业技能等级认定 · 模拟试卷与采分点挖空</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="btn-sound" class="btn btn-icon" title="音效开关">🔊</button>
+      <button id="btn-reset" class="btn" title="重置记录" style="font-size:12.5px; padding:6px 12px;">重置进度</button>
+    </div>
+  </header>
+
+  <!-- Mode Switch Tabs -->
+  <nav class="mode-tabs">
+    <button class="mode-tab active" data-mode="cloze">
+      <span>🎯 实操挖空连击</span>
+    </button>
+    <button class="mode-tab" data-mode="theory">
+      <span>📝 理论真题刷题</span>
+    </button>
+    <button class="mode-tab" data-mode="memorize">
+      <span>📖 速记背题模式</span>
+    </button>
+  </nav>
+
+  <!-- HUD Stats Bar -->
+  <div class="hud-bar">
+    <div class="hud-card">
+      <div class="hud-icon">🔥</div>
+      <div class="hud-info">
+        <span class="hud-label">连击 COMBO</span>
+        <span class="hud-val combo-highlight" id="stat-combo">0</span>
+      </div>
+    </div>
+    <div class="hud-card">
+      <div class="hud-icon">⚡</div>
+      <div class="hud-info">
+        <span class="hud-label">最高连击 MAX</span>
+        <span class="hud-val" id="stat-max-combo">0</span>
+      </div>
+    </div>
+    <div class="hud-card">
+      <div class="hud-icon">🎯</div>
+      <div class="hud-info">
+        <span class="hud-label">正确率 ACCURACY</span>
+        <span class="hud-val" id="stat-accuracy">100%</span>
+      </div>
+    </div>
+    <div class="hud-card">
+      <div class="hud-icon">📌</div>
+      <div class="hud-info">
+        <span class="hud-label">已练题目 / 错题</span>
+        <span class="hud-val" id="stat-progress">0 / 0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter / Section Scroll Filter & Directory Button -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
+    <div class="chapter-scroll" id="chapter-filters" style="margin-bottom:0; flex:1;">
+      <!-- Rendered dynamically -->
+    </div>
+    <button id="btn-open-dir" class="drawer-toggle-btn" title="查看24道实操大题大纲目录">
+      📑 24大题大纲目录
+    </button>
+  </div>
+
+  <!-- View 1: Practical Cloze Combo Panel -->
+  <main id="view-cloze" class="quiz-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-tags">
+          <span class="tag tag-ch" id="cloze-tag-ch">场景</span>
+          <span class="tag tag-type">实操填空</span>
+          <span class="tag tag-score" id="cloze-tag-score">采分点</span>
+        </div>
+        <h2 class="item-title" id="cloze-title">题目加载中...</h2>
+      </div>
+      <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="cloze-index-badge">1 / 59</div>
+    </div>
+
+    <!-- Scenario Background Context -->
+    <div class="item-desc" id="cloze-desc"></div>
+
+    <!-- Cloze Text with interactive blanks -->
+    <div class="cloze-content" id="cloze-body"></div>
+
+    <!-- Word Bank / Options Chips Box -->
+    <div class="options-box" id="cloze-options-box">
+      <div class="options-header">
+        <span>👇 点击备选词填入当前高亮空位（支持快捷键 1 ~ 6）：</span>
+        <span id="cloze-blank-hint" style="color:var(--blue-d);">空位 1/N</span>
+      </div>
+      <div class="chips-grid" id="cloze-chips"></div>
+    </div>
+
+    <!-- Navigation & Action Controls -->
+    <div class="ctrl-bar">
+      <div class="ctrl-group">
+        <button id="btn-cloze-hint" class="btn btn-yellow">💡 提示首字</button>
+        <button id="btn-cloze-reveal" class="btn btn-pink">👁️ 揭晓本题全部空</button>
+        <button id="btn-cloze-redo" class="btn">🔄 重做本题</button>
+      </div>
+      <div class="ctrl-group">
+        <button id="btn-cloze-prev" class="btn">◀ 上一题</button>
+        <button id="btn-cloze-next" class="btn btn-primary">下一题 ▶</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- View 2: Theory Quiz Panel -->
+  <main id="view-theory" class="quiz-panel" style="display:none;">
+    <div class="panel-header">
+      <div>
+        <div class="panel-tags">
+          <span class="tag tag-ch" id="theory-tag-ch">模块</span>
+          <span class="tag tag-type" id="theory-tag-type">单选题</span>
+          <span class="tag tag-score" id="theory-tag-num">题号 001</span>
+        </div>
+        <h2 class="item-title" id="theory-title">题目加载中...</h2>
+      </div>
+      <div style="font-size:13px; font-weight:800; color:var(--ink-2);" id="theory-index-badge">1 / 200</div>
+    </div>
+
+    <!-- Options List -->
+    <div class="theory-options" id="theory-options"></div>
+
+    <!-- Analysis Box (Revealed on answer) -->
+    <div class="analysis-box" id="theory-analysis" style="display:none;">
+      <div class="analysis-title">
+        <span>📘 标准答案与考点解析：</span>
+        <b id="theory-ans-text" style="color:var(--blue-d); font-size:16px;"></b>
+      </div>
+      <div class="analysis-content" id="theory-analysis-text"></div>
+    </div>
+
+    <!-- Theory Navigation Controls -->
+    <div class="ctrl-bar">
+      <div class="ctrl-group">
+        <button id="btn-theory-fav" class="btn">⭐ 错题收藏</button>
+        <button id="btn-theory-show-ans" class="btn btn-yellow">👁️ 直接看解析</button>
+      </div>
+      <div class="ctrl-group">
+        <button id="btn-theory-prev" class="btn">◀ 上一题</button>
+        <button id="btn-theory-next" class="btn btn-primary">下一题 (空格/Enter) ▶</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- View 3: Memorize Mode (Full Read Mode) -->
+  <main id="view-memorize" class="quiz-panel" style="display:none;">
+    <div class="panel-header">
+      <div>
+        <h2 class="item-title">📖 实操题采分点速记通读</h2>
+        <div style="font-size:13px; color:var(--ink-2); font-weight:700; margin-top:4px;">
+          标红/浅红底纹部分为考场必背标准作答关键词，适合考前集中速览。
+        </div>
+      </div>
+    </div>
+    <div class="memorize-list" id="memorize-list"></div>
+  </main>
+
+</div>
+
+<!-- 24 大题大纲目录抽屉/弹窗 -->
+<div id="dir-modal" class="directory-modal" style="display:none;">
+  <div class="directory-content">
+    <div class="directory-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:24px;">📑</span>
+        <div>
+          <div style="font-size:18px; font-weight:900; color:var(--ink);">实操试卷 24 大题大纲目录（01 & 09 & 07卷）</div>
+          <div style="font-size:12.5px; color:var(--ink-2); font-weight:700;">收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关</div>
+        </div>
+      </div>
+      <button id="btn-close-dir" class="btn btn-icon" style="font-size:18px; width:36px; height:36px;" title="关闭">✕</button>
+    </div>
+    <div class="directory-body" id="dir-body">
+      <!-- Generated dynamically: 01卷(8题)、09卷(8题)、07卷(8题) -->
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification popup -->
+<div id="toast" class="toast">提示信息</div>
+
+<script src="bank.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
