@@ -128,6 +128,17 @@ body {
 .btn-toggle-on:hover {
   background: #c3f3e1 !important;
 }
+.btn-countdown {
+  background: var(--mint-soft) !important;
+  border-color: #0b7a5a !important;
+  color: #0b7a5a !important;
+  box-shadow: 0 3px 0 #0b7a5a !important;
+  animation: pulseCountdown 0.5s ease-in-out infinite alternate;
+}
+@keyframes pulseCountdown {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
+}
 .btn-yellow {
   background: var(--yellow);
   color: var(--ink);

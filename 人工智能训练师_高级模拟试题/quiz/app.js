@@ -97,6 +97,8 @@
       answered: false,
       selected: null,
       isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true',
+      autoNext: localStorage.getItem('aiTrainer_theoryAutoNext') !== 'false',
+      autoNextTimer: null,
       lastNum: localStorage.getItem('aiTrainer_theoryNum') || null
     },
     history: {
@@ -641,6 +643,34 @@
     }
   }
 
+  function updateAutoNextBtnUI() {
+    const btn = $('#btn-theory-autonext');
+    if (!btn) return;
+    if (state.theory.autoNext) {
+      btn.innerHTML = '⏱️ 自动切题：<b>开</b>';
+      btn.classList.add('btn-toggle-on');
+    } else {
+      btn.innerHTML = '⏱️ 自动切题：<b>关</b>';
+      btn.classList.remove('btn-toggle-on');
+    }
+  }
+
+  function clearTheoryAutoNext() {
+    if (state.theory.autoNextTimer) {
+      clearTimeout(state.theory.autoNextTimer);
+      state.theory.autoNextTimer = null;
+    }
+    restoreNextButtonText();
+  }
+
+  function restoreNextButtonText() {
+    const nextBtn = $('#btn-theory-next');
+    if (nextBtn) {
+      nextBtn.innerHTML = '下一题 (空格/Enter) ▶';
+      nextBtn.classList.remove('btn-countdown');
+    }
+  }
+
   function applyTheoryFilter(keepIndex = false) {
     let sourceList = [];
     if (state.theory.filter === 'all') {
@@ -670,9 +700,13 @@
 
     loadTheoryQuestion();
     updateShuffleBtnUI();
+    updateAutoNextBtnUI();
   }
 
   function loadTheoryQuestion() {
+    clearTheoryAutoNext();
+    updateAutoNextBtnUI();
+    updateShuffleBtnUI();
     if (!state.theory.list || state.theory.list.length === 0) return;
     const item = state.theory.list[state.theory.index];
 
@@ -766,11 +800,34 @@
       if (state.stats.combo > 0 && state.stats.combo % 5 === 0) {
         sfx.playCombo(state.stats.combo);
       }
+
+      // 答对等 1 秒自动跳转下一道题
+      if (state.theory.autoNext) {
+        clearTheoryAutoNext();
+        const nextBtn = $('#btn-theory-next');
+        if (nextBtn) {
+          nextBtn.innerHTML = '⏱️ 1秒后自动切题... ▶';
+          nextBtn.classList.add('btn-countdown');
+        }
+        state.theory.autoNextTimer = setTimeout(() => {
+          state.theory.autoNextTimer = null;
+          if (state.mode === 'theory') {
+            if (state.theory.index < state.theory.list.length - 1) {
+              state.theory.index++;
+              loadTheoryQuestion();
+            } else {
+              showToast('🎉 已刷完本模块全部题目！');
+              restoreNextButtonText();
+            }
+          }
+        }, 1000);
+      }
     } else {
       clickedBtn.classList.add('wrong');
       state.stats.combo = 0;
       state.stats.mistakeItems.add(item.id);
       sfx.playWrong();
+      clearTheoryAutoNext();
     }
 
     // Show analysis
@@ -837,6 +894,7 @@
   // Mode Switch
   modeTabs.forEach(tab => {
     tab.addEventListener('click', () => {
+      clearTheoryAutoNext();
       modeTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       state.mode = tab.dataset.mode;
@@ -982,6 +1040,7 @@
 
   // Theory Controls
   $('#btn-theory-prev').addEventListener('click', () => {
+    clearTheoryAutoNext();
     if (state.theory.index > 0) {
       state.theory.index--;
       loadTheoryQuestion();
@@ -990,6 +1049,7 @@
     }
   });
   $('#btn-theory-next').addEventListener('click', () => {
+    clearTheoryAutoNext();
     if (state.theory.index < state.theory.list.length - 1) {
       state.theory.index++;
       loadTheoryQuestion();
@@ -998,6 +1058,7 @@
     }
   });
   $('#btn-theory-show-ans').addEventListener('click', () => {
+    clearTheoryAutoNext();
     const item = state.theory.list[state.theory.index];
     $('#theory-ans-text').textContent = item.answer;
     $('#theory-analysis-text').innerHTML = item.analysis || '暂无解析。';
@@ -1015,6 +1076,19 @@
     updateHUD();
     saveHistory();
   });
+
+  const btnTheoryAutoNext = $('#btn-theory-autonext');
+  if (btnTheoryAutoNext) {
+    btnTheoryAutoNext.addEventListener('click', () => {
+      state.theory.autoNext = !state.theory.autoNext;
+      localStorage.setItem('aiTrainer_theoryAutoNext', state.theory.autoNext);
+      updateAutoNextBtnUI();
+      if (!state.theory.autoNext) {
+        clearTheoryAutoNext();
+      }
+      showToast(state.theory.autoNext ? '⏱️ 已开启：答对 1 秒后自动切题' : '⏱️ 已关闭自动切题，可手动点击下一题');
+    });
+  }
 
   const btnTheoryShuffle = $('#btn-theory-shuffle');
   if (btnTheoryShuffle) {
@@ -1111,6 +1185,7 @@
         }
       }
       loadTheoryQuestion();
+      updateAutoNextBtnUI();
 
       // 3. Restore last active tab mode
       const savedMode = localStorage.getItem('aiTrainer_mode') || 'cloze';
