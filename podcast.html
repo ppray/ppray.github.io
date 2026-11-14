@@ -648,6 +648,10 @@
                 role="tab" aria-selected="false">
                 <span>🌐</span> 国比政经
             </button>
+            <button type="button" class="channel-tab" data-channel="ai-trainer"
+                role="tab" aria-selected="false">
+                <span>🤖</span> AI训练师实操
+            </button>
             <button type="button" class="channel-tab coming" data-channel="international-relations"
                 role="tab" aria-selected="false" aria-disabled="true" disabled>
                 <span>🌍</span> 国际关系
@@ -725,9 +729,12 @@
             'podcasts/political-science/政治学论述题带背第2集_mimo.mp3': 'political-science__essay-2.mp3',
             'podcasts/political-science/简答题极简带背.mp3': 'political-science__short-answer-minimal.mp3',
         };
-        // 其余文件（ipe / ipcs，纯 ASCII）规则：podcasts/<channel>/<name>.mp3 → <channel>__<name>.mp3
+        // 其余文件（ipe / ipcs / ai-trainer，纯 ASCII）规则：podcasts/<channel>/<name>.mp3 → <channel>__<name>.mp3
         function audioUrl(file) {
-            if (!file || !AUDIO_BASE) return file;
+            if (!file) return file;
+            if (!AUDIO_BASE || location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                return file;
+            }
             const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
             return AUDIO_BASE.replace(/\/$/, '') + '/' + asset;
         }
@@ -758,6 +765,14 @@
                 desc: '《国际与比较政治经济学研究》15 套模拟卷全量带背，每集一套：5 名词 + 3 简答 + 2 论述。参考田野、宋新宁/陈岳、吉尔平、基欧汉、斯特兰奇、考克斯、沃勒斯坦等。',
                 audience: '适合考前一周冲刺',
                 jsonUrl: 'podcasts/ipcs-mocks/episodes.json',
+                episodes: []
+            },
+            'ai-trainer': {
+                name: 'AI训练师实操',
+                icon: '🤖',
+                desc: '人工智能训练师（高级/三级）全真试卷01/09/07全部24题实操大题全量带背，涵盖业务流程设计、效果优化、数据规范、算法代码、监控与人机交互。茉莉中文 TTS 原声。',
+                audience: '适合AI训练师高级认证考前冲刺磨耳朵',
+                jsonUrl: 'podcasts/ai-trainer/episodes.json',
                 episodes: []
             },
             'international-relations': {
@@ -957,11 +972,15 @@
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.body.setAttribute('data-theme', 'dark');
             }
-            // 分类记忆：恢复上次选择的频道（仅限已上线频道，跳过"敬请期待"）
+            // 分类记忆：恢复上次选择的频道（优先响应 URL query/hash 直达，如 ?channel=ai-trainer）
+            const urlParam = new URLSearchParams(window.location.search).get('channel') || window.location.hash.replace('#', '');
             const savedChannel = localStorage.getItem(CHANNEL_KEY);
-            if (savedChannel && channels[savedChannel] && channels[savedChannel].jsonUrl
-                && savedChannel !== currentChannel) {
-                currentChannel = savedChannel;
+            const targetChannel = (urlParam && channels[urlParam] && channels[urlParam].jsonUrl)
+                ? urlParam
+                : ((savedChannel && channels[savedChannel] && channels[savedChannel].jsonUrl) ? savedChannel : currentChannel);
+
+            if (targetChannel && targetChannel !== currentChannel) {
+                currentChannel = targetChannel;
                 document.querySelectorAll('.channel-tab').forEach(t => {
                     const on = t.dataset.channel === currentChannel;
                     t.classList.toggle('active', on);
