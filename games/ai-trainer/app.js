@@ -312,6 +312,11 @@
     $('#cloze-tag-score').textContent = `${item.b.length} 处采分点挖空`;
     $('#cloze-index-badge').textContent = `第 ${item.index || state.cloze.index + 1} 题 / 共 ${state.cloze.list.length} 题`;
 
+    const tagMistake = $('#cloze-tag-mistake');
+    if (tagMistake) {
+      tagMistake.style.display = state.stats.mistakeItems.has(item.id) ? 'inline-flex' : 'none';
+    }
+
     const descEl = $('#cloze-desc');
     const promptText = item.prompt || item.desc;
     if (promptText) {
@@ -475,6 +480,9 @@
       if (allDone) {
         state.stats.passedItems.add(item.id);
         state.stats.mistakeItems.delete(item.id);
+        const tagMistake = $('#cloze-tag-mistake');
+        if (tagMistake) tagMistake.style.display = 'none';
+        renderChapterFilters();
         sfx.playWin();
         showToast('🏆 完美通关！本题要点已完全掌握！');
       } else {
@@ -496,6 +504,9 @@
       sfx.playWrong();
       state.stats.combo = 0;
       state.stats.mistakeItems.add(item.id);
+      const tagMistake = $('#cloze-tag-mistake');
+      if (tagMistake) tagMistake.style.display = 'inline-flex';
+      renderChapterFilters();
       showToast('❌ 选错了，连击中断！仔细阅读题干语境～');
       updateHUD();
       saveHistory();
@@ -529,12 +540,12 @@
       if (isPassed) {
         statusText = '✅ 已掌握';
       } else if (isMistake) {
-        statusText = '❌ 有错题';
+        statusText = '⚠️ 错题待攻克';
       } else if (doneBlanks > 0) {
         statusText = `✏️ 已填 ${doneBlanks}/${it.b.length}`;
       }
 
-      btn.className = 'dir-item-btn' + (isActive ? ' active' : '');
+      btn.className = 'dir-item-btn' + (isActive ? ' active' : '') + (isMistake ? ' dir-item-mistake' : '');
       const numPrefix = String(it.index).padStart(2, '0');
       btn.innerHTML = `
         <div class="dir-item-top">
@@ -671,6 +682,25 @@
     }
   }
 
+  function updateTheoryMistakeUI(item) {
+    if (!item) return;
+    const tagMistake = $('#theory-tag-mistake');
+    const btnFav = $('#btn-theory-fav');
+    const isMistake = state.stats.mistakeItems.has(item.id);
+    if (tagMistake) {
+      tagMistake.style.display = isMistake ? 'inline-flex' : 'none';
+    }
+    if (btnFav) {
+      if (isMistake) {
+        btnFav.innerHTML = '★ 已在错题本 (点击移出)';
+        btnFav.classList.add('btn-fav-active');
+      } else {
+        btnFav.innerHTML = '⭐ 错题收藏';
+        btnFav.classList.remove('btn-fav-active');
+      }
+    }
+  }
+
   function applyTheoryFilter(keepIndex = false) {
     let sourceList = [];
     if (state.theory.filter === 'all') {
@@ -725,6 +755,7 @@
     $('#theory-tag-type').textContent = item.type === 'judge' ? '判断题' : (item.type === 'multi' ? '多选题' : '单选题');
     $('#theory-tag-num').textContent = `题号 ${item.num}`;
     $('#theory-index-badge').textContent = `${state.theory.index + 1} / ${state.theory.list.length}`;
+    updateTheoryMistakeUI(item);
 
     // Options
     const optBox = $('#theory-options');
@@ -835,6 +866,8 @@
     $('#theory-analysis-text').innerHTML = item.analysis || '暂无详细考点解析。';
     $('#theory-analysis').style.display = 'flex';
 
+    updateTheoryMistakeUI(item);
+    renderChapterFilters();
     updateHUD();
     saveHistory();
   }
@@ -858,12 +891,22 @@
 
     items.forEach((item, idx) => {
       const card = document.createElement('div');
-      card.className = 'memorize-card';
+      const isMistake = state.stats.mistakeItems.has(item.id);
+      const isPassed = state.stats.passedItems.has(item.id);
+      let statusTag = '';
+      if (isMistake) {
+        statusTag = '<span class="tag tag-mistake">⚠️ 错题待攻克</span>';
+      } else if (isPassed) {
+        statusTag = '<span class="tag tag-type" style="background:var(--mint-soft);color:#065f46;">✅ 已掌握</span>';
+      }
+
+      card.className = 'memorize-card' + (isMistake ? ' is-mistake' : '');
 
       let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           <span class="tag tag-ch">${item.tag || item.paperName}</span>
           <span class="tag tag-score">${item.b.length} 处采分要点</span>
+          ${statusTag}
         </div>
         <span style="font-size:12px; font-weight:800; color:var(--ink-2);">${idx + 1} / ${items.length}</span>
       </div>
@@ -1073,6 +1116,8 @@
       state.stats.mistakeItems.add(item.id);
       showToast('已加入错题本！');
     }
+    updateTheoryMistakeUI(item);
+    renderChapterFilters();
     updateHUD();
     saveHistory();
   });
