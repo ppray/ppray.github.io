@@ -78,9 +78,30 @@
   const savedClozeHistory = JSON.parse(localStorage.getItem('aiTrainer_clozeHistory') || '{}');
   const savedTheoryHistory = JSON.parse(localStorage.getItem('aiTrainer_theoryHistory') || '{}');
 
+  const initialMode = (() => {
+    const hash = (window.location && window.location.hash ? window.location.hash : '').replace('#', '');
+    if (hash === 'theory' || hash === 'cloze' || hash === 'memorize') return hash;
+    return localStorage.getItem('aiTrainer_mode') || 'cloze';
+  })();
+
+  const savedPassed = new Set(JSON.parse(localStorage.getItem('aiTrainer_passed') || '[]'));
+  const savedMistakes = new Set(JSON.parse(localStorage.getItem('aiTrainer_mistakes') || '[]'));
+
+  // Auto-heal / reconcile stats from theory history so nothing is ever out of sync
+  Object.entries(savedTheoryHistory).forEach(([id, rec]) => {
+    if (rec && rec.answered) {
+      if (rec.isCorrect) {
+        savedPassed.add(id);
+      } else if (!savedPassed.has(id)) {
+        savedMistakes.add(id);
+      }
+    }
+  });
+
   const state = {
     bank: null,
-    mode: localStorage.getItem('aiTrainer_mode') || 'cloze', // 'cloze' | 'theory' | 'memorize'
+    mode: initialMode, // 'cloze' | 'theory' | 'memorize'
+    dirViewMode: initialMode === 'theory' ? 'theory' : 'outline',
     cloze: {
       filter: localStorage.getItem('aiTrainer_clozeFilter') || 'all', // 'all' | '01' | '09' | '07' | 'mistakes'
       list: [],
@@ -88,6 +109,7 @@
       activeBlank: 0,
       filled: {}, // blankIdx -> { text, status: 'correct'|'revealed' }
       chips: [],
+      mistakeSession: {},
       lastItemId: localStorage.getItem('aiTrainer_clozeItemId') || null
     },
     theory: {
@@ -99,7 +121,9 @@
       isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true',
       autoNext: localStorage.getItem('aiTrainer_theoryAutoNext') !== 'false',
       autoNextTimer: null,
-      lastNum: localStorage.getItem('aiTrainer_theoryNum') || null
+      lastNum: localStorage.getItem('aiTrainer_theoryNum') || null,
+      mistakeSession: {}, // track questions answered during current mistake practice session
+      lastNumByFilter: JSON.parse(localStorage.getItem('aiTrainer_theoryLastNumByFilter') || '{}')
     },
     history: {
       cloze: savedClozeHistory,   // itemId -> { filled: { [blankIdx]: { text, status } }, isCompleted: boolean }
@@ -110,8 +134,8 @@
       maxCombo: parseInt(localStorage.getItem('aiTrainer_maxCombo') || '0', 10),
       correctAttempts: parseInt(localStorage.getItem('aiTrainer_correctAttempts') || '0', 10),
       totalAttempts: parseInt(localStorage.getItem('aiTrainer_totalAttempts') || '0', 10),
-      passedItems: new Set(JSON.parse(localStorage.getItem('aiTrainer_passed') || '[]')),
-      mistakeItems: new Set(JSON.parse(localStorage.getItem('aiTrainer_mistakes') || '[]'))
+      passedItems: savedPassed,
+      mistakeItems: savedMistakes
     }
   };
 
@@ -120,14 +144,19 @@
     try {
       localStorage.setItem('aiTrainer_mode', state.mode);
       localStorage.setItem('aiTrainer_clozeFilter', state.cloze.filter);
-      if (state.cloze.list[state.cloze.index]) {
-        localStorage.setItem('aiTrainer_clozeItemId', state.cloze.list[state.cloze.index].id);
+      if (state.cloze.list && state.cloze.list[state.cloze.index]) {
+        state.cloze.lastItemId = state.cloze.list[state.cloze.index].id;
+        localStorage.setItem('aiTrainer_clozeItemId', state.cloze.lastItemId);
       }
       localStorage.setItem('aiTrainer_clozeHistory', JSON.stringify(state.history.cloze));
 
       localStorage.setItem('aiTrainer_theoryFilter', state.theory.filter);
-      if (state.theory.list[state.theory.index]) {
-        localStorage.setItem('aiTrainer_theoryNum', state.theory.list[state.theory.index].num);
+      if (state.theory.list && state.theory.list[state.theory.index]) {
+        const num = state.theory.list[state.theory.index].num;
+        state.theory.lastNum = num;
+        localStorage.setItem('aiTrainer_theoryNum', num);
+        state.theory.lastNumByFilter[state.theory.filter] = num;
+        localStorage.setItem('aiTrainer_theoryLastNumByFilter', JSON.stringify(state.theory.lastNumByFilter));
       }
       localStorage.setItem('aiTrainer_theoryHistory', JSON.stringify(state.history.theory));
 
@@ -151,9 +180,12 @@
   const chapterScroll = $('#chapter-filters');
 
   const btnOpenDir = $('#btn-open-dir');
+  const btnOpenTheoryDir = $('#btn-open-theory-dir');
   const dirModal = $('#dir-modal');
   const btnCloseDir = $('#btn-close-dir');
   const dirBody = $('#dir-body');
+  const dirModalTitle = $('#dir-modal-title');
+  const dirModalSubtitle = $('#dir-modal-subtitle');
 
   const viewCloze = $('#view-cloze');
   const viewTheory = $('#view-theory');
@@ -223,11 +255,11 @@
       btn.addEventListener('click', () => {
         if (state.mode === 'cloze' || state.mode === 'memorize') {
           state.cloze.filter = ch.id;
-          applyClozeFilter();
+          applyClozeFilter({ targetId: ch.id === 'all' ? state.cloze.lastItemId : null });
           if (state.mode === 'memorize') renderMemorizeView();
         } else {
           state.theory.filter = ch.id;
-          applyTheoryFilter();
+          applyTheoryFilter({ targetNum: state.theory.lastNumByFilter[ch.id] || (ch.id === 'all' ? state.theory.lastNum : null) });
         }
         renderChapterFilters();
         saveHistory();
@@ -251,7 +283,7 @@
         if (state.mode === 'memorize') renderMemorizeView();
       } else {
         state.theory.filter = 'mistakes';
-        applyTheoryFilter();
+        applyTheoryFilter({ targetNum: null });
       }
       renderChapterFilters();
       saveHistory();
@@ -260,10 +292,12 @@
   }
 
   // --- 5. Cloze Mode Logic (24 Big Practical Questions) ---
-  function applyClozeFilter(keepIndex = false) {
+  function applyClozeFilter(options = {}) {
+    const { keepIndex = false, targetId = null } = (typeof options === 'boolean' ? { keepIndex: options } : options);
     if (state.cloze.filter === 'all') {
       state.cloze.list = state.bank.practical;
     } else if (state.cloze.filter === 'mistakes') {
+      state.cloze.mistakeSession = {};
       state.cloze.list = state.bank.practical.filter(it => state.stats.mistakeItems.has(it.id));
       if (state.cloze.list.length === 0) {
         showToast('暂无实操错题！已切回全部 24 大题');
@@ -274,9 +308,15 @@
       state.cloze.list = state.bank.practical.filter(it => it.paperKey === state.cloze.filter || it.chapter === state.cloze.filter);
     }
 
-    if (!keepIndex) {
-      state.cloze.index = 0;
-    } else if (state.cloze.index >= state.cloze.list.length) {
+    const restoreId = targetId || state.cloze.lastItemId;
+    if (restoreId) {
+      const foundIdx = state.cloze.list.findIndex(it => it.id === restoreId);
+      if (foundIdx >= 0) {
+        state.cloze.index = foundIdx;
+      } else if (!keepIndex || state.cloze.index >= state.cloze.list.length) {
+        state.cloze.index = 0;
+      }
+    } else if (!keepIndex || state.cloze.index >= state.cloze.list.length) {
       state.cloze.index = 0;
     }
 
@@ -286,25 +326,40 @@
   function loadClozeItem() {
     if (!state.cloze.list || state.cloze.list.length === 0) return;
     const item = state.cloze.list[state.cloze.index];
+    const isMistakeMode = state.cloze.filter === 'mistakes';
 
-    // Restore saved answers for this practical question
+    // In mistake practice mode, practical questions should be answerable
+    const sessionRecord = state.cloze.mistakeSession ? state.cloze.mistakeSession[item.id] : null;
     const saved = state.history.cloze[item.id];
-    if (saved && saved.filled) {
-      state.cloze.filled = { ...saved.filled };
-      // Move active blank to first unfilled slot
-      let firstUnfilled = 0;
-      let hasUnfilled = false;
-      for (let i = 0; i < item.b.length; i++) {
-        if (!state.cloze.filled[i]) {
-          firstUnfilled = i;
-          hasUnfilled = true;
-          break;
-        }
+
+    if (isMistakeMode) {
+      if (sessionRecord) {
+        state.cloze.filled = { ...sessionRecord.filled };
+        state.cloze.activeBlank = sessionRecord.activeBlank;
+      } else {
+        // Fresh interactive question for user to re-attempt!
+        state.cloze.filled = {};
+        state.cloze.activeBlank = 0;
       }
-      state.cloze.activeBlank = hasUnfilled ? firstUnfilled : 0;
     } else {
-      state.cloze.filled = {};
-      state.cloze.activeBlank = 0;
+      // Normal practice mode: restore saved answers
+      if (saved && saved.filled) {
+        state.cloze.filled = { ...saved.filled };
+        // Move active blank to first unfilled slot
+        let firstUnfilled = 0;
+        let hasUnfilled = false;
+        for (let i = 0; i < item.b.length; i++) {
+          if (!state.cloze.filled[i]) {
+            firstUnfilled = i;
+            hasUnfilled = true;
+            break;
+          }
+        }
+        state.cloze.activeBlank = hasUnfilled ? firstUnfilled : 0;
+      } else {
+        state.cloze.filled = {};
+        state.cloze.activeBlank = 0;
+      }
     }
 
     $('#cloze-title').textContent = item.title || item.q;
@@ -469,6 +524,14 @@
         status: 'correct'
       };
 
+      if (state.cloze.filter === 'mistakes') {
+        if (!state.cloze.mistakeSession) state.cloze.mistakeSession = {};
+        state.cloze.mistakeSession[item.id] = {
+          filled: { ...state.cloze.filled },
+          activeBlank: state.cloze.activeBlank
+        };
+      }
+
       // Check if all filled
       const allDone = item.b.every((_, idx) => !!state.cloze.filled[idx]);
       state.history.cloze[item.id] = {
@@ -479,12 +542,20 @@
 
       if (allDone) {
         state.stats.passedItems.add(item.id);
+        const wasMistake = state.stats.mistakeItems.has(item.id);
         state.stats.mistakeItems.delete(item.id);
+        if (state.cloze.mistakeSession) {
+          delete state.cloze.mistakeSession[item.id];
+        }
         const tagMistake = $('#cloze-tag-mistake');
         if (tagMistake) tagMistake.style.display = 'none';
         renderChapterFilters();
         sfx.playWin();
-        showToast('🏆 完美通关！本题要点已完全掌握！');
+        if (state.cloze.filter === 'mistakes' && wasMistake) {
+          showToast('🎉 恭喜攻克实操错题！已从错题本移出～');
+        } else {
+          showToast('🏆 完美通关！本题要点已完全掌握！');
+        }
       } else {
         // Advance to next unfilled blank
         for (let i = 0; i < item.b.length; i++) {
@@ -513,20 +584,36 @@
     }
   }
 
-  // --- 6. 24 大题目录导航抽屉（仅服务实操题） ---
+  // --- 6. 试题大纲与答题卡抽屉 ---
   function renderDirectoryModal() {
     if (!dirBody) return;
     dirBody.innerHTML = '';
 
-    const currentItem = state.cloze.list[state.cloze.index];
-    if (!state.dirViewMode) state.dirViewMode = 'outline';
+    if (!state.dirViewMode) state.dirViewMode = state.mode === 'theory' ? 'theory' : 'outline';
 
+    const tabTheory = $('#dir-tab-theory');
     const tabOutline = $('#dir-tab-outline');
     const tabPapers = $('#dir-tab-papers');
-    if (tabOutline && tabPapers) {
-      tabOutline.classList.toggle('active', state.dirViewMode === 'outline');
-      tabPapers.classList.toggle('active', state.dirViewMode === 'papers');
+    if (tabTheory) tabTheory.classList.toggle('active', state.dirViewMode === 'theory');
+    if (tabOutline) tabOutline.classList.toggle('active', state.dirViewMode === 'outline');
+    if (tabPapers) tabPapers.classList.toggle('active', state.dirViewMode === 'papers');
+
+    if (dirModalTitle && dirModalSubtitle) {
+      if (state.dirViewMode === 'theory') {
+        dirModalTitle.textContent = '理论知识考核 200 题答题卡与做题历史';
+        dirModalSubtitle.textContent = '按考纲 5 大章节完整收录 200 题，直观查看掌握与错题情况，点击直接跳转答题';
+      } else {
+        dirModalTitle.textContent = '实操技能考核 24 大题大纲目录（01 & 09 & 07卷）';
+        dirModalSubtitle.textContent = '收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关';
+      }
     }
+
+    if (state.dirViewMode === 'theory') {
+      renderTheorySheetInModal();
+      return;
+    }
+
+    const currentItem = state.cloze.list[state.cloze.index];
 
     function createItemButton(it) {
       const btn = document.createElement('button');
@@ -557,8 +644,7 @@
 
       btn.addEventListener('click', () => {
         if (state.mode !== 'cloze') {
-          const clozeTab = document.querySelector('.mode-tab[data-mode="cloze"]');
-          if (clozeTab) clozeTab.click();
+          switchMode('cloze');
         }
         state.cloze.filter = 'all';
         state.cloze.list = state.bank.practical;
@@ -617,6 +703,103 @@
         dirBody.appendChild(groupEl);
       });
     }
+  }
+
+  function renderTheorySheetInModal() {
+    const totalCount = state.bank.theory.length;
+    let answeredCount = 0;
+    let correctCount = 0;
+    let mistakeCount = 0;
+
+    state.bank.theory.forEach(q => {
+      const rec = state.history.theory[q.id];
+      if (rec && rec.answered) {
+        answeredCount++;
+        if (rec.isCorrect) correctCount++;
+        else mistakeCount++;
+      } else if (state.stats.mistakeItems.has(q.id)) {
+        mistakeCount++;
+      }
+    });
+
+    const acc = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 100;
+
+    const summaryCard = document.createElement('div');
+    summaryCard.className = 'theory-sheet-summary';
+    summaryCard.innerHTML = `
+      <div class="theory-sheet-stats">
+        📊 理论真题做题总览：共 <b>${totalCount}</b> 题 · 已答 <b>${answeredCount}</b> 题 (答对 <span style="color:#10b981; font-weight:900;">${correctCount}</span> · 错题 <span style="color:#ef4444; font-weight:900;">${mistakeCount}</span>) · 正确率 <b>${acc}%</b>
+      </div>
+      <div class="theory-sheet-legend">
+        <div class="theory-legend-item"><span class="theory-legend-dot passed"></span> <span>已答对</span></div>
+        <div class="theory-legend-item"><span class="theory-legend-dot mistake"></span> <span>曾答错/错题</span></div>
+        <div class="theory-legend-item"><span class="theory-legend-dot current"></span> <span>当前定位</span></div>
+        <div class="theory-legend-item"><span class="theory-legend-dot unanswered"></span> <span>未作答</span></div>
+      </div>
+    `;
+    dirBody.appendChild(summaryCard);
+
+    const chapters = (state.bank.theoryChapters || []).filter(c => c.id !== 'all');
+    const currentQ = state.theory.list && state.theory.list[state.theory.index];
+
+    chapters.forEach(ch => {
+      const qs = state.bank.theory.filter(q => q.chapter === ch.id);
+      if (qs.length === 0) return;
+
+      const groupEl = document.createElement('div');
+      groupEl.className = 'theory-sheet-group';
+
+      const chAnswered = qs.filter(q => state.history.theory[q.id]?.answered).length;
+      groupEl.innerHTML = `
+        <div class="theory-sheet-group-title">
+          <span>📚 ${ch.name}</span>
+          <span style="font-size:12px; color:var(--ink-2); font-weight:700;">进度：${chAnswered} / ${qs.length}</span>
+        </div>
+      `;
+
+      const gridEl = document.createElement('div');
+      gridEl.className = 'theory-sheet-grid';
+
+      qs.forEach(q => {
+        const btn = document.createElement('button');
+        const rec = state.history.theory[q.id];
+        const isCurrent = currentQ && currentQ.id === q.id;
+        const isMistake = state.stats.mistakeItems.has(q.id) || (rec && rec.answered && !rec.isCorrect);
+        const isPassed = rec && rec.answered && rec.isCorrect;
+
+        let btnClass = 'theory-sheet-btn';
+        if (isPassed) btnClass += ' passed';
+        else if (isMistake) btnClass += ' mistake';
+        if (isCurrent) btnClass += ' current';
+
+        btn.className = btnClass;
+        btn.textContent = q.num;
+        btn.title = `题号 ${q.num}：${q.q.slice(0, 35)}...`;
+
+        btn.addEventListener('click', () => {
+          if (state.mode !== 'theory') {
+            switchMode('theory');
+          }
+          const foundIdxInCurrent = state.theory.list.findIndex(x => x.id === q.id);
+          if (foundIdxInCurrent >= 0) {
+            state.theory.index = foundIdxInCurrent;
+          } else {
+            state.theory.filter = 'all';
+            applyTheoryFilter({ targetNum: q.num });
+            renderChapterFilters();
+          }
+          loadTheoryQuestion();
+          closeDirectoryModal();
+          showToast(`已跳转至理论题号 ${q.num}`);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        gridEl.appendChild(btn);
+      });
+
+      groupEl.appendChild(gridEl);
+      dirBody.appendChild(groupEl);
+    });
   }
 
   function openDirectoryModal() {
@@ -701,11 +884,13 @@
     }
   }
 
-  function applyTheoryFilter(keepIndex = false) {
+  function applyTheoryFilter(options = {}) {
+    const { keepIndex = false, targetNum = null } = (typeof options === 'boolean' ? { keepIndex: options } : options);
     let sourceList = [];
     if (state.theory.filter === 'all') {
       sourceList = [...state.bank.theory];
     } else if (state.theory.filter === 'mistakes') {
+      state.theory.mistakeSession = {};
       sourceList = state.bank.theory.filter(t => state.stats.mistakeItems.has(t.id));
       if (sourceList.length === 0) {
         showToast('暂无理论错题！已切回全部题目');
@@ -722,9 +907,15 @@
       state.theory.list = sourceList.sort((a, b) => parseInt(a.num, 10) - parseInt(b.num, 10));
     }
 
-    if (!keepIndex) {
-      state.theory.index = 0;
-    } else if (state.theory.index >= state.theory.list.length) {
+    const restoreNum = targetNum || state.theory.lastNumByFilter[state.theory.filter] || (state.theory.filter === 'all' ? state.theory.lastNum : null);
+    if (restoreNum) {
+      const foundIdx = state.theory.list.findIndex(t => t.num === restoreNum);
+      if (foundIdx >= 0) {
+        state.theory.index = foundIdx;
+      } else if (!keepIndex || state.theory.index >= state.theory.list.length) {
+        state.theory.index = 0;
+      }
+    } else if (!keepIndex || state.theory.index >= state.theory.list.length) {
       state.theory.index = 0;
     }
 
@@ -739,15 +930,31 @@
     updateShuffleBtnUI();
     if (!state.theory.list || state.theory.list.length === 0) return;
     const item = state.theory.list[state.theory.index];
+    const isMistakeMode = state.theory.filter === 'mistakes';
 
-    // Check if previously answered in history
+    // In mistake practice mode, questions should be ANSWERABLE / INTERACTIVE!
+    // Unless the user already answered it during this specific mistake practice session.
+    const sessionRecord = state.theory.mistakeSession ? state.theory.mistakeSession[item.id] : null;
     const saved = state.history.theory[item.id];
-    if (saved && saved.answered) {
-      state.theory.answered = true;
-      state.theory.selected = saved.selected;
+
+    if (isMistakeMode) {
+      if (sessionRecord && sessionRecord.answered) {
+        state.theory.answered = true;
+        state.theory.selected = sessionRecord.selected;
+      } else {
+        // Fresh interactive question for user to re-attempt!
+        state.theory.answered = false;
+        state.theory.selected = null;
+      }
     } else {
-      state.theory.answered = false;
-      state.theory.selected = null;
+      // Normal practice mode: check history
+      if (saved && saved.answered) {
+        state.theory.answered = true;
+        state.theory.selected = saved.selected;
+      } else {
+        state.theory.answered = false;
+        state.theory.selected = null;
+      }
     }
 
     $('#theory-title').textContent = item.q;
@@ -772,9 +979,11 @@
 
       // If answered previously, display correct / wrong indicator
       if (state.theory.answered) {
+        const isSelected = key === state.theory.selected;
+        const recordIsCorrect = isMistakeMode ? sessionRecord?.isCorrect : saved?.isCorrect;
         if (key === item.answer || item.answer.includes(key)) {
           btn.classList.add('correct');
-        } else if (key === state.theory.selected && !saved?.isCorrect) {
+        } else if (isSelected && !recordIsCorrect) {
           btn.classList.add('wrong');
         }
       }
@@ -802,6 +1011,16 @@
     state.stats.totalAttempts++;
 
     const isMatch = chosenKey.trim() === item.answer.trim() || item.answer.includes(chosenKey);
+    const isMistakeMode = state.theory.filter === 'mistakes';
+
+    // Record session if in mistake mode
+    if (!state.theory.mistakeSession) state.theory.mistakeSession = {};
+    state.theory.mistakeSession[item.id] = {
+      answered: true,
+      selected: chosenKey,
+      isCorrect: isMatch,
+      timestamp: Date.now()
+    };
 
     // Save history
     state.history.theory[item.id] = {
@@ -826,10 +1045,16 @@
         state.stats.maxCombo = state.stats.combo;
       }
       state.stats.passedItems.add(item.id);
+
+      const wasMistake = state.stats.mistakeItems.has(item.id);
       state.stats.mistakeItems.delete(item.id);
       sfx.playCorrect();
       if (state.stats.combo > 0 && state.stats.combo % 5 === 0) {
         sfx.playCombo(state.stats.combo);
+      }
+
+      if (isMistakeMode && wasMistake) {
+        showToast('🎉 恭喜攻克错题！已从错题本移出～');
       }
 
       // 答对等 1 秒自动跳转下一道题
@@ -935,28 +1160,47 @@
 
   // --- 9. Event Listeners & Controls ---
   // Mode Switch
+  function switchMode(newMode) {
+    clearTheoryAutoNext();
+    modeTabs.forEach(t => t.classList.toggle('active', t.dataset.mode === newMode));
+    state.mode = newMode;
+    try {
+      history.replaceState(null, '', '#' + newMode);
+    } catch(e) {}
+    saveHistory();
+
+    viewCloze.style.display = state.mode === 'cloze' ? 'flex' : 'none';
+    viewTheory.style.display = state.mode === 'theory' ? 'flex' : 'none';
+    viewMemorize.style.display = state.mode === 'memorize' ? 'flex' : 'none';
+
+    renderChapterFilters();
+    if (state.mode === 'cloze') {
+      loadClozeItem();
+    } else if (state.mode === 'theory') {
+      loadTheoryQuestion();
+    } else if (state.mode === 'memorize') {
+      renderMemorizeView();
+    }
+  }
+
   modeTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      clearTheoryAutoNext();
-      modeTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      state.mode = tab.dataset.mode;
-      saveHistory();
-
-      viewCloze.style.display = state.mode === 'cloze' ? 'flex' : 'none';
-      viewTheory.style.display = state.mode === 'theory' ? 'flex' : 'none';
-      viewMemorize.style.display = state.mode === 'memorize' ? 'flex' : 'none';
-
-      renderChapterFilters();
-      if (state.mode === 'cloze') loadClozeItem();
-      else if (state.mode === 'theory') loadTheoryQuestion();
-      else if (state.mode === 'memorize') renderMemorizeView();
+      switchMode(tab.dataset.mode);
     });
   });
 
-  // Directory Modal Triggers (Exclusively for Practical questions)
+  // Directory Modal Triggers
   if (btnOpenDir) {
-    btnOpenDir.addEventListener('click', openDirectoryModal);
+    btnOpenDir.addEventListener('click', () => {
+      state.dirViewMode = 'outline';
+      openDirectoryModal();
+    });
+  }
+  if (btnOpenTheoryDir) {
+    btnOpenTheoryDir.addEventListener('click', () => {
+      state.dirViewMode = 'theory';
+      openDirectoryModal();
+    });
   }
   if (btnCloseDir) {
     btnCloseDir.addEventListener('click', closeDirectoryModal);
@@ -968,8 +1212,15 @@
   }
 
   // Directory View Mode Switch Tabs
+  const tabTheory = $('#dir-tab-theory');
   const tabOutline = $('#dir-tab-outline');
   const tabPapers = $('#dir-tab-papers');
+  if (tabTheory) {
+    tabTheory.addEventListener('click', () => {
+      state.dirViewMode = 'theory';
+      renderDirectoryModal();
+    });
+  }
   if (tabOutline) {
     tabOutline.addEventListener('click', () => {
       state.dirViewMode = 'outline';
@@ -1005,9 +1256,12 @@
       state.cloze.filled = {};
       state.cloze.activeBlank = 0;
       state.cloze.index = 0;
+      state.cloze.mistakeSession = {};
       state.theory.index = 0;
       state.theory.answered = false;
       state.theory.selected = null;
+      state.theory.mistakeSession = {};
+      state.theory.lastNumByFilter = {};
 
       [
         'aiTrainer_maxCombo',
@@ -1018,7 +1272,8 @@
         'aiTrainer_clozeHistory',
         'aiTrainer_theoryHistory',
         'aiTrainer_clozeItemId',
-        'aiTrainer_theoryNum'
+        'aiTrainer_theoryNum',
+        'aiTrainer_theoryLastNumByFilter'
       ].forEach(k => localStorage.removeItem(k));
 
       updateHUD();
@@ -1050,6 +1305,9 @@
     const item = state.cloze.list[state.cloze.index];
     if (item) {
       delete state.history.cloze[item.id];
+      if (state.cloze.mistakeSession) {
+        delete state.cloze.mistakeSession[item.id];
+      }
       state.cloze.filled = {};
       state.cloze.activeBlank = 0;
       saveHistory();
@@ -1121,6 +1379,41 @@
     updateHUD();
     saveHistory();
   });
+
+  const btnTheoryRedo = $('#btn-theory-redo');
+  if (btnTheoryRedo) {
+    btnTheoryRedo.addEventListener('click', () => {
+      clearTheoryAutoNext();
+      const item = state.theory.list[state.theory.index];
+      if (!item) return;
+
+      // Clear answered state for this question
+      state.theory.answered = false;
+      state.theory.selected = null;
+      if (state.theory.mistakeSession) {
+        delete state.theory.mistakeSession[item.id];
+      }
+      delete state.history.theory[item.id];
+
+      // Re-render options
+      const optBox = $('#theory-options');
+      optBox.innerHTML = '';
+      const opts = item.options.length > 0 ? item.options : ['A. 选项A', 'B. 选项B', 'C. 选项C', 'D. 选项D'];
+      opts.forEach((optText, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'theory-opt-btn';
+        const keyMatch = optText.match(/^([A-D√×对错])/);
+        const key = keyMatch ? keyMatch[1] : String.fromCharCode(65 + i);
+        btn.innerHTML = `<span class="theory-opt-key">${key}</span> <span>${optText}</span>`;
+        btn.addEventListener('click', () => handleTheoryChoice(key, item, btn));
+        optBox.appendChild(btn);
+      });
+
+      $('#theory-analysis').style.display = 'none';
+      saveHistory();
+      showToast('🔄 已清空本题作答状态，请重新作答');
+    });
+  }
 
   const btnTheoryAutoNext = $('#btn-theory-autonext');
   if (btnTheoryAutoNext) {
@@ -1211,35 +1504,20 @@
       }
       console.log('Loaded AI Trainer Bank:', state.bank.meta);
 
-      // 1. Restore Cloze state & last viewed question
-      applyClozeFilter(true);
-      if (state.cloze.lastItemId) {
-        const foundIdx = state.cloze.list.findIndex(it => it.id === state.cloze.lastItemId);
-        if (foundIdx >= 0) {
-          state.cloze.index = foundIdx;
-        }
-      }
-      loadClozeItem();
+      // Determine initial mode (URL hash > localStorage > 'cloze')
+      const hash = (window.location && window.location.hash ? window.location.hash : '').replace('#', '');
+      const initialMode = (hash === 'theory' || hash === 'cloze' || hash === 'memorize')
+        ? hash
+        : (localStorage.getItem('aiTrainer_mode') || 'cloze');
 
-      // 2. Restore Theory state & last viewed question
-      applyTheoryFilter(true);
-      if (state.theory.lastNum) {
-        const foundIdx = state.theory.list.findIndex(it => it.num === state.theory.lastNum);
-        if (foundIdx >= 0) {
-          state.theory.index = foundIdx;
-        }
-      }
-      loadTheoryQuestion();
-      updateAutoNextBtnUI();
+      // 1. Restore Cloze state & question position
+      applyClozeFilter({ keepIndex: true, targetId: state.cloze.lastItemId });
 
-      // 3. Restore last active tab mode
-      const savedMode = localStorage.getItem('aiTrainer_mode') || 'cloze';
-      const targetTab = document.querySelector(`.mode-tab[data-mode="${savedMode}"]`);
-      if (targetTab) {
-        targetTab.click();
-      } else {
-        renderChapterFilters();
-      }
+      // 2. Restore Theory state & question position
+      applyTheoryFilter({ keepIndex: true, targetNum: state.theory.lastNum });
+
+      // 3. Switch to initial mode and display views
+      switchMode(initialMode);
 
       updateHUD();
     } catch (e) {

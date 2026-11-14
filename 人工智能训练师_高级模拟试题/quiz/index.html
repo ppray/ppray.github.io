@@ -6,7 +6,7 @@
 <title>人工智能训练师（三级／高级）· 刷题与挖空连击</title>
 <meta name="description" content="人工智能训练师（三级/高级）全真模拟试题交互刷题系统：实操大题全采分点挖空连击自测、理论知识考核单选/判断题全收录、即时对错反馈与标准解析。">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261114_2">
 </head>
 <body>
 
@@ -141,6 +141,9 @@
         <h2 class="item-title" id="theory-title">题目加载中...</h2>
       </div>
       <div style="display:flex; align-items:center; gap:10px;">
+        <button id="btn-open-theory-dir" class="drawer-toggle-btn" title="查看200道理论真题答题卡与做题历史">
+          📑 200题答题卡
+        </button>
         <button id="btn-theory-autonext" class="btn btn-toggle-on" style="font-size:12px; padding:5px 12px;" title="答对后等待 1 秒自动进入下一题">
           ⏱️ 自动切题：<b>开</b>
         </button>
@@ -166,6 +169,7 @@
     <!-- Theory Navigation Controls -->
     <div class="ctrl-bar">
       <div class="ctrl-group">
+        <button id="btn-theory-redo" class="btn" title="清空本题作答状态重新作答">🔄 重做本题</button>
         <button id="btn-theory-fav" class="btn">⭐ 错题收藏</button>
         <button id="btn-theory-show-ans" class="btn btn-yellow">👁️ 直接看解析</button>
         <button id="btn-theory-reshuffle" class="btn" title="重新随机打乱所有题目顺序" style="display:none;">🎲 重新打乱</button>
@@ -192,26 +196,27 @@
 
 </div>
 
-<!-- 24 大题大纲目录抽屉/弹窗 -->
+<!-- 试题大纲与答题卡目录抽屉/弹窗 -->
 <div id="dir-modal" class="directory-modal" style="display:none;">
   <div class="directory-content">
     <div class="directory-header">
       <div style="display:flex; align-items:center; gap:10px;">
         <span style="font-size:24px;">📑</span>
         <div>
-          <div style="font-size:18px; font-weight:900; color:var(--ink);">实操技能考核 24 大题大纲目录（01 & 09 & 07卷）</div>
-          <div style="font-size:12.5px; color:var(--ink-2); font-weight:700;">收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关</div>
+          <div style="font-size:18px; font-weight:900; color:var(--ink);" id="dir-modal-title">全真试题大纲目录与答题卡</div>
+          <div style="font-size:12.5px; color:var(--ink-2); font-weight:700;" id="dir-modal-subtitle">收录 200 道理论考题答题卡与 24 道实操大题，点击任意题目快速跳转</div>
         </div>
       </div>
       <button id="btn-close-dir" class="btn btn-icon" style="font-size:18px; width:36px; height:36px;" title="关闭">✕</button>
     </div>
     <!-- 目录模式切换 Tab -->
-    <div class="dir-nav-tabs" style="display:flex; gap:8px; padding:12px 20px 0 20px; border-bottom:2px solid var(--border); background:#fff;">
-      <button id="dir-tab-outline" class="btn active" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0;">📋 考纲原始 24 题顺序 (01&09&07 对照)</button>
-      <button id="dir-tab-papers" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0;">🗂️ 按考卷分组 (01卷 / 09卷 / 07卷 各 8 题)</button>
+    <div class="dir-nav-tabs" style="display:flex; gap:8px; padding:12px 20px 0 20px; border-bottom:2px solid var(--border); background:#fff; overflow-x:auto;">
+      <button id="dir-tab-theory" class="btn active" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0; white-space:nowrap;">📝 理论 200 题答题卡</button>
+      <button id="dir-tab-outline" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0; white-space:nowrap;">📋 实操 24 题考纲对照</button>
+      <button id="dir-tab-papers" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900; border-radius:10px 10px 0 0; white-space:nowrap;">🗂️ 实操 3 大考卷分组</button>
     </div>
     <div class="directory-body" id="dir-body">
-      <!-- Generated dynamically: 01卷(8题)、09卷(8题)、07卷(8题) -->
+      <!-- Generated dynamically -->
     </div>
   </div>
 </div>
@@ -220,6 +225,6 @@
 <div id="toast" class="toast">提示信息</div>
 
 <script src="bank.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=20261114_2"></script>
 </body>
 </html>
