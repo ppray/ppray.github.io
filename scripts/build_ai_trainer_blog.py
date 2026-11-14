@@ -1370,7 +1370,7 @@ def render_html() -> None:
       if (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {{
         return '/podcasts/ai-trainer/' + slug + '.mp3';
       }}
-      return AUDIO_MIRRORS[mirrorIdx] + '/ai-trainer__' + slug + '.mp3';
+      return AUDIO_MIRRORS[mirrorIdx] + '/' + slug + '.mp3';
     }}
 
     function playTrack(idx) {{

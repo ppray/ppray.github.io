@@ -730,12 +730,20 @@
             'podcasts/political-science/简答题极简带背.mp3': 'political-science__short-answer-minimal.mp3',
         };
         // 其余文件（ipe / ipcs / ai-trainer，纯 ASCII）规则：podcasts/<channel>/<name>.mp3 → <channel>__<name>.mp3
+        function getReleaseAsset(file) {
+            if (ASSET_MAP[file]) return ASSET_MAP[file];
+            if (file.startsWith('podcasts/ai-trainer/')) {
+                return file.replace(/^podcasts\/ai-trainer\//, '');
+            }
+            return file.replace(/^podcasts\//, '').replace(/\//g, '__');
+        }
+
         function audioUrl(file) {
             if (!file) return file;
             if (!AUDIO_BASE || location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
                 return file;
             }
-            const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
+            const asset = getReleaseAsset(file);
             return AUDIO_BASE.replace(/\/$/, '') + '/' + asset;
         }
 
@@ -1219,7 +1227,7 @@
                     if (idx >= AUDIO_MIRRORS.length - 1) return;        // 已是最后一个源
                     idx += 1;
                     audio.dataset.mirrorIdx = String(idx);
-                    const asset = ASSET_MAP[file] || file.replace(/^podcasts\//, '').replace(/\//g, '__');
+                    const asset = getReleaseAsset(file);
                     console.warn(`[podcast] 音频源加载失败，切换镜像 ${idx + 1}/${AUDIO_MIRRORS.length}: ${AUDIO_MIRRORS[idx]}/${asset}`);
                     audio.querySelector('source').src = AUDIO_MIRRORS[idx] + '/' + asset;
                     audio.load();                                       // 重新加载新源
