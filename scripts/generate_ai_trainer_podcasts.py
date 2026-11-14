@@ -108,6 +108,14 @@ def clean_text_for_speech(text: str) -> str:
         "HTML": "H T M L",
         "URL": "U R L",
         "IP": "I P",
+        "TP": "T P",
+        "FP": "F P",
+        "FN": "F N",
+        "TN": "T N",
+        "F1": "F 1",
+        "BERT": "B E R T",
+        "N-gram": "N gram",
+        "N-Gram": "N gram",
     }
     for k, v in acronyms.items():
         s = re.sub(r"\b" + k + r"\b", v, s)
@@ -120,59 +128,113 @@ def clean_text_for_speech(text: str) -> str:
     return s.strip("。， ")
 
 
-def format_code_for_speech(raw_text: str) -> str:
-    """Translate raw python code snippets into clear verbal descriptions."""
-    s = raw_text
-    s = re.sub(r"import\s*pandas\s*as\s*pd", "第一步，导入pandas数据分析库；", s)
-    s = re.sub(
-        r"from\s*sklearn\.model_selection\s*import\s*train_test_split",
-        "导入sklearn模型选择模块中的train_test_split函数；",
-        s,
-    )
-    s = re.sub(
-        r"from\s*sklearn\.feature_extraction\.text\s*import\s*TfidfVectorizer",
-        "导入TfidfVectorizer文本特征提取器；",
-        s,
-    )
-    s = re.sub(
-        r"from\s*sklearn\.linear_model\s*import\s*LogisticRegression",
-        "导入LogisticRegression逻辑回归分类器；",
-        s,
-    )
-    s = re.sub(
-        r"from\s*sklearn\.ensemble\s*import\s*RandomForestClassifier",
-        "导入随机森林分类器RandomForestClassifier；",
-        s,
-    )
-    s = re.sub(
-        r"from\s*sklearn\.metrics\s*import[^\n]+",
-        "导入准确率、精确率、召回率、F1分数等模型评估指标函数；",
-        s,
-    )
-    s = re.sub(r"from\s*PIL\s*import\s*Image", "导入PIL图像处理模块中的Image类；", s)
-    s = re.sub(
-        r"train_test_split\([^\)]+\)",
-        "调用train_test_split，设置测试集比例test_size为0.2，随机种子random_state为42，进行训练集与测试集划分；",
-        s,
-    )
-    s = re.sub(
-        r"def\s*load_image[^\n]+(?:\n\s+[^\n]+)+",
-        "定义图像加载函数load_image：使用PIL打开图片，将其转换为L单通道灰度图，并调用resize统一缩放到32乘32尺寸，最后将像素值列表化作为特征输入；",
-        s,
-    )
-    s = re.sub(r"model\.fit\([^\)]+\)", "调用model的fit方法进行模型训练拟合；", s)
-    s = re.sub(r"model\.predict\([^\)]+\)", "调用predict方法在测试集上进行结果预测；", s)
-    s = re.sub(
-        r"joblib\.dump\([^\)]+\)",
-        "使用joblib库的dump方法将训练好的模型保存到考生文件夹；",
-        s,
-    )
-    s = re.sub(
-        r"to_csv\([^\)]+\)",
-        "调用to_csv方法将结果保存为csv文件；",
-        s,
-    )
-    return s
+# Handcrafted spoken scripts for coding questions so they sound professional, concise,
+# avoid reading syntax, and state all functions/parameters clearly.
+SPECIAL_QUESTION_SPOKEN_ANSWERS = {
+    "prac-01-4": (
+        "第一部分，数据划分与保存：采用8比2比例将原始数据划分为训练集80%和测试集20%。"
+        "使用sklearn中的train_test_split函数，设置参数test_size等于0.2，random_state等于42保证实验结果可复现；"
+        "调用to_csv方法将结果分别保存为train.csv和test.csv。"
+        "第二部分，模型训练方案说明与关键实现：采用TF-IDF词频逆文档频率进行文本特征提取，"
+        "使用TfidfVectorizer提取文本特征，调用fit_transform方法拟合转换训练集；"
+        "分类算法使用LogisticRegression逻辑回归分类器，设置参数max_iter等于1000，调用fit方法完成模型训练拟合。"
+        "第三部分，模型测试与性能指标评测：测试阶段调用vectorizer的transform方法转换测试集特征，"
+        "调用模型的predict方法进行情感预测；调用sklearn.metrics模块中的accuracy_score计算准确率、"
+        "precision_score计算精确率、recall_score计算召回率、f1_score计算F1分数，以及confusion_matrix计算混淆矩阵。"
+        "根据已知数据TP等于150、FP等于30、FN等于20、TN等于200，总样本400条进行指标计算："
+        "准确率Accuracy为150加200除以400，等于87.5%；"
+        "精确率Precision为150除以150加30，约等于83.3%；"
+        "召回率Recall为150除以150加20，约等于88.2%；"
+        "F1分数为2乘精确率乘召回率除以两者之和，约等于85.7%。"
+        "第四部分，五段式测试报告：第一，项目背景，说明电商平台顾客评价情感识别任务与TF-IDF加逻辑回归算法方案；"
+        "第二，测试目的，评估模型分类性能，期望准确率达到85%以上，F1分数达到0.80以上；"
+        "第三，测试方法，说明8比2数据切分、TF-IDF特征提取与LogisticRegression训练评测流程；"
+        "第四，测试结果及分析，汇报四项关键指标与混淆矩阵，分析FP假正例偏多反映出的过度乐观倾向，容易将部分含蓄消极差评误判为好评；"
+        "第五，改进建议，定向补充含蓄差评与反讽样本，在特征层面引入否定词、情感词典及N-gram特征，并尝试对比支持向量机SVM或朴素贝叶斯模型。"
+        "第五部分，错误案例分析：案例一，评价描述包装太用心了盒子破了大洞，真实为消极，模型预测为积极。"
+        "原因在于模型仅识别到用心的正面词义，未能理解引号与上下文构成的讽刺反语；"
+        "纠正措施为扩充讽刺反语样本，在特征层面增加反语标记和引号特征，或引入BERT上下文语义模型。"
+        "案例二，评价描述还好吧没有想象中那么惊艳，真实为消极，模型预测为积极。"
+        "原因在于模型未能识别没有想象中表达的委婉失望；"
+        "纠正措施为补充委婉差评样本，增加短语和N-gram特征提升隐含情感识别能力。"
+    ),
+    "prac-09-4": (
+        "第一部分，数据划分与保存：将8比2划分好的训练集和测试集分别保存为train.csv和test.csv。"
+        "第二部分，模型训练与测试方案：图像预处理使用PIL库中的Image.open打开验证码图片，"
+        "调用convert方法转换为L单通道灰度图，调用resize方法统一缩放为32乘32像素尺寸，"
+        "通过getdata方法提取像素值序列作为输入特征；"
+        "模型训练使用sklearn中的LogisticRegression逻辑回归分类器，设置参数max_iter等于1000，"
+        "调用fit方法在训练特征集上拟合；测试阶段调用模型的predict方法预测测试集标签；"
+        "评估阶段调用accuracy_score计算准确率，调用precision_score、recall_score、f1_score并设置参数average等于macro计算多分类宏平均指标。"
+        "第三部分，性能指标计算：已知TP等于80，FP等于20，FN等于20，TN等于80，总数200条。"
+        "准确率Accuracy为80加80除以200，等于80%；"
+        "精确率Precision为80除以80加20，等于80%；"
+        "召回率Recall为80除以80加20，等于80%；"
+        "F1分数为2乘0.8乘0.8除以0.8加0.8，等于80%。"
+        "第四部分，五段式测试报告：第一，项目背景，说明RPA网页表单自动填写的验证码识别任务；"
+        "第二，测试目的，评估验证码分类性能，检验是否达到准确率80%以上的业务达标要求；"
+        "第三，测试方法，说明8比2数据划分、32乘32灰度特征提取与LogisticRegression建模过程；"
+        "第四，测试结果及分析，汇报四项80%指标及对称混淆矩阵，指出模型对强干扰线、模糊扭曲的复杂验证码识别能力仍显不足；"
+        "第五，改进建议，扩充多样字体、干扰线和扭曲变形样本库，增加图像去噪与二值化预处理，并尝试卷积神经网络CNN等视觉模型。"
+        "第五部分，错误案例分析：案例一，真实标签为1有效验证码，模型预测为0无效验证码。"
+        "原因在于干扰线与噪点破坏了字符特征；纠正措施为扩充带干扰线样本，并在图像预处理中增加去噪与边缘增强算法。"
+        "案例二，真实标签为0无效验证码，模型预测为1有效验证码。"
+        "原因在于无效样本量不足且特征重叠；纠正措施为增加模糊争议负样本，重新训练并结合置信度阈值和人工复核兜底。"
+    ),
+    "prac-07-4": (
+        "第一部分，模型训练与持久化保存：图像预处理使用PIL图像处理库的Image.open读取图片，"
+        "调用convert方法转换为L单通道灰度图，调用resize方法统一缩放为32乘32像素尺寸，"
+        "提取像素值列表作为模型特征；分类模型使用LogisticRegression逻辑回归分类器，设置参数max_iter等于1000，"
+        "调用fit方法在训练集上完成模型训练；导入joblib库，调用dump方法将训练好的模型持久化保存为smoking_model.pkl文件。"
+        "第二部分，模型测试与性能评估：测试阶段使用joblib的load方法加载已保存的smoking_model.pkl模型文件，"
+        "调用模型的predict方法在测试集特征上进行吸烟二分类预测；"
+        "调用sklearn.metrics模块中的accuracy_score计算准确率、precision_score计算精确率、"
+        "recall_score计算召回率、f1_score计算F1分数。"
+        "第三部分，性能指标计算与测试报告：已知TP等于120，FP等于30，FN等于20，TN等于130，样本总数300条。"
+        "准确率Accuracy为120加130除以300，约等于83.3%；"
+        "精确率Precision为120除以120加30，等于80.0%；"
+        "召回率Recall为120除以120加20，约等于85.7%；"
+        "F1分数为2乘0.80乘0.857除以两者之和，约等于82.8%。"
+        "五段式测试报告规范：第一，项目背景，说明公共场所自然场景吸烟视觉检测任务背景与技术路线；"
+        "第二，测试目的，评估吸烟二分类模型在实际场景中的识别效果，要求准确率与F1分数均达到80%以上；"
+        "第三，测试方法，说明32乘32灰度特征与LogisticRegression模型训练及评测方案；"
+        "第四，测试结果及分析，汇报四项达标指标与混淆矩阵，分析弱光、远距离及遮挡情况下的漏检和误检成因；"
+        "第五，改进建议，针对性扩充逆光、夜间弱光、手部严重遮挡及远景吸烟样本。"
+        "第四部分，典型错误案例分析：针对吸烟漏检案例，即真实有吸烟行为但模型预测为未吸烟。"
+        "深层原因归因：手部遮挡导致香烟露出特征微弱，且监控弱光环境下对比度不足；"
+        "针对性纠正措施：在数据采集层面补充遮挡与弱光吸烟样本；在预处理层面增加直方图均衡化提高对比度，并引入边缘检测算子强化微小目标轮廓。"
+    ),
+}
+
+
+def strip_code_for_speech(raw_text: str) -> str:
+    """
+    Remove raw programming syntax lines, code fences, imports, and variable assignments
+    from spoken audio narration, leaving descriptive natural text.
+    """
+    lines = raw_text.splitlines()
+    clean_lines = []
+    in_code_fence = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code_fence = not in_code_fence
+            continue
+        if in_code_fence:
+            continue
+        # Skip import statements or python code lines
+        if re.match(
+            r"^(?:import\s+|from\s+\w+\s+import|def\s+\w+|class\s+\w+|return\b|print\(|#\s*)",
+            stripped,
+        ):
+            continue
+        # Skip variable assignment lines e.g. df = pd.read_csv...
+        if re.match(r"^[A-Za-z_][A-Za-z0-9_]*\s*=\s*", stripped) and any(
+            kw in stripped for kw in ["pd.", "np.", "Image.", "load_image", "read_csv", "DataFrame", "score", "dump", "load", "model.", "vectorizer."]
+        ):
+            continue
+        clean_lines.append(line)
+    return "\n".join(clean_lines)
 
 
 def build_question_narration(q: dict) -> tuple[str, str, str]:
@@ -187,14 +249,19 @@ def build_question_narration(q: dict) -> tuple[str, str, str]:
     sub_no = qid.split("-")[-1]
     qtype_name = QUESTION_TYPE_NAMES.get(sub_no, "实操技能题")
 
-    # Reconstruct standard answer
-    ans_parts = []
-    for it in q["p"]:
-        if isinstance(it, int):
-            ans_parts.append(q["b"][it])
-        else:
-            ans_parts.append(it)
-    raw_answer = "".join(ans_parts)
+    # If handcrafted spoken answer exists (e.g. coding questions where raw code must not be read)
+    if qid in SPECIAL_QUESTION_SPOKEN_ANSWERS:
+        raw_answer = SPECIAL_QUESTION_SPOKEN_ANSWERS[qid]
+    else:
+        # Reconstruct standard answer
+        ans_parts = []
+        for it in q["p"]:
+            if isinstance(it, int):
+                ans_parts.append(q["b"][it])
+            else:
+                ans_parts.append(it)
+        raw_answer = "".join(ans_parts)
+        raw_answer = strip_code_for_speech(raw_answer)
 
     # Summarize prompt
     prompt_lines = [l.strip() for l in q["prompt"].splitlines() if l.strip()]
@@ -202,13 +269,7 @@ def build_question_narration(q: dict) -> tuple[str, str, str]:
     if len(prompt_brief) > 120:
         prompt_brief = prompt_brief[:115] + "等业务需求"
 
-    # Translate code if code question
-    if any(k in raw_answer for k in ["import pandas", "importpandas", "def load_image", "from sklearn"]):
-        answer_spoken = format_code_for_speech(raw_answer)
-    else:
-        answer_spoken = raw_answer
-
-    answer_spoken = clean_text_for_speech(answer_spoken)
+    answer_spoken = clean_text_for_speech(raw_answer)
 
     # Takeaway summaries based on question type
     takeaways = {
@@ -501,18 +562,42 @@ def main() -> int:
             idx, item = f.result()
             manifest_items[idx] = item
 
+    # Merge with existing manifest if filtered
+    if args.paper or args.question:
+        existing_manifest = []
+        if MANIFEST_FILE.exists():
+            with MANIFEST_FILE.open("r", encoding="utf-8") as f:
+                existing_manifest = json.load(f)
+        manifest_dict = {item["id"]: item for item in existing_manifest}
+        for item in manifest_items:
+            manifest_dict[item["id"]] = item
+        manifest_items_to_save = list(manifest_dict.values())
+        manifest_items_to_save.sort(key=lambda x: (x.get("paperKey", ""), x.get("subNo", 0)))
+    else:
+        manifest_items_to_save = manifest_items
+
     # Save manifest.json
     with MANIFEST_FILE.open("w", encoding="utf-8") as f:
-        json.dump(manifest_items, f, ensure_ascii=False, indent=2)
-    print(f"\nWrote manifest with {len(manifest_items)} items to {MANIFEST_FILE}")
+        json.dump(manifest_items_to_save, f, ensure_ascii=False, indent=2)
+    print(f"\nWrote manifest with {len(manifest_items_to_save)} items to {MANIFEST_FILE}")
 
-    # Merge into paper episodes if full papers were generated
-    episodes = []
+    # Re-merge paper episodes for affected papers
     paper_groups = {}
-    for item in manifest_items:
+    for item in manifest_items_to_save:
         paper_groups.setdefault(item["paperKey"], []).append(item)
 
-    for p_key, p_items in sorted(paper_groups.items()):
+    affected_papers = set(item["paperKey"] for item in manifest_items)
+    existing_episodes = []
+    if EPISODES_FILE.exists():
+        with EPISODES_FILE.open("r", encoding="utf-8") as f:
+            existing_episodes = json.load(f)
+    episodes_dict = {ep["paperKey"]: ep for ep in existing_episodes}
+
+    for p_key in sorted(affected_papers):
+        p_items = sorted(paper_groups.get(p_key, []), key=lambda x: x["subNo"])
+        if len(p_items) < 8:
+            print(f"Skipping episode merge for {p_key}: only {len(p_items)} questions found in manifest.")
+            continue
         p_name = PAPER_NAMES.get(p_key, f"试卷{p_key}")
         print(f"\n--> Merging paper episode for {p_name} ({len(p_items)} questions)...")
         ep = merge_paper_podcast(
@@ -522,11 +607,12 @@ def main() -> int:
             api_key=api_key,
             voice=args.voice,
             endpoint=MIMO_ENDPOINT,
-            force=args.force,
+            force=True,
         )
         print(f"    ✓ Generated episode {ep['slug']}.mp3 ({ep['duration_seconds']}s, {round(ep['size_bytes']/1024/1024, 2)}MB)")
-        episodes.append(ep)
+        episodes_dict[p_key] = ep
 
+    episodes = [episodes_dict[k] for k in sorted(episodes_dict.keys())]
     # Save episodes.json
     with EPISODES_FILE.open("w", encoding="utf-8") as f:
         json.dump(episodes, f, ensure_ascii=False, indent=2)
