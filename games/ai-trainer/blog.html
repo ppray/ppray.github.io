@@ -65,9 +65,10 @@
       border-bottom: var(--border-ink);
       padding: 12px 24px;
       display: flex;
+      flex-wrap: wrap;               /* 放不下时按钮整体换到下一行，而不是把按钮文字挤成竖排 */
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px 16px;
     }
     .nav-brand {
       display: flex;
@@ -98,9 +99,11 @@
 
     .nav-actions {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 10px;
     }
+    .nav-actions .btn { white-space: nowrap; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -143,7 +146,8 @@
 
     @media (max-width: 980px) {
       .blog-layout {
-        grid-template-columns: 1fr;
+        /* minmax(0, …)：1fr 的默认最小宽度是内容宽度，长代码行会把整列（和整页）撑宽 */
+        grid-template-columns: minmax(0, 1fr);
       }
       .blog-sidebar {
         display: none;
@@ -213,6 +217,7 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+      min-width: 0;
     }
 
     /* Hero Banner */
@@ -365,6 +370,57 @@
       font-weight: 700;
       color: #b91c1c;
       line-height: 1.5;
+    }
+
+    /* 模版术语注释：虚线下划线 + 点开的大白话弹窗 */
+    .term-hint {
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin: -8px 0 14px;
+    }
+    .term {
+      border-bottom: 1.5px dotted currentColor;
+      border-radius: 3px;
+      padding: 0 1px;
+      cursor: pointer;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+    }
+    .term[aria-expanded="true"] { background: var(--yellow-soft); }
+    @media (hover: hover) {
+      .term:hover { background: var(--yellow-soft); }
+    }
+    .term:focus { outline: none; }
+    .term:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .term-pop {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 300;
+      width: max-content;
+      max-width: min(300px, calc(100vw - 24px));
+      background: #fff;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 0 var(--ink);
+      padding: 10px 13px;
+      font-size: 13px;
+      line-height: 1.65;
+      text-align: left;
+    }
+    .term-pop[hidden] { display: none; }
+    .term-pop-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--blue-d);
+      margin-bottom: 3px;
+    }
+    .term-pop-body { color: var(--ink-2); }
+    @media print {
+      .term-pop { display: none !important; }
+      .term { border-bottom: 0; }
     }
 
     /* Paper Section */
@@ -526,8 +582,14 @@
       border: 1px solid #facc15;
       margin: 0 2px;
       display: inline-block;
+      max-width: 100%;
       line-height: 1.4;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    /* 公式、代码片段、文件名这类不带空格的长串，在窄屏上允许断开，不把整页撑宽 */
+    .answer-body, .prompt-content, .takeaway-text, .info-pane, .template-formula, .hero-desc {
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     /* Code Block */
@@ -723,6 +785,42 @@
       .player-center { width: 100%; max-width: 100%; }
       .player-right { display: none; }
     }
+
+    /* 手机布局：导航不再吸顶（底部已有播放条，顶部再钉一条会吃掉近四分之一屏），
+       四个入口排成 2×2；卡片收窄内边距，给正文和代码留宽度 */
+    @media (max-width: 680px) {
+      .blog-nav {
+        position: relative;
+        gap: 10px;
+        padding: 10px 12px 12px;
+      }
+      .nav-brand { flex: 1 1 100%; min-width: 0; gap: 10px; }
+      .nav-brand > div { min-width: 0; }
+      .btn-back { width: 32px; height: 32px; flex-shrink: 0; }
+      .brand-text { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .brand-sub { display: none; }
+      .nav-actions {
+        flex: 1 1 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .nav-actions .btn { padding: 7px 8px; font-size: 12.5px; }
+      .blog-layout { margin: 14px auto; padding: 0 12px; gap: 20px; }
+      .blog-main { gap: 20px; }
+      .hero-banner { padding: 20px 16px; }
+      .hero-banner::after { font-size: 48px; }
+      .hero-title { font-size: 22px; }
+      .hero-desc { font-size: 13.5px; }
+      .strategy-card, .question-card { padding: 18px 14px; }
+      .paper-banner { padding: 16px; }
+      .section-title { font-size: 18px; }
+      .template-box { padding: 12px; }
+      .template-formula { padding: 8px 10px; }
+      .q-title { font-size: 16px; }
+      .code-box pre { padding: 12px; font-size: 12px; }
+      .player-controls { gap: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -872,65 +970,66 @@
         <p style="font-size:14px; color:var(--ink-2); margin-bottom:14px;">
           不管抽中 01 卷、09 卷还是 07 卷，8 道大题的底层考查逻辑完全一致。牢记以下通式即可举一反三！
         </p>
+        <p class="term-hint">💡 公式里带虚线的术语可以点开（电脑上鼠标悬停即可），看一两句话的大白话解释。</p>
 
         <div class="template-box">
           <div class="template-title">模版 1：业务流程设计（15分）</div>
           <div class="template-formula">
-            【采集五步】需求明确（定用途/准度） → 来源清晰（真实性/代表性） → 方式合理（API直连/频次） → 存储安全（AES加密/台账） → 更新机制（增量/周更）<br>
-            【处理四步】数据清洗（去重/异常/缺失） → 数据转换（格式/归一/编码/特征） → 数据核验（规则/跨表） → 数据归档（字典/版本库）<br>
-            【审核双层】三率指标（准确率/完整率/一致率） → 自动化机审全量 + 人工抽检 5%-10% → 异常闭环打回
+            【采集五步】需求明确（定用途/准度） → 来源清晰（真实性/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="代表性" data-tip="采来的数据要覆盖真实场景的各种情况（不同时段、人群、地区）。只采一小撮，模型上线就会“水土不服”。">代表性</span>） → 方式合理（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="API直连" data-tip="让程序通过系统开放的接口自动拉取数据，不靠人工导出、复制粘贴，又快又不容易出错。">API直连</span>/频次） → 存储安全（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="AES加密" data-tip="一种通用的加密算法，加密、解密用同一把密钥。敏感数据加密后再存，文件泄露了没有密钥也看不懂。">AES加密</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="台账" data-tip="一本登记簿：每批数据从哪来、什么时候采、谁负责、做什么用都记下来，出了问题能查到源头。">台账</span>） → 更新机制（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="增量" data-tip="每次只采新增或有变化的那部分数据，不用每次从头全部重采。">增量</span>/周更）<br>
+            【处理四步】数据清洗（去重/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="异常值" data-tip="明显不合理的数值，如年龄 200 岁、金额为负数。要么修正，要么剔除。">异常</span>/缺失） → 数据转换（格式/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="归一化" data-tip="把单位、大小不同的数值缩放到同一范围（如 0～1），免得数值大的字段“嗓门大”，盖过其他字段。">归一</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="类别编码" data-tip="把文字类别换成数字，模型才能计算，如 男／女 → 0／1。">编码</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="特征构造" data-tip="从原始字段算出更有用的新字段，如由出生日期算出年龄、由消费流水算出月均消费。">特征</span>） → 数据核验（规则/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="跨表核验" data-tip="同一信息在不同表里对一对，如订单表的金额要和支付表一致，对不上就说明有错。">跨表</span>） → 数据归档（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="数据字典" data-tip="数据的“说明书”：每个字段叫什么、什么意思、什么类型、允许填哪些值。">字典</span>/版本库）<br>
+            【审核双层】<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="三率指标" data-tip="衡量数据质量的三把尺子。准确率：内容写对的比例；完整率：该填的字段没空着的比例；一致率：同一信息在各处写法相同的比例。">三率指标</span>（准确率/完整率/一致率） → 自动化<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="机审全量" data-tip="先让程序把全部数据自动检查一遍，一条不落，又快又省；再配人工抽检，看机器审得靠不靠谱。">机审全量</span> + 人工抽检 5%-10% → <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="异常闭环" data-tip="发现问题 → 打回修改 → 复查确认，走完一圈才算结束，不能发现了就不了了之。">异常闭环</span>打回
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 2：业务模块效果优化（15分）</div>
           <div class="template-formula">
-            【三层归因】数据层（样本倾斜/噪声多） → 模型层（欠拟合/参数不当/特征不足） → 业务层（长尾未覆盖/规则死板）<br>
-            【闭环方案】针对性扩增样本清洗脏数据 → 调优超参/改用集成模型(RF/XGB) → 增加置信度人工兜底 → A/B测试验证显著性
+            【三层<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="归因" data-tip="找原因。按数据、模型、业务三层逐层排查，定位效果差到底卡在哪一环。">归因</span>】数据层（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="样本倾斜" data-tip="各类别数量相差悬殊，如 95 条正常、5 条异常。模型容易“偷懒”全猜多数类，少数类总认不出来。">样本倾斜</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="噪声" data-tip="数据里的错误和干扰，如标签标错、图片模糊。噪声一多，模型就会学到错东西。">噪声</span>多） → 模型层（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="欠拟合" data-tip="模型太简单或训练不够，连训练数据都学不好。反面是过拟合：训练过的题全会，新题不会。">欠拟合</span>/参数不当/特征不足） → 业务层（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="长尾" data-tip="单看很少见、但种类很多的情况，如罕见口音、遮挡严重的画面。模型见得少，最容易在这里出错。">长尾</span>未覆盖/规则死板）<br>
+            【闭环方案】针对性<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="扩增样本" data-tip="增加训练数据：补采真实数据，或把已有图片翻转、裁剪、调亮度“变出”新样本（数据增强）。">扩增样本</span>清洗脏数据 → 调优<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="超参" data-tip="训练前由人设定、模型自己学不出来的参数，如迭代次数 max_iter、树的棵数。调优就是试出效果最好的一组。">超参</span>/改用<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="集成模型" data-tip="把很多个简单模型（通常是决策树）的判断合起来，“三个臭皮匠，顶个诸葛亮”。RF 是随机森林，XGB 是 XGBoost。">集成模型(RF/XGB)</span> → 增加<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="置信度" data-tip="模型对这次判断有几成把握。如“吸烟，置信度 0.92”，就是它有 92% 的把握。">置信度</span><span class="term" role="button" tabindex="0" aria-expanded="false" data-term="人工兜底／托底" data-tip="机器拿不准或风险高时，由人来做最终决定，保证不出大错。">人工兜底</span> → <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="A/B测试" data-tip="把用户随机分成两组，一组用旧方案、一组用新方案，同时运行，用数据比出哪个更好。">A/B测试</span>验证<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="显著性" data-tip="判断两组的差距是真的还是碰巧。统计检验通过（常用 p＜0.05），才能说新方案确实更好。">显著性</span>
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 3：数据处理规范制定（15分）</div>
           <div class="template-formula">
-            【标准四部曲】入库统一格式（分辨率/命名/编码） → 清洗质检门槛（模糊/破损/无效剔除） → 标注SOP指引（统一边界/多重交叉校验） → 抽检验收（合格率≥95%，不达标整批返工）
+            【标准四部曲】入库统一格式（分辨率/命名/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="文件编码" data-tip="文件的存储格式：文本统一用 UTF-8 防止乱码，图片统一 JPG 或 PNG，后面的程序才能批量处理。">编码</span>） → 清洗质检门槛（模糊/破损/无效剔除） → 标注<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="SOP" data-tip="标准作业程序：把每一步怎么做写成操作手册，保证不同的人做出来的结果一样。">SOP</span>指引（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="统一边界" data-tip="事先约定标到哪儿才算对：框要贴紧目标边缘、被挡住一半算不算、看不清的归哪类，大家用同一把尺子。">统一边界</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="多重交叉校验" data-tip="同一条数据由两人以上各自独立标注，结果对不上，再请第三人或专家裁定。">多重交叉校验</span>） → <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="抽检验收" data-tip="每批数据随机抽一部分检查，合格率达标（如 ≥95%）整批通过，不达标整批退回返工。">抽检验收</span>（合格率≥95%，不达标整批返工）
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 4：算法实操与代码训练测试（20-25分）</div>
           <div class="template-formula">
-            【核心四步】① 数据读取与切分(train_test_split 8:2, random_state=42) → ② 特征工程(文本TF-IDF / 图像32x32灰度展平) → ③ 模型fit与保存(joblib.dump model.pkl) → ④ 测试集预测计算Accuracy/Precision/Recall/F1，输出混淆矩阵与测试报告
+            【核心四步】① 数据读取与切分(<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="train_test_split" data-tip="sklearn 的函数，把数据随机切成训练集（给模型学）和测试集（留着考模型）。test_size=0.2 就是 8:2 切分。">train_test_split</span> 8:2, <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="random_state=42" data-tip="随机种子。固定这个数，每次切分的结果都一样，别人运行能复现；42 只是习惯写法，换别的数也行。">random_state=42</span>) → ② <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="特征工程" data-tip="把原始数据（文字、图片）加工成模型能计算的数字。模型只认数字。">特征工程</span>(文本<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="TF-IDF" data-tip="把文本变成数字的方法：一个词在这条评论里出现得越多、在所有评论里越少见，就越能代表这条评论，权重越高。">TF-IDF</span> / 图像<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="32x32灰度展平" data-tip="图片先转成黑白灰度，再缩成 32×32 像素，最后把这张二维表拉成一行 1024 个数字，交给模型。">32x32灰度展平</span>) → ③ 模型<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="fit" data-tip="训练。model.fit(训练特征, 标签) 就是让模型从训练数据里学规律。">fit</span>与保存(<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="joblib.dump" data-tip="把训练好的模型存成文件（如 model.pkl）。之后用 joblib.load 读回来就能直接预测，不用重新训练。">joblib.dump</span> model.pkl) → ④ 测试集预测计算<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="Accuracy" data-tip="准确率＝判对的 ÷ 全部＝(TP+TN) ÷ 总数。07 卷第 4 题：(120+130) ÷ 300＝83.3%。类别不均衡时会虚高。">Accuracy</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="Precision" data-tip="精确率＝TP ÷ (TP+FP)：模型判“是”的里面，真“是”的占多少，管误报。07 卷第 4 题：120 ÷ 150＝80.0%。">Precision</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="Recall" data-tip="召回率＝TP ÷ (TP+FN)：真“是”的里面，模型找出了多少，管漏报。07 卷第 4 题：120 ÷ 140＝85.7%。">Recall</span>/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="F1" data-tip="精确率和召回率的调和平均：2×P×R ÷ (P+R)，两个都高 F1 才高。07 卷第 4 题：2×0.80×0.857 ÷ (0.80+0.857)＝82.8%。">F1</span>，输出<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="混淆矩阵" data-tip="按“实际 × 预测”分四格：TP 实际是、判是；FP 实际不是、判是（误报）；FN 实际是、判不是（漏报）；TN 实际不是、判不是。sklearn 输出里行是实际、列是预测。">混淆矩阵</span>与测试报告
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 5：系统监控与持续优化（15分）</div>
           <div class="template-formula">
-            【监控双轮】技术性能监控（QPS、延迟、GPU显存、丢包率） + 业务质量监控（召回率、误检率、人工修改率）<br>
-            【预警应急】阈值分级告警（短信/钉钉） → 异常激增触发熔断降级（切换人工/简化模型） → 难例回流触发增量更新
+            【监控双轮】技术性能监控（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="QPS" data-tip="每秒处理的请求数（Queries Per Second），看系统忙不忙、扛不扛得住。">QPS</span>、延迟、<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="GPU显存" data-tip="显卡自带的内存，模型运行时要占用。快满时会变慢，甚至报错崩溃。">GPU显存</span>、<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="丢包率" data-tip="网络传输中丢掉的数据包比例。摄像头视频流丢包多，画面就会卡顿、漏帧。">丢包率</span>） + 业务质量监控（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="召回率" data-tip="即 Recall：该抓的里面实际抓到了多少。100 个真在吸烟的，其中 90 个被系统抓到，召回率就是 90%。">召回率</span>、<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="误检率" data-tip="没问题却被报成有问题的比例，也就是“误报”。误报多了，值班人员会被假警报淹没。">误检率</span>、<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="人工修改率" data-tip="机器结果被人工改掉的比例。越高说明模型越不靠谱，是很直观的业务质量指标。">人工修改率</span>）<br>
+            【预警应急】<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="阈值分级告警" data-tip="给指标划警戒线并分级（如提示／警告／严重），越严重通知越急、通知的人越多。">阈值分级告警</span>（短信/钉钉） → 异常激增触发<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="熔断降级" data-tip="熔断：模型出故障时立刻停止调用，像电闸跳闸，防止故障扩散。降级：先用人工或更简单的模型顶上，业务不停。">熔断降级</span>（切换人工/简化模型） → <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="难例回流" data-tip="把模型判错或拿不准的样本收集回来，人工标注后放回训练集，让模型专门补这块短板。">难例回流</span>触发<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="增量更新" data-tip="用新收集的数据在原模型基础上继续训练、更新，不必从零全部重训。">增量更新</span>
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 6：人机交互流程设计（15-20分）</div>
           <div class="template-formula">
-            【双阈值路由】置信度高于上限（如90%）直接机器放行 → 置信度处于模糊带（60%~90%）推入人工复核队列 → 低于下限直接拦截预警<br>
-            【人工托底】高危判罚与申诉场景必留人工通道，人工修正标注结果沉淀为负样本训练集
+            【<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="双阈值路由" data-tip="用上下两条置信度线把结果分三路：高于上限机器直接放行，低于下限直接拦截，夹在中间的交给人。">双阈值路由</span>】<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="置信度" data-tip="模型对这次判断有几成把握。如“吸烟，置信度 0.92”，就是它有 92% 的把握。">置信度</span>高于上限（如90%）直接机器放行 → 置信度处于<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="模糊带" data-tip="两条阈值之间的区间（如 60%～90%）。机器在这里最拿不准，最需要人来判断。">模糊带</span>（60%~90%）推入人工复核队列 → 低于下限直接拦截预警<br>
+            【<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="人工兜底／托底" data-tip="机器拿不准或风险高时，由人来做最终决定，保证不出大错。">人工托底</span>】高危判罚与申诉场景必留人工通道，人工修正标注结果沉淀为<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="负样本" data-tip="不属于目标类别的样本，如“没在吸烟”的画面。机器误报、被人工改正的样本就是典型负样本，加回训练集，模型就少犯同样的错。">负样本</span>训练集
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 7：数据采集与处理培训（5分）</div>
           <div class="template-formula">
-            【培训结构】分层对象（初级/中级工） → 课程大纲（采集技术/清洗SOP/质检指标） → 授课方法（理论讲授 + 沙箱实操上机） → 考核闭环（理论笔试 + 实操盲测抽检合格颁证）
+            【培训结构】分层对象（初级/中级工） → 课程大纲（采集技术/清洗<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="SOP" data-tip="标准作业程序：把每一步怎么做写成操作手册，保证不同的人做出来的结果一样。">SOP</span>/质检指标） → 授课方法（理论讲授 + <span class="term" role="button" tabindex="0" aria-expanded="false" data-term="沙箱实操" data-tip="在和真实系统隔离的练习环境里上机操作，练错了也不会影响线上数据。">沙箱实操</span>上机） → 考核闭环（理论笔试 + 实操<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="盲测抽检" data-tip="用学员事先不知道答案的数据考核，再抽查结果，测出真实水平，防止“背答案”。">盲测抽检</span>合格颁证）
           </div>
         </div>
 
         <div class="template-box">
           <div class="template-title">模版 8：数据指导与带教纠偏（5分）</div>
           <div class="template-formula">
-            【带教流程】诊断常见痛点（漏标/格式错/逻辑混淆） → 手把手示范标准动作 → 建立典型案例错题库复盘 → 1对1跟进与长效质量追踪
+            【带教流程】诊断常见痛点（<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="漏标" data-tip="该标的目标没标上，如画面里两个人在吸烟只框了一个。漏标会让模型以为那不是目标。">漏标</span>/格式错/<span class="term" role="button" tabindex="0" aria-expanded="false" data-term="逻辑混淆" data-tip="把相近的类别或规则弄混，如把“手里拿着笔”标成“吸烟”。">逻辑混淆</span>） → 手把手示范标准动作 → 建立典型案例错题库复盘 → 1对1跟进与长效质量追踪
           </div>
         </div>
       </section>
@@ -2427,6 +2526,12 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
     </main>
   </div>
 
+  <!-- 模版术语弹窗（全页共用一个） -->
+  <div class="term-pop" id="termPop" role="tooltip" hidden>
+    <div class="term-pop-title"></div>
+    <div class="term-pop-body"></div>
+  </div>
+
   <!-- Persistent Bottom Audio Player Bar -->
   <div class="audio-bar" id="audioBar">
     <div class="player-left">
@@ -2680,6 +2785,117 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
         setTimeout(() => btn.innerText = originalText, 2000);
       });
     }
+
+    // 8 大模版术语弹窗：点一下打开/再点关闭；电脑上悬停预览、点击固定；
+    // 点空白处或按 Esc 关闭。弹窗避开顶部导航和底部播放条，放不下就翻到术语上方。
+    (function () {
+      const pop = document.getElementById('termPop');
+      const terms = document.querySelectorAll('.term');
+      if (!pop || !terms.length) return;
+      const popTitle = pop.querySelector('.term-pop-title');
+      const popBody = pop.querySelector('.term-pop-body');
+      const header = document.querySelector('.blog-nav');
+      const bar = document.getElementById('audioBar');
+      const canHover = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+      let current = null;
+      let pinned = false;
+      let rafId = 0;
+
+      function close() {
+        if (!current) return;
+        current.setAttribute('aria-expanded', 'false');
+        current.removeAttribute('aria-describedby');
+        current = null;
+        pinned = false;
+        pop.hidden = true;
+      }
+
+      // 以用户实际看到的区域（visual viewport）为界：手机上页面被撑宽或双指缩放时，
+      // 布局视口比屏幕大，按 innerWidth/innerHeight 算会把弹窗放到屏幕外。
+      function visibleBox() {
+        const vv = window.visualViewport;
+        const x = vv ? vv.offsetLeft : 0;
+        const y = vv ? vv.offsetTop : 0;
+        const w = vv ? vv.width : document.documentElement.clientWidth;
+        const h = vv ? vv.height : window.innerHeight;
+        const top = Math.max(header ? header.getBoundingClientRect().bottom : 0, y);
+        const bottom = Math.min(bar ? bar.getBoundingClientRect().top : Infinity, y + h);
+        return { left: x, right: x + w, top: top, bottom: bottom };
+      }
+
+      function place() {
+        rafId = 0;
+        if (!current) return;
+        const r = current.getBoundingClientRect();
+        const box = visibleBox();
+        const topLimit = box.top;
+        const bottomLimit = box.bottom;
+        if (r.bottom <= topLimit || r.top >= bottomLimit) { close(); return; }
+        const gap = 8;
+        const margin = 12;
+        const w = pop.offsetWidth;
+        const h = pop.offsetHeight;
+        const left = Math.min(Math.max(r.left + r.width / 2 - w / 2, box.left + margin), box.right - w - margin);
+        let top = r.bottom + gap;
+        if (top + h > bottomLimit - margin && r.top - gap - h >= topLimit + margin) top = r.top - gap - h;
+        pop.style.left = Math.round(left) + 'px';
+        pop.style.top = Math.round(top) + 'px';
+      }
+
+      function schedule() {
+        if (current && !rafId) rafId = requestAnimationFrame(place);
+      }
+
+      function open(el, pin) {
+        if (current && current !== el) close();
+        current = el;
+        pinned = pin;
+        popTitle.textContent = el.dataset.term || el.textContent;
+        popBody.textContent = el.dataset.tip || '';
+        el.setAttribute('aria-expanded', 'true');
+        el.setAttribute('aria-describedby', 'termPop');
+        pop.hidden = false;
+        place();
+      }
+
+      terms.forEach(el => {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          if (current === el && pinned) close();
+          else open(el, true);
+        });
+        el.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            el.click();
+          }
+        });
+        if (canHover) {
+          el.addEventListener('mouseenter', () => { if (!pinned) open(el, false); });
+          el.addEventListener('mouseleave', () => { if (!pinned && current === el) close(); });
+        }
+      });
+
+      document.addEventListener('pointerdown', e => {
+        if (!current) return;
+        const t = e.target;
+        if (t && t.closest && (t.closest('.term') || t.closest('#termPop'))) return;
+        close();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && current) {
+          const el = current;
+          close();
+          el.focus();
+        }
+      });
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('scroll', schedule);
+        window.visualViewport.addEventListener('resize', schedule);
+      }
+    })();
   </script>
 </body>
 </html>
