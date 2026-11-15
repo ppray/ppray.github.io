@@ -19,6 +19,8 @@
 
 - [站点首页](https://ppray.github.io/)：全部复习资源与工具的索引。
 - [人工智能训练师三级备考](https://ppray.github.io/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E8%AE%AD%E7%BB%83%E5%B8%88%E4%B8%89%E7%BA%A7/)：上海交大 2025 版三级认证的操作技能练习题与解法。
+- [人工智能训练师（三级／高级）模拟试卷刷题](https://ppray.github.io/games/ai-trainer/)：与上一条同一认证级别的另一套题库，含 200 道理论选择题与 01／09／07 三套模拟卷的 24 道实操大题；实操题按参考答案的采分点做成挖空连击。
+- [人工智能训练师实操大题通关博客](https://ppray.github.io/games/ai-trainer/blog.html)：上述 24 道实操大题的完整参考答案、采分点标注、8 类题型答题模板与算法题参考代码。
 - [sitemap.xml](https://ppray.github.io/sitemap.xml)：全站可抓取页面清单。
 
 ## 说明

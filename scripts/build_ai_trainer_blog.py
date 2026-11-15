@@ -17,173 +17,152 @@ MANIFEST_FILE = ROOT / "podcasts" / "ai-trainer" / "manifest.json"
 BLOG_HTML_PATH = ROOT / "games" / "ai-trainer" / "blog.html"
 
 CODE_SNIPPETS = {
+    # 三段代码均取自飞书原文「参考答案」（2026-11-14 核对），只补了原文排版丢失的空格/括号，
+    # 文件名、列名、参数一律以原文为准；改动前先对照飞书文档。
     "prac-01-4": """# ==============================================================
-# 01题4：顾客评价情感识别算法测试 标准代码
-# 考点：8:2数据集划分、TF-IDF特征提取、LogisticRegression训练、多维指标评估
+# 01题4：顾客评价情感识别算法测试 · 参考答案代码
+# 考点：train_test_split 8:2 划分、TfidfVectorizer.fit_transform、LogisticRegression、四项指标
 # ==============================================================
+# （1）训练集与测试集划分
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
 
-# 1. 数据划分（8:2比例，固定随机种子42，确保实验可复现）
 df = pd.read_csv('raw_data.csv')
 X = df['review']
 y = df['label']
-
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
-
-# 保存划分结果
 train_df = pd.DataFrame({'review': X_train, 'label': y_train})
 test_df = pd.DataFrame({'review': X_test, 'label': y_test})
 train_df.to_csv('train.csv', index=False, encoding='utf-8-sig')
 test_df.to_csv('test.csv', index=False, encoding='utf-8-sig')
-print("数据划分完成：train.csv 与 test.csv 保存成功")
+print('数据划分完成，已保存为train.csv和test.csv')
 
-# 2. 文本特征向量化与模型拟合训练
-vectorizer = TfidfVectorizer(max_features=5000)
+# （2）模型训练
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+
+train_df = pd.read_csv('train.csv')
+X_train = train_df['review']
+y_train = train_df['label']
+vectorizer = TfidfVectorizer()
 X_train_vec = vectorizer.fit_transform(X_train)
-X_test_vec = vectorizer.transform(X_test)
-
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train_vec, y_train)
+print('模型训练完成！')
 
-# 3. 测试集预测与指标计算
+# （3）模型测试与性能指标计算
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+
+X_test_vec = vectorizer.transform(X_test)
 y_pred = model.predict(X_test_vec)
-
-acc = accuracy_score(y_test, y_pred)
-prec = precision_score(y_test, y_pred, average='weighted')
-rec = recall_score(y_test, y_pred, average='weighted')
-f1 = f1_score(y_test, y_pred, average='weighted')
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
-
-print(f"评估指标 -> 准确率: {acc:.4f} | 精确率: {prec:.4f} | 召回率: {rec:.4f} | F1: {f1:.4f}")
-print("混淆矩阵:\\n", cm)
-
-# 4. 生成规范测试报告并保存
-with open('2.2.3_report.txt', 'w', encoding='utf-8') as f:
-    f.write("=== 顾客评价情感识别算法测试报告 ===\\n")
-    f.write(f"测试样本量: {len(y_test)}\\n")
-    f.write(f"准确率 Accuracy: {acc:.4f}\\n精确率 Precision: {prec:.4f}\\n召回率 Recall: {rec:.4f}\\nF1-Score: {f1:.4f}\\n\\n")
-    f.write("详细分类评估报告:\\n")
-    f.write(classification_report(y_test, y_pred))
-print("测试报告已输出至 2.2.3_report.txt")""",
+print(f'准确率:{accuracy:.3f}')
+print(f'精确率:{precision:.3f}')
+print(f'召回率:{recall:.3f}')
+print(f'F1分数:{f1:.3f}')
+print(f'混淆矩阵:\\n{cm}')""",
 
     "prac-09-4": """# ==============================================================
-# 09题4：验证码识别算法训练与测试 标准代码
-# 考点：PIL灰度缩放、图像像素展平、逻辑回归分类、模型持久化pkl与报告输出
+# 09题4：验证码识别算法训练与测试 · 参考答案代码
+# 考点：stratify 分层划分 8:2、灰度 + 32×32 像素特征、LogisticRegression、macro 平均指标
 # ==============================================================
+# （1）captcha_dataset_split.ipynb：训练集与测试集划分
 import pandas as pd
+from sklearn.model_selection import train_test_split
+
+data = pd.read_csv(
+    "captcha/label.txt",
+    sep=" ",
+    names=["image", "label"]
+)
+X = data["image"]
+y = data["label"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+    random_state=42, stratify=y
+)
+train = pd.DataFrame({"image": X_train, "label": y_train})
+test = pd.DataFrame({"image": X_test, "label": y_test})
+train.to_csv("captcha_train.csv", index=False)
+test.to_csv("captcha_test.csv", index=False)
+print("数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv")
+
+# （2）captcha_model_train_eval.ipynb：模型训练与测试
 from PIL import Image
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-import joblib
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# 1. 图像预处理与特征转换（转L单通道灰度，缩放至32x32，扁平化特征）
+train = pd.read_csv("captcha_train.csv")
+test = pd.read_csv("captcha_test.csv")
+
 def load_image(path):
     img = Image.open(path).convert("L")
     img = img.resize((32, 32))
     return list(img.getdata())
 
-# 2. 读取数据与构建训练特征矩阵
-train_df = pd.read_csv("captcha_train.csv")
-test_df = pd.read_csv("captcha_test.csv")
+X_train = [load_image("captcha/image/" + name) for name in train["image"]]
+y_train = train["label"]
+X_test = [load_image("captcha/image/" + name) for name in test["image"]]
+y_test = test["label"]
 
-X_train = [load_image(p) for p in train_df["image_path"]]
-y_train = train_df["label"]
-
-X_test = [load_image(p) for p in test_df["image_path"]]
-y_test = test_df["label"]
-
-# 3. 算法模型创建、拟合与持久化保存
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train, y_train)
 
-# 保存模型为 2.2.3_model.pkl
-joblib.dump(model, "2.2.3_model.pkl")
-print("模型已保存为 2.2.3_model.pkl")
-
-# 4. 模型测试与全面性能评估
 y_pred = model.predict(X_test)
-
-acc = accuracy_score(y_test, y_pred)
-prec = precision_score(y_test, y_pred, average='macro')
-rec = recall_score(y_test, y_pred, average='macro')
-f1 = f1_score(y_test, y_pred, average='macro')
-
-print(f"测试集性能 -> 准确率: {acc:.4f} | 宏精确率: {prec:.4f} | 宏召回率: {rec:.4f} | F1: {f1:.4f}")
-
-# 5. 撰写模型测试报告与误判分析
-with open("2.2.3_report.txt", "w", encoding="utf-8") as f:
-    f.write("=== 验证码识别算法测试与评估报告 ===\\n")
-    f.write(f"测试图片数: {len(y_test)}\\n")
-    f.write(f"准确率: {acc:.4f} | 精确率: {prec:.4f} | 召回率: {rec:.4f} | F1值: {f1:.4f}\\n\\n")
-    f.write("【错误分析与改进建议】\\n")
-    f.write("1. 字符粘连与背景干扰线是导致字符误判的主要原因；\\n")
-    f.write("2. 建议引入二值化去噪与形态学膨胀腐蚀，或迁移至卷积神经网络CNN以进一步提升特征提取鲁棒性。\\n")""",
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average="macro")
+recall = recall_score(y_test, y_pred, average="macro")
+f1 = f1_score(y_test, y_pred, average="macro")
+print("准确率：", accuracy)
+print("精确率：", precision)
+print("召回率：", recall)
+print("F1分数：", f1)""",
 
     "prac-07-4": """# ==============================================================
-# 07题4：自然场景吸烟检测算法测试 标准代码
-# 考点：图像特征提取、逻辑回归基线、随机森林/XGBoost优化纠偏、测试对比
+# 07题4：自然场景吸烟检测算法测试 · 参考答案代码
+# 考点：灰度 + 32×32 像素特征、LogisticRegression、joblib 存取模型、四项指标
 # ==============================================================
+# （1）train.ipynb：模型训练
 import pandas as pd
 from PIL import Image
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import joblib
 
-# 1. 图像数据读取与预处理
+train = pd.read_csv("train.csv")
+
 def load_image(path):
     img = Image.open(path).convert("L")
     img = img.resize((32, 32))
     return list(img.getdata())
 
-train_df = pd.read_csv("train.csv")
-test_df = pd.read_csv("test.csv")
+X_train = [load_image("images/" + name) for name in train["image"]]
+y_train = train["label"]
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+joblib.dump(model, "smoking_model.pkl")
+print("模型训练完成")
 
-X_train = [load_image("images/" + name) for name in train_df["image"]]
-y_train = train_df["label"]
+# （2）test.ipynb：模型测试
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-X_test = [load_image("images/" + name) for name in test_df["image"]]
-y_test = test_df["label"]
-
-# 2. 初始基线模型训练（逻辑回归）
-model_base = LogisticRegression(max_iter=1000)
-model_base.fit(X_train, y_train)
-joblib.dump(model_base, "2.2.3_model.pkl")
-
-# 基线预测
-y_pred_base = model_base.predict(X_test)
-acc_base = accuracy_score(y_test, y_pred_base)
-rec_base = recall_score(y_test, y_pred_base)
-cm_base = confusion_matrix(y_test, y_pred_base)
-
-# 3. 算法纠偏与优化模型训练（改用随机森林集成模型，增强复杂自然背景泛化能力）
-model_opt = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
-model_opt.fit(X_train, y_train)
-
-y_pred_opt = model_opt.predict(X_test)
-acc_opt = accuracy_score(y_test, y_pred_opt)
-rec_opt = recall_score(y_test, y_pred_opt)
-cm_opt = confusion_matrix(y_test, y_pred_opt)
-
-print(f"基线逻辑回归 -> 准确率: {acc_base:.4f}, 召回率: {rec_base:.4f}")
-print(f"优化随机森林 -> 准确率: {acc_opt:.4f}, 召回率: {rec_opt:.4f} (显著提升)")
-
-# 4. 保存测试报告与纠偏结果
-with open("2.2.3_report.txt", "w", encoding="utf-8") as f:
-    f.write("=== 自然场景吸烟检测算法测试与优化报告 ===\\n\\n")
-    f.write(f"【基线模型指标】准确率: {acc_base:.4f}, 召回率: {rec_base:.4f}\\n")
-    f.write(f"混淆矩阵:\\n{cm_base}\\n\\n")
-    f.write(f"【优化后指标】准确率: {acc_opt:.4f}, 召回率: {rec_opt:.4f}\\n")
-    f.write(f"混淆矩阵:\\n{cm_opt}\\n\\n")
-    f.write("【纠错原因与改进说明】\\n")
-    f.write("原始线性分类器在光照变化强烈和手部微动作复杂场景下易发生误检与漏检；\\n")
-    f.write("引入树集成算法后，非线性特征捕捉能力大幅提升，有效降低了假阳性误报率。\\n")"""
+test = pd.read_csv("test.csv")
+X_test = [load_image("images/" + name) for name in test["image"]]
+y_test = test["label"]
+model = joblib.load("smoking_model.pkl")
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+print("准确率：", accuracy)
+print("精确率：", precision)
+print("召回率：", recall)
+print("F1分数：", f1)""",
 }
 
 
@@ -245,7 +224,7 @@ def render_html() -> None:
             code_block_html = f"""
             <div class="code-box">
               <div class="code-box-header">
-                <span class="code-title">🐍 Python 满分标准实现与逐行注释</span>
+                <span class="code-title">🐍 Python 参考答案代码（飞书原文）</span>
                 <button class="btn btn-sm btn-copy" onclick="copyCode(this, '{qid}-code')">📋 复制代码</button>
               </div>
               <pre><code id="{qid}-code" class="python">{escaped_code}</code></pre>
@@ -1105,7 +1084,7 @@ def render_html() -> None:
       <a href="/games/ai-trainer/#theory" class="btn">
         <span>📝 理论真题</span>
       </a>
-      <a href="/podcast.html" class="btn btn-blue">
+      <a href="/podcast.html?channel=ai-trainer" class="btn btn-blue">
         <span>🎙️ 播客频道</span>
       </a>
     </div>
@@ -1198,7 +1177,7 @@ def render_html() -> None:
               <li><strong>采分点必须命中关键词：</strong> 考官按采分点给分。如“准确率≥95%”、“8:2划分”、“random_state=42”等硬性指标切勿写错。</li>
               <li><strong>代码题分步写分步得分：</strong> 就算最后模型预测报错，前面的导包（0.5分）、数据切分（1分）、预处理（1分）也能稳稳到手。</li>
               <li><strong>严禁交白卷：</strong> 培训大纲与指导题就算记不清细节，按通用 SOP 与分层带教框架写，也能拿到 80% 以上基础分。</li>
-              <li><strong>结果文件务必按规范命名：</strong> 严格按准考证规则建立考生文件夹，注意 <code>train.csv</code>、<code>2.2.3_report.txt</code> 文件名。</li>
+              <li><strong>结果文件务必按规范命名：</strong> 严格按准考证规则建立考生文件夹，文件名以题目要求为准，如 <code>captcha_train.csv</code>、<code>captcha_test.csv</code>、<code>smoking_model.pkl</code>。</li>
             </ul>
           </div>
         </div>

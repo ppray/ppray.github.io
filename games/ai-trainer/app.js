@@ -1493,6 +1493,35 @@
     saveHistory();
   });
 
+  // 题库按飞书原文更新后，同一题的空位数量或答案可能变化。已存的 filled[idx].text
+  // 总是当时的正确答案，与当前 item.b[idx] 对不上就丢弃，避免旧答案挂到别的空上。
+  function pruneStaleClozeHistory() {
+    const byId = new Map((state.bank.practical || []).map(it => [it.id, it]));
+    let changed = false;
+    Object.keys(state.history.cloze).forEach(id => {
+      const rec = state.history.cloze[id];
+      const item = byId.get(id);
+      if (!item || !rec || !rec.filled) {
+        delete state.history.cloze[id];
+        changed = true;
+        return;
+      }
+      Object.keys(rec.filled).forEach(idx => {
+        const f = rec.filled[idx];
+        if (!f || item.b[idx] !== f.text) {
+          delete rec.filled[idx];
+          changed = true;
+        }
+      });
+      const allDone = item.b.every((_, i) => !!rec.filled[i]);
+      if (rec.isCompleted && !allDone) {
+        rec.isCompleted = false;
+        changed = true;
+      }
+    });
+    if (changed) saveHistory();
+  }
+
   // --- 10. Load Bank Data & Restore Session ---
   async function init() {
     try {
@@ -1503,6 +1532,7 @@
         state.bank = await resp.json();
       }
       console.log('Loaded AI Trainer Bank:', state.bank.meta);
+      pruneStaleClozeHistory();
 
       // Determine initial mode (URL hash > localStorage > 'cloze')
       const hash = (window.location && window.location.hash ? window.location.hash : '').replace('#', '');

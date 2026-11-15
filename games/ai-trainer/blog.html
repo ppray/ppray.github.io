@@ -746,7 +746,7 @@
       <a href="/games/ai-trainer/#theory" class="btn">
         <span>📝 理论真题</span>
       </a>
-      <a href="/podcast.html" class="btn btn-blue">
+      <a href="/podcast.html?channel=ai-trainer" class="btn btn-blue">
         <span>🎙️ 播客频道</span>
       </a>
     </div>
@@ -860,7 +860,7 @@
               <li><strong>采分点必须命中关键词：</strong> 考官按采分点给分。如“准确率≥95%”、“8:2划分”、“random_state=42”等硬性指标切勿写错。</li>
               <li><strong>代码题分步写分步得分：</strong> 就算最后模型预测报错，前面的导包（0.5分）、数据切分（1分）、预处理（1分）也能稳稳到手。</li>
               <li><strong>严禁交白卷：</strong> 培训大纲与指导题就算记不清细节，按通用 SOP 与分层带教框架写，也能拿到 80% 以上基础分。</li>
-              <li><strong>结果文件务必按规范命名：</strong> 严格按准考证规则建立考生文件夹，注意 <code>train.csv</code>、<code>2.2.3_report.txt</code> 文件名。</li>
+              <li><strong>结果文件务必按规范命名：</strong> 严格按准考证规则建立考生文件夹，文件名以题目要求为准，如 <code>captcha_train.csv</code>、<code>captcha_test.csv</code>、<code>smoking_model.pkl</code>。</li>
             </ul>
           </div>
         </div>
@@ -1155,63 +1155,57 @@
           
             <div class="code-box">
               <div class="code-box-header">
-                <span class="code-title">🐍 Python 满分标准实现与逐行注释</span>
+                <span class="code-title">🐍 Python 参考答案代码（飞书原文）</span>
                 <button class="btn btn-sm btn-copy" onclick="copyCode(this, 'prac-01-4-code')">📋 复制代码</button>
               </div>
               <pre><code id="prac-01-4-code" class="python"># ==============================================================
-# 01题4：顾客评价情感识别算法测试 标准代码
-# 考点：8:2数据集划分、TF-IDF特征提取、LogisticRegression训练、多维指标评估
+# 01题4：顾客评价情感识别算法测试 · 参考答案代码
+# 考点：train_test_split 8:2 划分、TfidfVectorizer.fit_transform、LogisticRegression、四项指标
 # ==============================================================
+# （1）训练集与测试集划分
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
 
-# 1. 数据划分（8:2比例，固定随机种子42，确保实验可复现）
 df = pd.read_csv(&#x27;raw_data.csv&#x27;)
 X = df[&#x27;review&#x27;]
 y = df[&#x27;label&#x27;]
-
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
-
-# 保存划分结果
 train_df = pd.DataFrame({&#x27;review&#x27;: X_train, &#x27;label&#x27;: y_train})
 test_df = pd.DataFrame({&#x27;review&#x27;: X_test, &#x27;label&#x27;: y_test})
 train_df.to_csv(&#x27;train.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)
 test_df.to_csv(&#x27;test.csv&#x27;, index=False, encoding=&#x27;utf-8-sig&#x27;)
-print(&quot;数据划分完成：train.csv 与 test.csv 保存成功&quot;)
+print(&#x27;数据划分完成，已保存为train.csv和test.csv&#x27;)
 
-# 2. 文本特征向量化与模型拟合训练
-vectorizer = TfidfVectorizer(max_features=5000)
+# （2）模型训练
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+
+train_df = pd.read_csv(&#x27;train.csv&#x27;)
+X_train = train_df[&#x27;review&#x27;]
+y_train = train_df[&#x27;label&#x27;]
+vectorizer = TfidfVectorizer()
 X_train_vec = vectorizer.fit_transform(X_train)
-X_test_vec = vectorizer.transform(X_test)
-
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train_vec, y_train)
+print(&#x27;模型训练完成！&#x27;)
 
-# 3. 测试集预测与指标计算
+# （3）模型测试与性能指标计算
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+
+X_test_vec = vectorizer.transform(X_test)
 y_pred = model.predict(X_test_vec)
-
-acc = accuracy_score(y_test, y_pred)
-prec = precision_score(y_test, y_pred, average=&#x27;weighted&#x27;)
-rec = recall_score(y_test, y_pred, average=&#x27;weighted&#x27;)
-f1 = f1_score(y_test, y_pred, average=&#x27;weighted&#x27;)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
 cm = confusion_matrix(y_test, y_pred)
-
-print(f&quot;评估指标 -&gt; 准确率: {acc:.4f} | 精确率: {prec:.4f} | 召回率: {rec:.4f} | F1: {f1:.4f}&quot;)
-print(&quot;混淆矩阵:\n&quot;, cm)
-
-# 4. 生成规范测试报告并保存
-with open(&#x27;2.2.3_report.txt&#x27;, &#x27;w&#x27;, encoding=&#x27;utf-8&#x27;) as f:
-    f.write(&quot;=== 顾客评价情感识别算法测试报告 ===\n&quot;)
-    f.write(f&quot;测试样本量: {len(y_test)}\n&quot;)
-    f.write(f&quot;准确率 Accuracy: {acc:.4f}\n精确率 Precision: {prec:.4f}\n召回率 Recall: {rec:.4f}\nF1-Score: {f1:.4f}\n\n&quot;)
-    f.write(&quot;详细分类评估报告:\n&quot;)
-    f.write(classification_report(y_test, y_pred))
-print(&quot;测试报告已输出至 2.2.3_report.txt&quot;)</code></pre>
+print(f&#x27;准确率:{accuracy:.3f}&#x27;)
+print(f&#x27;精确率:{precision:.3f}&#x27;)
+print(f&#x27;召回率:{recall:.3f}&#x27;)
+print(f&#x27;F1分数:{f1:.3f}&#x27;)
+print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             </div>
             
 
@@ -1643,75 +1637,77 @@ print(&quot;测试报告已输出至 2.2.3_report.txt&quot;)</code></pre>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你作为一名人工智能训练师，需要基于已完成清洗和标注的验证码图像数据，完成训练集与测试集划分、模型训练、模型测试、测试结果分析和错误案例纠正工作。<br><br>（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，训练集（保存为captcha_train.csv）和测试集（保存为captcha_test.csv）。（2分）<br><br>（2）请打开“模型训练与测试”项目中的 captcha_model_train_eval.ipynb 文件，按照要求补齐相关代码，基于已划分好的训练集对验证码识别模型进行训练，并保存训练后的模型文件。（2分）<br><br>（3）经过测试后得到如下结果：TP=80，FP=20，FN=20，TN=80。请计算出模型测试的准确率、精确率、召回率和F1分数。（4分）<br><br>（4）请结合模型测试结果，对验证码识别模型的测试效果进行分析，并编写测试报告。（6分）<br><br>（5）请结合验证码识别错误案例，分析模型识别错误可能产生的原因，并提出纠正方法。（6分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：35分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能维护日常训练集与测试集<br><br>（2）能使用工具对算法进行训练<br><br>（3）能使用测试工具对人工智能产品的使用进行测试<br><br>（4）能对测试结果进行分析， 编写测试报告<br><br>（5）能运用工具，分析算法中错误案例产生的原因并进行纠正<br><br>captcha_dataset_split.ipynb<br><br>import pandas as pd<br><br>from sklearn.model_selection import ______<br><br>data = pd.read_csv(<br><br>&quot;captcha/label.txt&quot;,<br><br>sep=&quot; &quot;,<br><br>names=[&quot;image&quot;, &quot;label&quot;]<br><br>)<br><br>X = data[&quot;image&quot;]<br><br>y = data[&quot;label&quot;]<br><br>X_train, X_test, y_train, y_test = (X, y, test_size=,<br><br>random_state=42, stratify=y<br><br>)<br><br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br><br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br><br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br><br>test.to_csv(&quot;captcha_test.csv&quot;, index=False)<br><br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)<br><br>captcha_model_train_eval.ipynb<br><br>import pandas as pd<br><br>from PIL import Image<br><br>from sklearn.linear_model import ______<br><br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br><br>读取训练集和测试集<br><br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br><br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br><br>将验证码图片转换为模型可识别的数字特征<br><br>def load_image(path):<br><br>img = Image.open(path).convert(&quot;L&quot;)<br><br>img = img.resize((32, 32))<br><br>return list(img.getdata())<br><br>构建训练数据<br><br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br><br>y_train = train[&quot;label&quot;]<br><br>构建测试数据<br><br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br><br>y_test = test[&quot;label&quot;]<br><br>创建并训练模型<br><br>model = ______(max_iter=1000)<br><br>model.______(X_train, y_train)<br><br>模型预测<br><br>y_pred = model.______(X_test)<br><br>计算测试指标<br><br>accuracy = accuracy_score(y_test, y_pred)<br><br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>print(&quot;准确率：&quot;, accuracy)<br><br>print(&quot;精确率：&quot;, precision)<br><br>print(&quot;召回率：&quot;, recall)<br><br>print(&quot;F1分数：&quot;, f1)<br><br>09题4：验证码识别算法训练与测试（20分）<br><br>题4第（1）问：训练集与测试集划分（2分）<br><br>一、划分方案说明（0.5分）：采用分层抽样方法，先将验证码图片文件名作为特征X，将可用性标签作为标签y，再按照8:2比例划分训练集和测试集；通过stratify=y保证训练集和测试集中各类标签比例基本一致；设置random_state=42，保证每次划分结果可复现。<br><br>二、关键代码（1分）：<br><br>import pandas as pd<br><br>from sklearn.model_selection import train_test_split<br><br>data = pd.read_csv(<br><br>&quot;captcha/label.txt&quot;,<br><br>sep=&quot; &quot;,<br><br>names=[&quot;image&quot;, &quot;label&quot;]<br><br>)<br><br>X = data[&quot;image&quot;]<br><br>y = data[&quot;label&quot;]<br><br>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,<br><br>random_state=42, stratify=y<br><br>)<br><br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br><br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br><br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br><br>test.to_csv(&quot;captcha_test.csv&quot;, index=False)<br><br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)
+              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你作为一名人工智能训练师，需要基于已完成清洗和标注的验证码图像数据，完成训练集与测试集划分、模型训练、模型测试、测试结果分析和错误案例纠正工作。<br><br>（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，训练集（保存为captcha_train.csv）和测试集（保存为captcha_test.csv）。（2分）<br><br>（2）请打开“模型训练与测试”项目中的 captcha_model_train_eval.ipynb 文件，按照要求补齐相关代码，基于已划分好的训练集对验证码识别模型进行训练，并保存训练后的模型文件。（2分）<br><br>（3）经过测试后得到如下结果：TP=80，FP=20，FN=20，TN=80。请计算出模型测试的准确率、精确率、召回率和F1分数。（4分）<br><br>（4）请结合模型测试结果，对验证码识别模型的测试效果进行分析，并编写测试报告。（6分）<br><br>（5）请结合验证码识别错误案例，分析模型识别错误可能产生的原因，并提出纠正方法。（6分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：35分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能维护日常训练集与测试集<br><br>（2）能使用工具对算法进行训练<br><br>（3）能使用测试工具对人工智能产品的使用进行测试<br><br>（4）能对测试结果进行分析， 编写测试报告<br><br>（5）能运用工具，分析算法中错误案例产生的原因并进行纠正<br><br>captcha_dataset_split.ipynb<br><br>import pandas as pd<br><br>from sklearn.model_selection import ______<br><br>data = pd.read_csv(<br><br>&quot;captcha/label.txt&quot;,<br><br>sep=&quot; &quot;,<br><br>names=[&quot;image&quot;, &quot;label&quot;]<br><br>)<br><br>X = data[&quot;image&quot;]<br><br>y = data[&quot;label&quot;]<br><br>X_train, X_test, y_train, y_test = (X, y, test_size=        ,<br><br>random_state=42, stratify=y<br><br>)<br><br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br><br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br><br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br><br>test.to_csv(&quot;captcha_test.csv&quot;, index=False)<br><br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)<br><br>captcha_model_train_eval.ipynb<br><br>import pandas as pd<br><br>from PIL import Image<br><br>from sklearn.linear_model import  LogisticRegression<br><br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br><br>读取训练集和测试集<br><br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br><br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br><br>将验证码图片转换为模型可识别的数字特征<br><br>def load_image(path):<br><br>img = Image.open(path).convert(&quot;L&quot;)<br><br>img = img.resize((32, 32))<br><br>return list(img.getdata())<br><br>构建训练数据<br><br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br><br>y_train = train[&quot;label&quot;]<br><br>构建测试数据<br><br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br><br>y_test = test[&quot;label&quot;]<br><br>创建并训练模型<br><br>model = ______(max_iter=1000)<br><br>model.______(X_train, y_train)<br><br>模型预测<br><br>y_pred = model.predict(X_test)<br><br>计算测试指标<br><br>accuracy = accuracy_score(y_test, y_pred)<br><br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>print(&quot;准确率：&quot;, accuracy)<br><br>print(&quot;精确率：&quot;, precision)<br><br>print(&quot;召回率：&quot;, recall)<br><br>print(&quot;F1分数：&quot;, f1)<br><br>09题4：验证码识别算法训练与测试（20分）<br><br>题4第（1）问：训练集与测试集划分（2分）<br><br>一、划分方案说明：采用分层抽样方法，先将验证码图片文件名作为特征X，将可用性标签作为标签y，再按照8:2比例划分训练集和测试集；通过stratify=y保证训练集和测试集中各类标签比例基本一致；设置random_state=42，保证每次划分结果可复现。<br><br>二、关键代码（1分）：<br><br>import pandas as pd
             </div>
           </details>
 
           <div class="answer-section">
             <div class="section-tag">💡 标准答案与采分要点拆解</div>
             <div class="answer-body">
-              三、保存结果（0.5分）：将训练集保存为<mark class="score-key" title="核心采分点">train.csv，</mark>测试集保存为<mark class="score-key" title="核心采分点">test.csv。</mark><br>题4第（2）问：模型训练与测试（2分）<br>一、训练方案说明（0.5分）：将验证码图片转换为灰度图，并统一缩放为32×32，再将像素值作为模型输入特征，使用逻辑回归模型进行验证码图像分类训练。<br>二、关键代码（1分）：<br>import pandas as pd<br>from PIL import Image<br>from sklearn.linear_model import LogisticRegression<br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br> <br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br> <br>def load_image(path):<br>    img = Image.open(path).convert(&quot;L&quot;)<br>    img = img.resize((32, 32))<br>    return list(img.getdata())<br> <br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br>y_train = train[&quot;label&quot;]<br> <br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br>y_test = test[&quot;label&quot;]<br> <br>model = LogisticRegression(max_iter=1000)<br>model.fit(X_train, y_train)<br> <br>y_pred = model.predict(X_test)<br> <br>accuracy = accuracy_score(y_test, y_pred)<br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br> <br>print(&quot;准确率：&quot;, accuracy)<br>print(&quot;精确率：&quot;, precision)<br>print(&quot;召回率：&quot;, recall)<br>print(&quot;F1分数：&quot;, f1)<br>三、训练结果（0.5分）：<mark class="score-key" title="核心采分点">模型完成训练，并能够对测试集验证码图片进行预测。</mark><br><br>09题4第（3）问：模型测试与性能指标（4分）<br>已知：TP=80，FP=20，FN=20，TN=80。<br>Accuracy = <mark class="score-key" title="核心采分点">(TP+TN) / (TP+TN+FP+FN) = (80+80) / (80+80+20+20) = 160 / 200 = 80%</mark><br>Precision = <mark class="score-key" title="核心采分点">TP / (TP+FP) = 80 / (80+20) = 80 / 100 = 80%</mark><br>Recall = <mark class="score-key" title="核心采分点">TP / (TP+FN) = 80 / (80+20) = 80 / 100 = 80%</mark><br>F1 = <mark class="score-key" title="核心采分点">2×P×R / (P+R) = 2×0.8×0.8 / (0.8+0.8) = 1.28 / 1.6 = 0.8，即80%</mark><br>题4第（4）问：测试报告编写（6分）<br>背——项目背景（1分）：本项目为RPA网页表单自动填写场景下的验证码识别模型，目标是<mark class="score-key" title="核心采分点">通过OCR和机器学习技术识别验证码图片中的数字内容，减少人工输入验证码造成的流程阻塞。</mark><br>目——测试目的（1分）：评估验证码识别模型在测试集上的分类性能，判断模型是否<mark class="score-key" title="核心采分点">能够较准确识别有效验证码图像，期望准确率达到80%以上，并分析模型当前存在的问题。</mark><br>方法——测试方法（1分）：采用8:2比例划分训练集和测试集，将验证码图片转换为灰度图并缩放为统一尺寸，<mark class="score-key" title="核心采分点">提取像素特征，使用逻辑回归模型进行训练，并通过测试集计算准确率、精确率、召回率和F1分数。</mark><br>结果——测试结果（2分）：模型测试结果为<mark class="score-key" title="核心采分点">准确率80%、精确率80%、召回率80%、F1分数80%。混淆矩阵为TP=80，FP=20，FN=20，TN=80。</mark>整体来看，模型具有<mark class="score-key" title="核心采分点">一定识别能力，但仍存在部分误识别和漏识别情况，说明模型对复杂干扰、模糊或样式变化较大的验证码识别能力仍需提升</mark>。<br>建议——改进建议（1分）：建议补充<mark class="score-key" title="核心采分点">更多不同字体、不同背景、不同干扰线和不同扭曲程度的验证码样本；加强数据清洗和标注复核；尝试使用更适合图像识别的模型或优化图像预处理方法，以提升模型识别准确率。</mark><br>题4第（5）问：错误案例分析（6分）<br>案例一（3分）：<br>描述：某验证码图片真实标签为“1”，模型预测为“0”。<br>原因：<mark class="score-key" title="核心采分点">可能由于图片中验证码数字存在干扰线、噪点或局部遮挡，导致模型提取到的像素特征不完整，从而将有效验证码误判为无效验证码。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面补充更多带干扰线和噪点的有效验证码样本；特征层面增加去噪、二值化、边缘增强等预处理；模型层面调整模型参数或尝试更适合图像识别的模型。</mark><br>案例二（3分）：<br>描述：某验证码图片真实标签为“0”，模型预测为“1”。<br>原因：<mark class="score-key" title="核心采分点">可能由于无效验证码样本数量不足，或部分模糊、遮挡样本与有效样本特征相似，导致模型边界判断不清。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面增加无效验证码样本和争议样本；特征层面强化图片清晰度、尺寸、遮挡程度等特征处理；模型层面重新训练模型，并结合人工复核机制减少错误样本进入训练集。</mark><br><br>
+              from sklearn.model_selection import <mark class="score-key" title="核心采分点">train_test_split</mark><br>data = pd.read_csv(<br>    &quot;captcha/label.txt&quot;,<br>    sep=&quot; &quot;,<br>    names=[&quot;image&quot;, &quot;label&quot;]<br>)<br>X = data[&quot;image&quot;]<br>y = data[&quot;label&quot;]<br>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<mark class="score-key" title="核心采分点">0.2</mark>,<br>    random_state=42, stratify=y<br>)<br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br>test.to_csv(&quot;captcha_test.csv&quot;, index=False) <br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)<br>三、保存结果（1分）：将训练集保存为<mark class="score-key" title="核心采分点">train.csv，</mark>测试集保存为<mark class="score-key" title="核心采分点">test.csv。</mark><br>题4第（2）问：模型训练与测试（2分）<br>一、训练方案说明：将验证码图片转换为灰度图，并统一缩放为32×32，再将像素值作为模型输入特征，使用逻辑回归模型进行验证码图像分类训练。<br>二、关键代码（1分）：<br>import pandas as pd<br>from PIL import Image<br>from sklearn.linear_model import LogisticRegression<br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br> <br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br> <br>def load_image(path):<br>    img = Image.open(path).convert(&quot;L&quot;)<br>    img = img.resize((32, 32))<br>    return list(img.getdata())<br> <br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br>y_train = train[&quot;label&quot;]<br> <br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br>y_test = test[&quot;label&quot;]<br> <br>model = <mark class="score-key" title="核心采分点">LogisticRegression</mark>(max_iter=1000)<br>model.<mark class="score-key" title="核心采分点">fit</mark>(X_train, y_train)<br> <br>y_pred = model.predict(X_test)<br> <br>accuracy = accuracy_score(y_test, y_pred)<br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br> <br>print(&quot;准确率：&quot;, accuracy)<br>print(&quot;精确率：&quot;, precision)<br>print(&quot;召回率：&quot;, recall)<br>print(&quot;F1分数：&quot;, f1)<br>三、训练结果（1分）：<mark class="score-key" title="核心采分点">模型完成训练，并能够对测试集验证码图片进行预测。</mark><br><br>09题4第（3）问：模型测试与性能指标（4分）<br>已知：TP=80，FP=20，FN=20，TN=80。<br>Accuracy = <mark class="score-key" title="核心采分点">(TP+TN) / (TP+TN+FP+FN) = (80+80) / (80+80+20+20) = 160 / 200 = 80%</mark><br>Precision = <mark class="score-key" title="核心采分点">TP / (TP+FP) = 80 / (80+20) = 80 / 100 = 80%</mark><br>Recall = <mark class="score-key" title="核心采分点">TP / (TP+FN) = 80 / (80+20) = 80 / 100 = 80%</mark><br>F1 = <mark class="score-key" title="核心采分点">2×P×R / (P+R) = 2×0.8×0.8 / (0.8+0.8) = 1.28 / 1.6 = 0.8，即80%</mark><br>题4第（4）问：测试报告编写（6分）<br>背——项目背景（1分）：本项目为RPA网页表单自动填写场景下的验证码识别模型，目标是<mark class="score-key" title="核心采分点">通过OCR和机器学习技术识别验证码图片中的数字内容，减少人工输入验证码造成的流程阻塞。</mark><br>目——测试目的（1分）：评估验证码识别模型在测试集上的分类性能，判断模型是否<mark class="score-key" title="核心采分点">能够较准确识别有效验证码图像，期望准确率达到80%以上，并分析模型当前存在的问题。</mark><br>方法——测试方法（1分）：采用8:2比例划分训练集和测试集，将验证码图片转换为灰度图并缩放为统一尺寸，<mark class="score-key" title="核心采分点">提取像素特征，用逻辑回归模型训练，再由测试集计算。</mark><br>结果——测试结果（2分）：模型测试结果为<mark class="score-key" title="核心采分点">准确率80%、精确率80%、召回率80%、F1分数80%。混淆矩阵为TP=80，FP=20，FN=20，TN=80。</mark>整体来看，模型具有<mark class="score-key" title="核心采分点">一定识别能力，但仍存在部分误识别和漏识别情况，说明模型对复杂干扰、模糊或样式变化较大的验证码识别能力仍需提升</mark>。<br>建议——改进建议（1分）：建议补充<mark class="score-key" title="核心采分点">更多不同字体、不同背景、不同干扰线和不同扭曲程度的验证码样本；加强数据清洗和标注复核；尝试使用更适合图像识别的模型或优化图像预处理方法，以提升模型识别准确率。</mark><br>题4第（5）问：错误案例分析（6分）<br>案例一（3分）：<br>描述：某验证码图片真实标签为“1”，模型预测为“0”。<br>原因：<mark class="score-key" title="核心采分点">可能由于图片中验证码数字存在干扰线、噪点或局部遮挡，导致模型提取到的像素特征不完整，从而将有效验证码误判为无效验证码。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面补充更多带干扰线和噪点的有效验证码样本；特征层面增加去噪、二值化、边缘增强等预处理；模型层面调整模型参数或尝试更适合图像识别的模型。</mark><br>案例二（3分）：<br>描述：某验证码图片真实标签为“0”，模型预测为“1”。<br>原因：<mark class="score-key" title="核心采分点">可能由于无效验证码样本数量不足，或部分模糊、遮挡样本与有效样本特征相似，导致模型边界判断不清。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面增加无效验证码样本和争议样本；特征层面强化图片清晰度、尺寸、遮挡程度等特征处理；模型层面重新训练模型，并结合人工复核机制减少错误样本进入训练集。</mark><br><br>
             </div>
           </div>
 
           
             <div class="code-box">
               <div class="code-box-header">
-                <span class="code-title">🐍 Python 满分标准实现与逐行注释</span>
+                <span class="code-title">🐍 Python 参考答案代码（飞书原文）</span>
                 <button class="btn btn-sm btn-copy" onclick="copyCode(this, 'prac-09-4-code')">📋 复制代码</button>
               </div>
               <pre><code id="prac-09-4-code" class="python"># ==============================================================
-# 09题4：验证码识别算法训练与测试 标准代码
-# 考点：PIL灰度缩放、图像像素展平、逻辑回归分类、模型持久化pkl与报告输出
+# 09题4：验证码识别算法训练与测试 · 参考答案代码
+# 考点：stratify 分层划分 8:2、灰度 + 32×32 像素特征、LogisticRegression、macro 平均指标
 # ==============================================================
+# （1）captcha_dataset_split.ipynb：训练集与测试集划分
 import pandas as pd
+from sklearn.model_selection import train_test_split
+
+data = pd.read_csv(
+    &quot;captcha/label.txt&quot;,
+    sep=&quot; &quot;,
+    names=[&quot;image&quot;, &quot;label&quot;]
+)
+X = data[&quot;image&quot;]
+y = data[&quot;label&quot;]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+    random_state=42, stratify=y
+)
+train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})
+test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})
+train.to_csv(&quot;captcha_train.csv&quot;, index=False)
+test.to_csv(&quot;captcha_test.csv&quot;, index=False)
+print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)
+
+# （2）captcha_model_train_eval.ipynb：模型训练与测试
 from PIL import Image
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-import joblib
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# 1. 图像预处理与特征转换（转L单通道灰度，缩放至32x32，扁平化特征）
+train = pd.read_csv(&quot;captcha_train.csv&quot;)
+test = pd.read_csv(&quot;captcha_test.csv&quot;)
+
 def load_image(path):
     img = Image.open(path).convert(&quot;L&quot;)
     img = img.resize((32, 32))
     return list(img.getdata())
 
-# 2. 读取数据与构建训练特征矩阵
-train_df = pd.read_csv(&quot;captcha_train.csv&quot;)
-test_df = pd.read_csv(&quot;captcha_test.csv&quot;)
+X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]
+y_train = train[&quot;label&quot;]
+X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]
+y_test = test[&quot;label&quot;]
 
-X_train = [load_image(p) for p in train_df[&quot;image_path&quot;]]
-y_train = train_df[&quot;label&quot;]
-
-X_test = [load_image(p) for p in test_df[&quot;image_path&quot;]]
-y_test = test_df[&quot;label&quot;]
-
-# 3. 算法模型创建、拟合与持久化保存
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train, y_train)
 
-# 保存模型为 2.2.3_model.pkl
-joblib.dump(model, &quot;2.2.3_model.pkl&quot;)
-print(&quot;模型已保存为 2.2.3_model.pkl&quot;)
-
-# 4. 模型测试与全面性能评估
 y_pred = model.predict(X_test)
-
-acc = accuracy_score(y_test, y_pred)
-prec = precision_score(y_test, y_pred, average=&#x27;macro&#x27;)
-rec = recall_score(y_test, y_pred, average=&#x27;macro&#x27;)
-f1 = f1_score(y_test, y_pred, average=&#x27;macro&#x27;)
-
-print(f&quot;测试集性能 -&gt; 准确率: {acc:.4f} | 宏精确率: {prec:.4f} | 宏召回率: {rec:.4f} | F1: {f1:.4f}&quot;)
-
-# 5. 撰写模型测试报告与误判分析
-with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
-    f.write(&quot;=== 验证码识别算法测试与评估报告 ===\n&quot;)
-    f.write(f&quot;测试图片数: {len(y_test)}\n&quot;)
-    f.write(f&quot;准确率: {acc:.4f} | 精确率: {prec:.4f} | 召回率: {rec:.4f} | F1值: {f1:.4f}\n\n&quot;)
-    f.write(&quot;【错误分析与改进建议】\n&quot;)
-    f.write(&quot;1. 字符粘连与背景干扰线是导致字符误判的主要原因；\n&quot;)
-    f.write(&quot;2. 建议引入二值化去噪与形态学膨胀腐蚀，或迁移至卷积神经网络CNN以进一步提升特征提取鲁棒性。\n&quot;)</code></pre>
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)
+recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)
+f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)
+print(&quot;准确率：&quot;, accuracy)
+print(&quot;精确率：&quot;, precision)
+print(&quot;召回率：&quot;, recall)
+print(&quot;F1分数：&quot;, f1)</code></pre>
             </div>
             
 
@@ -1762,7 +1758,7 @@ with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot
           <div class="answer-section">
             <div class="section-tag">💡 标准答案与采分要点拆解</div>
             <div class="answer-body">
-              一、项目背景（0.5分）：验证码识别系统面向RPA网页表单自动填写场景，提供<mark class="score-key" title="核心采分点">数字验证码自动识别服务，减少人工输入验证码造成的流程阻塞。</mark>本分析基于系统运行质检数据。<br>二、分析目的（0.5分）：全面了解验证码识别系统运行状况，重点考察<mark class="score-key" title="核心采分点">识别准确率、人工介入率、图片质量、错误类型和识别耗时</mark>等维度，识别系统短板和优化机会。<br>三、分析方法（0.5分）：采用<mark class="score-key" title="核心采分点">数量统计、比率分析和错误类型分析方法，</mark>基于质检数据.xlsx中的验证码识别记录、人工确认结果、置信度、识别耗时和错误类型进行分析。<br>四、分析结论（2分，核心）：<br>（1）系统共记录12条质检样本，其中识别正确<mark class="score-key" title="核心采分点">7</mark>条，识别错误<mark class="score-key" title="核心采分点">5</mark>条，整体识别准确率约为<mark class="score-key" title="核心采分点">58.3</mark>%，识别效果仍有<mark class="score-key" title="核心采分点">提升空间</mark>；<br>（2）人工介入样本<mark class="score-key" title="核心采分点">5</mark>条，人工介入率约为<mark class="score-key" title="核心采分点">41.7</mark>%，说明系统自动化程度<mark class="score-key" title="核心采分点">不足</mark>；<br>（3）错误主要集中在<mark class="score-key" title="核心采分点">干扰线、模糊、遮挡、低分辨率</mark>等复杂验证码样本中，说明模型对复杂图片的识别能力较弱；<br>（4）<mark class="score-key" title="核心采分点">清晰、规则的验证码</mark>识别效果较好，复杂样式验证码识别准确率下降明显；<br>（5）系统存在<mark class="score-key" title="核心采分点">数字误识别、模糊误识别、遮挡误识别和漏识别等</mark>问题，影响RPA自动填写流程稳定性。<br>五、初步建议（0.5分）：<br>建议补充<mark class="score-key" title="核心采分点">复杂验证码样本，优化图像预处理流程，建立低置信度人工复核和错误样本回流机制，持续提升系统识别准确率。</mark><br><br>题5第（2）问：优化需求（4分）<br>优化需求一：<mark class="score-key" title="核心采分点">提升复杂验证码识别准确率。</mark><br>问题描述：<mark class="score-key" title="核心采分点">复杂验证码样本识别错误较多，尤其是干扰线、模糊、遮挡和低分辨率样本。</mark><br>优化定位：<mark class="score-key" title="核心采分点">属于数据和算法层面的问题。</mark><br>目标设定：<mark class="score-key" title="核心采分点">将复杂验证码识别准确率提升至80%以上。</mark><br>依据说明：<mark class="score-key" title="核心采分点">错误样本主要集中在复杂图片质量场景，优化后可提升整体识别准确率。</mark><br>优化需求二：<mark class="score-key" title="核心采分点">降低人工介入率。</mark><br>问题描述：<mark class="score-key" title="核心采分点">人工介入率约为41.7%，人工复核比例较高，影响RPA自动化效率。</mark><br>优化定位：<mark class="score-key" title="核心采分点">属于产品和流程层面的问题。</mark><br>目标设定：<mark class="score-key" title="核心采分点">将人工介入率降低至25%以内。</mark><br>依据说明：<mark class="score-key" title="核心采分点">人工介入过多会降低自动填写效率，增加人工成本。</mark><br>优化需求三：<mark class="score-key" title="核心采分点">建立错误样本回流机制。</mark><br>问题描述：<mark class="score-key" title="核心采分点">错误样本未形成稳定回流机制，同类错误可能重复出现。</mark><br>优化定位：<mark class="score-key" title="核心采分点">属于数据闭环管理层面的问题。</mark><br>目标设定：<mark class="score-key" title="核心采分点">建立错误样本库，定期将错例样本清洗、标注后加入训练集。</mark><br>依据说明：<mark class="score-key" title="核心采分点">错误样本回流可提升模型对难例和新样式验证码的识别能力。</mark><br>优化需求四：完善系统监控指标。<br>问题描述：<mark class="score-key" title="核心采分点">系统监控指标不够完善，难以及时发现模型效果下降。</mark><br>优化定位：<mark class="score-key" title="核心采分点">属于工程和监控层面的问题。</mark><br>目标设定：<mark class="score-key" title="核心采分点">建立识别准确率、失败率、人工介入率、平均耗时和错误类型分布监控。</mark><br>依据说明：<mark class="score-key" title="核心采分点">持续监控可为模型优化和业务流程调整提供数据依据。</mark><br>题5第（3）问：智能解决方案（7分）<br>一、方案目标（1分）：<br>本方案旨在提升验证码识别系统的识别准确率和自动化水平，重点解<mark class="score-key" title="核心采分点">决复杂验证码识别错误、人工介入率高、错误样本未回流</mark>等问题。<br>目标：<mark class="score-key" title="核心采分点">整体识别准确率提升至80%以上，人工介入率降低至25%以内。</mark><br>二、核心措施（3分）：<br>（1）<mark class="score-key" title="核心采分点">数据补充</mark>措施：补充干扰线、模糊、遮挡、低分辨率、字符扭曲等复杂验证码样本；<br>（2）<mark class="score-key" title="核心采分点">图像预处理</mark>措施：对验证码图片进行灰度化、去噪、二值化、尺寸统一和清晰度增强；<br>（3）<mark class="score-key" title="核心采分点">模型优化</mark>措施：使用新增样本和错误样本重新训练模型，优化模型参数；<br>（4）<mark class="score-key" title="核心采分点">人工复核</mark>措施：设置置信度阈值，高置信度自动填写，低置信度进入人工复核；<br>（5）<mark class="score-key" title="核心采分点">错误回流</mark>措施：将识别错误、低置信度和人工修正样本归入错例库，定期回流训练；<br>（6）<mark class="score-key" title="核心采分点">监控分析</mark>措施：定期分析识别准确率、人工介入率、平均识别耗时和错误类型分布。<br>三、分阶段实施计划（1分）：<br>第一阶段（1个月）：<mark class="score-key" title="核心采分点">整理质检数据和错误样本，优化低置信度人工复核规则；</mark><br>第二阶段（2-3个月）：<mark class="score-key" title="核心采分点">补充复杂验证码样本，优化图像预处理和模型训练；</mark><br>第三阶段（3-6个月）：<mark class="score-key" title="核心采分点">建立持续监控看板和错误样本回流机制，定期迭代模型。</mark><br>四、预期效果（1分）：识别<mark class="score-key" title="核心采分点">准确率由约58.3%提升至80%以上，人工介入率由约41.7%降低至25%以内，复杂验证码识别错误率明显下降。</mark><br>五、保障机制（1分）：成立由训练师、开发人员、业务人员组成的优化小组，<mark class="score-key" title="核心采分点">定期复盘质检数据，更新训练样本和标注规范，持续跟踪系统运行指标。</mark><br><br><br>
+              一、项目背景（0.5分）：验证码识别系统面向RPA网页表单自动填写场景，提供<mark class="score-key" title="核心采分点">数字验证码自动识别服务，减少人工输入验证码造成的流程阻塞。</mark>本分析基于系统运行质检数据。<br>二、分析目的（0.5分）：全面了解验证码识别系统运行状况，重点考察<mark class="score-key" title="核心采分点">识别准确率、人工介入率、图片质量、错误类型和识别耗时</mark>等维度，识别系统短板和优化机会。<br>三、分析方法（0.5分）：采用<mark class="score-key" title="核心采分点">数量统计、比率分析和错误类型分析方法，</mark>基于质检数据.xlsx中的验证码识别记录、人工确认结果、置信度、识别耗时和错误类型进行分析。<br>四、分析结论（2分，核心）：<br>（1）系统共记录12条质检样本，其中识别正确<mark class="score-key" title="核心采分点">7</mark>条，识别错误<mark class="score-key" title="核心采分点">5</mark>条，整体识别准确率约为<mark class="score-key" title="核心采分点">58.3</mark>%，识别效果仍有<mark class="score-key" title="核心采分点">提升空间</mark>；<br>（2）人工介入样本<mark class="score-key" title="核心采分点">5</mark>条，人工介入率约为<mark class="score-key" title="核心采分点">41.7</mark>%，说明系统自动化程度<mark class="score-key" title="核心采分点">不足</mark>；<br>（3）错误主要集中在<mark class="score-key" title="核心采分点">干扰线、模糊、遮挡、低分辨率</mark>等复杂验证码样本中，说明模型对复杂图片的识别能力较弱；<br>（4）<mark class="score-key" title="核心采分点">清晰、规则的验证码</mark>识别效果较好，复杂样式验证码识别准确率下降明显；<br>（5）系统存在<mark class="score-key" title="核心采分点">数字误识别、模糊误识别、遮挡误识别和漏识别等</mark>问题，影响RPA自动填写流程稳定性。<br>五、初步建议（0.5分）：<br>建议补充<mark class="score-key" title="核心采分点">复杂验证码样本，优化图像预处理流程，建立低置信度人工复核和错误样本回流机制，持续提升系统识别准确率。</mark><br><br>题5第（2）问：优化需求（4分）<br>优化需求一：提升复杂验证码识别准确率。<br>优化定位：<mark class="score-key" title="核心采分点">属于数据和算法层面的问题。</mark><br>优化需求二：降低人工介入率。<br>优化定位：<mark class="score-key" title="核心采分点">属于产品和流程层面的问题。</mark><br>优化需求三：建立错误样本回流机制。<br>优化定位：<mark class="score-key" title="核心采分点">属于数据闭环管理层面的问题。</mark><br>优化需求四：完善系统监控指标。<br>优化定位：<mark class="score-key" title="核心采分点">属于工程和监控层面的问题。</mark><br>题5第（3）问：智能解决方案（7分）<br>一、方案目标（1分）：<br>本方案旨在提升验证码识别系统的识别准确率和自动化水平，重点解<mark class="score-key" title="核心采分点">决复杂验证码识别错误、人工介入率高、错误样本未回流</mark>等问题。<br>目标：<mark class="score-key" title="核心采分点">整体识别准确率提升至80%以上，人工介入率降低至25%以内。</mark><br>二、核心措施（3分）：<br>（1）<mark class="score-key" title="核心采分点">数据补充</mark>措施：补充干扰线、模糊、遮挡、低分辨率、字符扭曲等复杂验证码样本；<br>（2）<mark class="score-key" title="核心采分点">图像预处理</mark>措施：对验证码图片进行灰度化、去噪、二值化、尺寸统一和清晰度增强；<br>（3）<mark class="score-key" title="核心采分点">模型优化</mark>措施：使用新增样本和错误样本重新训练模型，优化模型参数；<br>（4）<mark class="score-key" title="核心采分点">人工复核</mark>措施：设置置信度阈值，高置信度自动填写，低置信度进入人工复核；<br>（5）<mark class="score-key" title="核心采分点">错误回流</mark>措施：将识别错误、低置信度和人工修正样本归入错例库，定期回流训练；<br>（6）<mark class="score-key" title="核心采分点">监控分析</mark>措施：定期分析识别准确率、人工介入率、平均识别耗时和错误类型分布。<br>三、分阶段实施计划（1分）：<br>第一阶段（1个月）：整理质检数据和错误样本，完善<mark class="score-key" title="核心采分点">低置信度人工复核</mark>规则。<br>第二阶段（2-3个月）：补充复杂验证码样本，优化<mark class="score-key" title="核心采分点">图像预处理和模型训练</mark>。<br>第三阶段（3-6个月）：建立持续监控看板和错误样本回流机制，定期迭代模型。<br>四、预期效果（1分）：识别在约58.3%准确率、约41.7%介入率基础上，提高<mark class="score-key" title="核心采分点">80%以上</mark>、降低<mark class="score-key" title="核心采分点">25%以内</mark>，减少复杂样本错误。<br>五、保障机制（1分）：成立由训练师、开发人员、业务人员组成的优化小组，<mark class="score-key" title="核心采分点">定期复盘质检数据，更新训练样本和标注规范，持续跟踪系统运行指标。</mark><br><br><br>
             </div>
           </div>
 
@@ -1808,14 +1804,14 @@ with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，在清晰、规则的数字验证码场景下识别效果较好，但在遇到低置信度、模糊、遮挡、干扰线较多、字符扭曲或低分辨率验证码时，仍可能出现识别错误。你作为一名人工智能训练师，需要结合系统运行特点，为该验证码识别系统设计人工与智能协同的最优方式和流程。<br><br>（1）请为该验证码识别系统找到人工与智能交互的最优方式。（10分）<br><br>（2）请为该验证码识别系统设计人工与智能交互的最优流程。（10分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：15分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能通过数据分析，找到单一场景下人工和智能交互的最优方式<br><br>（2）能通过数据分析，设计单一场景下人工和智能交互的最优流程<br><br>验证码识别系统操作手册<br><br>一、验证码识别系统人机交互模式说明<br><br>RPA验证码识别系统提供三种基础交互路由模式，以适应不同质量、不同难度的验证码识别场景：<br><br>1.全自动识别模式<br><br>适用于清晰、规则、置信度较高的数字验证码。系统自动截取验证码图片，经预处理后调用OCR识别模型，直接输出验证码数字，并返回给RPA流程自动填写。该模式处理速度快、人工成本低，适合标准化验证码场景。<br><br>2.人工复核模式<br><br>适用于图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。系统将验证码图片、AI识别结果和置信度推送给人工复核人员，由人工确认最终验证码内容后返回RPA流程。该模式准确率高，但处理效率相对较低。<br><br>3.人机协同模式<br><br>适用于AI能够给出初步识别结果，但结果存在不确定性的验证码。系统先由AI完成识别和置信度判断，置信度高的样本自动通过，置信度低或异常样本转人工确认。人工修正后的样本进入错例库，用于后续模型优化。该模式兼顾效率和准确率，是验证码识别系统的推荐交互方式。<br><br>二、验证码识别系统人机交互流程设计规范<br><br>为了提升RPA自动填写流程的稳定性，训练师应按照以下流程配置人机协同机制：<br><br>1.验证码采集<br><br>RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。<br><br>2.AI自动识别<br><br>系统对验证码图片进行预处理，并调用识别模型输出验证码结果和置信度。<br><br>3.置信度判断<br><br>当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。<br><br>4.人工复核与修正<br><br>人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。<br><br>5.结果回传与流程继续<br><br>系统将最终验证码结果传递给RPA流程，完成网页表单填写。<br><br>6.错误样本沉淀<br><br>识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。<br><br>09题6：验证码识别系统人机交互流程设计（20分）<br><br>题6第（1）问：人机交互最优方式（10分）<br><br>基于验证码识别系统运行特点，我提出人工与智能交互的最优方式为“人机协同模式”，即AI自动识别、低置信度转人工复核、错误样本回流优化相结合的方式。<br><br>AI自动识别——适用于标准验证码场景。
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，在清晰、规则的数字验证码场景下识别效果较好，但在遇到低置信度、模糊、遮挡、干扰线较多、字符扭曲或低分辨率验证码时，仍可能出现识别错误。你作为一名人工智能训练师，需要结合系统运行特点，为该验证码识别系统设计人工与智能协同的最优方式和流程。<br><br>（1）请为该验证码识别系统找到人工与智能交互的最优方式。（10分）<br><br>（2）请为该验证码识别系统设计人工与智能交互的最优流程。（10分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：15分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能通过数据分析，找到单一场景下人工和智能交互的最优方式<br><br>（2）能通过数据分析，设计单一场景下人工和智能交互的最优流程<br><br>验证码识别系统操作手册<br><br>一、验证码识别系统人机交互模式说明<br><br>RPA验证码识别系统提供三种基础交互路由模式，以适应不同质量、不同难度的验证码识别场景：<br><br>1.全自动识别模式<br><br>适用于清晰、规则、置信度较高的数字验证码。系统自动截取验证码图片，经预处理后调用OCR识别模型，直接输出验证码数字，并返回给RPA流程自动填写。该模式处理速度快、人工成本低，适合标准化验证码场景。<br><br>2.人工复核模式<br><br>适用于图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。系统将验证码图片、AI识别结果和置信度推送给人工复核人员，由人工确认最终验证码内容后返回RPA流程。该模式准确率高，但处理效率相对较低。<br><br>3.人机协同模式<br><br>适用于AI能够给出初步识别结果，但结果存在不确定性的验证码。系统先由AI完成识别和置信度判断，置信度高的样本自动通过，置信度低或异常样本转人工确认。人工修正后的样本进入错例库，用于后续模型优化。该模式兼顾效率和准确率，是验证码识别系统的推荐交互方式。<br><br>二、验证码识别系统人机交互流程设计规范<br><br>为了提升RPA自动填写流程的稳定性，训练师应按照以下流程配置人机协同机制：<br><br>1.验证码采集<br><br>RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。<br><br>2.AI自动识别<br><br>系统对验证码图片进行预处理，并调用识别模型输出验证码结果和置信度。<br><br>3.置信度判断<br><br>当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。<br><br>4.人工复核与修正<br><br>人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。<br><br>5.结果回传与流程继续<br><br>系统将最终验证码结果传递给RPA流程，完成网页表单填写。<br><br>6.错误样本沉淀<br><br>识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。<br><br>09题6：验证码识别系统人机交互流程设计（20分）<br><br>题6第（1）问：人机交互最优方式（10分）<br><br>基于验证码识别系统运行特点，我提出人工与智能交互的最优方式为“人机协同模式”，即AI自动识别、低置信度转人工复核、错误样本回流优化相结合的方式。<br><br>1、AI自动识别——适用于标准验证码场景。
             </div>
           </details>
 
           <div class="answer-section">
             <div class="section-tag">💡 标准答案与采分要点拆解</div>
             <div class="answer-body">
-              适用场景：<mark class="score-key" title="核心采分点">清晰、规则、置信度较高的数字验证码。</mark><br>数据支撑：<mark class="score-key" title="核心采分点">该类验证码图片质量较好，模型识别准确率较高。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI自动识别处理速度快、人工成本低，能够提高RPA自动填写效率。</mark><br>人工复核——适用于复杂或异常验证码场景。<br>适用场景：<mark class="score-key" title="核心采分点">图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。</mark><br>数据支撑：<mark class="score-key" title="核心采分点">质检数据中错误样本主要集中在干扰线、模糊、遮挡、低分辨率等样本中。</mark><br>分配理由：<mark class="score-key" title="核心采分点">人工复核可以降低错误验证码直接提交的风险，提高最终填写准确率。</mark><br>人机协同——作为推荐交互方式。<br>适用场景：<mark class="score-key" title="核心采分点">AI能够给出初步识别结果，但结果存在不确定性的验证码。</mark><br>数据支撑：<mark class="score-key" title="核心采分点">系统既有高置信度可自动处理样本，也有低置信度或异常样本需要人工确认。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI负责快速识别和初步判断，人工负责低置信度样本复核，同时将人工修正结果回流训练集，兼顾效率和准确率。</mark><br>最优方式总结：<br>采用“人机协同模式”后，<mark class="score-key" title="核心采分点">高置信度验证码由AI自动处理，低置信度和异常验证码由人工复核，错误样本进入错例库用于模型优化。</mark><br>该方式能够<mark class="score-key" title="核心采分点">提升验证码识别准确率，降低人工介入成本，提高RPA流程稳定性。</mark><br>题6第（2）问：人机交互最优流程（10分）<br>一、流程概述（1分）：<br>基于“人机协同模式”，设计“<mark class="score-key" title="核心采分点">验证码采集—AI识别—置信度判断—人工复核—结果回传—错误样本沉淀</mark>”的完整人机交互流程，覆盖验证码识别到模型优化的闭环过程。<br>二、流程步骤（5分）：<br>阶段一——验证码采集：<mark class="score-key" title="核心采分点">RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。</mark><br>阶段二——AI自动识别：系统对验证码图片进行<mark class="score-key" title="核心采分点">格式统一、尺寸调整、灰度化、去噪等预处理，并调用验证码识别模型输出识别结果和置信度。</mark><br>阶段三——置信度判断：当识别置信度达到设定阈值时，<mark class="score-key" title="核心采分点">系统直接将识别结果返回RPA流程自动填写；</mark>当置信度低于阈值，<mark class="score-key" title="核心采分点">或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。</mark><br>阶段四——人工复核与修正：人工复核人员查看验证码图片和AI识别结果，确认<mark class="score-key" title="核心采分点">正确验证码内容，并将修正结果返回系统。</mark><br>阶段五——结果回传与流程继续：<mark class="score-key" title="核心采分点">系统将最终验证码结果传递给RPA流程，完成网页表单填写，业务流程继续执行。</mark><br>阶段六——错误样本沉淀：<mark class="score-key" title="核心采分点">识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。</mark><br>三、判断节点设计（2分）：<br>节点1——置信度阈值判断：如置信度≥0.85，<mark class="score-key" title="核心采分点">AI自动填写；</mark>如置信度＜0.85，<mark class="score-key" title="核心采分点">转人工复核。</mark><br>节点2——图片质量判断：对模糊、遮挡、低分辨率、干扰线较多等异常图片，直接进入<mark class="score-key" title="核心采分点">人工复核或错例库</mark>。<br>节点3——人工复核结果判断：人工确认结果后，系统<mark class="score-key" title="核心采分点">判断是否可直接回传RPA流程</mark>。<br>节点4——样本回流判断：识别错误、人工修正和低置信度样本<mark class="score-key" title="核心采分点">进入错例库，用于后续模型优化。</mark><br>四、异常处理（1分）：若AI识别服务故障，<mark class="score-key" title="核心采分点">系统自动转人工复核并记录故障</mark>；若人工复核超时，<mark class="score-key" title="核心采分点">系统提示重新获取验证码</mark>；若验证码图片无法读取，<mark class="score-key" title="核心采分点">系统重新截取验证码图片</mark>；若连续识别失败，<mark class="score-key" title="核心采分点">系统触发人工处理。</mark><br>五、流程优势（1分）：该流程能够实现标准验证码<mark class="score-key" title="核心采分点">自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾识别效率、准确率和RPA流程稳定性。</mark><br><br>
+              适用场景：<mark class="score-key" title="核心采分点">清晰、规则、置信度较高的数字验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI自动识别处理速度快、人工成本低，能够提高RPA自动填写效率。</mark><br>2、人工复核——适用于复杂或异常验证码场景。<br>适用场景：<mark class="score-key" title="核心采分点">图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">人工复核可以降低错误验证码直接提交的风险，提高最终填写准确率。</mark><br>3、人机协同——作为推荐交互方式。<br>适用场景：<mark class="score-key" title="核心采分点">AI能够给出初步识别结果，但结果存在不确定性的验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI负责快速识别和初步判断，人工负责低置信度样本复核，同时将人工修正结果回流训练集，兼顾效率和准确率。</mark><br>4、最优方式总结：<br>采用“人机协同模式”后，<mark class="score-key" title="核心采分点">高置信度验证码由AI自动处理，低置信度和异常验证码由人工复核，错误样本进入错例库用于模型优化。</mark><br>该方式能够<mark class="score-key" title="核心采分点">提升验证码识别准确率，降低人工介入成本，提高RPA流程稳定性。</mark><br>题6第（2）问：人机交互最优流程（10分）<br>一、流程概述（1分）：<br>基于“人机协同模式”，设计“<mark class="score-key" title="核心采分点">验证码采集—AI识别—置信度判断—人工复核—结果回传—错误样本沉淀</mark>”的完整人机交互流程，覆盖验证码识别到模型优化的闭环过程。<br>二、流程步骤（5分）：<br>阶段一——验证码采集：<mark class="score-key" title="核心采分点">RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。</mark><br>阶段二——AI自动识别：系统对验证码图片进行<mark class="score-key" title="核心采分点">格式统一、尺寸调整、灰度化、去噪等预处理，并调用验证码识别模型输出识别结果和置信度。</mark><br>阶段三——置信度判断：当识别置信度达到设定阈值时，<mark class="score-key" title="核心采分点">系统直接将识别结果返回RPA流程自动填写；</mark>当置信度低于阈值，<mark class="score-key" title="核心采分点">或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。</mark><br>阶段四——人工复核与修正：人工复核人员查看验证码图片和AI识别结果，确认<mark class="score-key" title="核心采分点">正确验证码内容，并将修正结果返回系统。</mark><br>阶段五——结果回传与流程继续：<mark class="score-key" title="核心采分点">系统将最终验证码结果传递给RPA流程，完成网页表单填写，业务流程继续执行。</mark><br>阶段六——错误样本沉淀：<mark class="score-key" title="核心采分点">识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。</mark><br>三、判断节点设计（2分）：<br>节点1——置信度阈值判断：如置信度≥0.85，<mark class="score-key" title="核心采分点">AI自动填写；</mark>如置信度＜0.85，<mark class="score-key" title="核心采分点">转人工复核。</mark><br>节点2——图片质量判断：对模糊、遮挡、低分辨率、干扰线较多等异常图片，直接进入<mark class="score-key" title="核心采分点">人工复核或错例库</mark>。<br>节点3——人工复核结果判断：人工确认结果后，系统<mark class="score-key" title="核心采分点">判断是否可直接回传RPA流程</mark>。<br>节点4——样本回流判断：识别错误、人工修正和低置信度样本<mark class="score-key" title="核心采分点">进入错例库，用于后续模型优化。</mark><br>四、异常处理（1分）：若AI识别服务故障，<mark class="score-key" title="核心采分点">系统自动转人工复核并记录故障</mark>；若人工复核超时，<mark class="score-key" title="核心采分点">系统提示重新获取验证码</mark>；若验证码图片无法读取，<mark class="score-key" title="核心采分点">系统重新截取验证码图片</mark>；若连续识别失败，<mark class="score-key" title="核心采分点">系统触发人工处理。</mark><br>五、流程优势（1分）：该流程能够实现标准验证码<mark class="score-key" title="核心采分点">自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾识别效率、准确率和RPA流程稳定性。</mark><br><br>
             </div>
           </div>
 
@@ -2157,68 +2153,49 @@ with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot
           
             <div class="code-box">
               <div class="code-box-header">
-                <span class="code-title">🐍 Python 满分标准实现与逐行注释</span>
+                <span class="code-title">🐍 Python 参考答案代码（飞书原文）</span>
                 <button class="btn btn-sm btn-copy" onclick="copyCode(this, 'prac-07-4-code')">📋 复制代码</button>
               </div>
               <pre><code id="prac-07-4-code" class="python"># ==============================================================
-# 07题4：自然场景吸烟检测算法测试 标准代码
-# 考点：图像特征提取、逻辑回归基线、随机森林/XGBoost优化纠偏、测试对比
+# 07题4：自然场景吸烟检测算法测试 · 参考答案代码
+# 考点：灰度 + 32×32 像素特征、LogisticRegression、joblib 存取模型、四项指标
 # ==============================================================
+# （1）train.ipynb：模型训练
 import pandas as pd
 from PIL import Image
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import joblib
 
-# 1. 图像数据读取与预处理
+train = pd.read_csv(&quot;train.csv&quot;)
+
 def load_image(path):
     img = Image.open(path).convert(&quot;L&quot;)
     img = img.resize((32, 32))
     return list(img.getdata())
 
-train_df = pd.read_csv(&quot;train.csv&quot;)
-test_df = pd.read_csv(&quot;test.csv&quot;)
+X_train = [load_image(&quot;images/&quot; + name) for name in train[&quot;image&quot;]]
+y_train = train[&quot;label&quot;]
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+joblib.dump(model, &quot;smoking_model.pkl&quot;)
+print(&quot;模型训练完成&quot;)
 
-X_train = [load_image(&quot;images/&quot; + name) for name in train_df[&quot;image&quot;]]
-y_train = train_df[&quot;label&quot;]
+# （2）test.ipynb：模型测试
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-X_test = [load_image(&quot;images/&quot; + name) for name in test_df[&quot;image&quot;]]
-y_test = test_df[&quot;label&quot;]
-
-# 2. 初始基线模型训练（逻辑回归）
-model_base = LogisticRegression(max_iter=1000)
-model_base.fit(X_train, y_train)
-joblib.dump(model_base, &quot;2.2.3_model.pkl&quot;)
-
-# 基线预测
-y_pred_base = model_base.predict(X_test)
-acc_base = accuracy_score(y_test, y_pred_base)
-rec_base = recall_score(y_test, y_pred_base)
-cm_base = confusion_matrix(y_test, y_pred_base)
-
-# 3. 算法纠偏与优化模型训练（改用随机森林集成模型，增强复杂自然背景泛化能力）
-model_opt = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
-model_opt.fit(X_train, y_train)
-
-y_pred_opt = model_opt.predict(X_test)
-acc_opt = accuracy_score(y_test, y_pred_opt)
-rec_opt = recall_score(y_test, y_pred_opt)
-cm_opt = confusion_matrix(y_test, y_pred_opt)
-
-print(f&quot;基线逻辑回归 -&gt; 准确率: {acc_base:.4f}, 召回率: {rec_base:.4f}&quot;)
-print(f&quot;优化随机森林 -&gt; 准确率: {acc_opt:.4f}, 召回率: {rec_opt:.4f} (显著提升)&quot;)
-
-# 4. 保存测试报告与纠偏结果
-with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
-    f.write(&quot;=== 自然场景吸烟检测算法测试与优化报告 ===\n\n&quot;)
-    f.write(f&quot;【基线模型指标】准确率: {acc_base:.4f}, 召回率: {rec_base:.4f}\n&quot;)
-    f.write(f&quot;混淆矩阵:\n{cm_base}\n\n&quot;)
-    f.write(f&quot;【优化后指标】准确率: {acc_opt:.4f}, 召回率: {rec_opt:.4f}\n&quot;)
-    f.write(f&quot;混淆矩阵:\n{cm_opt}\n\n&quot;)
-    f.write(&quot;【纠错原因与改进说明】\n&quot;)
-    f.write(&quot;原始线性分类器在光照变化强烈和手部微动作复杂场景下易发生误检与漏检；\n&quot;)
-    f.write(&quot;引入树集成算法后，非线性特征捕捉能力大幅提升，有效降低了假阳性误报率。\n&quot;)</code></pre>
+test = pd.read_csv(&quot;test.csv&quot;)
+X_test = [load_image(&quot;images/&quot; + name) for name in test[&quot;image&quot;]]
+y_test = test[&quot;label&quot;]
+model = joblib.load(&quot;smoking_model.pkl&quot;)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+print(&quot;准确率：&quot;, accuracy)
+print(&quot;精确率：&quot;, precision)
+print(&quot;召回率：&quot;, recall)
+print(&quot;F1分数：&quot;, f1)</code></pre>
             </div>
             
 
@@ -2322,7 +2299,7 @@ with open(&quot;2.2.3_report.txt&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot
           <div class="answer-section">
             <div class="section-tag">💡 标准答案与采分要点拆解</div>
             <div class="answer-body">
-              • 适用：<mark class="score-key" title="核心采分点">高置信度/清晰/室内封闭场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">处理速度快、成本低，适合标准化、高置信度场景。</mark><br>二、人工复核<br>• 适用：<mark class="score-key" title="核心采分点">低置信度/复杂/室外场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">降低误告警和漏检风险，提高决策准确性。</mark><br>三、人机协同（推荐）<br>• 适用：<mark class="score-key" title="核心采分点">AI 有初步结果但不确定的场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">AI 快速识别，人工复核低置信度样本，修正结果回流训练，兼顾效率、准确率和成本。</mark><br>四、最优方式总结<br><mark class="score-key" title="核心采分点">高置信度/清晰/室内封闭场景由 AI 自动告警；低置信度/复杂/室外场景由人工复核；误检、漏检和修正样本入错例库优化模型。</mark><br><br>---<br><br>07题 6 第（2）问：人机交互最优流程（10 分）<br>一、流程概述<br>按“视频采集—AI 识别—置信度判断—人工复核—告警记录—错误沉淀”设计闭环流程。<br>二、流程步骤<br>阶段一—<mark class="score-key" title="核心采分点">视频画面采集</mark><br>阶段二—<mark class="score-key" title="核心采分点">AI 自动识别：</mark><br>阶段三—<mark class="score-key" title="核心采分点">置信度判断：</mark><br>阶段四—<mark class="score-key" title="核心采分点">人工复核与修正</mark><br>阶段五—<mark class="score-key" title="核心采分点">告警记录与处理：</mark><br>阶段六—<mark class="score-key" title="核心采分点">错误样本沉淀：</mark><br>三、判断节点设计<br><mark class="score-key" title="核心采分点">1.</mark><mark class="score-key" title="核心采分点">置信度阈值判断：</mark><br><mark class="score-key" title="核心采分点">2.</mark><mark class="score-key" title="核心采分点">图片质量判断：</mark> <br><mark class="score-key" title="核心采分点">3.</mark><mark class="score-key" title="核心采分点">人工复核结果判断：</mark><br><mark class="score-key" title="核心采分点">4.</mark><mark class="score-key" title="核心采分点">样本回流判断：</mark><br>四、异常处理<br>• AI 服务故障：<mark class="score-key" title="核心采分点">转人工复核并记录日志；</mark><br>• 人工复核超时：<mark class="score-key" title="核心采分点">重新分配任务；</mark><br>• 监控画面无法读取/摄像头离线：<mark class="score-key" title="核心采分点">触发设备告警；</mark><br>• 连续多帧异常：<mark class="score-key" title="核心采分点">提升告警等级并通知管理人员。</mark><br>五、流程优势<br>标准场景自动处理、复杂场景人工兜底、错误样本闭环优化，兼顾效率、准确率和稳定性，降低人工成本。<br><br>
+              • 适用：<mark class="score-key" title="核心采分点">高置信度/清晰/室内封闭场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">处理速度快、成本低，适合标准化、高置信度场景。</mark><br>二、人工复核<br>• 适用：<mark class="score-key" title="核心采分点">低置信度/复杂/室外场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">降低误告警和漏检风险，提高决策准确性。</mark><br>三、人机协同（推荐）<br>• 适用：<mark class="score-key" title="核心采分点">AI 有初步结果但不确定的场景。</mark><br>• 理由：<mark class="score-key" title="核心采分点">AI 快速识别，人工复核低置信度样本，修正结果回流训练，兼顾效率、准确率和成本。</mark><br>四、最优方式总结<br><mark class="score-key" title="核心采分点">高置信度/清晰/室内封闭场景由 AI 自动告警；低置信度/复杂/室外场景由人工复核；误检、漏检和修正样本入错例库优化模型。</mark><br><br>---<br><br>07题 6 第（2）问：人机交互最优流程（10 分）<br>一、流程概述<br>按“视频采集—AI 识别—置信度判断—人工复核—告警记录—错误沉淀”设计闭环流程。<br>二、流程步骤<br>阶段一—<mark class="score-key" title="核心采分点">视频画面采集</mark><br>阶段二—<mark class="score-key" title="核心采分点">AI 自动识别：</mark><br>阶段三—<mark class="score-key" title="核心采分点">置信度判断：</mark><br>阶段四—<mark class="score-key" title="核心采分点">人工复核与修正</mark><br>阶段五—<mark class="score-key" title="核心采分点">告警记录与处理：</mark><br>阶段六—<mark class="score-key" title="核心采分点">错误样本沉淀：</mark><br>三、判断节点设计<br><mark class="score-key" title="核心采分点">1. 置信度阈值判断：</mark><br><mark class="score-key" title="核心采分点">2. 图片质量判断：</mark> <br><mark class="score-key" title="核心采分点">3. 人工复核结果判断：</mark><br><mark class="score-key" title="核心采分点">4. 样本回流判断：</mark><br>四、异常处理<br>• AI 服务故障：<mark class="score-key" title="核心采分点">转人工复核并记录日志；</mark><br>• 人工复核超时：<mark class="score-key" title="核心采分点">重新分配任务；</mark><br>• 监控画面无法读取/摄像头离线：<mark class="score-key" title="核心采分点">触发设备告警；</mark><br>• 连续多帧异常：<mark class="score-key" title="核心采分点">提升告警等级并通知管理人员。</mark><br>五、流程优势<br>标准场景自动处理、复杂场景人工兜底、错误样本闭环优化，兼顾效率、准确率和稳定性，降低人工成本。<br><br>
             </div>
           </div>
 
