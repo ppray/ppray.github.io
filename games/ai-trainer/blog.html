@@ -822,7 +822,96 @@
       .player-controls { gap: 12px; }
     }
   </style>
-</head>
+
+  
+    /* Enhanced blog styles for baodi cards, traps and tables */
+    .baodi-card {
+      background: #fff8ec;
+      border: 2px solid var(--yellow);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin: 12px 0;
+    }
+    .baodi-title {
+      font-weight: 900;
+      font-size: 14.5px;
+      color: #b8492c;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .baodi-body {
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+    .trap-alert {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      border-radius: 4px;
+      padding: 9px 12px;
+      margin: 8px 0;
+      font-size: 13px;
+      color: #991b1b;
+      line-height: 1.6;
+    }
+    .rhyme-callout {
+      background: #fbf3ec;
+      border: 1.5px solid #d97757;
+      border-left: 5px solid #d97757;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 10px 0;
+    }
+    .rhyme-callout-text {
+      font-weight: 900;
+      font-size: 14.5px;
+      color: #b8492c;
+    }
+    .rhyme-callout-sub {
+      font-size: 12.5px;
+      color: var(--ink-2);
+      margin-top: 2px;
+    }
+    .tactics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    .tactics-table th, .tactics-table td {
+      border: 1.5px solid var(--border-ink, #1b1d4d);
+      padding: 7px 9px;
+      text-align: left;
+    }
+    .tactics-table th {
+      background: #f1ede6;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .tactics-table tr:nth-child(even) td {
+      background: #fdfaf6;
+    }
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      background: var(--blue-soft);
+      color: var(--blue-d);
+    }
+    @media print {
+      .blog-nav, .blog-sidebar, .q-actions, .audio-player-fixed { display: none !important; }
+      .blog-layout { display: block !important; }
+      .blog-main { max-width: 100% !important; padding: 0 !important; }
+      .question-card, .strategy-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+    }
+
+</style>
+  </style></head>
 <body>
 
   <!-- Top Navigation Header -->
@@ -895,7 +984,7 @@
         <div class="hero-badges">
           <span class="badge badge-paper">国家职业技能等级认定</span>
           <span class="badge badge-type">三级／高级工</span>
-          <span class="badge badge-num">120分钟实操考试</span>
+          <span class="badge badge-num">180分钟全真考核</span>
           <span class="badge badge-mimo">🎙️ MiMo TTS 茉莉原声带背</span>
         </div>
         <h1 class="hero-title">人工智能训练师（高级/三级）实操全真题通关博客</h1>
@@ -921,46 +1010,197 @@
           </div>
         </div>
         <div class="hero-actions">
-          <button class="btn btn-primary" onclick="startAllSequential()">
-            <span>▶ 开启全卷顺序磨耳朵</span>
-          </button>
-          <a href="#templates" class="btn">
-            <span>📖 查看8大题型模版</span>
+          <a href="/games/ai-trainer/#practice" class="btn btn-primary" style="background:#3b6bff; color:#fff;">
+            <span>✍️ 逐题实战与采分卡（带背题模式）</span>
           </a>
           <a href="/games/ai-trainer/#cloze" class="btn btn-mint">
-            <span>🎯 检验学习效果（进入挖空模式）</span>
+            <span>🎯 实操挖空连击闯关</span>
           </a>
+          <a href="#strategy" class="btn">
+            <span>🧭 180分考场黄金战术</span>
+          </a>
+          <button class="btn btn-yellow" onclick="startAllSequential()">
+            <span>🎙️ 开启全卷磨耳朵带背</span>
+          </button>
         </div>
       </section>
 
       <!-- Section 1: Strategy & Timing Guide -->
       <section class="strategy-card" id="strategy">
-        <h2 class="section-title">🎯 考试大纲剖析与 120 分钟考场得分战术</h2>
-        <p style="font-size:14px; color:var(--ink-2); margin-bottom:12px;">
-          实操技能考核总分 100 分，及格线为 60 分。题型分布严格固定为 8 个子模块。合理的时间管理是顺利拿高分的关键。
+        <h2 class="section-title">🎯 考试大纲剖析与 180 分钟考场黄金战术（73分稳过计划）</h2>
+        <p style="font-size:14.5px; color:var(--ink-2); line-height:1.8; margin-bottom:16px;">
+          实操技能考核总分 100 分，及格线为 60 分。题型分布固定为国家职业技能等级认定三级的 8 项核心工作。考场最大的陷阱不是题目难，而是<strong>时间严重不够</strong>！掌握科学的算账逻辑、做题顺序与保底答案，是零基础稳拿及格的制胜法宝。
         </p>
 
-        <div class="grid-2col">
-          <div class="info-pane">
-            <h4>⏱️ 120 分钟考场答题节奏推荐</h4>
-            <ul>
-              <li><strong>第 0~25 分钟：题1 业务流程设计（15分）</strong> —— 紧扣采集5步、处理4步、审核三率，稳拿满分。</li>
-              <li><strong>第 25~45 分钟：题2 业务模块优化（15分）</strong> —— 三层归因+AB实验，快速定位瓶颈。</li>
-              <li><strong>第 45~65 分钟：题3 数据规范制定（15分）</strong> —— 字段清洗+标注SOP，规范化条目输出。</li>
-              <li><strong>第 65~95 分钟：题4 算法实操与代码（20-25分）</strong> —— Python代码跑通、出图出指标、写测试报告。</li>
-              <li><strong>第 95~110 分钟：题5 监控 & 题6 交互（30-35分）</strong> —— 监控指标看板、人机双阈值分流。</li>
-              <li><strong>第 110~120 分钟：题7 培训 & 题8 指导（10分）</strong> —— 检查答题完整性，查漏补缺。</li>
-            </ul>
+        <!-- 开场算账 -->
+        <div class="baodi-card" style="background:#fff8ec; border:2.5px solid var(--yellow); border-left:8px solid #d97757; border-radius:14px; padding:16px 20px; margin-bottom:20px;">
+          <div style="font-weight:900; font-size:16px; color:#b8492c; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+            <span style="font-size:22px;">⚖️</span> 开场先算一笔账：8,300 字参考答案抄不完！为什么必须背【极简保底版 2,900 字】？
           </div>
-          <div class="info-pane">
-            <h4>💡 考场提分与防踩坑黄金法则</h4>
-            <ul>
-              <li><strong>采分点必须命中关键词：</strong> 考官按采分点给分。如“准确率≥95%”、“8:2划分”、“random_state=42”等硬性指标切勿写错。</li>
-              <li><strong>代码题分步写分步得分：</strong> 就算最后模型预测报错，前面的导包（0.5分）、数据切分（1分）、预处理（1分）也能稳稳到手。</li>
-              <li><strong>严禁交白卷：</strong> 培训大纲与指导题就算记不清细节，按通用 SOP 与分层带教框架写，也能拿到 80% 以上基础分。</li>
-              <li><strong>结果文件务必按规范命名：</strong> 严格按准考证规则建立考生文件夹，文件名以题目要求为准，如 <code>captcha_train.csv</code>、<code>captcha_test.csv</code>、<code>smoking_model.pkl</code>。</li>
-            </ul>
+          <div style="font-size:14px; color:var(--ink); line-height:1.8;">
+            <p><strong>1. 官方参考答案是“不可能完成的任务”：</strong> 官方标准答案全卷高达 <strong>8,300 字</strong>！按考生考场紧张状态下的正常手写速度 <strong>30 字/分钟</strong> 计算，抄完需要整整 <strong>4.5 小时（270 分钟）</strong>！但实操考试标准时间只有 <strong>180 分钟（3 小时）</strong>。照抄官方长篇答案的人，到考试结束往往连题 5 都没写完，直接遗憾失利！</p>
+            <p style="margin-top:6px;"><strong>2. 极简保底版（2,900 字）的碾压优势：</strong> 保底版把全卷答案高度浓缩为<strong>“核心小标题＋采分关键词＋必背硬性数字”</strong>，全卷仅约 <strong>2,900 字</strong>！用时只需 <strong>约 96 分钟</strong> 即可写完全部小问骨架。剩下的 <strong>84 分钟</strong>，你可以从容翻阅卷面所附的《系统操作手册》抄现成词，核对题干文件名与路径，查漏补缺，稳稳拿下 <strong>60~75 分</strong>！</p>
           </div>
+        </div>
+
+        <!-- 三颗定心丸 -->
+        <div style="margin-bottom:22px;">
+          <h3 style="font-size:16px; font-weight:900; color:var(--ink); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            <span>🛡️</span> 三颗定心丸：每一颗都有实打实的证据
+          </h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
+            <div style="background:#fff; border:2px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 0 var(--border);">
+              <div style="font-weight:900; font-size:15px; color:#3b6bff; margin-bottom:6px;">① 题型是死的，骨架全卷通用</div>
+              <div style="font-size:13px; color:var(--ink-2); line-height:1.6;">09 卷、01 卷、07 卷的 8 道大题，考核要求、总分与工作内容完全一致，均严格对应国标三级 8 项工作。把 8 道题的小标题骨架背下来，换成任何业务场景（验证码、营销、吸烟检测）都能直接套用！</div>
+            </div>
+            <div style="background:#fff; border:2px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 0 var(--border);">
+              <div style="font-weight:900; font-size:15px; color:#10b981; margin-bottom:6px;">② 手册可以直接抄，省时拿分</div>
+              <div style="font-size:13px; color:var(--ink-2); line-height:1.6;">题 5 和题 6 卷面各附有一份真实的《系统操作手册》，题 5 还有质检数据表！手册里的规范步骤、异常处理、分流规则在考场上直接抄原词，不仅好找，而且完全切中考官采分点！</div>
+            </div>
+            <div style="background:#fff; border:2px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 0 var(--border);">
+              <div style="font-weight:900; font-size:15px; color:#f59e0b; margin-bottom:6px;">③ 60 分及格线，按目标分练</div>
+              <div style="font-size:13px; color:var(--ink-2); line-height:1.6;">满分 100 分，及格只要 60 分。我们为学员设计的保底目标分为 <strong>73 分</strong>（题1 12 + 题2 6 + 题3 11 + 题4 15 + 题5 10 + 题6 16 + 题7 2 + 题8 1 = 73分），比及格线多出整整 13 分容错余地！</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 一个比喻讲懂全卷 -->
+        <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:12px; padding:14px 18px; margin-bottom:22px;">
+          <div style="font-weight:900; font-size:15px; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>📖</span> 一个比喻讲懂全卷：AI 模型＝新科员，一张验证码的一生
+          </div>
+          <div style="font-size:13.5px; color:#14532d; line-height:1.75;">
+            把 AI 模型想象成<strong>“单位新招进来的科员”</strong>，你就是负责带他的老同志。8 道大题就是带新人的完整生命周期：<br>
+            <strong>收材料（题1 数据采集）</strong> → <strong>挑废材料（题1/3 数据清洗五删一统）</strong> → <strong>标答案（题3 标注1可用/0不可用/2待复核）</strong> → <strong>分题做卷（题4 8:2划分训练集与测试集）</strong> → <strong>老师教与模拟考试（题4 fit训练与predict预测，算成绩单四个80%）</strong> → <strong>质检查账（题5 查质检账本，7条认对5条介入）</strong> → <strong>人机协同兜底（题6 0.85阈值分流，新人拿不准老同志兜底，错题回流学习）</strong> → <strong>培训带新人（题7/8 讲授+实操两法，指导纠偏）</strong>。
+          </div>
+        </div>
+
+        <!-- 考场黄金做题顺序 -->
+        <div style="margin-bottom:22px;">
+          <h3 style="font-size:16px; font-weight:900; color:var(--ink); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            <span>🧭</span> 考场黄金做题顺序（不按题号，按把握做！）
+          </h3>
+          <p style="font-size:13.5px; color:var(--ink-2); margin-bottom:10px;">
+            考场上按题号从 1 做到 8 是新手的常见误区。名师推荐的“把握优先法则”能够让你在开考前 1 个小时就锁定 35 分以上，心理底气十足：
+          </p>
+          <div style="overflow-x:auto;">
+            <table class="tactics-table">
+              <thead>
+                <tr style="background:#f1ede6;">
+                  <th>阶段</th>
+                  <th>做题目标</th>
+                  <th>建议耗时</th>
+                  <th>得分预期</th>
+                  <th>核心打法与得分要点</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 1 阶段</span></td>
+                  <td><b>全卷圈卷</b></td>
+                  <td>0 ~ 8 分钟</td>
+                  <td>-</td>
+                  <td>先翻全卷！圈出手册页码、保存路径（题目3）、文件名（captcha_train.csv），识别各题公文文体。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 2 阶段</span></td>
+                  <td><b>题 6 人机交互</b></td>
+                  <td>8 ~ 26 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">16 / 20 分</td>
+                  <td>字数最多（20分大题），但<strong>照着手册直接抄</strong>！写清三种模式理由＋六个阶段＋判断节点(0.85)＋异常处理。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 3 阶段</span></td>
+                  <td><b>题 4 前三问</b></td>
+                  <td>26 ~ 38 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">8 / 8 分</td>
+                  <td>代码填空（train_test_split, fit, predict）＋ 四个 80% 计算，字数极少白拿 8 分！</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 4 阶段</span></td>
+                  <td><b>题 3 规范制定</b></td>
+                  <td>38 ~ 58 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">11 / 15 分</td>
+                  <td>清洗六步（五删一统）＋ 标注规范（1可用/0不可用/2待复核），以能不能用为准，路径保存至题目3。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 5 阶段</span></td>
+                  <td><b>题 8、题 7</b></td>
+                  <td>58 ~ 68 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">3 / 5 分</td>
+                  <td>日常公文题，培训讲义写清每章说明，培训方法选讲授法与实操练习法；指导题按规范指出问题。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 6 阶段</span></td>
+                  <td><b>题 1 业务流程</b></td>
+                  <td>68 ~ 88 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">12 / 15 分</td>
+                  <td>五四三倒着数：采集5步、处理4步、审核3步。小标题背出来，内容去卷面填词，稳拿 12 分。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 7 阶段</span></td>
+                  <td><b>题 5 系统监控</b></td>
+                  <td>88 ~ 108 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">10 / 15 分</td>
+                  <td>质检表一本账：12条中7条正确(58.3%)，5条介入(41.7%)；优化需求定目标（80%以上、25%以内）。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 8 阶段</span></td>
+                  <td><b>题 4 后两问</b></td>
+                  <td>108 ~ 130 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">7 / 12 分</td>
+                  <td>测试报告按公文六要素展开；错误案例分析（漏判补样本，误判强去噪）。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#ffd23f; color:#000;">第 9 阶段</span></td>
+                  <td><b>题 2 效果优化</b></td>
+                  <td>130 ~ 150 分钟</td>
+                  <td style="color:#10b981; font-weight:900;">6 / 10 分</td>
+                  <td>人机料法归因（原因→后果）＋两项优化建议（目标带指标+方法+效果）。</td>
+                </tr>
+                <tr>
+                  <td><span class="badge" style="background:#10b981; color:#fff;">第 10 阶段</span></td>
+                  <td><b>查漏补缺</b></td>
+                  <td>150 ~ 180 分钟</td>
+                  <td>-</td>
+                  <td>核对答题卡序号是否遗漏、各小标题大写序号（一、二、三）是否齐全，确认无空白交卷！</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 五大公文文体 -->
+        <div>
+          <h3 style="font-size:16px; font-weight:900; color:var(--ink); margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+            <span>📑</span> 五大公文文体对照指南（五种问法＝五种公文）
+          </h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+            <div style="background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px;">
+              <span class="badge-pill" style="background:#dce5ff; color:#234fdc;">办事指南</span>
+              <div style="font-weight:900; margin:4px 0;">设计……流程</div>
+              <div style="font-size:12px; color:var(--ink-2);">题1 数据流程、题6(2) 人机交互流程。写清输入、各环节动作、输出与异常流转。</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px;">
+              <span class="badge-pill" style="background:#d1fae5; color:#065f46;">管理办法</span>
+              <div style="font-weight:900; margin:4px 0;">制定……标准、规范</div>
+              <div style="font-size:12px; color:var(--ink-2);">题3(1) 清洗标准、题3(2) 标注规范。条目清晰、规则明确、违规处置。</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px;">
+              <span class="badge-pill" style="background:#fef3c7; color:#92400e;">工作汇报</span>
+              <div style="font-weight:900; margin:4px 0;">编写……报告、分析……</div>
+              <div style="font-size:12px; color:var(--ink-2);">题4(4) 测试报告、题5(1) 质检分析报告。汇报结构、列清数据指标、给出结论。</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px;">
+              <span class="badge-pill" style="background:#ede9fe; color:#5b21b6;">改进建议</span>
+              <div style="font-weight:900; margin:4px 0;">设计……方案、提出……需求</div>
+              <div style="font-size:12px; color:var(--ink-2);">题2 效果优化方案、题5(3) 智能解决方案。明确目标指标＋具体方法＋预期效果。</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px;">
+              <span class="badge-pill" style="background:#fee2e2; color:#991b1b;">填空计算</span>
+              <div style="font-weight:900; margin:4px 0;">代码补全、计算指标</div>
+              <div style="font-size:12px; color:var(--ink-2);">题4(1)(2) Python代码、题4(3) 混淆矩阵与四大80%指标。严守语法与公式。</div>
+            </div>          </div>
         </div>
       </section>
 
@@ -1532,508 +1772,1214 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
           </div>
         </section>
         
-        <section class="paper-section" id="paper-09">
+                <section class="paper-section" id="paper-09">
           <div class="paper-banner">
             <div class="paper-banner-left">
-              <h2 class="paper-title">09卷 · 验证码识别与RPA</h2>
-              <p class="paper-desc">以验证码图像识别与RPA流程自动化为核心场景，考查灰度图像预处理、像素矩阵建模、CNN图像分类与监控预警。</p>
+              <h2 class="paper-title">09卷 · 验证码识别与RPA（全卷极简保底版＋名师避坑批注）</h2>
+              <p class="paper-desc">以验证码图像识别与RPA流程自动化为核心场景，考查图像采集规范、清洗核验标准、train_test_split划分与评估、质检表分析与人机协同分流。</p>
             </div>
             <div class="paper-banner-right">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 1);" target="_blank" class="btn btn-paper-play" style="text-decoration:none; background:var(--yellow); color:var(--ink); font-weight:800;">
+                <span>✍️ 打开交互答题卡</span>
+              </a>
               <button class="btn btn-paper-play" onclick="playPaper('09')">
-                <span>📻 播放本卷全套音频</span>
+                <span>📻 播放全卷音频</span>
               </button>
             </div>
           </div>
           <div class="questions-list">
-            
+
         <article class="question-card" id="prac-09-1" data-qid="prac-09-1" data-slug="ai-trainer-09-1">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">流程设计 (15分)</span>
+                <span class="badge badge-type">流程（办事指南） (15分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 12分</span>
                 <span class="badge badge-num">第 1 题</span>
               </div>
               <h3 class="q-title">09题1：验证码识别模型业务流程设计</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 1); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-1" data-qid="prac-09-1" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">5分30秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">20分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：先定要啥，再找哪拿。拍来存好，缺啥再加。</div>
+            <div class="rhyme-callout-sub">说清要采哪类图、去哪取、用什么方式、怎么存、以后如何补。拿验证码举例，只有同一种字体，换字体后模型就可能认错，所以要覆盖不同长度、字体和干扰。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你将作为一名人工智能训练师为验证码识别模型的训练采集可用的图像数据，并对图像数据进行清洗。<br><br>（1）请结合业务与模型训练需求，详细设计验证码识别模型的数据采集完整步骤。（5分）<br><br>（2）为保障数据集精准、统一、可用于模型训练，请设计完整的业务数据处理流程，说明各环节具体工作内容。（5分）<br><br>（3）数据质量直接决定 AI 模型效果，请描述验证码数据集的全流程审核方案，设计对应的落地审核流程。（5分）<br><br>（1）本题分值：15分<br><br>（2）考核时间：20分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能结合人工智能技术要求和业务特征，设计整套业务数据采集流程<br><br>（2）能结合人工智能技术要求和业务特征，设计整套业务数据处理流程<br><br>（3）能结合人工智能技术要求和业务特征，设计整套业务数据审核流程<br><br>09题1：验证码识别模型业务流程设计（15分）<br><br>题1第（1）问：业务数据采集流程设计（5分）<br><br>根据业务需求和AI模型训练要求，设计如下数据采集流程：
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你将作为一名人工智能训练师为验证码识别模型的训练采集可用的图像数据，并对图像数据进行清洗。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              一、需求明确：<mark class="score-key" title="核心采分点">需采集的数据类型包括验证码图像数据、验证码字符标签、图像尺寸信息、图像格式信息等；数据用途为训练验证码识别模型，解决RPA自动填写网页表单时验证码需要人工输入的问题；设定质量标准为标签准确率≥95%、样本覆盖率≥90%。</mark><br>二、来源清晰：<mark class="score-key" title="核心采分点">数据来源于RPA业务系统截图、验证码生成接口、测试环境验证码样本库、历史验证码图片文件等真实或仿真业务渠道，确保数据真实性；覆盖不同数字长度、字体样式、背景颜色、干扰线、噪点、扭曲程度等不同维度，确保数据代表性。</mark><br>三、方式合理：<mark class="score-key" title="核心采分点">采用系统截图采集、接口批量导出、模拟生成补充样本等方式采集数据，确保数据完整性和多样性；采集频率为业务系统样本定期采集、识别失败样本实时回流、新验证码样式及时补充。</mark><br>四、存储安全：<mark class="score-key" title="核心采分点">采用统一文件夹和数据台账方式存储，原始图像存放在指定目录，标签文件单独保存，实施访问控制和定期备份；建立数据批次记录，确保数据来源、采集时间和处理状态可追溯。</mark><br>五、更新机制：<mark class="score-key" title="核心采分点">建立定期更新机制，采用增量采集方式补充新样式验证码和模型识别错误样本；实施版本管理；建立质量监控和问题处理流程，及时清理无效、重复和过期数据。</mark><br>题1第（2）问：业务数据处理流程设计（5分）<br>一、数据清洗：<mark class="score-key" title="核心采分点">去除无法打开、文件损坏、非验证码图片、严重模糊、严重遮挡、尺寸过小、重复图片等无效数据；处理标签缺失、图片与标签不匹配等问题，确保基础数据质量。</mark><br>二、数据转换：<mark class="score-key" title="核心采分点">格式标准化，统一图像格式为JPG或PNG，统一文件命名规则和编码格式；根据模型输入要求调整图像尺寸、颜色通道和像素范围；提取验证码字符、图像尺寸、干扰类型等特征，使数据符合模型输入要求。</mark><br>三、数据核验：<mark class="score-key" title="核心采分点">采用自动核验与人工抽检相结合的方式；自动核验图片格式、尺寸、标签是否为空、标签是否为数字、图片与标签数量是否一致；人工抽检5%-10%样本，设定标签准确率≥95%、完整率≥90%等质量指标，不达标数据返回重新处理。</mark><br>四、数据归档：<mark class="score-key" title="核心采分点">按采集批次、验证码类型、训练集和测试集分类存储；记录元数据，包括来源、采集时间、处理方法、清洗数量、保留数量、标注人员等；实施版本管理和权限控制，保证后续模型训练可复现。</mark><br>题1第（3）问：业务数据审核流程设计（5分）<br>一、审核指标：<mark class="score-key" title="核心采分点">设定三率指标——准确率（目标≥95%）、完整率（目标≥90%）、一致率（目标≥95%），确保验证码图像数据和标注数据质量满足模型训练要求。</mark><br>二、审核方法：<mark class="score-key" title="核心采分点">采取双层审核。第一层自动审核，通过程序进行格式校验、尺寸校验、标签校验、重复校验和图片可读性校验，快速筛查问题数据；第二层人工审核，随机抽取5%-10%数据，由审核人员复核验证码图片清晰度、标签正确性和业务合理性。</mark><br>三、结果处理：<mark class="score-key" title="核心采分点">采取闭环管理。对发现的问题进行分类，包括格式错误、尺寸不合格、重复样本、标签错误、无法识别样本等；根据问题类型选择自动修复、人工修复、重新标注或删除；修复后重新审核直至达标；记录审核过程和结果，形成审核报告。</mark><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（5 分）：（1）请结合业务与模型训练需求，详细设计验证码识别模型的数据采集完整步骤。（5分）
             </div>
-            <div class="takeaway-text">业务流程设计通关口诀：需求明确定指标，来源清晰查真实，方式合理保时效，安全合规做备份，定期更新维生命周期。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、需求明确：采验证码图片和数字标签，训练识别模型；准确率≥95%、覆盖率≥90%。
+二、来源清晰：RPA 系统截图、生成接口、历史图片；覆盖干扰线、模糊、遮挡等样式。
+三、方式合理：自动截图、批量导出、模拟生成；识别失败样本实时回流。
+四、存储安全：图片和标签分开存，建数据台账，权限控制、定期备份。
+五、更新机制：增量补充新样式和错误样本，版本管理。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据采集流程
+
+一、需求明确：采集验证码图片及对应数字标签，用于训练验证码识别模型；标准：标签准确率≥95%、样本覆
+盖率≥90%。
+二、来源清晰：RPA 业务系统截图、验证码生成接口、历史验证码图片；覆盖不同位数、字体、干扰线、噪点、
+模糊、遮挡、扭曲等样式。
+三、方式合理：系统自动截图、接口批量导出、模拟生成补充；定期采集，识别失败样本实时回流。
+四、存储安全：图片与标签分开存放，建立数据台账，权限控制、定期备份，按批次记录可追溯。
+五、更新机制：增量补充新样式和识别错误样本，版本管理，定期清理无效、重复数据。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（5 分）：（2）为保障数据集精准、统一、可用于模型训练，请设计完整的业务数据处理流程，说明各环节具体工作内容。（5分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、数据清洗：删除损坏、过小、模糊、无关、重复图片，处理标签缺失。
+二、数据转换：统一 JPG/PNG 和命名；灰度化、缩放 32×32、去噪。
+三、数据核验：自动核验格式、尺寸、标签；人工抽检 5%–10%。
+四、数据归档：按批次和训练集/测试集存储，记录元数据，版本管理。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据处理流程
+一、数据清洗：删除无法打开、损坏、非验证码、严重模糊遮挡、尺寸过小、重复的图片；处理标签缺失、图片
+与标签不匹配。
+二、数据转换：统一为 JPG/PNG 格式和命名规则；按模型要求灰度化、统一缩放为 32×32、去噪。
+三、数据核验：自动核验格式、尺寸、标签是否为空、图片与标签是否一一对应；人工抽检 5%–10%，准确率
+≥95%、完整率≥90%，不达标退回重做。
+四、数据归档：按批次、类型、训练集/测试集分类存储；记录来源、时间、处理方法、处理人等元数据；版本
+管理。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（3）问（5 分）：（3）数据质量直接决定 AI 模型效果，请描述验证码数据集的全流程审核方案，设计对应的落地审核流程。（5分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、审核指标：准确率≥95%、完整率≥90%、一致率≥95%。
+二、审核方法：第一层程序自动校验，第二层人工抽检 5%–10%。
+三、结果处理：问题分类 → 修复或重标 → 复审达标 → 出审核报告。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据审核方案
+一、审核指标：准确率≥95%、完整率≥90%、一致率≥95%。
+二、审核方法：双层审核。第一层程序自动校验格式、尺寸、标签、重复、可读性；第二层人工随机抽检 5%–
+10%，复核图片清晰度和标签正确性。
+三、结果处理：问题分类（格式错误、尺寸不合格、重复、标签错误、无法识别）→ 自动修复、人工修复、重
+新标注或删除 → 修复后重审直至达标 → 形成审核报告。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">一、需求明确：需采集的数据类型包括验证码图像数据、验证码字符标签、图像尺寸信息、图像格式信息等；数据用途为训练验证码识别模型，解决RPA自动填写网页表单时验证码需要人工输入的问题；设定质量标准为标签准确率≥95%、样本覆盖率≥90%。<br><br>二、来源清晰：数据来源于RPA业务系统截图、验证码生成接口、测试环境验证码样本库、历史验证码图片文件等真实或仿真业务渠道，确保数据真实性；覆盖不同数字长度、字体样式、背景颜色、干扰线、噪点、扭曲程度等不同维度，确保数据代表性。<br><br>三、方式合理：采用系统截图采集、接口批量导出、模拟生成补充样本等方式采集数据，确保数据完整性和多样性；采集频率为业务系统样本定期采集、识别失败样本实时回流、新验证码样式及时补充。<br><br>四、存储安全：采用统一文件夹和数据台账方式存储，原始图像存放在指定目录，标签文件单独保存，实施访问控制和定期备份；建立数据批次记录，确保数据来源、采集时间和处理状态可追溯。<br><br>五、更新机制：建立定期更新机制，采用增量采集方式补充新样式验证码和模型识别错误样本；实施版本管理；建立质量监控和问题处理流程，及时清理无效、重复和过期数据。<br><br>数据清洗：去除无法打开、文件损坏、非验证码图片、严重模糊、严重遮挡、尺寸过小、重复图片等无效数据；处理标签缺失、图片与标签不匹配等问题，确保基础数据质量。<br><br>二、数据转换：格式标准化，统一图像格式为JPG或PNG，统一文件命名规则和编码格式；根据模型输入要求调整图像尺寸、颜色通道和像素范围；提取验证码字符、图像尺寸、干扰类型等特征，使数据符合模型输入要求。<br><br>三、数据核验：采用自动核验与人工抽检相结合的方式；自动核验图片格式、尺寸、标签是否为空、标签是否为数字、图片与标签数量是否一致；人工抽检5%-10%样本，设定标签准确率≥95%、完整率≥90%等质量指标，不达标数据返回重新处理。<br><br>四、数据归档：按采集批次、验证码类型、训练集和测试集分类存储；记录元数据，包括来源、采集时间、处理方法、清洗数量、保留数量、标注人员等；实施版本管理和权限控制，保证后续模型训练可复现。<br><br>一、审核指标：设定三率指标——准确率（目标≥95%）、完整率（目标≥90%）、一致率（目标≥95%），确保验证码图像数据和标注数据质量满足模型训练要求。<br><br>二、审核方法：采取双层审核。第一层自动审核，通过程序进行格式校验、尺寸校验、标签校验、重复校验和图片可读性校验，快速筛查问题数据；第二层人工审核，随机抽取5%-10%数据，由审核人员复核验证码图片清晰度、标签正确性和业务合理性。<br><br>三、结果处理：采取闭环管理。对发现的问题进行分类，包括格式错误、尺寸不合格、重复样本、标签错误、无法识别样本等；根据问题类型选择自动修复、人工修复、重新标注或删除；修复后重新审核直至达标；记录审核过程和结果，形成审核报告。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·混淆环节】别把“数据处理”写成“数据采集”：处理是“拿到手以后怎么清洗加工”，不是“去哪采集”。</div><div class="trap-alert">【坑2·序号格式】参考答案在数据清洗处容易漏序号，答题时清洗、转换、核验、归档四步都要写清大写序号：一、二、三、四。</div><div class="trap-alert">【坑3·审核双层】数据审核只写“人工抽检”不够，务必写“自动核验＋人工抽检”两层，并必须带上“5%–10%”抽检比例数字。</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-2" data-qid="prac-09-2" data-slug="ai-trainer-09-2">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">效果优化 (15分)</span>
+                <span class="badge badge-type">方案（改进建议） (10分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 6分</span>
                 <span class="badge badge-num">第 2 题</span>
               </div>
               <h3 class="q-title">09题2：验证码识别业务模块效果优化</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 2); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-2" data-qid="prac-09-2" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">3分37秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">15分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：人标错，机截漏，料不全，法没定。</div>
+            <div class="rhyme-callout-sub">同一张模糊图两个人判得不一样，可能是人员理解问题。规则本身没写怎么处理模糊图，则是流程问题。四个角度都写成「原因 → 后果」。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你将作为一名人工智能训练师为验证码识别模型的业务模块进行优化。<br><br>请结合人工智能训练相关业务知识，梳理模型运行过程中常见问题，并逐一分析产生原因。（4分）<br><br>针对上述识别出的问题，设计完整的业务模块优化方案。（6分）<br><br>（1）本题分值：10分<br><br>（2）考核时间：25分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能结合业务知识识别业务流程中单一模块的问题<br><br>（2）能结合人工智能技术设计业务模块优化方案并推动实施<br><br>09题2：验证码识别业务模块效果优化（10分）<br><br>题2第（1）问：问题识别（4分）<br><br>从人、机、料、法四个维度分析问题：
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你将作为一名人工智能训练师为验证码识别模型的业务模块进行优化。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              人的方面：<mark class="score-key" title="核心采分点">可能存在人员技能不足、标注规范理解不一致、数据清洗操作不熟练等问题，导致验证码图像标注错误、异常样本判断不一致、清洗结果不稳定。</mark><br>机的方面：<mark class="score-key" title="核心采分点">可能存在图像采集工具不稳定、RPA系统截图不完整、训练环境配置不一致、模型训练工具运行异常等问题，导致验证码图片缺失、图片质量下降、模型训练失败或识别结果不稳定。</mark><br>料的方面：<mark class="score-key" title="核心采分点">可能存在验证码图像数据来源单一、样本数量不足、样式覆盖不全面、噪声和干扰类型不足、标签错误或图片质量差等问题，导致模型泛化能力不足，对复杂验证码或新样式验证码识别准确率低。</mark><br>法的方面：<mark class="score-key" title="核心采分点">可能存在数据采集流程不规范、清洗标准不统一、标注规则不明确、质检反馈机制不完善等问题，导致数据处理流程混乱，问题数据无法及时修正，模型训练数据质量难以保障。</mark><br>题2第（2）问：优化方案（6分）<br>建议一：针对数据来源单一、样本质量差、样式覆盖不足问题。<br>优化目标：<mark class="score-key" title="核心采分点">在1个月内将有效样本覆盖率提升到90%以上，将标签准确率提升到95%以上。</mark><br>优化方法：<mark class="score-key" title="核心采分点">一是增加多渠道数据采集，包括RPA业务系统截图、测试环境验证码生成接口、历史验证码样本库等；二是建立异常样本回流机制，将模型识别错误或低置信度样本重新纳入训练数据。</mark>预期效果：<mark class="score-key" title="核心采分点">验证码样本类型更加丰富，复杂验证码识别能力提升，模型准确率和泛化能力提高。</mark><br>建议二：针对清洗标准不统一、标注错误、质检反馈不完善问题。<br>优化目标：<mark class="score-key" title="核心采分点">在1个月内建立统一的数据清洗、标注和审核流程，使数据完整率达到90%以上，标注一致率达到95%以上。</mark><br>优化方法：<mark class="score-key" title="核心采分点">一是制定统一的数据处理规范，明确无效图片、重复图片、尺寸过小图片、严重遮挡图片和标签异常图片的处理规则；二是引入自动校验和人工抽检相结合的质检机制，对图片格式、尺寸、标签内容、图片与标签对应关系进行审核。</mark><br>预期效果：<mark class="score-key" title="核心采分点">数据处理流程更加规范，问题样本能够及时发现和修正，训练数据质量稳定提升。</mark><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（4 分）：（1）请结合人工智能训练相关业务知识，梳理模型运行过程中常见问题，并逐一分析产生原因。（4分）
             </div>
-            <div class="takeaway-text">业务效果优化通关口诀：三层归因查瓶颈，数据清洗补缺失，模型调优重验证，线上业务加兜底。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">人：标注人员对规范理解不一致，导致标签错误。
+机：截图工具不稳定，导致图片缺失、质量差。
+
+料：样本来源单一、复杂样式少，导致复杂验证码识别率低。
+法：清洗、标注规则不统一，导致问题数据不能及时修正。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">问题识别（从人、机、料、法四方面分析）
+
+人：标注人员技能不足、对标注规范理解不一致，导致验证码标签错误、判断不一致。
+机：截图工具不稳定、截图不完整，训练环境配置不一致，导致图片缺失、识别结果不稳定。
+料：验证码样本来源单一、数量不足，干扰线、模糊、遮挡、新样式覆盖不全，存在标签错误，导致模型对复杂
+验证码识别率低、泛化能力差。
+法：采集、清洗、标注规则不统一，质检反馈机制不完善，导致问题数据不能及时发现和修正。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（6 分）：（2）针对上述识别出的问题，设计完整的业务模块优化方案。（6分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">建议一：目标——1 个月内覆盖率≥90%、准确率≥95%；方法——一是多渠道补充样本，二是错误样本回流
+训练；效果——复杂验证码识别率提升。
+建议二：目标——1 个月内一致率≥95%；方法——一是统一清洗标注规范，二是自动校验＋人工抽检；效果
+——数据质量稳定提升。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">优化方案
+建议一（针对样本单一、覆盖不足）：
+目标：1 个月内样本覆盖率≥90%、标签准确率≥95%。
+方法：一是多渠道采集（RPA 截图、生成接口、历史样本库），补充复杂样式；二是建立错误样本回流机制，把
+识别错误和低置信度样本纳入训练数据。
+效果：样本更丰富，复杂验证码识别准确率和泛化能力提升。
+建议二（针对规则不统一、质检不完善）：
+目标：1 个月内建立统一的清洗、标注、审核流程，完整率≥90%、一致率≥95%。
+方法：一是制定统一处理规范，明确无效、重复、过小、遮挡图片和标签异常的处理规则；二是自动校验与人工
+抽检相结合。
+效果：流程规范，问题数据及时发现修正，训练数据质量稳定提升。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">人的方面：可能存在人员技能不足、标注规范理解不一致、数据清洗操作不熟练等问题，导致验证码图像标注错误、异常样本判断不一致、清洗结果不稳定。<br><br>机的方面：可能存在图像采集工具不稳定、RPA系统截图不完整、训练环境配置不一致、模型训练工具运行异常等问题，导致验证码图片缺失、图片质量下降、模型训练失败或识别结果不稳定。<br><br>料的方面：可能存在验证码图像数据来源单一、样本数量不足、样式覆盖不全面、噪声和干扰类型不足、标签错误或图片质量差等问题，导致模型泛化能力不足，对复杂验证码或新样式验证码识别准确率低。<br><br>法的方面：可能存在数据采集流程不规范、清洗标准不统一、标注规则不明确、质检反馈机制不完善等问题，导致数据处理流程混乱，问题数据无法及时修正，模型训练数据质量难以保障。<br><br>建议一：针对数据来源单一、样本质量差、样式覆盖不足问题。<br><br>优化目标：在1个月内将有效样本覆盖率提升到90%以上，将标签准确率提升到95%以上。<br><br>优化方法：一是增加多渠道数据采集，包括RPA业务系统截图、测试环境验证码生成接口、历史验证码样本库等；二是建立异常样本回流机制，将模型识别错误或低置信度样本重新纳入训练数据。<br><br>预期效果：验证码样本类型更加丰富，复杂验证码识别能力提升，模型准确率和泛化能力提高。<br><br>建议二：针对清洗标准不统一、标注错误、质检反馈不完善问题。<br><br>优化目标：在1个月内建立统一的数据清洗、标注和审核流程，使数据完整率达到90%以上，标注一致率达到95%以上。<br><br>优化方法：一是制定统一的数据处理规范，明确无效图片、重复图片、尺寸过小图片、严重遮挡图片和标签异常图片的处理规则；二是引入自动校验和人工抽检相结合的质检机制，对图片格式、尺寸、标签内容、图片与标签对应关系进行审核。<br><br>预期效果：数据处理流程更加规范，问题样本能够及时发现和修正，训练数据质量稳定提升。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·原因不全】问题原因必须从“人、机、料、法”四个维度全面分析，缺一个角度扣1分；每个角度严格写成“原因 → 后果”。</div><div class="trap-alert">【坑2·方案务实】优化方案必须写清“目标（带明确量化指标如≥90%、≥95%）＋方法＋预期效果”，不能只写泛泛空话。</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-3" data-qid="prac-09-3" data-slug="ai-trainer-09-3">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">数据规范 (15分)</span>
+                <span class="badge badge-type">规范（管理办法） (15分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 11分</span>
                 <span class="badge badge-num">第 3 题</span>
               </div>
               <h3 class="q-title">09题3：验证码识别数据处理规范制定</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 3); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-3" data-qid="prac-09-3" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">5分2秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">20分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：坏小糊，杂重格式。六条写完，照题保存。</div>
+            <div class="rhyme-callout-sub">坏是打不开，小是尺寸太小，糊是人都认不出，杂是与题目无关，重是重复，最后统一格式。路径以题面为准。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>为了能训练出验证码识别模型，需要对采集好的验证数据进行标注，要求制定合理的标注方法和数据格式，以满足验证码识别模型的训练需求。在完成数据标注和处理后，基于标注数据实现验证码识别模型的训练和测试。<br><br>为了能训练出验证码识别模型，需要对处理好的数据进行标注，要求标注出数字验证码图片的验证码文字内容。<br><br>(1)请结合验证码识别模型训练需求，制定验证码图像数据清洗标准，内容保存至“提交资料/题目2/模型训练.docx”文件中。（10分）<br><br>(2)业务需求为识别“有效验证码图像(用数字1代表)”和“无效验证码图像(用数字0代表)”两种验证码图像数据的可用状态。请基于后续模型训练测试需求，为验证码图像数据制定数据可用性标注规范。（5分）<br><br>（1）本题分值：15分<br><br>（2）考核时间：25分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能结合人工智能技术要求和业务特征，设计数据清洗和标注流程<br><br>（2）能结合人工智能技术要求和业务特征，制定数据清洗和标注规范<br><br>09题3：验证码识别数据处理规范制定（15分）<br><br>题3第（1）问：数据清洗标准制定（10分）
+              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>为了能训练出验证码识别模型，需要对采集好的验证数据进行标注，要求制定合理的标注方法和数据格式，以满足验证码识别模型的训练需求。在完成数据标注和处理后，基于标注数据实现验证码识别模型的训练和测试。<br><br>为了能训练出验证码识别模型，需要对处理好的数据进行标注，要求标注出数字验证码图片的验证码文字内容。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              一、问题概述（2分）：验证码图像数据中可能存在以下质量问题：<mark class="score-key" title="核心采分点">①图像无法打开或文件损坏；②图像尺寸过小、分辨率过低；③验证码内容严重模糊、遮挡或变形，无法人工识别；④存在重复图片、非验证码图片或与业务场景无关的图片；⑤图片格式、命名方式不统一，影响后续模型训练。</mark><br>二、清洗标准（每条1分，共6分）：<br>标准一：<mark class="score-key" title="核心采分点">删除无效文件。删除无法打开、文件损坏、空文件或读取异常的验证码图像。</mark><br>标准二：<mark class="score-key" title="核心采分点">删除尺寸过小图片。删除短边小于10像素、分辨率过低或无法满足模型输入要求的图像。</mark><br>标准三：<mark class="score-key" title="核心采分点">删除无法识别图片。删除严重模糊、严重遮挡、过度扭曲、验证码数字无法人工确认的图像。</mark><br>标准四：<mark class="score-key" title="核心采分点">删除无关数据。删除非验证码图片、非数字验证码图片、业务场景无关图片或包含其他无关内容的图片。</mark><br>标准五：<mark class="score-key" title="核心采分点">删除重复数据。通过文件名、图片哈希值或人工比对方式删除重复或高度相似的验证码图片，仅保留一份有效样本。</mark><br>标准六：<mark class="score-key" title="核心采分点">统一格式。统一图像文件格式、命名规则和存储路径，如统一保存为JPG或PNG格式，统一采用连续编号命名，保证后续程序能够批量读取。</mark><br>三、保存结果（2分）：<mark class="score-key" title="核心采分点">将验证码图像数据清洗标准、清洗处理规则和清洗后数据保存要求记录在“提交资料/题目2/模型训练.docx”文件中；清洗后的验证码图像数据应统一保存至指定数据目录，并记录清洗前后数据数量、删除原因、保留样本数量和处理结果，作为后续标注、训练和测试使用的数据集。</mark><br>题3第（2）问：数据可用性标注规范制定（5分）<br>一、标注范围（1分）：<mark class="score-key" title="核心采分点">适用于验证码识别模型训练测试前的数据可用性判断，标注对象为采集和清洗后的验证码图像数据。需要对每张验证码图像判断其是否可用于模型训练。</mark><br>二、标注内容（0.5分）：<mark class="score-key" title="核心采分点">标注验证码图像的可用状态，其中有效验证码图像用数字1表示，无效验证码图像用数字0表示。</mark><br>三、标注标准（2分）：<br>有效验证码图像标注为1：<mark class="score-key" title="核心采分点">①图片内容为数字验证码；②验证码数字清晰可识别；③图片格式正常、能够打开；④轻微噪声、干扰线、颜色变化、字体变化或轻微扭曲不影响人工识别和模型训练。</mark><br>无效验证码图像标注为0：<mark class="score-key" title="核心采分点">①图片无法打开、文件损坏或内容缺失；②图片严重模糊、严重遮挡、过度扭曲，无法确认验证码内容；③图片不是数字验证码或与业务场景无关；④图片尺寸过小、重复严重或质量明显不满足模型训练要求。</mark><br>四、特殊情况（0.5分）：<mark class="score-key" title="核心采分点">争议样本标注为2并记录，不直接纳入正式训练数据，待组长或专家复核后再确定是否转为有效样本、无效样本或单独保留为难例样本。</mark><br>五、反馈途径（0.5分）：<mark class="score-key" title="核心采分点">争议样本按照“标注人员记录问题→组长复核→专家或项目负责人仲裁→更新标注规则”的流程处理，确保同类问题后续标注口径一致。</mark><br>六、交付格式（0.5分）：<mark class="score-key" title="核心采分点">交付数据应包含验证码图像和标注结果文件，标注文件中每条记录包含图片文件名和可用性标签，例如“0001.jpg 1”“0002.jpg 0”或“0003.jpg 2”，确保图片与标签一一对应。</mark><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（10 分）：(1)请结合验证码识别模型训练需求，制定验证码图像数据清洗标准，内容保存至“提交资料/题目3/模型训练.docx”文件中。（10分）
             </div>
-            <div class="takeaway-text">数据处理规范通关口诀：入库清洗排脏污，标注统一设质检，三率指标卡阈值，异常复盘建台账。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、问题概述：存在文件损坏、尺寸过小、模糊遮挡、无关或重复、格式不统一等问题。
+二、清洗标准：1. 删无效文件（打不开、损坏）；2. 删过小图片（短边小于 10 像素）；3. 删无法识别图片（严
+重模糊遮挡）；4. 删无关数据（非验证码）；5. 删重复数据（哈希值比对）；6. 统一格式（JPG/PNG、连续编
+号）。
+三、保存结果：保存至“提交资料/题目3/模型训练.docx”，记录清洗前后数量和删除原因。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据清洗标准
+
+一、问题概述：验证码图片可能存在文件损坏打不开、尺寸过小、严重模糊遮挡无法识别、非验证码或重复图
+片、格式命名不统一等问题。
+二、清洗标准：
+1. 删除无效文件：无法打开、损坏、空文件。
+2. 删除尺寸过小图片：短边小于 10 像素或分辨率过低。
+3. 删除无法识别图片：严重模糊、遮挡、扭曲，人工也认不出数字。
+4. 删除无关数据：非验证码、非数字验证码图片。
+5. 删除重复数据：用文件名、哈希值比对，只保留一份。
+6. 统一格式：统一为 JPG 或 PNG，统一连续编号命名和存储路径。
+三、保存结果：清洗标准保存至“提交资料/题目3/模型训练.docx”；清洗后数据存入指定目录，记录清洗前后
+数量、删除原因和保留数量。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（5 分）：(2)业务需求为识别“有效验证码图像(用数字1代表)”和“无效验证码图像(用数字0代表)”两种验证码图像数据的可用状态。请基于后续模型训练测试需求，为验证码图像数据制定数据可用性标注规范。（5分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、标注范围：清洗后的全部验证码图片。二、标注内容：有效＝1，无效＝0。三、标注标准：清晰可认标
+1；打不开、认不出、非验证码标 0。四、特殊情况：拿不准标 2，交组长复核。五、反馈途径：标注员 → 组长
+→ 专家 → 更新规则。六、交付格式：每行“文件名 标签”，如“0001.jpg 1”。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据可用性标注规范
+一、标注范围：清洗后的全部验证码图片，逐张判断能否用于模型训练。
+二、标注内容：可用状态，有效＝1，无效＝0。
+三、标注标准：标 1——数字验证码，数字清晰可认，能正常打开（轻微噪点、干扰线不影响）；标 0——打不
+开或损坏，严重模糊、遮挡、扭曲认不出，非数字验证码，尺寸过小或重复。
+四、特殊情况：拿不准的争议样本标 2 并记录，不直接进训练集，由组长或专家复核。
+五、反馈途径：标注员记录问题 → 组长复核 → 专家仲裁 → 更新标注规则。
+六、交付格式：图片＋标注文件，每行“文件名 标签”，如“0001.jpg 1”“0002.jpg 0”，图片与标签一一对
+应。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">一、问题概述（2分）：验证码图像数据中可能存在以下质量问题：①图像无法打开或文件损坏；②图像尺寸过小、分辨率过低；③验证码内容严重模糊、遮挡或变形，无法人工识别；④存在重复图片、非验证码图片或与业务场景无关的图片；⑤图片格式、命名方式不统一，影响后续模型训练。<br><br>二、清洗标准（每条1分，共6分）：<br><br>标准一：删除无效文件。删除无法打开、文件损坏、空文件或读取异常的验证码图像。<br><br>标准二：删除尺寸过小图片。删除短边小于10像素、分辨率过低或无法满足模型输入要求的图像。<br><br>标准三：删除无法识别图片。删除严重模糊、严重遮挡、过度扭曲、验证码数字无法人工确认的图像。<br><br>标准四：删除无关数据。删除非验证码图片、非数字验证码图片、业务场景无关图片或包含其他无关内容的图片。<br><br>标准五：删除重复数据。通过文件名、图片哈希值或人工比对方式删除重复或高度相似的验证码图片，仅保留一份有效样本。<br><br>标准六：统一格式。统一图像文件格式、命名规则和存储路径，如统一保存为JPG或PNG格式，统一采用连续编号命名，保证后续程序能够批量读取。<br><br>三、保存结果（2分）：将验证码图像数据清洗标准、清洗处理规则和清洗后数据保存要求记录在“提交资料/题目3/模型训练.docx”文件中；清洗后的验证码图像数据应统一保存至指定数据目录，并记录清洗前后数据数量、删除原因、保留样本数量和处理结果，作为后续标注、训练和测试使用的数据集。<br><br>一、标注范围（1分）：适用于验证码识别模型训练测试前的数据可用性判断，标注对象为采集和清洗后的验证码图像数据。需要对每张验证码图像判断其是否可用于模型训练。<br><br>二、标注内容（0.5分）：标注验证码图像的可用状态，其中有效验证码图像用数字1表示，无效验证码图像用数字0表示。<br><br>三、标注标准（2分）：<br><br>有效验证码图像标注为1：①图片内容为数字验证码；②验证码数字清晰可识别；③图片格式正常、能够打开；④轻微噪声、干扰线、颜色变化、字体变化或轻微扭曲不影响人工识别和模型训练。<br><br>无效验证码图像标注为0：①图片无法打开、文件损坏或内容缺失；②图片严重模糊、严重遮挡、过度扭曲，无法确认验证码内容；③图片不是数字验证码或与业务场景无关；④图片尺寸过小、重复严重或质量明显不满足模型训练要求。<br><br>四、特殊情况（0.5分）：争议样本标注为2并记录，不直接纳入正式训练数据，待组长或专家复核后再确定是否转为有效样本、无效样本或单独保留为难例样本。<br><br>五、反馈途径（0.5分）：争议样本按照“标注人员记录问题→组长复核→专家或项目负责人仲裁→更新标注规则”的流程处理，确保同类问题后续标注口径一致。<br><br>六、交付格式（0.5分）：交付数据应包含验证码图像和标注结果文件，标注文件中每条记录包含图片文件名和可用性标签，例如“0001.jpg 1”“0002.jpg 0”或“0003.jpg 2”，确保图片与标签一一对应。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·标注对象】题干材料说要标“验证码里的数字”，但第(2)问小问明确要求标“图能不能用”（1可用、0不可用、2待复核）。两处冲突时以小问为准：只标能不能用！</div><div class="trap-alert">【坑2·保存路径】参考答案笔误写成“题目2”，题干明确要求保存在“提交资料/题目3/模型训练.docx”，必须严格按题干路径书写！</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-4" data-qid="prac-09-4" data-slug="ai-trainer-09-4">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">算法实操代码 (20-25分)</span>
+                <span class="badge badge-type">代码+报告 (20分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 15分</span>
                 <span class="badge badge-num">第 4 题</span>
               </div>
               <h3 class="q-title">09题4：验证码识别算法训练与测试</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 4); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-4" data-qid="prac-09-4" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">4分17秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">35分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：八份学，两份考。图签一起分，比例别跑。</div>
+            <div class="rhyme-callout-sub">先把文件名和标签从同一张表取出来，再把图名和对应标签一起分到训练与测试两组。测试集占 20%，所以 test_size 填 0.2。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你作为一名人工智能训练师，需要基于已完成清洗和标注的验证码图像数据，完成训练集与测试集划分、模型训练、模型测试、测试结果分析和错误案例纠正工作。<br><br>（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，训练集（保存为captcha_train.csv）和测试集（保存为captcha_test.csv）。（2分）<br><br>（2）请打开“模型训练与测试”项目中的 captcha_model_train_eval.ipynb 文件，按照要求补齐相关代码，基于已划分好的训练集对验证码识别模型进行训练，并保存训练后的模型文件。（2分）<br><br>（3）经过测试后得到如下结果：TP=80，FP=20，FN=20，TN=80。请计算出模型测试的准确率、精确率、召回率和F1分数。（4分）<br><br>（4）请结合模型测试结果，对验证码识别模型的测试效果进行分析，并编写测试报告。（6分）<br><br>（5）请结合验证码识别错误案例，分析模型识别错误可能产生的原因，并提出纠正方法。（6分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：35分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能维护日常训练集与测试集<br><br>（2）能使用工具对算法进行训练<br><br>（3）能使用测试工具对人工智能产品的使用进行测试<br><br>（4）能对测试结果进行分析， 编写测试报告<br><br>（5）能运用工具，分析算法中错误案例产生的原因并进行纠正<br><br>captcha_dataset_split.ipynb<br><br>import pandas as pd<br><br>from sklearn.model_selection import ______<br><br>data = pd.read_csv(<br><br>&quot;captcha/label.txt&quot;,<br><br>sep=&quot; &quot;,<br><br>names=[&quot;image&quot;, &quot;label&quot;]<br><br>)<br><br>X = data[&quot;image&quot;]<br><br>y = data[&quot;label&quot;]<br><br>X_train, X_test, y_train, y_test = (X, y, test_size=        ,<br><br>random_state=42, stratify=y<br><br>)<br><br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br><br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br><br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br><br>test.to_csv(&quot;captcha_test.csv&quot;, index=False)<br><br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)<br><br>captcha_model_train_eval.ipynb<br><br>import pandas as pd<br><br>from PIL import Image<br><br>from sklearn.linear_model import  LogisticRegression<br><br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br><br>读取训练集和测试集<br><br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br><br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br><br>将验证码图片转换为模型可识别的数字特征<br><br>def load_image(path):<br><br>img = Image.open(path).convert(&quot;L&quot;)<br><br>img = img.resize((32, 32))<br><br>return list(img.getdata())<br><br>构建训练数据<br><br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br><br>y_train = train[&quot;label&quot;]<br><br>构建测试数据<br><br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br><br>y_test = test[&quot;label&quot;]<br><br>创建并训练模型<br><br>model = ______(max_iter=1000)<br><br>model.______(X_train, y_train)<br><br>模型预测<br><br>y_pred = model.predict(X_test)<br><br>计算测试指标<br><br>accuracy = accuracy_score(y_test, y_pred)<br><br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br><br>print(&quot;准确率：&quot;, accuracy)<br><br>print(&quot;精确率：&quot;, precision)<br><br>print(&quot;召回率：&quot;, recall)<br><br>print(&quot;F1分数：&quot;, f1)<br><br>09题4：验证码识别算法训练与测试（20分）<br><br>题4第（1）问：训练集与测试集划分（2分）<br><br>一、划分方案说明：采用分层抽样方法，先将验证码图片文件名作为特征X，将可用性标签作为标签y，再按照8:2比例划分训练集和测试集；通过stratify=y保证训练集和测试集中各类标签比例基本一致；设置random_state=42，保证每次划分结果可复现。<br><br>二、关键代码（1分）：<br><br>import pandas as pd
+              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>你作为一名人工智能训练师，需要基于已完成清洗和标注的验证码图像数据，完成训练集与测试集划分、模型训练、模型测试、测试结果分析和错误案例纠正工作。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              from sklearn.model_selection import <mark class="score-key" title="核心采分点">train_test_split</mark><br>data = pd.read_csv(<br>    &quot;captcha/label.txt&quot;,<br>    sep=&quot; &quot;,<br>    names=[&quot;image&quot;, &quot;label&quot;]<br>)<br>X = data[&quot;image&quot;]<br>y = data[&quot;label&quot;]<br>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<mark class="score-key" title="核心采分点">0.2</mark>,<br>    random_state=42, stratify=y<br>)<br>train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})<br>test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})<br>train.to_csv(&quot;captcha_train.csv&quot;, index=False)<br>test.to_csv(&quot;captcha_test.csv&quot;, index=False) <br>print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)<br>三、保存结果（1分）：将训练集保存为<mark class="score-key" title="核心采分点">train.csv，</mark>测试集保存为<mark class="score-key" title="核心采分点">test.csv。</mark><br>题4第（2）问：模型训练与测试（2分）<br>一、训练方案说明：将验证码图片转换为灰度图，并统一缩放为32×32，再将像素值作为模型输入特征，使用逻辑回归模型进行验证码图像分类训练。<br>二、关键代码（1分）：<br>import pandas as pd<br>from PIL import Image<br>from sklearn.linear_model import LogisticRegression<br>from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score<br> <br>train = pd.read_csv(&quot;captcha_train.csv&quot;)<br>test = pd.read_csv(&quot;captcha_test.csv&quot;)<br> <br>def load_image(path):<br>    img = Image.open(path).convert(&quot;L&quot;)<br>    img = img.resize((32, 32))<br>    return list(img.getdata())<br> <br>X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]<br>y_train = train[&quot;label&quot;]<br> <br>X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]<br>y_test = test[&quot;label&quot;]<br> <br>model = <mark class="score-key" title="核心采分点">LogisticRegression</mark>(max_iter=1000)<br>model.<mark class="score-key" title="核心采分点">fit</mark>(X_train, y_train)<br> <br>y_pred = model.predict(X_test)<br> <br>accuracy = accuracy_score(y_test, y_pred)<br>precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)<br>recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)<br>f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)<br> <br>print(&quot;准确率：&quot;, accuracy)<br>print(&quot;精确率：&quot;, precision)<br>print(&quot;召回率：&quot;, recall)<br>print(&quot;F1分数：&quot;, f1)<br>三、训练结果（1分）：<mark class="score-key" title="核心采分点">模型完成训练，并能够对测试集验证码图片进行预测。</mark><br><br>09题4第（3）问：模型测试与性能指标（4分）<br>已知：TP=80，FP=20，FN=20，TN=80。<br>Accuracy = <mark class="score-key" title="核心采分点">(TP+TN) / (TP+TN+FP+FN) = (80+80) / (80+80+20+20) = 160 / 200 = 80%</mark><br>Precision = <mark class="score-key" title="核心采分点">TP / (TP+FP) = 80 / (80+20) = 80 / 100 = 80%</mark><br>Recall = <mark class="score-key" title="核心采分点">TP / (TP+FN) = 80 / (80+20) = 80 / 100 = 80%</mark><br>F1 = <mark class="score-key" title="核心采分点">2×P×R / (P+R) = 2×0.8×0.8 / (0.8+0.8) = 1.28 / 1.6 = 0.8，即80%</mark><br>题4第（4）问：测试报告编写（6分）<br>背——项目背景（1分）：本项目为RPA网页表单自动填写场景下的验证码识别模型，目标是<mark class="score-key" title="核心采分点">通过OCR和机器学习技术识别验证码图片中的数字内容，减少人工输入验证码造成的流程阻塞。</mark><br>目——测试目的（1分）：评估验证码识别模型在测试集上的分类性能，判断模型是否<mark class="score-key" title="核心采分点">能够较准确识别有效验证码图像，期望准确率达到80%以上，并分析模型当前存在的问题。</mark><br>方法——测试方法（1分）：采用8:2比例划分训练集和测试集，将验证码图片转换为灰度图并缩放为统一尺寸，<mark class="score-key" title="核心采分点">提取像素特征，用逻辑回归模型训练，再由测试集计算。</mark><br>结果——测试结果（2分）：模型测试结果为<mark class="score-key" title="核心采分点">准确率80%、精确率80%、召回率80%、F1分数80%。混淆矩阵为TP=80，FP=20，FN=20，TN=80。</mark>整体来看，模型具有<mark class="score-key" title="核心采分点">一定识别能力，但仍存在部分误识别和漏识别情况，说明模型对复杂干扰、模糊或样式变化较大的验证码识别能力仍需提升</mark>。<br>建议——改进建议（1分）：建议补充<mark class="score-key" title="核心采分点">更多不同字体、不同背景、不同干扰线和不同扭曲程度的验证码样本；加强数据清洗和标注复核；尝试使用更适合图像识别的模型或优化图像预处理方法，以提升模型识别准确率。</mark><br>题4第（5）问：错误案例分析（6分）<br>案例一（3分）：<br>描述：某验证码图片真实标签为“1”，模型预测为“0”。<br>原因：<mark class="score-key" title="核心采分点">可能由于图片中验证码数字存在干扰线、噪点或局部遮挡，导致模型提取到的像素特征不完整，从而将有效验证码误判为无效验证码。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面补充更多带干扰线和噪点的有效验证码样本；特征层面增加去噪、二值化、边缘增强等预处理；模型层面调整模型参数或尝试更适合图像识别的模型。</mark><br>案例二（3分）：<br>描述：某验证码图片真实标签为“0”，模型预测为“1”。<br>原因：<mark class="score-key" title="核心采分点">可能由于无效验证码样本数量不足，或部分模糊、遮挡样本与有效样本特征相似，导致模型边界判断不清。</mark><br>纠正：<mark class="score-key" title="核心采分点">数据层面增加无效验证码样本和争议样本；特征层面强化图片清晰度、尺寸、遮挡程度等特征处理；模型层面重新训练模型，并结合人工复核机制减少错误样本进入训练集。</mark><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-            <div class="code-box">
-              <div class="code-box-header">
-                <span class="code-title">🐍 Python 参考答案代码（飞书原文）</span>
-                <button class="btn btn-sm btn-copy" onclick="copyCode(this, 'prac-09-4-code')">📋 复制代码</button>
-              </div>
-              <pre><code id="prac-09-4-code" class="python"># ==============================================================
-# 09题4：验证码识别算法训练与测试 · 参考答案代码
-# 考点：stratify 分层划分 8:2、灰度 + 32×32 像素特征、LogisticRegression、macro 平均指标
-# ==============================================================
-# （1）captcha_dataset_split.ipynb：训练集与测试集划分
-import pandas as pd
-from sklearn.model_selection import train_test_split
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（2 分）：（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，训练集（保存为captcha_train.csv）和测试集（保存为captcha_test.csv）。（2分）            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">按 8:2 分层划分，random_state=42 可复现。代码：from sklearn.model_selection import train_test_split；
+train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)。保存：captcha_train.csv、captcha_test.csv。</div>
+            </div>
 
-data = pd.read_csv(
-    &quot;captcha/label.txt&quot;,
-    sep=&quot; &quot;,
-    names=[&quot;image&quot;, &quot;label&quot;]
-)
-X = data[&quot;image&quot;]
-y = data[&quot;label&quot;]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
-    random_state=42, stratify=y
-)
-train = pd.DataFrame({&quot;image&quot;: X_train, &quot;label&quot;: y_train})
-test = pd.DataFrame({&quot;image&quot;: X_test, &quot;label&quot;: y_test})
-train.to_csv(&quot;captcha_train.csv&quot;, index=False)
-test.to_csv(&quot;captcha_test.csv&quot;, index=False)
-print(&quot;数据划分完成，已保存为 captcha_train.csv 和 captcha_test.csv&quot;)
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">一、划分方案：用 train_test_split 按 8:2 划分训练集和测试集；stratify=y 保证两类比例一致，random_state=42
+保证可复现。
+二、关键代码：from sklearn.model_selection import train_test_split；X_train, X_test, y_train, y_test = train_test_split(X,
+y, test_size=0.2, random_state=42, stratify=y)
+三、保存结果：训练集保存为 captcha_train.csv，测试集保存为 captcha_test.csv。</div>
+            </details>
 
-# （2）captcha_model_train_eval.ipynb：模型训练与测试
-from PIL import Image
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-
-train = pd.read_csv(&quot;captcha_train.csv&quot;)
-test = pd.read_csv(&quot;captcha_test.csv&quot;)
-
-def load_image(path):
-    img = Image.open(path).convert(&quot;L&quot;)
-    img = img.resize((32, 32))
-    return list(img.getdata())
-
-X_train = [load_image(&quot;captcha/image/&quot; + name) for name in train[&quot;image&quot;]]
-y_train = train[&quot;label&quot;]
-X_test = [load_image(&quot;captcha/image/&quot; + name) for name in test[&quot;image&quot;]]
-y_test = test[&quot;label&quot;]
-
-model = LogisticRegression(max_iter=1000)
-model.fit(X_train, y_train)
-
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-precision = precision_score(y_test, y_pred, average=&quot;macro&quot;)
-recall = recall_score(y_test, y_pred, average=&quot;macro&quot;)
-f1 = f1_score(y_test, y_pred, average=&quot;macro&quot;)
-print(&quot;准确率：&quot;, accuracy)
-print(&quot;精确率：&quot;, precision)
-print(&quot;召回率：&quot;, recall)
-print(&quot;F1分数：&quot;, f1)</code></pre>
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（2 分）：（2）请打开“模型训练与测试”项目中的 captcha_model_train_eval.ipynb 文件，按照要求补齐相关代码，基于已划分好的训练集对验证码识别模型进行训练，并保存训练后的模型文件。（2分）
             </div>
             
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">图片灰度化、缩放 32×32，用逻辑回归训练。代码：model = LogisticRegression(max_iter=1000)；
+model.fit(X_train, y_train)。结果：模型完成训练并保存，能对测试集预测。</div>
             </div>
-            <div class="takeaway-text">算法实操代码通关口诀：数据切分八比二，灰度缩放三十二，逻辑回归fit拟合，四维指标写报告。</div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">一、训练方案：图片灰度化、缩放为 32×32，以像素值为特征，用逻辑回归模型训练。
+二、关键代码：model = LogisticRegression(max_iter=1000)；model.fit(X_train, y_train)
+三、训练结果：模型完成训练并保存模型文件，能对测试集验证码图片进行预测。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（3）问（4 分）：（3）经过测试后得到如下结果：TP=80，FP=20，FN=20，TN=80。请计算出模型测试的准确率、精确率、召回率和F1分数。（4分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">准确率＝(80＋80)/200＝80%；精确率＝80/(80＋20)＝80%；召回率＝80/(80＋20)＝80%；F1＝2×0.8×0.8/(0.8
+＋0.8)＝80%。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">准确率 ＝(TP＋TN)/(TP＋TN＋FP＋FN)＝(80＋80)/200 ＝ 80%
+精确率 ＝TP/(TP＋FP)＝80/(80＋20)＝ 80%
+召回率 ＝TP/(TP＋FN)＝80/(80＋20)＝ 80%
+F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
+            </details>
+
+            
+              <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:12px; margin:10px 0;">
+                <div style="font-weight:800; color:#1e1e38; margin-bottom:6px;">🧮 混淆矩阵与四大指标标准代入算式：</div>
+                <table class="tactics-table" style="max-width:480px; margin-bottom:8px;">
+                  <thead><tr><th>真实 \ 预测</th><th>预测有效(1)</th><th>预测无效(0)</th></tr></thead>
+                  <tbody>
+                    <tr><td>实际有效(1)</td><td style="color:#10b981; font-weight:800;">TP = 80</td><td style="color:#ef4444;">FN = 20</td></tr>
+                    <tr><td>实际无效(0)</td><td style="color:#ef4444;">FP = 20</td><td style="color:#10b981; font-weight:800;">TN = 80</td></tr>
+                  </tbody>
+                </table>
+                <div style="font-size:13px; line-height:1.7;">
+                  • 准确率 Accuracy = (80+80)/200 = <b>80%</b><br>
+                  • 精确率 Precision = 80/(80+20) = <b>80%</b><br>
+                  • 召回率 Recall = 80/(80+20) = <b>80%</b><br>
+                  • F1-Score = 2×0.8×0.8/(0.8+0.8) = <b>80%</b>
+                </div>
+              </div>
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（4）问（6 分）：（4）请结合模型测试结果，对验证码识别模型的测试效果进行分析，并编写测试报告。（6分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、背景：RPA 填表需人工输入验证码，训练模型自动识别。二、目的：评估测试集效果，期望准确率
+≥80%。三、方法：8:2 划分，灰度 32×32，逻辑回归，算四个指标。四、结果：四项均为 80%，有一定识别能
+力，仍有 20 个误报、20 个漏报，复杂验证码识别不足。五、建议：补复杂样本，去噪、二值化，换更适合图像
+的模型。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">测试报告
+一、项目背景：RPA 自动填写网页表单时需人工输入验证码，造成流程阻塞；本项目训练验证码识别模型，实现
+自动识别。
+二、测试目的：评估模型在测试集上的分类效果，期望准确率≥80%，找出存在的问题。
+三、测试方法：按 8:2 划分训练集和测试集；图片灰度化、统一缩放为 32×32，提取像素特征；用逻辑回归训
+练，在测试集上计算准确率、精确率、召回率、F1。
+四、测试结果：TP=80、FP=20、FN=20、TN=80，准确率、精确率、召回率、F1 均为 80%；模型有一定识别能
+力，但仍有 20 个误报、20 个漏报，对干扰线、模糊、遮挡等复杂验证码识别不足。
+五、改进建议：补充复杂样式样本；加强清洗和标注复核；优化预处理（去噪、二值化），尝试更适合图像识别
+的模型。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（5）问（6 分）：（5）请结合验证码识别错误案例，分析模型识别错误可能产生的原因，并提出纠正方法。（6分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">案例一：真 1 判 0（漏报）。原因：干扰线、遮挡使特征不完整。纠正：补带干扰的有效样本；加去噪、二值
+化；调参或换模型。
+案例二：真 0 判 1（误报）。原因：无效样本少，与有效图相似。纠正：补无效样本；强化清晰度特征；重新训
+练并加人工复核。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">错误案例
+案例一（漏报 FN）：真实为 1（有效），模型判为 0。原因：图片有干扰线、噪点或局部遮挡，像素特征不完
+整。纠正：数据层补充带干扰的有效样本；特征层增加去噪、二值化、边缘增强；模型层调整参数或换更适合图
+像识别的模型。
+案例二（误报 FP）：真实为 0（无效），模型判为 1。原因：无效样本太少，模糊、遮挡的无效图与有效图相
+似，模型分不清。纠正：数据层增加无效样本和争议样本；特征层强化清晰度、遮挡程度等特征；模型层重新训
+练，并加人工复核。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">一、划分方案说明：采用分层抽样方法，先将验证码图片文件名作为特征X，将可用性标签作为标签y，再按照8:2比例划分训练集和测试集；通过stratify=y保证训练集和测试集中各类标签比例基本一致；设置random_state=42，保证每次划分结果可复现。<br><br>一、训练方案说明：将验证码图片转换为灰度图，并统一缩放为32×32，再将像素值作为模型输入特征，使用逻辑回归模型进行验证码图像分类训练。<br><br>已知：TP=80，FP=20，FN=20，TN=80。<br><br>Accuracy = (TP+TN) / (TP+TN+FP+FN) = (80+80) / (80+80+20+20) = 160 / 200 = 80%<br><br>Precision = TP / (TP+FP) = 80 / (80+20) = 80 / 100 = 80%<br><br>Recall = TP / (TP+FN) = 80 / (80+20) = 80 / 100 = 80%<br><br>F1 = 2×P×R / (P+R) = 2×0.8×0.8 / (0.8+0.8) = 1.28 / 1.6 = 0.8，即80%<br><br>背——项目背景（1分）：本项目为RPA网页表单自动填写场景下的验证码识别模型，目标是通过OCR和机器学习技术识别验证码图片中的数字内容，减少人工输入验证码造成的流程阻塞。<br><br>目——测试目的（1分）：评估验证码识别模型在测试集上的分类性能，判断模型是否能够较准确识别有效验证码图像，期望准确率达到80%以上，并分析模型当前存在的问题。<br><br>方法——测试方法（1分）：采用8:2比例划分训练集和测试集，将验证码图片转换为灰度图并缩放为统一尺寸，提取像素特征，用逻辑回归模型训练，再由测试集计算。<br><br>结果——测试结果（2分）：<br><br>模型测试结果为准确率80%、精确率80%、召回率80%、F1分数80%。混淆矩阵为TP=80，FP=20，FN=20，TN=80。<br><br>整体来看，模型具有一定识别能力，但仍存在部分误识别和漏识别情况，说明模型对复杂干扰、模糊或样式变化较大的验证码识别能力仍需提升。<br><br>建议——改进建议（1分）：建议补充更多不同字体、不同背景、不同干扰线和不同扭曲程度的验证码样本；加强数据清洗和标注复核；尝试使用更适合图像识别的模型或优化图像预处理方法，以提升模型识别准确率。<br><br>案例一（3分）：<br><br>描述：某验证码图片真实标签为“1”，模型预测为“0”。<br><br>原因：可能由于图片中验证码数字存在干扰线、噪点或局部遮挡，导致模型提取到的像素特征不完整，从而将有效验证码误判为无效验证码。<br><br>纠正：数据层面补充更多带干扰线和噪点的有效验证码样本；特征层面增加去噪、二值化、边缘增强等预处理；模型层面调整模型参数或尝试更适合图像识别的模型。<br><br>案例二（3分）：<br><br>描述：某验证码图片真实标签为“0”，模型预测为“1”。<br><br>原因：可能由于无效验证码样本数量不足，或部分模糊、遮挡样本与有效样本特征相似，导致模型边界判断不清。<br><br>纠正：数据层面增加无效验证码样本和争议样本；特征层面强化图片清晰度、尺寸、遮挡程度等特征处理；模型层面重新训练模型，并结合人工复核机制减少错误样本进入训练集。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·函数名缺失】题干代码填空等号后少了函数名，答题时在括号前务必补上“train_test_split”。</div><div class="trap-alert">【坑2·下划线笔误】参考答案笔误多写了下划线“import_train_test_...”，正确写法是“from sklearn.model_selection import train_test_split”。</div><div class="trap-alert">【坑3·文件名】保存文件名照题干抄全：captcha_train.csv 和 captcha_test.csv，不要简写为 train.csv。</div><div class="trap-alert">【坑4·训练方法】模型训练是 model.fit(X_train, y_train)，不是 model._fit。</div><div class="trap-alert">【坑5·指标计算】四个指标（准确率、精确率、召回率、F1）计算结果全部都是 80%，答题卡上必须写出代入公式的完整算式过程（如 160/200=80%）。</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-5" data-qid="prac-09-5" data-slug="ai-trainer-09-5">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">系统监控 (15分)</span>
+                <span class="badge badge-type">报告+方案 (15分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 10分</span>
                 <span class="badge badge-num">第 5 题</span>
               </div>
               <h3 class="q-title">09题5：验证码识别系统监控和优化</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 5); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-5" data-qid="prac-09-5" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">15分32秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">20分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：先报多少条，再算占多少，最后说看出啥。</div>
+            <div class="rhyme-callout-sub">把质检表当一本账。12 条里 7 条正确，写 7÷12≈58.3%。人工处理了 5 条，写 5÷12≈41.7%。再说明复杂图错得多、人工负担偏大。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，系统会持续记录识别结果、识别耗时、人工介入情况、错误类型、图片质量、验证码样式等运行质检数据。你作为一名人工智能训练师，需要根据验证码识别系统的运行质检数据，对系统使用效果进行分析，发现系统运行中的问题，并提出优化需求和智能解决方案。<br><br>（1）请基于上述质检数据（质检数据.xlsx）进行分析，对该验证码识别系统进行全面分析，输出完整的数据分析报告。<br><br>（2）请结合数据分析结果，对该验证码识别系统提出优化需求。<br><br>（3）基于你提出的优化需求，为该智能客服质检系统设计完整的智能解决方案。<br><br>（1）本题分值：15分<br><br>（2）考核时间：20分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能对单一智能产品使用的数据进行全面分析，输出分析报告<br><br>（2）能对单一智能产品提出优化需求<br><br>（3）能为单一智能产品的应用设计智能解决方案<br><br>验证码识别系统操作手册<br><br>RPA验证码识别系统操作手册 V1.0<br><br>第一章：系统概述<br><br>RPA验证码识别系统是一款面向网页表单自动填写场景的智能识别工具。系统通过OCR模型识别数字验证码图片，并将识别结果返回给RPA流程，旨在减少人工输入验证码环节，提高表单填写效率和业务自动化水平。<br><br>第二章：核心功能与运行机制<br><br>2.1 验证码自动识别模块<br><br>系统在RPA流程运行过程中自动截取验证码图片，并对图片进行格式统一、尺寸调整、灰度化、去噪等预处理。处理完成后，系统调用验证码识别模型输出识别结果和置信度，高置信度结果可直接用于自动填写。<br><br>2.2 质检数据记录模块<br><br>系统会记录每次验证码识别的运行数据，生成结构化质检表格（如导出格式为.xlsx）。数据维度涵盖：样本编号、验证码类型、图片质量、系统识别结果、人工确认结果、是否正确、置信度、识别耗时、人工介入情况和错误类型。训练师需利用该数据分析系统的实际识别效果。<br><br>2.3 当前系统局限<br><br>在现行架构下，系统对清晰、规则的数字验证码识别效果较好，但在遇到模糊、遮挡、低分辨率、干扰线较多或字符扭曲明显的验证码时，容易出现识别错误。当业务系统出现新样式验证码，而训练样本覆盖不足时，模型识别准确率会明显下降。<br><br>质检数据.xlsx<br><br>09题5：验证码识别系统监控和优化（15分）<br><br>题5第（1）问：数据分析报告（4分）
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，系统会持续记录识别结果、识别耗时、人工介入情况、错误类型、图片质量、验证码样式等运行质检数据。你作为一名人工智能训练师，需要根据验证码识别系统的运行质检数据，对系统使用效果进行分析，发现系统运行中的问题，并提出优化需求和智能解决方案。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              一、项目背景（0.5分）：验证码识别系统面向RPA网页表单自动填写场景，提供<mark class="score-key" title="核心采分点">数字验证码自动识别服务，减少人工输入验证码造成的流程阻塞。</mark>本分析基于系统运行质检数据。<br>二、分析目的（0.5分）：全面了解验证码识别系统运行状况，重点考察<mark class="score-key" title="核心采分点">识别准确率、人工介入率、图片质量、错误类型和识别耗时</mark>等维度，识别系统短板和优化机会。<br>三、分析方法（0.5分）：采用<mark class="score-key" title="核心采分点">数量统计、比率分析和错误类型分析方法，</mark>基于质检数据.xlsx中的验证码识别记录、人工确认结果、置信度、识别耗时和错误类型进行分析。<br>四、分析结论（2分，核心）：<br>（1）系统共记录12条质检样本，其中识别正确<mark class="score-key" title="核心采分点">7</mark>条，识别错误<mark class="score-key" title="核心采分点">5</mark>条，整体识别准确率约为<mark class="score-key" title="核心采分点">58.3</mark>%，识别效果仍有<mark class="score-key" title="核心采分点">提升空间</mark>；<br>（2）人工介入样本<mark class="score-key" title="核心采分点">5</mark>条，人工介入率约为<mark class="score-key" title="核心采分点">41.7</mark>%，说明系统自动化程度<mark class="score-key" title="核心采分点">不足</mark>；<br>（3）错误主要集中在<mark class="score-key" title="核心采分点">干扰线、模糊、遮挡、低分辨率</mark>等复杂验证码样本中，说明模型对复杂图片的识别能力较弱；<br>（4）<mark class="score-key" title="核心采分点">清晰、规则的验证码</mark>识别效果较好，复杂样式验证码识别准确率下降明显；<br>（5）系统存在<mark class="score-key" title="核心采分点">数字误识别、模糊误识别、遮挡误识别和漏识别等</mark>问题，影响RPA自动填写流程稳定性。<br>五、初步建议（0.5分）：<br>建议补充<mark class="score-key" title="核心采分点">复杂验证码样本，优化图像预处理流程，建立低置信度人工复核和错误样本回流机制，持续提升系统识别准确率。</mark><br><br>题5第（2）问：优化需求（4分）<br>优化需求一：提升复杂验证码识别准确率。<br>优化定位：<mark class="score-key" title="核心采分点">属于数据和算法层面的问题。</mark><br>优化需求二：降低人工介入率。<br>优化定位：<mark class="score-key" title="核心采分点">属于产品和流程层面的问题。</mark><br>优化需求三：建立错误样本回流机制。<br>优化定位：<mark class="score-key" title="核心采分点">属于数据闭环管理层面的问题。</mark><br>优化需求四：完善系统监控指标。<br>优化定位：<mark class="score-key" title="核心采分点">属于工程和监控层面的问题。</mark><br>题5第（3）问：智能解决方案（7分）<br>一、方案目标（1分）：<br>本方案旨在提升验证码识别系统的识别准确率和自动化水平，重点解<mark class="score-key" title="核心采分点">决复杂验证码识别错误、人工介入率高、错误样本未回流</mark>等问题。<br>目标：<mark class="score-key" title="核心采分点">整体识别准确率提升至80%以上，人工介入率降低至25%以内。</mark><br>二、核心措施（3分）：<br>（1）<mark class="score-key" title="核心采分点">数据补充</mark>措施：补充干扰线、模糊、遮挡、低分辨率、字符扭曲等复杂验证码样本；<br>（2）<mark class="score-key" title="核心采分点">图像预处理</mark>措施：对验证码图片进行灰度化、去噪、二值化、尺寸统一和清晰度增强；<br>（3）<mark class="score-key" title="核心采分点">模型优化</mark>措施：使用新增样本和错误样本重新训练模型，优化模型参数；<br>（4）<mark class="score-key" title="核心采分点">人工复核</mark>措施：设置置信度阈值，高置信度自动填写，低置信度进入人工复核；<br>（5）<mark class="score-key" title="核心采分点">错误回流</mark>措施：将识别错误、低置信度和人工修正样本归入错例库，定期回流训练；<br>（6）<mark class="score-key" title="核心采分点">监控分析</mark>措施：定期分析识别准确率、人工介入率、平均识别耗时和错误类型分布。<br>三、分阶段实施计划（1分）：<br>第一阶段（1个月）：整理质检数据和错误样本，完善<mark class="score-key" title="核心采分点">低置信度人工复核</mark>规则。<br>第二阶段（2-3个月）：补充复杂验证码样本，优化<mark class="score-key" title="核心采分点">图像预处理和模型训练</mark>。<br>第三阶段（3-6个月）：建立持续监控看板和错误样本回流机制，定期迭代模型。<br>四、预期效果（1分）：识别在约58.3%准确率、约41.7%介入率基础上，提高<mark class="score-key" title="核心采分点">80%以上</mark>、降低<mark class="score-key" title="核心采分点">25%以内</mark>，减少复杂样本错误。<br>五、保障机制（1分）：成立由训练师、开发人员、业务人员组成的优化小组，<mark class="score-key" title="核心采分点">定期复盘质检数据，更新训练样本和标注规范，持续跟踪系统运行指标。</mark><br><br><br>
+          <!-- 逐问保底答案 -->          
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（4 分）：（1）请基于上述质检数据（质检数据.xlsx）进行分析，对该验证码识别系统进行全面分析，输出完整的数据分析报告。
             </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、背景：RPA 验证码自动识别系统的运行质检数据。二、目的：看准确率、介入率、图片质量、错误类
+型、耗时。三、方法：数量统计、比率分析、错误类型分析。四、结论：① 12 条对 7 条，准确率约 58.3%，偏
+低；② 人工介入 5 条，介入率约 41.7%，自动化不足；③ 错误集中在干扰线、模糊、遮挡、低分辨率；④ 清晰
+图全部正确，复杂图明显下降；⑤ 有数字误识别、模糊误识别、遮挡误识别、漏识别。五、建议：补样本、优
+化预处理、低置信度人工复核、错误回流。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据分析报告
+
+一、项目背景：系统为 RPA 网页表单自动识别验证码，本分析基于系统运行质检数据。
+二、分析目的：考察识别准确率、人工介入率、图片质量、错误类型、识别耗时，找出短板。
+三、分析方法：数量统计、比率分析、错误类型分析。
+四、分析结论：① 共 12 条，正确 7 条，准确率约 58.3%，偏低；② 人工介入 5 条，介入率约 41.7%，自动化程
+度不足；③ 错误集中在干扰线、模糊、遮挡、低分辨率样本；④ 清晰验证码全部识别正确，复杂样式准确率明
+显下降；⑤ 错误类型有数字误识别、模糊误识别、遮挡误识别、漏识别，影响 RPA 流程稳定。
+五、初步建议：补充复杂样本，优化预处理，建立低置信度人工复核和错误样本回流机制。</div>
+            </details>
+
+            
+              <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:8px; padding:10px 12px; margin:10px 0; font-size:13px; line-height:1.7;">
+                📊 <b>质检表数据关键账目</b>：共 12 条记录，识别正确 7 条（QJ0001/3/5/7/8/10/11），准确率 = 7 ÷ 12 ≈ <b>58.3%</b>；人工介入 5 条（QJ0002/4/6/9/12），介入率 = 5 ÷ 12 ≈ <b>41.7%</b>。
+              </div>
+            
           </div>
-
-          
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（4 分）：（2）请结合数据分析结果，对该验证码识别系统提出优化需求。
             </div>
-            <div class="takeaway-text">系统监控优化通关口诀：性能业务双监控，阈值报警防漂移，熔断降级保可用，数据回流促闭环。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">需求一：提升复杂验证码准确率——数据和算法层面。需求二：降低人工介入率——产品和流程层面。需求
+三：建立错误样本回流——数据闭环层面。需求四：完善监控指标——工程和监控层面。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">优化需求
+需求一：提升复杂验证码识别准确率——属于数据和算法层面。
+需求二：降低人工介入率——属于产品和流程层面。
+需求三：建立错误样本回流机制——属于数据闭环层面。
+需求四：完善系统监控指标——属于工程和监控层面。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（3）问（7 分）：（3）基于你提出的优化需求，为该验证码识别系统设计完整的智能解决方案。
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、目标：准确率 58.3% → 80% 以上，介入率 41.7% → 25% 以内。二、措施：补复杂样本；灰度、去噪、二
+值化；重新训练；按置信度阈值转人工复核；错例库回流；监控准确率、介入率、耗时。三、阶段：1 个月整理
+错例、定复核规则；2–3 个月补样本、优化模型；3–6 个月建监控看板和回流机制。四、效果：准确率 80% 以
+上，介入率 25% 以内。五、保障：训练师、开发、业务人员组成优化小组，定期复盘。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">智能解决方案
+一、方案目标：准确率由 58.3% 提升至 80% 以上，人工介入率由 41.7% 降至 25% 以内。
+二、核心措施：① 补充干扰线、模糊、遮挡、低分辨率、扭曲等复杂样本；② 图像预处理：灰度化、去噪、二
+值化、尺寸统一、清晰度增强；③ 用新增样本和错误样本重新训练、优化参数；④ 设置置信度阈值，高置信度
+自动填写，低置信度转人工复核；⑤ 错误、低置信度、人工修正样本进入错例库，定期回流训练；⑥ 定期监控
+准确率、人工介入率、识别耗时、错误类型分布。
+三、分阶段实施：第一阶段（1 个月）整理质检数据和错例，完善复核规则；第二阶段（2–3 个月）补充样本，
+优化预处理和模型；第三阶段（3–6 个月）建立监控看板和回流机制，定期迭代。
+四、预期效果：准确率提升至 80% 以上，人工介入率降至 25% 以内，复杂样本错误减少。
+五、保障机制：训练师、开发、业务人员组成优化小组，定期复盘质检数据，更新样本和标注规范。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">一、项目背景（0.5分）：验证码识别系统面向RPA网页表单自动填写场景，提供数字验证码自动识别服务，减少人工输入验证码造成的流程阻塞。本分析基于系统运行质检数据。<br><br>二、分析目的（0.5分）：全面了解验证码识别系统运行状况，重点考察识别准确率、人工介入率、图片质量、错误类型和识别耗时等维度，识别系统短板和优化机会。<br><br>三、分析方法（0.5分）：采用数量统计、比率分析和错误类型分析方法，基于质检数据.xlsx中的验证码识别记录、人工确认结果、置信度、识别耗时和错误类型进行分析。<br><br>四、分析结论（2分，核心）：<br><br>（1）系统共记录12条质检样本，其中识别正确7条，识别错误5条，整体识别准确率约为58.3%，识别效果仍有提升空间；<br><br>（2）人工介入样本5条，人工介入率约为41.7%，说明系统自动化程度不足；<br><br>（3）错误主要集中在干扰线、模糊、遮挡、低分辨率等复杂验证码样本中，说明模型对复杂图片的识别能力较弱；<br><br>（4）清晰、规则的验证码识别效果较好，复杂样式验证码识别准确率下降明显；<br><br>（5）系统存在数字误识别、模糊误识别、遮挡误识别和漏识别等问题，影响RPA自动填写流程稳定性。<br><br>五、初步建议（0.5分）：<br><br>建议补充复杂验证码样本，优化图像预处理流程，建立低置信度人工复核和错误样本回流机制，持续提升系统识别准确率。<br><br>优化需求一：提升复杂验证码识别准确率。<br><br>优化定位：属于数据和算法层面的问题。<br><br>优化需求二：降低人工介入率。<br><br>优化定位：属于产品和流程层面的问题。<br><br>优化需求三：建立错误样本回流机制。<br><br>优化定位：属于数据闭环管理层面的问题。<br><br>优化需求四：完善系统监控指标。<br><br>优化定位：属于工程和监控层面的问题。<br><br>一、方案目标（1分）：<br><br>本方案旨在提升验证码识别系统的识别准确率和自动化水平，重点解决复杂验证码识别错误、人工介入率高、错误样本未回流等问题。<br><br>目标：整体识别准确率提升至80%以上，人工介入率降低至25%以内。<br><br>二、核心措施（3分）：<br><br>（1）数据补充措施：补充干扰线、模糊、遮挡、低分辨率、字符扭曲等复杂验证码样本；<br><br>（2）图像预处理措施：对验证码图片进行灰度化、去噪、二值化、尺寸统一和清晰度增强；<br><br>（3）模型优化措施：使用新增样本和错误样本重新训练模型，优化模型参数；<br><br>（4）人工复核措施：设置置信度阈值，高置信度自动填写，低置信度进入人工复核；<br><br>（5）错误回流措施：将识别错误、低置信度和人工修正样本归入错例库，定期回流训练；<br><br>（6）监控分析措施：定期分析识别准确率、人工介入率、平均识别耗时和错误类型分布。<br><br>三、分阶段实施计划（1分）：<br><br>第一阶段（1个月）：整理质检数据和错误样本，完善低置信度人工复核规则。<br><br>第二阶段（2-3个月）：补充复杂验证码样本，优化图像预处理和模型训练。<br><br>第三阶段（3-6个月）：建立持续监控看板和错误样本回流机制，定期迭代模型。<br><br>四、预期效果（1分）：识别在约58.3%准确率、约41.7%介入率基础上，提高____80%以上_____、降低_____25%以内_____，减少复杂样本错误。<br><br>五、保障机制（1分）：成立由训练师、开发人员、业务人员组成的优化小组，定期复盘质检数据，更新训练样本和标注规范，持续跟踪系统运行指标。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·数据账本】质检表 12 条记录：7 条正确（7/12≈58.3%），5 条人工介入（5/12≈41.7%），分子分母算清楚，不要漏算介入率！</div><div class="trap-alert">【坑2·量化目标】优化需求与方案中，目标必须给出明确数字：准确率提升至 80% 以上，人工介入率降至 25% 以内。</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-6" data-qid="prac-09-6" data-slug="ai-trainer-09-6">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">人机交互 (15-20分)</span>
+                <span class="badge badge-type">流程（办事指南） (20分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 16分</span>
                 <span class="badge badge-num">第 6 题</span>
               </div>
               <h3 class="q-title">09题6：验证码识别系统人机交互流程设计</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 6); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-6" data-qid="prac-09-6" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">4分1秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">20分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：清楚交机器，拿不准找人。人工改过，留作样本。</div>
+            <div class="rhyme-callout-sub">先选人机协同。能看清、模型把握高就自动处理。图太糊或模型没把握时让人看。把纠正后的例子保存起来。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，在清晰、规则的数字验证码场景下识别效果较好，但在遇到低置信度、模糊、遮挡、干扰线较多、字符扭曲或低分辨率验证码时，仍可能出现识别错误。你作为一名人工智能训练师，需要结合系统运行特点，为该验证码识别系统设计人工与智能协同的最优方式和流程。<br><br>（1）请为该验证码识别系统找到人工与智能交互的最优方式。（10分）<br><br>（2）请为该验证码识别系统设计人工与智能交互的最优流程。（10分）<br><br>（1）本题分值：20分<br><br>（2）考核时间：15分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能通过数据分析，找到单一场景下人工和智能交互的最优方式<br><br>（2）能通过数据分析，设计单一场景下人工和智能交互的最优流程<br><br>验证码识别系统操作手册<br><br>一、验证码识别系统人机交互模式说明<br><br>RPA验证码识别系统提供三种基础交互路由模式，以适应不同质量、不同难度的验证码识别场景：<br><br>1.全自动识别模式<br><br>适用于清晰、规则、置信度较高的数字验证码。系统自动截取验证码图片，经预处理后调用OCR识别模型，直接输出验证码数字，并返回给RPA流程自动填写。该模式处理速度快、人工成本低，适合标准化验证码场景。<br><br>2.人工复核模式<br><br>适用于图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。系统将验证码图片、AI识别结果和置信度推送给人工复核人员，由人工确认最终验证码内容后返回RPA流程。该模式准确率高，但处理效率相对较低。<br><br>3.人机协同模式<br><br>适用于AI能够给出初步识别结果，但结果存在不确定性的验证码。系统先由AI完成识别和置信度判断，置信度高的样本自动通过，置信度低或异常样本转人工确认。人工修正后的样本进入错例库，用于后续模型优化。该模式兼顾效率和准确率，是验证码识别系统的推荐交互方式。<br><br>二、验证码识别系统人机交互流程设计规范<br><br>为了提升RPA自动填写流程的稳定性，训练师应按照以下流程配置人机协同机制：<br><br>1.验证码采集<br><br>RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。<br><br>2.AI自动识别<br><br>系统对验证码图片进行预处理，并调用识别模型输出验证码结果和置信度。<br><br>3.置信度判断<br><br>当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。<br><br>4.人工复核与修正<br><br>人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。<br><br>5.结果回传与流程继续<br><br>系统将最终验证码结果传递给RPA流程，完成网页表单填写。<br><br>6.错误样本沉淀<br><br>识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。<br><br>09题6：验证码识别系统人机交互流程设计（20分）<br><br>题6第（1）问：人机交互最优方式（10分）<br><br>基于验证码识别系统运行特点，我提出人工与智能交互的最优方式为“人机协同模式”，即AI自动识别、低置信度转人工复核、错误样本回流优化相结合的方式。<br><br>1、AI自动识别——适用于标准验证码场景。
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，在清晰、规则的数字验证码场景下识别效果较好，但在遇到低置信度、模糊、遮挡、干扰线较多、字符扭曲或低分辨率验证码时，仍可能出现识别错误。你作为一名人工智能训练师，需要结合系统运行特点，为该验证码识别系统设计人工与智能协同的最优方式和流程。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              适用场景：<mark class="score-key" title="核心采分点">清晰、规则、置信度较高的数字验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI自动识别处理速度快、人工成本低，能够提高RPA自动填写效率。</mark><br>2、人工复核——适用于复杂或异常验证码场景。<br>适用场景：<mark class="score-key" title="核心采分点">图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">人工复核可以降低错误验证码直接提交的风险，提高最终填写准确率。</mark><br>3、人机协同——作为推荐交互方式。<br>适用场景：<mark class="score-key" title="核心采分点">AI能够给出初步识别结果，但结果存在不确定性的验证码。</mark><br>分配理由：<mark class="score-key" title="核心采分点">AI负责快速识别和初步判断，人工负责低置信度样本复核，同时将人工修正结果回流训练集，兼顾效率和准确率。</mark><br>4、最优方式总结：<br>采用“人机协同模式”后，<mark class="score-key" title="核心采分点">高置信度验证码由AI自动处理，低置信度和异常验证码由人工复核，错误样本进入错例库用于模型优化。</mark><br>该方式能够<mark class="score-key" title="核心采分点">提升验证码识别准确率，降低人工介入成本，提高RPA流程稳定性。</mark><br>题6第（2）问：人机交互最优流程（10分）<br>一、流程概述（1分）：<br>基于“人机协同模式”，设计“<mark class="score-key" title="核心采分点">验证码采集—AI识别—置信度判断—人工复核—结果回传—错误样本沉淀</mark>”的完整人机交互流程，覆盖验证码识别到模型优化的闭环过程。<br>二、流程步骤（5分）：<br>阶段一——验证码采集：<mark class="score-key" title="核心采分点">RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。</mark><br>阶段二——AI自动识别：系统对验证码图片进行<mark class="score-key" title="核心采分点">格式统一、尺寸调整、灰度化、去噪等预处理，并调用验证码识别模型输出识别结果和置信度。</mark><br>阶段三——置信度判断：当识别置信度达到设定阈值时，<mark class="score-key" title="核心采分点">系统直接将识别结果返回RPA流程自动填写；</mark>当置信度低于阈值，<mark class="score-key" title="核心采分点">或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。</mark><br>阶段四——人工复核与修正：人工复核人员查看验证码图片和AI识别结果，确认<mark class="score-key" title="核心采分点">正确验证码内容，并将修正结果返回系统。</mark><br>阶段五——结果回传与流程继续：<mark class="score-key" title="核心采分点">系统将最终验证码结果传递给RPA流程，完成网页表单填写，业务流程继续执行。</mark><br>阶段六——错误样本沉淀：<mark class="score-key" title="核心采分点">识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。</mark><br>三、判断节点设计（2分）：<br>节点1——置信度阈值判断：如置信度≥0.85，<mark class="score-key" title="核心采分点">AI自动填写；</mark>如置信度＜0.85，<mark class="score-key" title="核心采分点">转人工复核。</mark><br>节点2——图片质量判断：对模糊、遮挡、低分辨率、干扰线较多等异常图片，直接进入<mark class="score-key" title="核心采分点">人工复核或错例库</mark>。<br>节点3——人工复核结果判断：人工确认结果后，系统<mark class="score-key" title="核心采分点">判断是否可直接回传RPA流程</mark>。<br>节点4——样本回流判断：识别错误、人工修正和低置信度样本<mark class="score-key" title="核心采分点">进入错例库，用于后续模型优化。</mark><br>四、异常处理（1分）：若AI识别服务故障，<mark class="score-key" title="核心采分点">系统自动转人工复核并记录故障</mark>；若人工复核超时，<mark class="score-key" title="核心采分点">系统提示重新获取验证码</mark>；若验证码图片无法读取，<mark class="score-key" title="核心采分点">系统重新截取验证码图片</mark>；若连续识别失败，<mark class="score-key" title="核心采分点">系统触发人工处理。</mark><br>五、流程优势（1分）：该流程能够实现标准验证码<mark class="score-key" title="核心采分点">自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾识别效率、准确率和RPA流程稳定性。</mark><br><br>
+          <!-- 逐问保底答案 -->          
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（10 分）：（1）请为该验证码识别系统找到人工与智能交互的最优方式。（10分）
             </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">最优方式：人机协同＝AI 自动识别＋低置信度转人工复核＋错误样本回流。
+1. AI 自动识别：适用清晰、高置信度验证码；理由：快、省人工。
+2. 人工复核：适用模糊、遮挡、低置信度验证码；理由：保证准确。
+3. 人机协同（推荐）：适用 AI 有初步结果但不确定的验证码；理由：AI 快速初判，人工复核兜底，修正样本回
+流，兼顾效率和准确率。
+4. 总结：高置信度自动、低置信度人工、错误进错例库；质检数据中认错的 5 条置信度都低于 0.62，按置信度分
+流能把错误拦住。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">人机交互最优方式
+
+最优方式为“人机协同模式”：AI 自动识别＋低置信度转人工复核＋错误样本回流优化。
+1. AI 自动识别：适用清晰、规则、置信度高的验证码；理由：处理速度快、人工成本低，提高 RPA 自动填写效
+率。
+2. 人工复核：适用模糊、遮挡、低分辨率、干扰线多或置信度低的验证码；理由：避免错误验证码直接提交，保
+证填写准确率。
+3. 人机协同（推荐）：适用 AI 有初步结果但不确定的验证码；理由：AI 快速识别和初判，人工复核低置信度样
+本，修正结果回流训练，兼顾效率和准确率。
+4. 总结：高置信度由 AI 自动填写，低置信度和异常图片由人工复核，错误样本进入错例库优化模型。质检数据
+显示，识别错误的 5 条置信度均低于 0.62，正确的均不低于 0.82，按置信度分流可把错误拦在人工环节。这种方
+式兼顾效率和准确率，提高 RPA 流程稳定性。</div>
+            </details>
+
+            
           </div>
-
-          
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（10 分）：（2）请为该验证码识别系统设计人工与智能交互的最优流程。（10分）
             </div>
-            <div class="takeaway-text">人机交互设计通关口诀：人机协同分边界，高低置信设分流，机器主攻高效率，人工托底控风险。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、概述：采集 → 识别 → 判断 → 复核 → 回传 → 沉淀，形成闭环。
+二、步骤：阶段一 验证码采集：自动截图并记录来源。阶段二 AI 自动识别：预处理后输出结果和置信度。阶段
+三 置信度判断：达到阈值回填，否则转人工。阶段四 人工复核与修正：人工确认正确内容。阶段五 结果回传与
+流程继续：回填表单。阶段六 错误样本沉淀：进错例库再训练。
+三、判断节点：① 置信度≥0.85 自动，＜0.85 转人工；② 图片异常转人工；③ 人工确认后回传；④ 错误样本进
+错例库。
+四、异常处理：服务故障转人工；复核超时重取码；图读不了重新截；连续失败转人工。
+五、流程优势：标准自动、复杂人工兜底、错误闭环，兼顾效率、准确率和稳定性。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">人机交互最优流程
+一、流程概述：验证码采集 → AI 识别 → 置信度判断 → 人工复核 → 结果回传 → 错误样本沉淀，形成闭环。
+二、流程步骤：
+阶段一 验证码采集：RPA 运行到验证码环节自动截图，记录来源、时间、类型。
+阶段二 AI 自动识别：格式统一、尺寸调整、灰度化、去噪等预处理，模型输出识别结果和置信度。
+阶段三 置信度判断：达到阈值直接回填；低于阈值或图片模糊、遮挡、干扰线多，转人工复核。
+阶段四 人工复核与修正：人工查看图片和 AI 结果，确认正确内容并返回系统。
+阶段五 结果回传与流程继续：最终结果交给 RPA，完成表单填写，业务继续。
+阶段六 错误样本沉淀：识别错误、低置信度、人工修正样本进入错例库，定期用于再训练。
+三、判断节点：① 置信度 ≥0.85 自动填写，＜0.85 转人工；② 图片模糊、遮挡、低分辨率等质量异常，直接转
+人工；③ 人工确认后回传 RPA；④ 错误、修正、低置信度样本进入错例库。
+四、异常处理：AI 服务故障转人工并记录；人工复核超时重新获取验证码；图片无法读取重新截图；连续识别
+失败触发人工处理。
+五、流程优势：标准验证码自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾效率、准确率和稳定性。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">基于验证码识别系统运行特点，我提出人工与智能交互的最优方式为“人机协同模式”，即AI自动识别、低置信度转人工复核、错误样本回流优化相结合的方式。<br><br>1、AI自动识别——适用于标准验证码场景。<br><br>适用场景：清晰、规则、置信度较高的数字验证码。<br><br>分配理由：AI自动识别处理速度快、人工成本低，能够提高RPA自动填写效率。<br><br>2、人工复核——适用于复杂或异常验证码场景。<br><br>适用场景：图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码。<br><br>分配理由：人工复核可以降低错误验证码直接提交的风险，提高最终填写准确率。<br><br>3、人机协同——作为推荐交互方式。<br><br>适用场景：AI能够给出初步识别结果，但结果存在不确定性的验证码。<br><br>分配理由：AI负责快速识别和初步判断，人工负责低置信度样本复核，同时将人工修正结果回流训练集，兼顾效率和准确率。<br><br>4、最优方式总结：<br><br>采用“人机协同模式”后，高置信度验证码由AI自动处理，低置信度和异常验证码由人工复核，错误样本进入错例库用于模型优化。<br><br>该方式能够提升验证码识别准确率，降低人工介入成本，提高RPA流程稳定性。<br><br>一、流程概述（1分）：<br><br>基于“人机协同模式”，设计“验证码采集—AI识别—置信度判断—人工复核—结果回传—错误样本沉淀”的完整人机交互流程，覆盖验证码识别到模型优化的闭环过程。<br><br>二、流程步骤（5分）：<br><br>阶段一——验证码采集：RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。<br><br>阶段二——AI自动识别：系统对验证码图片进行格式统一、尺寸调整、灰度化、去噪等预处理，并调用验证码识别模型输出识别结果和置信度。<br><br>阶段三——置信度判断：当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。<br><br>阶段四——人工复核与修正：人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。<br><br>阶段五——结果回传与流程继续：系统将最终验证码结果传递给RPA流程，完成网页表单填写，业务流程继续执行。<br><br>阶段六——错误样本沉淀：识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。<br><br>三、判断节点设计（2分）：<br><br>节点1——置信度阈值判断：如置信度≥0.85，AI自动填写；如置信度＜0.85，转人工复核。<br><br>节点2——图片质量判断：对模糊、遮挡、低分辨率、干扰线较多等异常图片，直接进入人工复核或错例库。<br><br>节点3——人工复核结果判断：人工确认结果后，系统判断是否可直接回传RPA流程。<br><br>节点4——样本回流判断：识别错误、人工修正和低置信度样本进入错例库，用于后续模型优化。<br><br>四、异常处理（1分）：若AI识别服务故障，系统自动转人工复核并记录故障；若人工复核超时，系统提示重新获取验证码；若验证码图片无法读取，系统重新截取验证码图片；若连续识别失败，系统触发人工处理。<br><br>五、流程优势（1分）：该流程能够实现标准验证码自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾识别效率、准确率和RPA流程稳定性。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·理由缺失】第(1)问三种模式（AI自动识别、人工复核、人机协同），每种模式必须写出“适用场景＋分配理由”，只写模式名扣大分！</div><div class="trap-alert">【坑2·抄写不全】第(2)问最优流程，绝大多数人抄完六个业务阶段就停笔，后面的“判断节点（2分）、异常处理（1分）、流程优势（1分）”全漏了！必须把完整四部分写全！</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-7" data-qid="prac-09-7" data-slug="ai-trainer-09-7">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">培训考核 (5分)</span>
+                <span class="badge badge-type">方案+说明 (3分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 2分</span>
                 <span class="badge badge-num">第 7 题</span>
               </div>
               <h3 class="q-title">09题7：人工智能训练师培训能力考核</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 7); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-7" data-qid="prac-09-7" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">1分59秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">5分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：先讲项目，再采、再洗、再标，最后查。</div>
+            <div class="rhyme-callout-sub">每个目录标题后补一句学员会做什么。比如「可用性标注：能按规则写出 1、0 或待复核的 2」。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              随着人工智能技术在企业自动化流程中的应用不断深入，OCR识别、数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成验证码识别项目中的数据采集、清洗、标注和测试工作，也需要能够面向五级/初级工、四级/中级工开展基础培训。<br><br>（1）如果安排你围绕“验证码识别数据处理与标注”编写培训讲义，请列出培训讲义目录，并对每部分培训内容做简要说明。（1分）<br><br>（2）请针对“验证码识别数据处理与标注”培训，从下述培训方法中选择两种合适的方法，并说明选择原因：讲授法、演示法、案例分析法、实操练习法、小组研讨法。（2分）<br><br>（1）本题分值：3分<br><br>（2）考核时间：12分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能编写初级培训讲义<br><br>（2）能够对五级/初级工、四级/中级工开展知识和技术培训<br><br>09题7：人工智能训练师培训能力考核（3分）<br><br>题7第（1）问：培训讲义目录及内容说明（1分）<br><br>一、验证码识别项目背景：介绍RPA自动填写网页表单时验证码识别的业务需求，以及OCR技术在该场景中的作用。<br><br>二、验证码数据采集要求：讲解验证码图片采集范围、采集来源、命名规则和数据保存要求。
+              随着人工智能技术在企业自动化流程中的应用不断深入，OCR识别、数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成验证码识别项目中的数据采集、清洗、标注和测试工作，也需要能够面向五级/初级工、四级/中级工开展基础培训。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              三、验证码数据清洗标准：<mark class="score-key" title="核心采分点">讲解无效图片、尺寸过小图片、模糊图片、重复图片、非数字验证码等数据的处理方法。</mark><br>四、验证码图像标注规范：讲解有效验证码、无效验证码、特殊样本的标注方法，以及标签文件的交付格式。<br>五、数据质检与问题反馈：讲解人工抽检、自动检查、争议样本反馈、错误样本回流等质检流程。<br>题7第（2）问：培训方法选择及原因（2分）<br>方法一：讲授法。<mark class="score-key" title="核心采分点">通过讲授法向初中级人员讲解验证码识别项目背景、数据采集要求、清洗标准和标注规范，便于学员快速掌握基础概念和统一操作标准。</mark><br>方法二：实操练习法。<mark class="score-key" title="核心采分点">通过提供验证码图片样本，让学员现场完成数据清洗、标注和问题样本判断，能够帮助学员把理论规范转化为实际操作能力，提高培训效果。</mark><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（1 分）：（1）如果安排你围绕“验证码识别数据处理与标注”编写培训讲义，请列出培训讲义目录，并对每部分培训内容做简要说明。（1分）
             </div>
-            <div class="takeaway-text">培训考核通关口诀：明确目标分层次，理论实操相结合，SOP动作要规范，考评验收建闭环。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">一、项目背景：讲 RPA 验证码识别需求。二、采集要求：讲来源、命名和保存。三、清洗标准：讲五删一
+统。四、标注规范：讲 1/0/2 和交付格式。五、质检与反馈：讲抽检和争议反馈。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">培训讲义目录
+
+一、验证码识别项目背景：讲解 RPA 自动填表的验证码识别需求和 OCR 技术的作用。
+二、验证码数据采集要求：讲解采集范围、采集来源、命名规则和保存要求。
+三、验证码数据清洗标准：讲解无效、过小、模糊、无关、重复图片的处理方法和格式统一要求。
+四、验证码图像标注规范：讲解有效（1）、无效（0）、争议（2）样本的标注方法和交付格式。
+五、数据质检与问题反馈：讲解自动检查、人工抽检、争议样本反馈和错误样本回流。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（2 分）：（2）请针对“验证码识别数据处理与标注”培训，从下述培训方法中选择两种合适的方法，并说明选择原因：讲授法、演示法、案例分析法、实操练习法、小组研讨法。（2分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">讲授法：讲清标准规范，统一口径。实操练习法：学员动手清洗、标注，把规范变成技能。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">培训方法
+方法一：讲授法。用于讲解项目背景、采集要求、清洗标准和标注规范，使学员快速掌握基础概念，统一操作标
+准。
+方法二：实操练习法。提供验证码图片样本，让学员现场完成清洗、标注和问题样本判断，把规范转化为实际操
+作能力。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">一、验证码识别项目背景：介绍RPA自动填写网页表单时验证码识别的业务需求，以及OCR技术在该场景中的作用。<br><br>二、验证码数据采集要求：讲解验证码图片采集范围、采集来源、命名规则和数据保存要求。<br><br>三、验证码数据清洗标准：讲解无效图片、尺寸过小图片、模糊图片、重复图片、非数字验证码等数据的处理方法。<br><br>四、验证码图像标注规范：讲解有效验证码、无效验证码、特殊样本的标注方法，以及标签文件的交付格式。<br><br>五、数据质检与问题反馈：讲解人工抽检、自动检查、争议样本反馈、错误样本回流等质检流程。<br><br>方法一：讲授法。通过讲授法向初中级人员讲解验证码识别项目背景、数据采集要求、清洗标准和标注规范，便于学员快速掌握基础概念和统一操作标准。<br><br>方法二：实操练习法。通过提供验证码图片样本，让学员现场完成数据清洗、标注和问题样本判断，能够帮助学员把理论规范转化为实际操作能力，提高培训效果。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·目录说明】讲义目录五大章节，每章后面必须写一句“讲解……”，只写章节名不算“简要说明”，会扣分！</div><div class="trap-alert">【坑2·方法理由】选用讲授法和实操练习法，理由紧扣“统一规范标准”与“将知识转化为实战动手技能”。</div></div>
+            </div>
           </div>
         </article>
-        
+    
         <article class="question-card" id="prac-09-8" data-qid="prac-09-8" data-slug="ai-trainer-09-8">
           <header class="q-header">
             <div class="q-title-group">
               <div class="q-badges">
                 <span class="badge badge-paper">09卷</span>
-                <span class="badge badge-type">指导考核 (5分)</span>
+                <span class="badge badge-type">问答指导 (2分)</span>
+                <span class="badge" style="background:#10b981; color:#fff; font-weight:800;">保底目标 1分</span>
                 <span class="badge badge-num">第 8 题</span>
               </div>
               <h3 class="q-title">09题8：人工智能训练师指导能力考核</h3>
             </div>
             <div class="q-actions">
+              <a href="/games/ai-trainer/#practice" onclick="localStorage.setItem('aiTrainer_practice_q', 8); localStorage.setItem('aiTrainer_practice_p', 1);" target="_blank" class="btn btn-sm btn-practice" style="background:var(--blue); color:#fff; font-weight:800;" title="前往交互答题卡练这题">
+                ✍️ 交互做这题
+              </a>
               <button class="btn btn-audio play-trigger" data-slug="ai-trainer-09-8" data-qid="prac-09-8" title="播放 MiMo TTS 原声精讲带背">
                 <span class="play-icon">▶</span>
                 <span class="audio-text">听带背</span>
-                <span class="audio-dur">2分11秒</span>
-                <span class="audio-wave">
-                  <span></span><span></span><span></span><span></span>
-                </span>
+                <span class="audio-dur">5分钟</span>
+                <span class="audio-wave"><span></span><span></span><span></span><span></span></span>
               </button>
-              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
-                🎯 挖空自测
-              </a>
             </div>
           </header>
 
+          <!-- 零基础口诀 -->
+          <div class="rhyme-callout">
+            <div class="rhyme-callout-text">💡 答题口诀：先看能不能开，再看小不小、糊不糊、重不重。</div>
+            <div class="rhyme-callout-sub">写出一个质量问题和一项可执行的指导。比如图打不开，就让学员批量检查读取失败的文件，移出并记录。</div>
+          </div>
+
+          <!-- 题干材料 -->
           <details class="q-prompt-box">
             <summary class="prompt-toggle">
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              随着验证码识别系统在RPA自动化流程中的应用，五级/初级工、四级/中级工在实际工作中可能会遇到数据采集不规范、图片质量不达标、标注结果不一致、模型测试结果理解不清等问题。作为一名三级/高级人工智能训练师，需要能够对初中级人员进行工作指导，帮助其解决数据处理和标注过程中的常见问题。<br><br>（1）请列举验证码识别数据采集或数据处理过程中常见的一个问题，并说明你会如何指导初中级人员解决该问题。（1分）<br><br>（2）请列举验证码图像标注过程中常见的一个问题，并说明你会如何指导初中级人员进行规范处理。（1分）<br><br>（1）本题分值：2分<br><br>（2）考核时间：8分钟<br><br>（3）考核形式：实操<br><br>（4）考核要求：<br><br>（1）能指导五级/初级工、四级/中级工解决数据采集、处理问题<br><br>（2）能指导五级/初级工、四级/中级工解决数据标注问题<br><br>09题8：人工智能训练师指导能力考核（2分）<br><br>题8第（1）问：数据采集或处理问题指导（1分）<br><br>常见问题：采集到的验证码图片存在尺寸过小、模糊、重复或无法打开等问题。
+              随着验证码识别系统在RPA自动化流程中的应用，五级/初级工、四级/中级工在实际工作中可能会遇到数据采集不规范、图片质量不达标、标注结果不一致、模型测试结果理解不清等问题。作为一名三级/高级人工智能训练师，需要能够对初中级人员进行工作指导，帮助其解决数据处理和标注过程中的常见问题。
             </div>
           </details>
 
-          <div class="answer-section">
-            <div class="section-tag">💡 标准答案与采分要点拆解</div>
-            <div class="answer-body">
-              指导方法：<mark class="score-key" title="核心采分点">指导初中级人员按照数据清洗标准进行处理，先检查图片是否能正常打开，再检查尺寸、清晰度和重复情况；对于无法打开、严重模糊、短边小于10像素或重复样本，应删除或单独记录；对于可识别但质量一般的样本，可保留并标记为待复核样本。</mark><br>题8第（2）问：数据标注问题指导（1分）<br>常见问题：标注人员对模糊、遮挡或样式异常的验证码判断不一致，导致标签结果不统一。<br>指导方法：<mark class="score-key" title="核心采分点">指导初中级人员按照标注规范处理，清晰可识别的有效验证码标注为1，无法识别或不符合要求的无效验证码标注为0，存在争议或需要复核的特殊样本标注为2；对于无法判断的样本，应提交组长或负责人复核，不能凭猜测随意标注。</mark><br><br><br>
-            </div>
-          </div>
-
+          <!-- 逐问保底答案 -->
           
-
-          <div class="takeaway-box">
-            <div class="takeaway-head">
-              <span class="takeaway-icon">⚡</span>
-              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（1）问（1 分）：（1）请列举验证码识别数据采集或数据处理过程中常见的一个问题，并说明你会如何指导初中级人员解决该问题。（1分）
             </div>
-            <div class="takeaway-text">指导考核通关口诀：找准痛点析成因，示范纠错手把手，案例复盘提认知，长效追踪促改进。</div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">问题：图片过小、模糊、重复或打不开。指导：按清洗标准逐项检查，不合格的删除并记录，拿不准的标待
+复核。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">采集处理问题指导
+
+常见问题：采集到的验证码图片尺寸过小、模糊、重复或无法打开。
+指导方法：指导其按数据清洗标准逐项检查——先查能否打开，再查尺寸、清晰度和重复；无法打开、严重模
+糊、短边小于 10 像素或重复的删除并记录；质量一般但能识别的保留，标记待复核。</div>
+            </details>
+
+            
+          </div>
+        
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+            <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
+              第（2）问（1 分）：（2）请列举验证码图像标注过程中常见的一个问题，并说明你会如何指导初中级人员进行规范处理。（1分）
+            </div>
+            
+            <!-- 极简保底版 -->
+            <div class="baodi-card" style="margin:8px 0;">
+              <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
+              <div class="baodi-body">问题：模糊、遮挡图片标注不一致。指导：按规范标 1 或 0，拿不准标 2 交组长复核，不凭猜测标注。</div>
+            </div>
+
+            <!-- 练习版展开 -->
+            <details style="margin:8px 0; background:#fdfaf6; border:1px solid var(--border); border-radius:6px; padding:8px 10px;">
+              <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
+                ✍️ 查看保底答案·练习版（5,100字实操展开示范）
+              </summary>
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">标注问题指导
+常见问题：标注人员对模糊、遮挡的验证码判断不一致，标签不统一。
+指导方法：指导其按标注规范处理——清晰可识别的标 1，无法识别或不符合要求的标 0，拿不准的标 2 并提交
+组长复核，不能凭猜测标注；定期组织交叉复核，把争议案例补充进规范。</div>
+            </details>
+
+            
+          </div>
+        
+
+          <!-- 官方参考答案折叠 -->
+          <details style="margin-top:14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px;">
+            <summary style="font-weight:800; font-size:13.5px; cursor:pointer; color:var(--ink-2);">
+              📑 对照原卷官方全量参考答案（8,300字全卷版）
+            </summary>
+            <div class="answer-body" style="margin-top:8px; font-size:13.5px; line-height:1.75; color:var(--ink);">常见问题：采集到的验证码图片存在尺寸过小、模糊、重复或无法打开等问题。<br><br>指导方法：指导初中级人员按照数据清洗标准进行处理，先检查图片是否能正常打开，再检查尺寸、清晰度和重复情况；对于无法打开、严重模糊、短边小于10像素或重复样本，应删除或单独记录；对于可识别但质量一般的样本，可保留并标记为待复核样本。<br><br>常见问题：标注人员对模糊、遮挡或样式异常的验证码判断不一致，导致标签结果不统一。<br><br>指导方法：指导初中级人员按照标注规范处理，清晰可识别的有效验证码标注为1，无法识别或不符合要求的无效验证码标注为0，存在争议或需要复核的特殊样本标注为2；对于无法判断的样本，应提交组长或负责人复核，不能凭猜测随意标注。</div>
+          </details>
+
+          <!-- 名师避坑红线 -->
+          <div class="takeaway-box" style="margin-top:14px;">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚠️</span>
+              <span class="takeaway-title">名师讲评与避坑红线 (▶ 圈/找/背/坑/讲)</span>
+            </div>
+            <div class="takeaway-text">
+              <div style="margin-top:10px;"><div class="trap-alert">【坑1·泛泛而谈】指导问题必须包含“具体指出的缺陷＋标准化操作规范步骤＋复核闭环”，不能只写“加强宣导”。</div></div>
+            </div>
           </div>
         </article>
-        
+    
           </div>
         </section>
-        
+
         <section class="paper-section" id="paper-07">
           <div class="paper-banner">
             <div class="paper-banner-left">

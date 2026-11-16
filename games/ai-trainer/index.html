@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>人工智能训练师（三级／高级）· 刷题与挖空连击</title>
-<meta name="description" content="人工智能训练师（三级/高级）全真模拟试题交互刷题系统：实操大题全采分点挖空连击自测、理论知识考核单选/判断题全收录、即时对错反馈与标准解析。">
+<title>人工智能训练师（三级／高级）· 刷题与实战连击</title>
+<meta name="description" content="人工智能训练师（三级/高级）全真模拟试题交互刷题系统：实操大题全采分点挖空连击、逐题精讲与实战自测、180分钟全真模拟考场、理论知识考核单选/判断题全收录、DeepSeek AI 答疑助手。">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=20261114_2">
+<link rel="stylesheet" href="style.css?v=20261116_1">
 </head>
 <body>
 
@@ -24,7 +24,9 @@
       </div>
     </div>
     <div class="top-actions">
-      <a href="blog.html" class="btn" title="查看实操大题通关博客与MiMo TTS有声带背" style="font-size:12.5px; padding:6px 12px; background:var(--yellow); color:var(--ink); text-decoration:none;">🎙️ 实操通关博客</a>
+      <button id="btn-tactics" class="btn" title="查看本卷考点地图、73分稳过计划与答题口诀" style="font-size:12.5px; padding:6px 12px; background:var(--blue-soft); color:var(--blue-d); font-weight:800;">🗺️ 考点战术</button>
+      <button id="btn-mock" class="btn" title="进入180分钟整卷全真模拟考场" style="font-size:12.5px; padding:6px 12px; background:var(--pink-soft); color:#b91c1c; font-weight:800;">⏱️ 180分模考</button>
+      <a href="blog.html" class="btn" title="查看实操大题通关博客与逐题深度精讲" style="font-size:12.5px; padding:6px 12px; background:var(--yellow); color:var(--ink); text-decoration:none;">🎙️ 通关博客</a>
       <a href="/podcast.html?channel=ai-trainer" class="btn" title="24 道实操大题有声带背（播客频道）" style="font-size:12.5px; padding:6px 12px; text-decoration:none;">🎧 有声带背</a>
       <button id="btn-sound" class="btn btn-icon" title="音效开关">🔊</button>
       <button id="btn-reset" class="btn" title="重置记录" style="font-size:12.5px; padding:6px 12px;">重置进度</button>
@@ -35,6 +37,9 @@
   <nav class="mode-tabs">
     <button class="mode-tab active" data-mode="cloze">
       <span>🎯 实操挖空连击</span>
+    </button>
+    <button class="mode-tab" data-mode="practice">
+      <span>✍️ 逐题实战与采分</span>
     </button>
     <button class="mode-tab" data-mode="theory">
       <span>📝 理论真题刷题</span>
@@ -112,33 +117,151 @@
 
     <!-- Word Bank / Options Chips Box -->
     <div class="options-box" id="cloze-options-box">
-      <div class="options-header">
-        <span>👇 点击备选词填入当前高亮空位（支持快捷键 1 ~ 6）：</span>
-        <span id="cloze-blank-hint" style="color:var(--blue-d);">空位 1/N</span>
+      <div class="options-hint">
+        <span>💡 点击候选词填入上方【当前选中挖空】（支持键盘按数字键 1~9 快捷填入）：</span>
       </div>
-      <div class="chips-grid" id="cloze-chips"></div>
+      <div class="chips-container" id="cloze-chips"></div>
     </div>
 
-    <!-- Navigation & Action Controls -->
+    <!-- Practical Navigation Controls -->
     <div class="ctrl-bar">
       <div class="ctrl-group">
-        <button id="btn-cloze-hint" class="btn btn-yellow">💡 提示首字</button>
-        <button id="btn-cloze-reveal" class="btn btn-pink">👁️ 揭晓本题全部空</button>
-        <button id="btn-cloze-redo" class="btn">🔄 重做本题</button>
+        <button id="btn-cloze-redo" class="btn" title="清空本题所有填空重新挑战">🔄 本题重练</button>
+        <button id="btn-cloze-show-ans" class="btn btn-yellow" title="一键填充本题所有标准答案">👁️ 直接看答案</button>
+        <button id="btn-cloze-ask-ai" class="btn" style="background:var(--blue-soft); color:var(--blue-d); font-weight:800;">💬 问 DeepSeek</button>
       </div>
       <div class="ctrl-group">
-        <button id="btn-cloze-prev" class="btn">◀ 上一题</button>
-        <button id="btn-cloze-next" class="btn btn-primary">下一题 ▶</button>
+        <button id="btn-cloze-prev" class="btn">◀ 上一大题</button>
+        <button id="btn-cloze-next" class="btn btn-primary">下一大题 (空格/Enter) ▶</button>
       </div>
     </div>
   </main>
 
-  <!-- View 2: Theory Quiz Panel -->
+  <!-- View 2: Practical Full Practice Panel (逐题精讲与实战自测) -->
+  <main id="view-practice" class="quiz-panel" style="display:none;">
+    <div class="panel-header">
+      <div>
+        <div class="panel-tags">
+          <span class="tag tag-ch" id="practice-tag-paper">09卷 · 验证码识别与RPA</span>
+          <span class="tag tag-score" id="practice-tag-score">满分 15 分</span>
+          <span class="tag tag-target" id="practice-tag-target" style="background:#10b981; color:#fff;">及格目标 12 分</span>
+          <span class="tag tag-type" id="practice-tag-style">流程（办事指南）</span>
+        </div>
+        <h2 class="item-title" id="practice-title">09题1：验证码识别模型业务流程设计</h2>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <select id="practice-question-select" class="btn" style="font-size:12.5px; padding:6px 10px; font-weight:800;">
+          <option value="1">题1 业务流程设计 (15分)</option>
+          <option value="2">题2 效果优化方案 (10分)</option>
+          <option value="3">题3 清洗与标注规范 (15分)</option>
+          <option value="4">题4 算法训练与测试 (20分)</option>
+          <option value="5">题5 监控与质检分析 (15分)</option>
+          <option value="6">题6 人机交互流程设计 (20分)</option>
+          <option value="7">题7 培训能力考核 (3分)</option>
+          <option value="8">题8 指导能力考核 (2分)</option>
+        </select>
+        <button id="btn-practice-ask-ai" class="btn" style="background:var(--blue-soft); color:var(--blue-d); font-weight:800;">💬 问 DeepSeek</button>
+      </div>
+    </div>
+
+    <!-- Mnemonic Rhyme Banner -->
+    <div class="rhyme-banner" id="practice-rhyme-box">
+      <div class="rhyme-icon">💡</div>
+      <div class="rhyme-content">
+        <div class="rhyme-text" id="practice-rhyme-text">五四三，倒着数：采集 5 步、处理 4 步、审核 3 步，一共 12 个小标题。</div>
+        <div class="rhyme-sub" id="practice-rhyme-sub">全卷骨架固定：小标题背下来，内容去题干和手册里找现成词，零基础也能拿高分！</div>
+      </div>
+    </div>
+
+    <!-- Scenario Background Context Collapsible -->
+    <details class="practice-context-details" id="practice-context-box" open>
+      <summary style="font-weight:800; cursor:pointer; color:var(--ink-2); padding:6px 0;">
+        📑 原卷业务背景与给定材料（点击展开/折叠）
+      </summary>
+      <div class="item-desc" id="practice-context-content" style="margin-top:8px;"></div>
+    </details>
+
+    <!-- Subparts Navigation Tabs -->
+    <div class="practice-parts-nav" id="practice-parts-tabs">
+      <!-- Generated dynamically -->
+    </div>
+
+    <!-- Active Part Container -->
+    <div class="practice-part-body">
+      <!-- Part Prompt Banner -->
+      <div class="part-prompt-card">
+        <div style="font-weight:900; font-size:15px; color:var(--ink);" id="practice-part-prompt">小问题干加载中...</div>
+      </div>
+
+      <!-- Real Practice Answer Box (Textarea + Drafts) -->
+      <div class="draft-card">
+        <div class="draft-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-weight:800; font-size:13.5px; color:var(--ink);">✍️ 我的考场作答草稿（自动保存至本地）：</span>
+            <span id="practice-word-count" style="font-size:12px; color:var(--ink-3); font-weight:700;">0 字</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="practice-autosave-tip" style="font-size:11.5px; color:var(--mint); font-weight:700;">💾 实时已保存</span>
+            <button id="btn-practice-clear-draft" class="btn" style="font-size:11px; padding:3px 8px;">清空草稿</button>
+            <button id="btn-practice-grade-ai" class="btn" style="font-size:11.5px; padding:4px 10px; background:var(--yellow); color:var(--ink); font-weight:800;">📝 让 AI 批改这题</button>
+          </div>
+        </div>
+        <textarea id="practice-textarea" class="practice-textarea" placeholder="在此直接动笔模拟作答……（建议先默写小标题序号，再按骨架展开，字数压缩在极简保底版范围内）"></textarea>
+      </div>
+
+      <!-- Self-check Checkpoints Checklist -->
+      <div class="checkpoints-box" id="practice-checkpoints-box">
+        <div class="checkpoints-header">
+          <span>✅ 核心采分点自测核对（写完后对照打勾，实时评估得分）：</span>
+          <span id="practice-check-score" style="font-weight:900; color:var(--blue-d); font-size:13px;">已掌握 0 / 0 项</span>
+        </div>
+        <div class="checkpoints-list" id="practice-checkpoints-list"></div>
+      </div>
+
+      <!-- Python Code Line-by-Line Guide (Displayed in Q4) -->
+      <div id="practice-code-guide-box" style="display:none; margin:14px 0;"></div>
+
+      <!-- 3-Tier Answers Comparison -->
+      <div class="answers-tier-box">
+        <div class="answers-tier-header">
+          <span style="font-weight:800; font-size:14px; color:var(--ink);">📘 参考答案比对与学习（重点背保底版）：</span>
+          <div class="tier-nav-btns" id="practice-tier-btns">
+            <button class="tier-btn active" data-tier="brief">📌 极简保底版（2,900字骨架）</button>
+            <button class="tier-btn" data-tier="practice">✍️ 练习版（5,100字实操）</button>
+            <button class="tier-btn" data-tier="official">📑 原卷官方答案（8,300字）</button>
+          </div>
+        </div>
+        <div class="answers-tier-content" id="practice-tier-content"></div>
+      </div>
+
+      <!-- Traps & Teacher Lecture Accordion -->
+      <details class="traps-accordion" id="practice-traps-details" open>
+        <summary style="font-weight:800; font-size:13.5px; color:#b91c1c; cursor:pointer; padding:8px 0;">
+          ⚠️ 名师避坑红线与讲题逐字稿（考场最容易写错/扣分的地方）
+        </summary>
+        <div id="practice-traps-content" style="margin-top:8px;"></div>
+      </details>
+    </div>
+
+    <!-- Practice Navigation Controls -->
+    <div class="ctrl-bar">
+      <div class="ctrl-group">
+        <button id="btn-practice-prev-q" class="btn">◀ 上一大题</button>
+        <button id="btn-practice-prev-p" class="btn">◀ 上一问</button>
+      </div>
+      <div class="ctrl-group">
+        <button id="btn-practice-next-p" class="btn btn-primary">下一问 ▶</button>
+        <button id="btn-practice-next-q" class="btn btn-primary">下一大题 ▶</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- View 3: Theory Multiple Choice Panel -->
   <main id="view-theory" class="quiz-panel" style="display:none;">
     <div class="panel-header">
       <div>
         <div class="panel-tags">
-          <span class="tag tag-ch" id="theory-tag-ch">模块</span>
+          <span class="tag tag-ch" id="theory-tag-ch">人工智能基础知识</span>
           <span class="tag tag-type" id="theory-tag-type">单选题</span>
           <span class="tag tag-score" id="theory-tag-num">题号 001</span>
           <span class="tag tag-mistake" id="theory-tag-mistake" style="display:none;">⚠️ 错题本</span>
@@ -177,7 +300,7 @@
         <button id="btn-theory-redo" class="btn" title="清空本题作答状态重新作答">🔄 重做本题</button>
         <button id="btn-theory-fav" class="btn">⭐ 错题收藏</button>
         <button id="btn-theory-show-ans" class="btn btn-yellow">👁️ 直接看解析</button>
-        <button id="btn-theory-reshuffle" class="btn" title="重新随机打乱所有题目顺序" style="display:none;">🎲 重新打乱</button>
+        <button id="btn-theory-ask-ai" class="btn" style="background:var(--blue-soft); color:var(--blue-d); font-weight:800;">💬 问 DeepSeek</button>
       </div>
       <div class="ctrl-group">
         <button id="btn-theory-prev" class="btn">◀ 上一题</button>
@@ -186,7 +309,7 @@
     </div>
   </main>
 
-  <!-- View 3: Memorize Mode (Full Read Mode) -->
+  <!-- View 4: Memorize Mode (Full Read Mode) -->
   <main id="view-memorize" class="quiz-panel" style="display:none;">
     <div class="panel-header">
       <div>
@@ -199,6 +322,65 @@
     <div class="memorize-list" id="memorize-list"></div>
   </main>
 
+</div>
+
+<!-- 考点地图 & 战术工具箱模态框 -->
+<div id="tactics-modal" class="directory-modal" style="display:none;">
+  <div class="directory-content" style="max-width:960px;">
+    <div class="directory-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:26px;">🗺️</span>
+        <div>
+          <div style="font-size:18px; font-weight:900; color:var(--ink);">全卷考点地图、73分及格战术与口诀速查</div>
+          <div style="font-size:12.5px; color:var(--ink-2); font-weight:700;">沉淀自三级卷 09 精讲、60分保底合集与讲题批注版</div>
+        </div>
+      </div>
+      <button id="btn-close-tactics" class="btn btn-icon" style="font-size:18px; width:36px; height:36px;" title="关闭">✕</button>
+    </div>
+    <!-- 战术 Tab 切换 -->
+    <div class="dir-nav-tabs" style="display:flex; gap:8px; padding:12px 20px 0 20px; border-bottom:2px solid var(--border); background:#fff; overflow-x:auto;">
+      <button id="tactics-tab-plan" class="btn active" style="padding:7px 14px; font-size:13px; font-weight:900;">🎯 73分及格计划</button>
+      <button id="tactics-tab-order" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🧭 考场做题顺序</button>
+      <button id="tactics-tab-rhymes" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">⚡ 8大题口诀速记</button>
+      <button id="tactics-tab-facts" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🔢 必背数字规范</button>
+      <button id="tactics-tab-math" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🧮 混淆矩阵与公式</button>
+    </div>
+    <div class="directory-body" id="tactics-body" style="padding:20px;">
+      <!-- Generated dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- 180 分钟整卷模拟考场模态框 -->
+<div id="mock-modal" class="directory-modal" style="display:none;">
+  <div class="directory-content" style="max-width:1040px; height:90vh;">
+    <div class="directory-header" style="background:linear-gradient(135deg, #1e1e38, #2a2a50); color:#fff; border-bottom:none;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:28px;">⏱️</span>
+        <div>
+          <div style="font-size:18px; font-weight:900; color:#fff;">人工智能训练师（高级／三级）实操全真模拟考场</div>
+          <div style="font-size:12.5px; color:#cbd5e1; font-weight:700;">满分 100 分 · 8 道大题 · 标准考核时间 180 分钟 · 沉浸式倒计时答题</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <!-- Timer Display -->
+        <div class="mock-timer-box" style="display:flex; align-items:center; gap:8px; background:rgba(0,0,0,.35); padding:6px 14px; border-radius:10px; border:1.5px solid rgba(255,255,255,.2);">
+          <span style="font-size:12px; color:#ffd23f; font-weight:800;">剩余时间：</span>
+          <span id="mock-timer-display" style="font-size:22px; font-weight:900; color:#fff; font-family:monospace; letter-spacing:1px;">180:00</span>
+        </div>
+        <button id="btn-mock-timer-toggle" class="btn btn-yellow" style="font-size:12px; padding:6px 12px; font-weight:800;">暂停计时</button>
+        <button id="btn-close-mock" class="btn btn-icon" style="font-size:18px; width:36px; height:36px; background:#fff; color:#000;" title="退出考场">✕</button>
+      </div>
+    </div>
+    <!-- Quick Jump Order Bar -->
+    <div style="background:#f8fafc; padding:10px 20px; border-bottom:1.5px solid var(--border); display:flex; align-items:center; gap:8px; overflow-x:auto;">
+      <span style="font-size:12px; font-weight:800; color:var(--ink-2); white-space:nowrap;">🧭 推荐做题次序直达：</span>
+      <div id="mock-jump-chips" style="display:flex; gap:6px;"></div>
+    </div>
+    <div class="directory-body" id="mock-body" style="padding:20px; overflow-y:auto; flex:1;">
+      <!-- Generated dynamically -->
+    </div>
+  </div>
 </div>
 
 <!-- 试题大纲与答题卡目录抽屉/弹窗 -->
@@ -226,10 +408,59 @@
   </div>
 </div>
 
+<!-- DeepSeek AI Tutor Floating Assistant Panel -->
+<button id="chatfab" class="chatfab-btn" aria-label="打开 AI 学习助手" title="AI 学习助手 · DeepSeek">💬</button>
+
+<section id="chatpanel" class="chatpanel-box" aria-labelledby="chat-title">
+  <div class="chathead">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:18px;">⚙️</span>
+      <span id="chat-title" style="font-weight:900;">答疑助手 · DeepSeek</span>
+    </div>
+    <div class="hbtns">
+      <button id="toggle-key" type="button" title="设置 DeepSeek API Key" aria-label="设置 API Key">⚙</button>
+      <button id="close-tutor" type="button" aria-label="关闭 AI 学习助手">✕</button>
+    </div>
+  </div>
+  <div id="chatbody" class="chatbody">
+    <div class="chat-context" id="tutor-context">📍 当前答疑聚焦：全卷备考指南</div>
+    <div id="keysetup" hidden>
+      <form id="key-form" style="background:#fff; padding:12px; border-radius:8px; border:1px solid var(--border); margin-bottom:12px;">
+        <label for="api-key" style="font-weight:800; font-size:12.5px; display:block; margin-bottom:4px;">DeepSeek API Key (sk-...)</label>
+        <input id="api-key" type="password" autocomplete="off" placeholder="sk-…" maxlength="300" style="width:100%; padding:7px 9px; border:1.5px solid var(--border); border-radius:6px; font-size:13px; margin-bottom:6px;">
+        <div style="font-size:11.5px; color:var(--ink-2); line-height:1.5; margin-bottom:8px;">Key 仅保存在当前本地浏览器中，提问直连 DeepSeek 官方 API，零中转更安全。</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-primary" style="font-size:12px; padding:4px 12px;">保存 Key</button>
+          <button type="button" id="forget-key" class="btn" style="font-size:12px; padding:4px 10px;">清除 Key</button>
+          <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer" style="font-size:12px; color:var(--blue-d); margin-left:auto; text-decoration:underline;">获取 Key ↗</a>
+        </div>
+      </form>
+    </div>
+    <div id="tutor-messages" class="tutor-messages"></div>
+    <div id="tutor-suggestions" class="tutor-suggestions"></div>
+  </div>
+  <form id="ask-form" class="chatfoot">
+    <textarea id="chatin" aria-label="你的问题" rows="2" maxlength="4000" placeholder="向 DeepSeek 提问（支持白话解释、代码逐行、草稿批改，回车发送）"></textarea>
+    <button id="send-question" class="btn btn-primary" style="font-size:13px; font-weight:800;">发送</button>
+    <button type="button" id="stop-answer" class="btn" hidden style="background:#ef4444; color:#fff; font-size:13px;">停止</button>
+  </form>
+  <div class="chat-status" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#f1ede6; font-size:11.5px; border-top:1px solid var(--border);">
+    <span id="tutor-status" role="status" style="color:var(--ink-2); font-weight:700;"></span>
+    <div style="display:flex; gap:8px;">
+      <button type="button" id="continue-answer" hidden class="btn" style="font-size:11px; padding:2px 8px;">继续生成</button>
+      <button type="button" id="clear-chat" class="btn" style="font-size:11px; padding:2px 8px;">清空对话</button>
+    </div>
+  </div>
+</section>
+
 <!-- Toast notification popup -->
 <div id="toast" class="toast">提示信息</div>
 
-<script src="bank.js?v=20261114_3"></script>
-<script src="app.js?v=20261114_3"></script>
+<!-- Scripts -->
+<script src="bank.js"></script>
+<script src="lessons.js"></script>
+<script src="chat-render.js"></script>
+<script src="app.js?v=20261116_1"></script>
+<script src="tutor.js"></script>
 </body>
 </html>
