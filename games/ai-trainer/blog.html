@@ -29,6 +29,7 @@
       --code-bg: #1e1e38;
       --code-text: #f8fafc;
       --border-ink: 2.5px solid var(--ink);
+      --border: #e5dac8;            /* 浅色分隔线：答案框、折叠块、表格（83 处 var(--border) 引用） */
       --shadow-sm: 0 3px 0 var(--ink);
       --shadow-md: 0 5px 0 var(--ink);
       --shadow-lg: 0 8px 0 var(--ink);
@@ -39,7 +40,11 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    /* 锚点跳转（#prac-09-7 等）留出吸顶导航的高度，否则题卡标题被导航盖住。
+       导航单行约 72px；窄屏按钮换行后约 127px；≤680px 导航不再吸顶。 */
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    @media (max-width: 1000px) { html { scroll-padding-top: 140px; } }
+    @media (max-width: 680px) { html { scroll-padding-top: 12px; } }
     body {
       min-height: 100vh;
       background:
@@ -923,9 +928,6 @@
       white-space: nowrap;
     }
 
-  </style>
-
-  
     /* Enhanced blog styles for baodi cards, traps and tables */
     .baodi-card {
       background: #fff8ec;
@@ -947,7 +949,6 @@
       font-size: 13.5px;
       line-height: 1.8;
       color: var(--ink);
-      white-space: pre-wrap;
     }
     .trap-alert {
       background: #fef2f2;
@@ -984,7 +985,7 @@
       margin: 10px 0;
     }
     .tactics-table th, .tactics-table td {
-      border: 1.5px solid var(--border-ink, #1b1d4d);
+      border: 1.5px solid var(--ink);   /* 不能用 --border-ink：它本身是 2.5px solid 简写，套进来整条声明失效 */
       padding: 7px 9px;
       text-align: left;
     }
@@ -1011,212 +1012,6 @@
       .blog-main { max-width: 100% !important; padding: 0 !important; }
       .question-card, .strategy-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
     }
-
-
-    /* Refer Clues & Highlighting System */
-    .refer-clue {
-      background-color: #fef08a;
-      color: #1e1e24;
-      border-bottom: 2px dashed #d97706;
-      border-radius: 4px;
-      padding: 1px 4px;
-      margin: 0 1px;
-      position: relative;
-      font-weight: 600;
-      display: inline;
-    }
-    .refer-clue:hover {
-      background-color: #fde047;
-      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.35);
-    }
-    .clue-tag {
-      display: inline-flex;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 1.2;
-      background: #f59e0b;
-      color: #ffffff;
-      padding: 1px 6px;
-      border-radius: 4px;
-      margin-left: 4px;
-      vertical-align: 1px;
-    }
-    .badge-source {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-      border-radius: 4px;
-      padding: 1px 6px;
-      margin: 0 3px;
-      font-size: 12px;
-      font-weight: 700;
-      vertical-align: middle;
-    }
-    .copy-map-card {
-      background: #ffffff;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      transition: all 0.2s ease;
-    }
-    .copy-map-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
-    }
-    .copy-map-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: #eff6ff;
-      color: #1d4ed8;
-    }
-    .copy-target-chip {
-      display: inline-block;
-      background: #ecfdf5;
-      color: #047857;
-      border: 1px solid #a7f3d0;
-      border-radius: 4px;
-      padding: 1px 6px;
-      font-size: 12px;
-      font-weight: 700;
-      margin: 2px 4px 2px 0;
-    }
-    .materials-table-box {
-      overflow-x: auto;
-      margin: 10px 0;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    .materials-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    .materials-table th {
-      background: #f8fafc;
-      padding: 6px 10px;
-      text-align: left;
-      border-bottom: 2px solid var(--border);
-      font-weight: 800;
-      color: var(--ink-2);
-      white-space: nowrap;
-    }
-    .materials-table td {
-      padding: 6px 10px;
-      border-bottom: 1px solid var(--border);
-      color: var(--ink);
-      white-space: nowrap;
-    }
-
-  </style>
-  
-    /* Refer Clues & Highlighting System */
-    .refer-clue {
-      background-color: #fef08a;
-      color: #1e1e24;
-      border-bottom: 2px dashed #d97706;
-      border-radius: 4px;
-      padding: 1px 4px;
-      margin: 0 1px;
-      position: relative;
-      font-weight: 600;
-      display: inline;
-    }
-    .refer-clue:hover {
-      background-color: #fde047;
-      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.35);
-    }
-    .clue-tag {
-      display: inline-flex;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 1.2;
-      background: #f59e0b;
-      color: #ffffff;
-      padding: 1px 6px;
-      border-radius: 4px;
-      margin-left: 4px;
-      vertical-align: 1px;
-    }
-    .badge-source {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-      border-radius: 4px;
-      padding: 1px 6px;
-      margin: 0 3px;
-      font-size: 12px;
-      font-weight: 700;
-      vertical-align: middle;
-    }
-    .copy-map-card {
-      background: #ffffff;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      transition: all 0.2s ease;
-    }
-    .copy-map-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
-    }
-    .copy-map-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: #eff6ff;
-      color: #1d4ed8;
-    }
-    .copy-target-chip {
-      display: inline-block;
-      background: #ecfdf5;
-      color: #047857;
-      border: 1px solid #a7f3d0;
-      border-radius: 4px;
-      padding: 1px 6px;
-      font-size: 12px;
-      font-weight: 700;
-      margin: 2px 4px 2px 0;
-    }
-    .materials-table-box {
-      overflow-x: auto;
-      margin: 10px 0;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    .materials-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    .materials-table th {
-      background: #f8fafc;
-      padding: 6px 10px;
-      text-align: left;
-      border-bottom: 2px solid var(--border);
-      font-weight: 800;
-      color: var(--ink-2);
-      white-space: nowrap;
-    }
-    .materials-table td {
-      padding: 6px 10px;
-      border-bottom: 1px solid var(--border);
-      color: var(--ink);
-      white-space: nowrap;
-    }
-
   </style></head>
 <body>
 
@@ -2364,10 +2159,8 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据采集流程
 
-一、需求明确：采集验证码图片及对应数字标签，用于训练验证码识别模型；标准：标签准确率≥95%、样本覆
-盖率≥90%。
-二、来源清晰：RPA 业务系统截图、验证码生成接口、历史验证码图片；覆盖不同位数、字体、干扰线、噪点、
-模糊、遮挡、扭曲等样式。
+一、需求明确：采集验证码图片及对应数字标签，用于训练验证码识别模型；标准：标签准确率≥95%、样本覆盖率≥90%。
+二、来源清晰：RPA 业务系统截图、验证码生成接口、历史验证码图片；覆盖不同位数、字体、干扰线、噪点、模糊、遮挡、扭曲等样式。
 三、方式合理：系统自动截图、接口批量导出、模拟生成补充；定期采集，识别失败样本实时回流。
 四、存储安全：图片与标签分开存放，建立数据台账，权限控制、定期备份，按批次记录可追溯。
 五、更新机制：增量补充新样式和识别错误样本，版本管理，定期清理无效、重复数据。</div>
@@ -2396,13 +2189,10 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
                 ✍️ 查看保底答案·练习版（5,100字实操展开示范）
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据处理流程
-一、数据清洗：删除无法打开、损坏、非验证码、严重模糊遮挡、尺寸过小、重复的图片；处理标签缺失、图片
-与标签不匹配。
+一、数据清洗：删除无法打开、损坏、非验证码、严重模糊遮挡、尺寸过小、重复的图片；处理标签缺失、图片与标签不匹配。
 二、数据转换：统一为 JPG/PNG 格式和命名规则；按模型要求灰度化、统一缩放为 32×32、去噪。
-三、数据核验：自动核验格式、尺寸、标签是否为空、图片与标签是否一一对应；人工抽检 5%–10%，准确率
-≥95%、完整率≥90%，不达标退回重做。
-四、数据归档：按批次、类型、训练集/测试集分类存储；记录来源、时间、处理方法、处理人等元数据；版本
-管理。</div>
+三、数据核验：自动核验格式、尺寸、标签是否为空、图片与标签是否一一对应；人工抽检 5%–10%，准确率≥95%、完整率≥90%，不达标退回重做。
+四、数据归档：按批次、类型、训练集/测试集分类存储；记录来源、时间、处理方法、处理人等元数据；版本管理。</div>
             </details>
 
             
@@ -2428,10 +2218,8 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据审核方案
 一、审核指标：准确率≥95%、完整率≥90%、一致率≥95%。
-二、审核方法：双层审核。第一层程序自动校验格式、尺寸、标签、重复、可读性；第二层人工随机抽检 5%–
-10%，复核图片清晰度和标签正确性。
-三、结果处理：问题分类（格式错误、尺寸不合格、重复、标签错误、无法识别）→ 自动修复、人工修复、重
-新标注或删除 → 修复后重审直至达标 → 形成审核报告。</div>
+二、审核方法：双层审核。第一层程序自动校验格式、尺寸、标签、重复、可读性；第二层人工随机抽检 5%–10%，复核图片清晰度和标签正确性。
+三、结果处理：问题分类（格式错误、尺寸不合格、重复、标签错误、无法识别）→ 自动修复、人工修复、重新标注或删除 → 修复后重审直至达标 → 形成审核报告。</div>
             </details>
 
             
@@ -2524,8 +2312,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
 
 人：标注人员技能不足、对标注规范理解不一致，导致验证码标签错误、判断不一致。
 机：截图工具不稳定、截图不完整，训练环境配置不一致，导致图片缺失、识别结果不稳定。
-料：验证码样本来源单一、数量不足，干扰线、模糊、遮挡、新样式覆盖不全，存在标签错误，导致模型对复杂
-验证码识别率低、泛化能力差。
+料：验证码样本来源单一、数量不足，干扰线、模糊、遮挡、新样式覆盖不全，存在标签错误，导致模型对复杂验证码识别率低、泛化能力差。
 法：采集、清洗、标注规则不统一，质检反馈机制不完善，导致问题数据不能及时发现和修正。</div>
             </details>
 
@@ -2554,13 +2341,11 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">优化方案
 建议一（针对样本单一、覆盖不足）：
 目标：1 个月内样本覆盖率≥90%、标签准确率≥95%。
-方法：一是多渠道采集（RPA 截图、生成接口、历史样本库），补充复杂样式；二是建立错误样本回流机制，把
-识别错误和低置信度样本纳入训练数据。
+方法：一是多渠道采集（RPA 截图、生成接口、历史样本库），补充复杂样式；二是建立错误样本回流机制，把识别错误和低置信度样本纳入训练数据。
 效果：样本更丰富，复杂验证码识别准确率和泛化能力提升。
 建议二（针对规则不统一、质检不完善）：
 目标：1 个月内建立统一的清洗、标注、审核流程，完整率≥90%、一致率≥95%。
-方法：一是制定统一处理规范，明确无效、重复、过小、遮挡图片和标签异常的处理规则；二是自动校验与人工
-抽检相结合。
+方法：一是制定统一处理规范，明确无效、重复、过小、遮挡图片和标签异常的处理规则；二是自动校验与人工抽检相结合。
 效果：流程规范，问题数据及时发现修正，训练数据质量稳定提升。</div>
             </details>
 
@@ -2657,8 +2442,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据清洗标准
 
-一、问题概述：验证码图片可能存在文件损坏打不开、尺寸过小、严重模糊遮挡无法识别、非验证码或重复图
-片、格式命名不统一等问题。
+一、问题概述：验证码图片可能存在文件损坏打不开、尺寸过小、严重模糊遮挡无法识别、非验证码或重复图片、格式命名不统一等问题。
 二、清洗标准：
 1. 删除无效文件：无法打开、损坏、空文件。
 2. 删除尺寸过小图片：短边小于 10 像素或分辨率过低。
@@ -2666,8 +2450,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
 4. 删除无关数据：非验证码、非数字验证码图片。
 5. 删除重复数据：用文件名、哈希值比对，只保留一份。
 6. 统一格式：统一为 JPG 或 PNG，统一连续编号命名和存储路径。
-三、保存结果：清洗标准保存至“提交资料/题目3/模型训练.docx”；清洗后数据存入指定目录，记录清洗前后
-数量、删除原因和保留数量。</div>
+三、保存结果：清洗标准保存至“提交资料/题目3/模型训练.docx”；清洗后数据存入指定目录，记录清洗前后数量、删除原因和保留数量。</div>
             </details>
 
             
@@ -2695,12 +2478,10 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">数据可用性标注规范
 一、标注范围：清洗后的全部验证码图片，逐张判断能否用于模型训练。
 二、标注内容：可用状态，有效＝1，无效＝0。
-三、标注标准：标 1——数字验证码，数字清晰可认，能正常打开（轻微噪点、干扰线不影响）；标 0——打不
-开或损坏，严重模糊、遮挡、扭曲认不出，非数字验证码，尺寸过小或重复。
+三、标注标准：标 1——数字验证码，数字清晰可认，能正常打开（轻微噪点、干扰线不影响）；标 0——打不开或损坏，严重模糊、遮挡、扭曲认不出，非数字验证码，尺寸过小或重复。
 四、特殊情况：拿不准的争议样本标 2 并记录，不直接进训练集，由组长或专家复核。
 五、反馈途径：标注员记录问题 → 组长复核 → 专家仲裁 → 更新标注规则。
-六、交付格式：图片＋标注文件，每行“文件名 标签”，如“0001.jpg 1”“0002.jpg 0”，图片与标签一一对
-应。</div>
+六、交付格式：图片＋标注文件，每行“文件名 标签”，如“0001.jpg 1”“0002.jpg 0”，图片与标签一一对应。</div>
             </details>
 
             
@@ -2790,10 +2571,8 @@ test_data.to_csv(&#039;captcha_test.csv&#039;, index=False) <span class="badge-s
               <summary style="font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-2);">
                 ✍️ 查看保底答案·练习版（5,100字实操展开示范）
               </summary>
-              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">一、划分方案：用 train_test_split 按 8:2 划分训练集和测试集；stratify=y 保证两类比例一致，random_state=42
-保证可复现。
-二、关键代码：from sklearn.model_selection import train_test_split；X_train, X_test, y_train, y_test = train_test_split(X,
-y, test_size=0.2, random_state=42, stratify=y)
+              <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">一、划分方案：用 train_test_split 按 8:2 划分训练集和测试集；stratify=y 保证两类比例一致，random_state=42 保证可复现。
+二、关键代码：from sklearn.model_selection import train_test_split；X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 三、保存结果：训练集保存为 captcha_train.csv，测试集保存为 captcha_test.csv。</div>
             </details>
 
@@ -2898,15 +2677,11 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
                 ✍️ 查看保底答案·练习版（5,100字实操展开示范）
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">测试报告
-一、项目背景：RPA 自动填写网页表单时需人工输入验证码，造成流程阻塞；本项目训练验证码识别模型，实现
-自动识别。
+一、项目背景：RPA 自动填写网页表单时需人工输入验证码，造成流程阻塞；本项目训练验证码识别模型，实现自动识别。
 二、测试目的：评估模型在测试集上的分类效果，期望准确率≥80%，找出存在的问题。
-三、测试方法：按 8:2 划分训练集和测试集；图片灰度化、统一缩放为 32×32，提取像素特征；用逻辑回归训
-练，在测试集上计算准确率、精确率、召回率、F1。
-四、测试结果：TP=80、FP=20、FN=20、TN=80，准确率、精确率、召回率、F1 均为 80%；模型有一定识别能
-力，但仍有 20 个误报、20 个漏报，对干扰线、模糊、遮挡等复杂验证码识别不足。
-五、改进建议：补充复杂样式样本；加强清洗和标注复核；优化预处理（去噪、二值化），尝试更适合图像识别
-的模型。</div>
+三、测试方法：按 8:2 划分训练集和测试集；图片灰度化、统一缩放为 32×32，提取像素特征；用逻辑回归训练，在测试集上计算准确率、精确率、召回率、F1。
+四、测试结果：TP=80、FP=20、FN=20、TN=80，准确率、精确率、召回率、F1 均为 80%；模型有一定识别能力，但仍有 20 个误报、20 个漏报，对干扰线、模糊、遮挡等复杂验证码识别不足。
+五、改进建议：补充复杂样式样本；加强清洗和标注复核；优化预处理（去噪、二值化），尝试更适合图像识别的模型。</div>
             </details>
 
             
@@ -2934,11 +2709,9 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
                 ✍️ 查看保底答案·练习版（5,100字实操展开示范）
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">错误案例
-案例一（漏报 FN）：真实为 1（有效），模型判为 0。原因：图片有干扰线、噪点或局部遮挡，像素特征不完
-整。纠正：数据层补充带干扰的有效样本；特征层增加去噪、二值化、边缘增强；模型层调整参数或换更适合图
+案例一（漏报 FN）：真实为 1（有效），模型判为 0。原因：图片有干扰线、噪点或局部遮挡，像素特征不完整。纠正：数据层补充带干扰的有效样本；特征层增加去噪、二值化、边缘增强；模型层调整参数或换更适合图
 像识别的模型。
-案例二（误报 FP）：真实为 0（无效），模型判为 1。原因：无效样本太少，模糊、遮挡的无效图与有效图相
-似，模型分不清。纠正：数据层增加无效样本和争议样本；特征层强化清晰度、遮挡程度等特征；模型层重新训
+案例二（误报 FP）：真实为 0（无效），模型判为 1。原因：无效样本太少，模糊、遮挡的无效图与有效图相似，模型分不清。纠正：数据层增加无效样本和争议样本；特征层强化清晰度、遮挡程度等特征；模型层重新训
 练，并加人工复核。</div>
             </details>
 
@@ -3323,8 +3096,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
 一、项目背景：系统为 RPA 网页表单自动识别验证码，本分析基于系统运行质检数据。
 二、分析目的：考察识别准确率、人工介入率、图片质量、错误类型、识别耗时，找出短板。
 三、分析方法：数量统计、比率分析、错误类型分析。
-四、分析结论：① 共 12 条，正确 7 条，准确率约 58.3%，偏低；② 人工介入 5 条，介入率约 41.7%，自动化程
-度不足；③ 错误集中在干扰线、模糊、遮挡、低分辨率样本；④ 清晰验证码全部识别正确，复杂样式准确率明
+四、分析结论：① 共 12 条，正确 7 条，准确率约 58.3%，偏低；② 人工介入 5 条，介入率约 41.7%，自动化程度不足；③ 错误集中在干扰线、模糊、遮挡、低分辨率样本；④ 清晰验证码全部识别正确，复杂样式准确率明
 显下降；⑤ 错误类型有数字误识别、模糊误识别、遮挡误识别、漏识别，影响 RPA 流程稳定。
 五、初步建议：补充复杂样本，优化预处理，建立低置信度人工复核和错误样本回流机制。</div>
             </details>
@@ -3389,12 +3161,9 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">智能解决方案
 一、方案目标：准确率由 58.3% 提升至 80% 以上，人工介入率由 41.7% 降至 25% 以内。
-二、核心措施：① 补充干扰线、模糊、遮挡、低分辨率、扭曲等复杂样本；② 图像预处理：灰度化、去噪、二
-值化、尺寸统一、清晰度增强；③ 用新增样本和错误样本重新训练、优化参数；④ 设置置信度阈值，高置信度
-自动填写，低置信度转人工复核；⑤ 错误、低置信度、人工修正样本进入错例库，定期回流训练；⑥ 定期监控
-准确率、人工介入率、识别耗时、错误类型分布。
-三、分阶段实施：第一阶段（1 个月）整理质检数据和错例，完善复核规则；第二阶段（2–3 个月）补充样本，
-优化预处理和模型；第三阶段（3–6 个月）建立监控看板和回流机制，定期迭代。
+二、核心措施：① 补充干扰线、模糊、遮挡、低分辨率、扭曲等复杂样本；② 图像预处理：灰度化、去噪、二值化、尺寸统一、清晰度增强；③ 用新增样本和错误样本重新训练、优化参数；④ 设置置信度阈值，高置信度
+自动填写，低置信度转人工复核；⑤ 错误、低置信度、人工修正样本进入错例库，定期回流训练；⑥ 定期监控准确率、人工介入率、识别耗时、错误类型分布。
+三、分阶段实施：第一阶段（1 个月）整理质检数据和错例，完善复核规则；第二阶段（2–3 个月）补充样本，优化预处理和模型；第三阶段（3–6 个月）建立监控看板和回流机制，定期迭代。
 四、预期效果：准确率提升至 80% 以上，人工介入率降至 25% 以内，复杂样本错误减少。
 五、保障机制：训练师、开发、业务人员组成优化小组，定期复盘质检数据，更新样本和标注规范。</div>
             </details>
@@ -3486,14 +3255,10 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">人机交互最优方式
 
 最优方式为“人机协同模式”：AI 自动识别＋低置信度转人工复核＋错误样本回流优化。
-1. AI 自动识别：适用清晰、规则、置信度高的验证码；理由：处理速度快、人工成本低，提高 RPA 自动填写效
-率。
-2. 人工复核：适用模糊、遮挡、低分辨率、干扰线多或置信度低的验证码；理由：避免错误验证码直接提交，保
-证填写准确率。
-3. 人机协同（推荐）：适用 AI 有初步结果但不确定的验证码；理由：AI 快速识别和初判，人工复核低置信度样
-本，修正结果回流训练，兼顾效率和准确率。
-4. 总结：高置信度由 AI 自动填写，低置信度和异常图片由人工复核，错误样本进入错例库优化模型。质检数据
-显示，识别错误的 5 条置信度均低于 0.62，正确的均不低于 0.82，按置信度分流可把错误拦在人工环节。这种方
+1. AI 自动识别：适用清晰、规则、置信度高的验证码；理由：处理速度快、人工成本低，提高 RPA 自动填写效率。
+2. 人工复核：适用模糊、遮挡、低分辨率、干扰线多或置信度低的验证码；理由：避免错误验证码直接提交，保证填写准确率。
+3. 人机协同（推荐）：适用 AI 有初步结果但不确定的验证码；理由：AI 快速识别和初判，人工复核低置信度样本，修正结果回流训练，兼顾效率和准确率。
+4. 总结：高置信度由 AI 自动填写，低置信度和异常图片由人工复核，错误样本进入错例库优化模型。质检数据显示，识别错误的 5 条置信度均低于 0.62，正确的均不低于 0.82，按置信度分流可把错误拦在人工环节。这种方
 式兼顾效率和准确率，提高 RPA 流程稳定性。</div>
             </details>
 
@@ -3532,10 +3297,8 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
 阶段四 人工复核与修正：人工查看图片和 AI 结果，确认正确内容并返回系统。
 阶段五 结果回传与流程继续：最终结果交给 RPA，完成表单填写，业务继续。
 阶段六 错误样本沉淀：识别错误、低置信度、人工修正样本进入错例库，定期用于再训练。
-三、判断节点：① 置信度 ≥0.85 自动填写，＜0.85 转人工；② 图片模糊、遮挡、低分辨率等质量异常，直接转
-人工；③ 人工确认后回传 RPA；④ 错误、修正、低置信度样本进入错例库。
-四、异常处理：AI 服务故障转人工并记录；人工复核超时重新获取验证码；图片无法读取重新截图；连续识别
-失败触发人工处理。
+三、判断节点：① 置信度 ≥0.85 自动填写，＜0.85 转人工；② 图片模糊、遮挡、低分辨率等质量异常，直接转人工；③ 人工确认后回传 RPA；④ 错误、修正、低置信度样本进入错例库。
+四、异常处理：AI 服务故障转人工并记录；人工复核超时重新获取验证码；图片无法读取重新截图；连续识别失败触发人工处理。
 五、流程优势：标准验证码自动处理、复杂验证码人工兜底、错误样本闭环优化，兼顾效率、准确率和稳定性。</div>
             </details>
 
@@ -3657,10 +3420,8 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
                 ✍️ 查看保底答案·练习版（5,100字实操展开示范）
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">培训方法
-方法一：讲授法。用于讲解项目背景、采集要求、清洗标准和标注规范，使学员快速掌握基础概念，统一操作标
-准。
-方法二：实操练习法。提供验证码图片样本，让学员现场完成清洗、标注和问题样本判断，把规范转化为实际操
-作能力。</div>
+方法一：讲授法。用于讲解项目背景、采集要求、清洗标准和标注规范，使学员快速掌握基础概念，统一操作标准。
+方法二：实操练习法。提供验证码图片样本，让学员现场完成清洗、标注和问题样本判断，把规范转化为实际操作能力。</div>
             </details>
 
             
@@ -3754,8 +3515,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">采集处理问题指导
 
 常见问题：采集到的验证码图片尺寸过小、模糊、重复或无法打开。
-指导方法：指导其按数据清洗标准逐项检查——先查能否打开，再查尺寸、清晰度和重复；无法打开、严重模
-糊、短边小于 10 像素或重复的删除并记录；质量一般但能识别的保留，标记待复核。</div>
+指导方法：指导其按数据清洗标准逐项检查——先查能否打开，再查尺寸、清晰度和重复；无法打开、严重模糊、短边小于 10 像素或重复的删除并记录；质量一般但能识别的保留，标记待复核。</div>
             </details>
 
             
@@ -3784,8 +3544,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               </summary>
               <div style="margin-top:6px; font-size:13px; line-height:1.75; white-space:pre-wrap; color:var(--ink);">标注问题指导
 常见问题：标注人员对模糊、遮挡的验证码判断不一致，标签不统一。
-指导方法：指导其按标注规范处理——清晰可识别的标 1，无法识别或不符合要求的标 0，拿不准的标 2 并提交
-组长复核，不能凭猜测标注；定期组织交叉复核，把争议案例补充进规范。</div>
+指导方法：指导其按标注规范处理——清晰可识别的标 1，无法识别或不符合要求的标 0，拿不准的标 2 并提交组长复核，不能凭猜测标注；定期组织交叉复核，把争议案例补充进规范。</div>
             </details>
 
             
