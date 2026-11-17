@@ -180,9 +180,19 @@
     }
   }
 
-  // --- 3. DOM Elements ---
+  // --- 3. DOM Elements & Helpers ---
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
   const btnSound = $('#btn-sound');
   const btnReset = $('#btn-reset');
@@ -198,8 +208,57 @@
   const dirModalSubtitle = $('#dir-modal-subtitle');
 
   const viewCloze = $('#view-cloze');
+  const viewPractice = $('#view-practice');
   const viewTheory = $('#view-theory');
   const viewMemorize = $('#view-memorize');
+
+  // Practice Mode Elements
+  const practiceQSelect = $('#practice-question-select');
+  const practiceTitle = $('#practice-title');
+  const practiceTagPaper = $('#practice-tag-paper');
+  const practiceTagScore = $('#practice-tag-score');
+  const practiceTagTarget = $('#practice-tag-target');
+  const practiceTagStyle = $('#practice-tag-style');
+  const practiceRhymeText = $('#practice-rhyme-text');
+  const practiceRhymeSub = $('#practice-rhyme-sub');
+  const practiceContextContent = $('#practice-context-content');
+  const practicePartsTabs = $('#practice-parts-tabs');
+  const practicePartPrompt = $('#practice-part-prompt');
+  const practiceWordCount = $('#practice-word-count');
+  const practiceAutosaveTip = $('#practice-autosave-tip');
+  const practiceTextarea = $('#practice-textarea');
+  const btnPracticeClearDraft = $('#btn-practice-clear-draft');
+  const btnPracticeGradeAi = $('#btn-practice-grade-ai');
+  const btnPracticeAskAi = $('#btn-practice-ask-ai');
+  const practiceCheckpointsList = $('#practice-checkpoints-list');
+  const practiceCheckScore = $('#practice-check-score');
+  const practiceCodeGuideBox = $('#practice-code-guide-box');
+  const practiceTierBtns = $$('.tier-btn');
+  const practiceTierContent = $('#practice-tier-content');
+  const practiceTrapsContent = $('#practice-traps-content');
+  const btnPracticePrevQ = $('#btn-practice-prev-q');
+  const btnPracticeNextQ = $('#btn-practice-next-q');
+  const btnPracticePrevP = $('#btn-practice-prev-p');
+  const btnPracticeNextP = $('#btn-practice-next-p');
+
+  // AI Buttons
+  const btnClozeAskAi = $('#btn-cloze-ask-ai');
+  const btnTheoryAskAi = $('#btn-theory-ask-ai');
+
+  // Tactics Modal Elements
+  const btnTactics = $('#btn-tactics');
+  const tacticsModal = $('#tactics-modal');
+  const btnCloseTactics = $('#btn-close-tactics');
+  const tacticsBody = $('#tactics-body');
+
+  // Mock Modal Elements
+  const btnMock = $('#btn-mock');
+  const mockModal = $('#mock-modal');
+  const btnCloseMock = $('#btn-close-mock');
+  const mockBody = $('#mock-body');
+  const mockJumpChips = $('#mock-jump-chips');
+  const mockTimerDisplay = $('#mock-timer-display');
+  const btnMockTimerToggle = $('#btn-mock-timer-toggle');
 
   const statCombo = $('#stat-combo');
   const statMaxCombo = $('#stat-max-combo');
@@ -444,7 +503,10 @@
         el.classList.remove('active');
       }
     });
-    $('#cloze-blank-hint').textContent = `正在作答：空位 ${state.cloze.activeBlank + 1} / ${state.cloze.list[state.cloze.index].b.length}`;
+    const blankHint = $('#cloze-blank-hint');
+    if (blankHint && state.cloze.list && state.cloze.list[state.cloze.index]) {
+      blankHint.textContent = `正在作答：空位 ${state.cloze.activeBlank + 1} / ${state.cloze.list[state.cloze.index].b.length}`;
+    }
   }
 
   function renderChipsForActiveBlank(item) {
@@ -506,7 +568,10 @@
       chipsGrid.appendChild(btn);
     });
 
-    $('#cloze-blank-hint').textContent = `正在作答：空位 ${state.cloze.activeBlank + 1} / ${item.b.length}`;
+    const blankHint = $('#cloze-blank-hint');
+    if (blankHint) {
+      blankHint.textContent = `正在作答：空位 ${state.cloze.activeBlank + 1} / ${item.b.length}`;
+    }
   }
 
   function handleChipChoice(chosenText, item) {
@@ -1301,100 +1366,138 @@
   });
 
   // Cloze Controls
-  $('#btn-cloze-prev').addEventListener('click', () => {
-    if (state.cloze.index > 0) {
-      state.cloze.index--;
-      loadClozeItem();
-    } else {
-      showToast('已经是本试卷第一题了！');
-    }
-  });
-  $('#btn-cloze-next').addEventListener('click', () => {
-    if (state.cloze.index < state.cloze.list.length - 1) {
-      state.cloze.index++;
-      loadClozeItem();
-    } else {
-      showToast('已经是本试卷最后一题了！');
-    }
-  });
-  $('#btn-cloze-redo').addEventListener('click', () => {
-    const item = state.cloze.list[state.cloze.index];
-    if (item) {
-      delete state.history.cloze[item.id];
-      if (state.cloze.mistakeSession) {
-        delete state.cloze.mistakeSession[item.id];
+  const btnClozePrev = $('#btn-cloze-prev');
+  if (btnClozePrev) {
+    btnClozePrev.addEventListener('click', () => {
+      if (state.cloze.index > 0) {
+        state.cloze.index--;
+        loadClozeItem();
+      } else {
+        showToast('已经是本试卷第一题了！');
       }
-      state.cloze.filled = {};
-      state.cloze.activeBlank = 0;
-      saveHistory();
-      loadClozeItem();
-      showToast('已重置本题作答状态，可重新练习');
-    }
-  });
-  $('#btn-cloze-reveal').addEventListener('click', () => {
-    const item = state.cloze.list[state.cloze.index];
-    item.b.forEach((ans, idx) => {
-      state.cloze.filled[idx] = { text: ans, status: 'revealed' };
     });
-    state.history.cloze[item.id] = {
-      filled: { ...state.cloze.filled },
-      isCompleted: true,
-      lastUpdated: Date.now()
-    };
-    renderClozeBody(item);
-    renderChipsForActiveBlank(item);
-    saveHistory();
-    showToast('本题采分点已全部揭晓');
-  });
-  $('#btn-cloze-hint').addEventListener('click', () => {
-    const item = state.cloze.list[state.cloze.index];
-    const ans = item.b[state.cloze.activeBlank];
-    if (ans) {
-      const hintPrefix = ans.slice(0, 4);
-      showToast(`提示：当前空以【${hintPrefix}...】开头`);
-    }
-  });
+  }
+
+  const btnClozeNext = $('#btn-cloze-next');
+  if (btnClozeNext) {
+    btnClozeNext.addEventListener('click', () => {
+      if (state.cloze.index < state.cloze.list.length - 1) {
+        state.cloze.index++;
+        loadClozeItem();
+      } else {
+        showToast('已经是本试卷最后一题了！');
+      }
+    });
+  }
+
+  const btnClozeRedo = $('#btn-cloze-redo');
+  if (btnClozeRedo) {
+    btnClozeRedo.addEventListener('click', () => {
+      const item = state.cloze.list[state.cloze.index];
+      if (item) {
+        delete state.history.cloze[item.id];
+        if (state.cloze.mistakeSession) {
+          delete state.cloze.mistakeSession[item.id];
+        }
+        state.cloze.filled = {};
+        state.cloze.activeBlank = 0;
+        saveHistory();
+        loadClozeItem();
+        showToast('已重置本题作答状态，可重新练习');
+      }
+    });
+  }
+
+  const btnClozeReveal = $('#btn-cloze-reveal') || $('#btn-cloze-show-ans');
+  if (btnClozeReveal) {
+    btnClozeReveal.addEventListener('click', () => {
+      const item = state.cloze.list[state.cloze.index];
+      if (!item) return;
+      item.b.forEach((ans, idx) => {
+        state.cloze.filled[idx] = { text: ans, status: 'revealed' };
+      });
+      state.history.cloze[item.id] = {
+        filled: { ...state.cloze.filled },
+        isCompleted: true,
+        lastUpdated: Date.now()
+      };
+      renderClozeBody(item);
+      renderChipsForActiveBlank(item);
+      saveHistory();
+      showToast('本题采分点已全部揭晓');
+    });
+  }
+
+  const btnClozeHint = $('#btn-cloze-hint');
+  if (btnClozeHint) {
+    btnClozeHint.addEventListener('click', () => {
+      const item = state.cloze.list[state.cloze.index];
+      if (!item) return;
+      const ans = item.b[state.cloze.activeBlank];
+      if (ans) {
+        const hintPrefix = ans.slice(0, 4);
+        showToast(`提示：当前空以【${hintPrefix}...】开头`);
+      }
+    });
+  }
 
   // Theory Controls
-  $('#btn-theory-prev').addEventListener('click', () => {
-    clearTheoryAutoNext();
-    if (state.theory.index > 0) {
-      state.theory.index--;
-      loadTheoryQuestion();
-    } else {
-      showToast('已经是第一题了！');
-    }
-  });
-  $('#btn-theory-next').addEventListener('click', () => {
-    clearTheoryAutoNext();
-    if (state.theory.index < state.theory.list.length - 1) {
-      state.theory.index++;
-      loadTheoryQuestion();
-    } else {
-      showToast('已经是最后一题了！');
-    }
-  });
-  $('#btn-theory-show-ans').addEventListener('click', () => {
-    clearTheoryAutoNext();
-    const item = state.theory.list[state.theory.index];
-    $('#theory-ans-text').textContent = item.answer;
-    $('#theory-analysis-text').innerHTML = item.analysis || '暂无解析。';
-    $('#theory-analysis').style.display = 'flex';
-  });
-  $('#btn-theory-fav').addEventListener('click', () => {
-    const item = state.theory.list[state.theory.index];
-    if (state.stats.mistakeItems.has(item.id)) {
-      state.stats.mistakeItems.delete(item.id);
-      showToast('已从错题本移出');
-    } else {
-      state.stats.mistakeItems.add(item.id);
-      showToast('已加入错题本！');
-    }
-    updateTheoryMistakeUI(item);
-    renderChapterFilters();
-    updateHUD();
-    saveHistory();
-  });
+  const btnTheoryPrev = $('#btn-theory-prev');
+  if (btnTheoryPrev) {
+    btnTheoryPrev.addEventListener('click', () => {
+      clearTheoryAutoNext();
+      if (state.theory.index > 0) {
+        state.theory.index--;
+        loadTheoryQuestion();
+      } else {
+        showToast('已经是第一题了！');
+      }
+    });
+  }
+  const btnTheoryNext = $('#btn-theory-next');
+  if (btnTheoryNext) {
+    btnTheoryNext.addEventListener('click', () => {
+      clearTheoryAutoNext();
+      if (state.theory.index < state.theory.list.length - 1) {
+        state.theory.index++;
+        loadTheoryQuestion();
+      } else {
+        showToast('已经是最后一题了！');
+      }
+    });
+  }
+  const btnTheoryShowAns = $('#btn-theory-show-ans');
+  if (btnTheoryShowAns) {
+    btnTheoryShowAns.addEventListener('click', () => {
+      clearTheoryAutoNext();
+      const item = state.theory.list[state.theory.index];
+      if (!item) return;
+      const ansText = $('#theory-ans-text');
+      if (ansText) ansText.textContent = item.answer;
+      const analysisText = $('#theory-analysis-text');
+      if (analysisText) analysisText.innerHTML = item.analysis || '暂无解析。';
+      const analysisBox = $('#theory-analysis');
+      if (analysisBox) analysisBox.style.display = 'flex';
+    });
+  }
+  const btnTheoryFav = $('#btn-theory-fav');
+  if (btnTheoryFav) {
+    btnTheoryFav.addEventListener('click', () => {
+      const item = state.theory.list[state.theory.index];
+      if (!item) return;
+      if (state.stats.mistakeItems.has(item.id)) {
+        state.stats.mistakeItems.delete(item.id);
+        showToast('已从错题本移出');
+      } else {
+        state.stats.mistakeItems.add(item.id);
+        showToast('已加入错题本！');
+      }
+      updateTheoryMistakeUI(item);
+      renderChapterFilters();
+      updateHUD();
+      saveHistory();
+    });
+  }
 
   const btnTheoryRedo = $('#btn-theory-redo');
   if (btnTheoryRedo) {
@@ -1552,7 +1655,7 @@
 
       // Determine initial mode (URL hash > localStorage > 'cloze')
       const hash = (window.location && window.location.hash ? window.location.hash : '').replace('#', '');
-      const initialMode = (hash === 'theory' || hash === 'cloze' || hash === 'memorize')
+      const initialMode = (hash === 'theory' || hash === 'cloze' || hash === 'memorize' || hash === 'practice')
         ? hash
         : (localStorage.getItem('aiTrainer_mode') || 'cloze');
 
@@ -1894,15 +1997,20 @@
   }
 
   // Ask AI Tutor buttons
-  if (btnPracticeAskAi && window.AI_TRAINER_TUTOR) {
+  if (btnPracticeAskAi) {
     btnPracticeAskAi.addEventListener('click', () => {
       const q = state.practice.qNum;
       const p = state.practice.partNum;
-      window.AI_TRAINER_TUTOR.openTutorWithPrompt(`老师好！请用零基础大白话为我深度解析【第 ${q} 题 第（${p}）问】的答题骨架与采分要点。`);
+      if (window.AI_TRAINER_TUTOR && window.AI_TRAINER_TUTOR.openTutorWithPrompt) {
+        window.AI_TRAINER_TUTOR.openTutorWithPrompt(`老师好！请用零基础大白话为我深度解析【第 ${q} 题 第（${p}）问】的答题骨架与采分要点。`);
+      } else {
+        const fab = $('#chatfab');
+        if (fab) fab.click();
+      }
     });
   }
 
-  if (btnPracticeGradeAi && window.AI_TRAINER_TUTOR) {
+  if (btnPracticeGradeAi) {
     btnPracticeGradeAi.addEventListener('click', () => {
       const draft = practiceTextarea ? practiceTextarea.value.trim() : '';
       const q = state.practice.qNum;
@@ -1911,21 +2019,36 @@
         showToast('请先在草稿框输入您的作答内容，再请求 AI 批改！');
         return;
       }
-      window.AI_TRAINER_TUTOR.openTutorWithPrompt(`老师好，这是我针对【实操 09 卷 第 ${q} 题 第（${p}）问】写的回答草稿：\n\n${draft}\n\n请按照官方采分点为我批改：指出现存得分点、遗漏要点，并给出极简保底修改建议！`);
+      if (window.AI_TRAINER_TUTOR && window.AI_TRAINER_TUTOR.openTutorWithPrompt) {
+        window.AI_TRAINER_TUTOR.openTutorWithPrompt(`老师好，这是我针对【实操 09 卷 第 ${q} 题 第（${p}）问】写的回答草稿：\n\n${draft}\n\n请按照官方采分点为我批改：指出现存得分点、遗漏要点，并给出极简保底修改建议！`);
+      } else {
+        const fab = $('#chatfab');
+        if (fab) fab.click();
+      }
     });
   }
 
-  if (btnClozeAskAi && window.AI_TRAINER_TUTOR) {
+  if (btnClozeAskAi) {
     btnClozeAskAi.addEventListener('click', () => {
-      const item = state.cloze.currentItem;
-      window.AI_TRAINER_TUTOR.openTutorWithPrompt(`请为我解析实操考点【${item ? item.title : '实操大题'}】的核心采分公式与记忆技巧。`);
+      const item = state.cloze.currentItem || (state.cloze.list && state.cloze.list[state.cloze.index]);
+      if (window.AI_TRAINER_TUTOR && window.AI_TRAINER_TUTOR.openTutorWithPrompt) {
+        window.AI_TRAINER_TUTOR.openTutorWithPrompt(`请为我解析实操考点【${item ? item.title : '实操大题'}】的核心采分公式与记忆技巧。`);
+      } else {
+        const fab = $('#chatfab');
+        if (fab) fab.click();
+      }
     });
   }
 
-  if (btnTheoryAskAi && window.AI_TRAINER_TUTOR) {
+  if (btnTheoryAskAi) {
     btnTheoryAskAi.addEventListener('click', () => {
-      const q = state.theory.currentQuestion;
-      window.AI_TRAINER_TUTOR.openTutorWithPrompt(`请为我大白话解析理论题【${q ? q.q : '当前题目'}】的考点，为什么选 ${q ? q.ans : ''}？`);
+      const q = state.theory.currentQuestion || (state.theory.list && state.theory.list[state.theory.index]);
+      if (window.AI_TRAINER_TUTOR && window.AI_TRAINER_TUTOR.openTutorWithPrompt) {
+        window.AI_TRAINER_TUTOR.openTutorWithPrompt(`请为我大白话解析理论题【${q ? q.q : '当前题目'}】的考点，为什么选 ${q ? q.ans : ''}？`);
+      } else {
+        const fab = $('#chatfab');
+        if (fab) fab.click();
+      }
     });
   }
 

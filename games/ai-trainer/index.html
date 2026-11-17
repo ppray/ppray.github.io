@@ -117,8 +117,9 @@
 
     <!-- Word Bank / Options Chips Box -->
     <div class="options-box" id="cloze-options-box">
-      <div class="options-hint">
+      <div class="options-hint" style="display:flex; justify-content:space-between; align-items:center;">
         <span>💡 点击候选词填入上方【当前选中挖空】（支持键盘按数字键 1~9 快捷填入）：</span>
+        <span id="cloze-blank-hint" style="color:var(--blue-d); font-weight:800; font-size:12.5px;"></span>
       </div>
       <div class="chips-container" id="cloze-chips"></div>
     </div>
@@ -127,7 +128,8 @@
     <div class="ctrl-bar">
       <div class="ctrl-group">
         <button id="btn-cloze-redo" class="btn" title="清空本题所有填空重新挑战">🔄 本题重练</button>
-        <button id="btn-cloze-show-ans" class="btn btn-yellow" title="一键填充本题所有标准答案">👁️ 直接看答案</button>
+        <button id="btn-cloze-hint" class="btn btn-yellow" title="提示当前空以哪个字词开头">💡 提示首字</button>
+        <button id="btn-cloze-reveal" class="btn btn-pink" title="一键揭晓并填充本题所有标准答案">👁️ 直接看答案</button>
         <button id="btn-cloze-ask-ai" class="btn" style="background:var(--blue-soft); color:var(--blue-d); font-weight:800;">💬 问 DeepSeek</button>
       </div>
       <div class="ctrl-group">
@@ -460,7 +462,7 @@
 <script src="bank.js"></script>
 <script src="lessons.js"></script>
 <script src="chat-render.js"></script>
-<script src="app.js?v=20261116_1"></script>
+<script src="app.js?v=20261117_1"></script>
 <script src="tutor.js"></script>
 </body>
 </html>
