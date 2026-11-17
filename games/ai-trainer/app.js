@@ -102,7 +102,8 @@
     practice: {
       qNum: parseInt(localStorage.getItem('aiTrainer_practice_q') || '1', 10),
       partNum: parseInt(localStorage.getItem('aiTrainer_practice_p') || '1', 10),
-      tier: localStorage.getItem('aiTrainer_practice_tier') || 'brief'
+      tier: localStorage.getItem('aiTrainer_practice_tier') || 'brief',
+      showClues: localStorage.getItem('aiTrainer_show_clues') !== 'false'
     },
     mock: {
       timeLeft: 180 * 60,
@@ -194,6 +195,177 @@
       .replace(/'/g, '&#039;');
   }
 
+  // Clue Highlighting & Copy Badge Helpers
+  function highlightReferableText(text, clues, showClues) {
+    if (!text) return '';
+    let str = escapeHTML(text);
+    if (!clues || !clues.length) return str;
+
+    const sorted = [...clues].sort((a, b) => (b.quote ? b.quote.length : 0) - (a.quote ? a.quote.length : 0));
+    const placeholders = [];
+
+    sorted.forEach(clue => {
+      if (!clue.quote) return;
+      const q = escapeHTML(clue.quote);
+      if (!q || !str.includes(q)) return;
+      const token = `___CLUE_PLACEHOLDER_${placeholders.length}___`;
+      const target = escapeHTML(clue.target || clue.shortTarget || '');
+      const tip = escapeHTML(clue.tip || '');
+      const tag = escapeHTML(clue.shortTarget || clue.role || clue.target || '必抄点');
+      const source = escapeHTML(clue.source || '');
+      const weight = escapeHTML(clue.role || '必抄');
+      
+      const activeClass = showClues ? 'highlight-active' : 'highlight-inactive';
+      const markHtml = `<mark class="refer-clue ${activeClass}" data-quote="${q}" data-target="${target}" data-tip="${tip}" data-source="${source}" data-weight="${weight}" title="【可抄至】${target}&#10;【采分要点】${tip}" tabindex="0" role="button">${q}<span class="clue-tag">📋 抄至${tag}</span></mark>`;
+      placeholders.push({ token, html: markHtml });
+      str = str.split(q).join(token);
+    });
+
+    placeholders.forEach(p => {
+      str = str.split(p.token).join(p.html);
+    });
+
+    return str;
+  }
+
+  function formatTierContent(text) {
+    if (!text) return '';
+    let escaped = escapeHTML(text);
+    escaped = escaped.replace(/〔抄：([^〕]+)〕/g, '<span class="badge-source" data-source="$1" title="点击查看题干出处与评分依据">📋 抄：$1</span>');
+    return escaped;
+  }
+
+  function renderMaterialsHTML(materials, clues, showClues) {
+    if (!materials || !materials.length) return '';
+    let html = '<div style="margin-top:12px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">';
+    let tableRows = [];
+
+    const flushTable = () => {
+      if (!tableRows.length) return '';
+      let res = '<div class="materials-table-box"><table class="materials-table"><thead><tr><th>编号</th><th>类型</th><th>质量</th><th>系统识别</th><th>人工结果</th><th>正误</th><th>置信度</th><th>耗时</th><th>介入</th><th>错误类型</th><th>处理建议</th></tr></thead><tbody>';
+      res += tableRows.join('') + '</tbody></table></div>';
+      tableRows = [];
+      return res;
+    };
+
+    materials.forEach(m => {
+      if (m.startsWith('QJ00')) {
+        const parts = m.split(' | ');
+        const qjNum = parts[0].split(':')[0].trim();
+        const type = (parts[0].split(':')[1] || '').trim();
+        const quality = (parts[1] || '').replace('图片质量:', '').trim();
+        const sysRes = (parts[2] || '').replace('系统识别:', '').trim();
+        const manRes = (parts[3] || '').replace('人工结果:', '').trim();
+        const isCorrect = (parts[4] || '').replace('是否正确:', '').trim();
+        const conf = (parts[5] || '').replace('置信度:', '').trim();
+        const cost = (parts[6] || '').replace('耗时:', '').trim();
+        const intervene = (parts[7] || '').replace('人工介入:', '').trim();
+        const errType = (parts[8] || '').replace('错误类型:', '').trim();
+        const advice = (parts[9] || '').replace('处理建议:', '').trim();
+
+        const correctBadge = isCorrect === '是' 
+          ? '<span style="color:#059669; font-weight:800;">✓ 是</span>'
+          : '<span style="color:#dc2626; font-weight:800;">✗ 否</span>';
+
+        tableRows.push(`<tr>
+          <td><b>${escapeHTML(qjNum)}</b></td>
+          <td>${escapeHTML(type)}</td>
+          <td>${escapeHTML(quality)}</td>
+          <td>${escapeHTML(sysRes)}</td>
+          <td>${escapeHTML(manRes)}</td>
+          <td>${correctBadge}</td>
+          <td>${escapeHTML(conf)}</td>
+          <td>${escapeHTML(cost)}</td>
+          <td>${escapeHTML(intervene)}</td>
+          <td>${escapeHTML(errType)}</td>
+          <td>${escapeHTML(advice)}</td>
+        </tr>`);
+      } else {
+        if (tableRows.length) {
+          html += flushTable();
+        }
+        if (m.startsWith('【资料')) {
+          html += `<div class="materials-section-title">${escapeHTML(m)}</div>`;
+        } else if (m.startsWith('第一章') || m.startsWith('第二章') || m.startsWith('一、') || m.startsWith('二、')) {
+          html += `<div class="materials-section-sub">${escapeHTML(m)}</div>`;
+        } else if (m.includes('汇总')) {
+          html += `<div class="rhyme-banner" style="background:#fffbeb; border:1.5px solid #f59e0b; margin:10px 0;"><div class="rhyme-icon">📊</div><div class="rhyme-content"><div class="rhyme-text" style="color:#b45309; font-size:13.5px;">${highlightReferableText(m, clues, showClues)}</div></div></div>`;
+        } else {
+          html += `<p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">${highlightReferableText(m, clues, showClues)}</p>`;
+        }
+      }
+    });
+
+    if (tableRows.length) {
+      html += flushTable();
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  function showClueModal(data) {
+    const existing = document.querySelector('.clue-popover-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'clue-popover-overlay';
+    overlay.innerHTML = `
+      <div class="clue-popover-card">
+        <div class="clue-popover-header">
+          <div class="clue-popover-title">
+            <span>📋 卷面就地取材线索</span>
+            <span class="badge-pill" style="background:#f59e0b; color:#fff; font-size:11px;">${data.weight || '必抄'}</span>
+          </div>
+          <button class="btn btn-icon clue-close-btn" style="width:30px; height:30px; font-size:16px;">✕</button>
+        </div>
+        <div class="clue-popover-body">
+          <div style="font-size:12px; font-weight:700; color:var(--ink-3);">📖 卷面原词（出处：${data.source || '本题卷面'}）：</div>
+          <div class="clue-popover-quote-box">${data.quote}</div>
+          <div class="clue-popover-meta">
+            <div><b style="color:var(--ink);">🎯 可抄至目标：</b><span style="color:#2563eb; font-weight:800;">${data.target}</span></div>
+            <div><b style="color:var(--ink);">💡 采分要点：</b><span style="color:#059669; font-weight:700;">${data.tip}</span></div>
+          </div>
+        </div>
+        <div class="clue-popover-footer">
+          <button class="btn btn-sm" id="btn-copy-clue-text" style="font-size:12px;">📋 复制原词</button>
+          <button class="btn btn-sm btn-primary" id="btn-insert-clue-draft" style="font-size:12px; background:var(--blue); color:#fff;">✍️ 插入作答草稿</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const close = () => overlay.remove();
+    overlay.querySelector('.clue-close-btn').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    const btnCopy = overlay.querySelector('#btn-copy-clue-text');
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(data.quote).then(() => {
+        showToast('✅ 原词已复制到剪贴板！');
+      }).catch(() => {
+        showToast('复制失败，请手动选取');
+      });
+    });
+
+    const btnInsert = overlay.querySelector('#btn-insert-clue-draft');
+    btnInsert.addEventListener('click', () => {
+      if (practiceTextarea) {
+        const curVal = practiceTextarea.value;
+        const insertText = `\n${data.quote}\n`;
+        practiceTextarea.value = curVal ? curVal + insertText : data.quote;
+        updatePracticeWordCount();
+        const key = getDraftKey(state.practice.qNum, state.practice.partNum);
+        localStorage.setItem(key, practiceTextarea.value);
+        showToast('✅ 已追加至右侧作答草稿中！');
+        close();
+      }
+    });
+  }
+
   const btnSound = $('#btn-sound');
   const btnReset = $('#btn-reset');
   const modeTabs = $$('.mode-tab');
@@ -222,6 +394,11 @@
   const practiceRhymeText = $('#practice-rhyme-text');
   const practiceRhymeSub = $('#practice-rhyme-sub');
   const practiceContextContent = $('#practice-context-content');
+  const btnToggleClues = $('#btn-toggle-clues');
+  const clueCountBadge = $('#clue-count-badge');
+  const clueSummaryBadge = $('#clue-summary-badge');
+  const clueToggleText = $('#clue-toggle-text');
+  const clueToggleIcon = $('#clue-toggle-icon');
   const practicePartsTabs = $('#practice-parts-tabs');
   const practicePartPrompt = $('#practice-part-prompt');
   const practiceWordCount = $('#practice-word-count');
@@ -1710,16 +1887,20 @@
     if (practiceRhymeText) practiceRhymeText.textContent = qData.rhyme || '先定骨架，再按小标题逐条展开。';
     if (practiceRhymeSub) practiceRhymeSub.textContent = qData.rhymeExplanation || qData.strategy || '小标题背下来，内容去卷面找词。';
 
+    const clues = qData.clues || [];
+    if (clueCountBadge) clueCountBadge.textContent = String(clues.length);
+    if (clueSummaryBadge) clueSummaryBadge.textContent = `🔍 题干可抄线索：${clues.length} 处`;
+    if (clueToggleText) clueToggleText.textContent = state.practice.showClues ? '开' : '关';
+    if (btnToggleClues) btnToggleClues.classList.toggle('active', state.practice.showClues);
+
     // Context & materials
     if (practiceContextContent) {
       let html = '';
       if (qData.context && qData.context.length) {
-        html += qData.context.map(p => `<p>${escapeHTML(p)}</p>`).join('');
+        html += qData.context.map(p => `<p>${highlightReferableText(p, clues, state.practice.showClues)}</p>`).join('');
       }
       if (qData.materials && qData.materials.length) {
-        html += '<div style="margin-top:10px; padding:10px; background:#fff; border:1px solid var(--border); border-radius:8px;">' +
-                qData.materials.map(m => `<div style="font-size:13px; font-weight:700; color:var(--ink-2);">${m}</div>`).join('') +
-                '</div>';
+        html += renderMaterialsHTML(qData.materials, clues, state.practice.showClues);
       }
       practiceContextContent.innerHTML = html;
     }
@@ -1758,7 +1939,8 @@
     if (!part) return;
 
     if (practicePartPrompt) {
-      practicePartPrompt.textContent = part.prompt.join(' ');
+      const promptText = part.prompt.join(' ');
+      practicePartPrompt.innerHTML = highlightReferableText(promptText, qData.clues, state.practice.showClues);
     }
 
     // Textarea draft recovery
@@ -1847,7 +2029,7 @@
       content = (part.standardAnswer && part.standardAnswer.join('\n\n')) || '暂无官方参考答案。';
     }
 
-    practiceTierContent.textContent = content;
+    practiceTierContent.innerHTML = formatTierContent(content);
 
     practiceTierBtns.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tier === currentTier);
@@ -1953,6 +2135,46 @@
       showToast('草稿已清空');
     });
   }
+
+  if (btnToggleClues) {
+    btnToggleClues.addEventListener('click', () => {
+      state.practice.showClues = !state.practice.showClues;
+      localStorage.setItem('aiTrainer_show_clues', state.practice.showClues);
+      if (clueToggleText) clueToggleText.textContent = state.practice.showClues ? '开' : '关';
+      btnToggleClues.classList.toggle('active', state.practice.showClues);
+      
+      const questions = getPracticeQuestions();
+      const qData = questions[state.practice.qNum - 1];
+      if (qData) {
+        loadPracticeQuestion(state.practice.qNum, state.practice.partNum);
+      }
+      showToast(state.practice.showClues ? '👁️ 已开启题干线索黄色高亮与标记' : '已隐藏线索高亮');
+      sfx.beep(state.practice.showClues ? 580 : 440, 0.05, 'triangle', 0.1);
+    });
+  }
+
+  // Delegated Click for Clues and Source Badges
+  document.addEventListener('click', (e) => {
+    const clueEl = e.target.closest('.refer-clue');
+    if (clueEl) {
+      const quote = clueEl.dataset.quote || clueEl.textContent.replace(/📋 抄至.*$/, '').trim();
+      const target = clueEl.dataset.target || '';
+      const tip = clueEl.dataset.tip || '';
+      const source = clueEl.dataset.source || '';
+      const weight = clueEl.dataset.weight || '必抄';
+      showClueModal({ quote, target, tip, source, weight });
+      sfx.beep(550, 0.05, 'sine', 0.1);
+      return;
+    }
+
+    const badge = e.target.closest('.badge-source');
+    if (badge) {
+      const src = badge.dataset.source;
+      showToast(`📋 出处依据：${src}（请在左侧题干与操作手册中核对原词）`);
+      sfx.beep(600, 0.05, 'triangle', 0.1);
+      return;
+    }
+  });
 
   if (practiceTierBtns) {
     practiceTierBtns.forEach(btn => {
@@ -2188,6 +2410,43 @@
           </div>
         </div>
       `;
+    } else if (tab === 'copy') {
+      const copyMap = T.copyMap || [];
+      html += `
+        <div style="background:#fffbeb; border:2px solid #f59e0b; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
+          <div style="font-weight:900; font-size:16px; color:#b45309; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <span>📜 09 卷“就地取材”抄书全景地图</span>
+            <span class="badge-pill" style="background:#f59e0b; color:#fff;">全卷 81 处采分点可直接抄</span>
+          </div>
+          <div style="font-size:13px; color:#92400e; line-height:1.7;">
+            <b>核心秘密：</b>高级训练师实操卷是一套<b>自洽的封闭工程系统</b>。命题组在卷首背景、题 3 规范、题 4 代码与混淆矩阵、题 5 操作手册与抽检表、题 6 交互手册中，已经为你准备好了几乎所有论述题的标准答案词汇！只要按小标题展开，直接摘抄卷面原句，即可稳拿 <b>70~80 分高分</b>！
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          ${copyMap.map((item, idx) => `
+            <div class="copy-map-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                <div style="font-weight:900; font-size:14.5px; color:var(--ink); display:flex; align-items:center; gap:8px;">
+                  <span class="copy-map-badge">出处源头 ${idx + 1}</span>
+                  <span>${escapeHTML(item.source)}</span>
+                </div>
+                <span style="font-size:11.5px; color:var(--ink-3); font-weight:700;">📍 ${escapeHTML(item.location)}</span>
+              </div>
+              <div style="background:#f8fafc; border:1px dashed var(--border); border-radius:6px; padding:8px 12px; font-size:12.5px; color:#334155; line-height:1.6; font-family:var(--font-mono, monospace); margin-bottom:10px;">
+                “${escapeHTML(item.quote)}”
+              </div>
+              <div style="margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:800; color:var(--ink-2); margin-right:6px;">🎯 可直接抄至：</span>
+                ${item.targets.map(t => `<span class="copy-target-chip">📋 ${escapeHTML(t)}</span>`).join('')}
+              </div>
+              <div style="font-size:12px; color:#059669; font-weight:700; background:#ecfdf5; padding:6px 10px; border-radius:6px;">
+                💡 <b>评分依据：</b>${escapeHTML(item.tip)}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
     }
 
     tacticsBody.innerHTML = html;
@@ -2204,7 +2463,7 @@
       tacticsModal.style.display = 'none';
     });
   }
-  ['plan', 'order', 'rhymes', 'facts', 'math'].forEach(tabName => {
+  ['plan', 'order', 'copy', 'rhymes', 'facts', 'math'].forEach(tabName => {
     const btn = document.getElementById(`tactics-tab-${tabName}`);
     if (btn) {
       btn.addEventListener('click', () => renderTacticsModal(tabName));

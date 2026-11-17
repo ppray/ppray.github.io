@@ -1410,3 +1410,250 @@ body {
     font-size: 22px;
   }
 }
+
+
+/* ==========================================================
+   Exam Paper Refer Clues & Highlighting System (题干取材标记系统)
+   ========================================================== */
+
+.refer-clue {
+  background-color: #fef08a;
+  color: #1e1e24;
+  border-bottom: 2px dashed #d97706;
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 1px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline;
+}
+
+.refer-clue:hover, .refer-clue:focus {
+  background-color: #fde047;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.35);
+  outline: none;
+}
+
+.refer-clue.highlight-inactive {
+  background-color: transparent !important;
+  border-bottom: none !important;
+  font-weight: inherit !important;
+}
+
+.refer-clue.highlight-inactive .clue-tag {
+  display: none !important;
+}
+
+.clue-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  background: #f59e0b;
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+  vertical-align: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Badge for [抄：...] in answers */
+.badge-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin: 0 3px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.badge-source:hover {
+  background: #d1fae5;
+  border-color: #34d399;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.15);
+}
+
+/* Materials Header & Tables */
+.materials-section-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--blue-d);
+  background: #f0f4ff;
+  border-left: 4px solid var(--blue);
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 12px 0 6px 0;
+}
+
+.materials-section-sub {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 8px 0 4px 0;
+}
+
+.materials-table-box {
+  overflow-x: auto;
+  margin: 10px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.materials-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.materials-table th {
+  background: #f8fafc;
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  font-weight: 800;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.materials-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.materials-table tr.summary-row {
+  background: #fffbeb;
+  font-weight: 800;
+  color: #92400e;
+}
+
+/* Clue Popover / Modal Card */
+.clue-popover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.clue-popover-card {
+  background: #ffffff;
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  border-radius: 12px;
+  max-width: 520px;
+  width: 100%;
+  padding: 18px 20px;
+  position: relative;
+  animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clue-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.clue-popover-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clue-popover-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.clue-popover-quote-box {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  color: #92400e;
+  margin: 8px 0;
+  word-break: break-all;
+}
+
+.clue-popover-meta {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.clue-popover-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Copy Map Tactics Tab */
+.copy-map-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  transition: all 0.2s ease;
+}
+
+.copy-map-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+.copy-map-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.copy-target-chip {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 2px 4px 2px 0;
+}

@@ -6,7 +6,7 @@
 <title>人工智能训练师（三级／高级）· 刷题与实战连击</title>
 <meta name="description" content="人工智能训练师（三级/高级）全真模拟试题交互刷题系统：实操大题全采分点挖空连击、逐题精讲与实战自测、180分钟全真模拟考场、理论知识考核单选/判断题全收录、DeepSeek AI 答疑助手。">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=20261116_1">
+<link rel="stylesheet" href="style.css?v=20261117_clues">
 </head>
 <body>
 
@@ -177,9 +177,20 @@
 
     <!-- Scenario Background Context Collapsible -->
     <details class="practice-context-details" id="practice-context-box" open>
-      <summary style="font-weight:800; cursor:pointer; color:var(--ink-2); padding:6px 0;">
-        📑 原卷业务背景与给定材料（点击展开/折叠）
+      <summary style="font-weight:800; cursor:pointer; color:var(--ink-2); padding:6px 0; display:flex; justify-content:space-between; align-items:center;">
+        <span>📑 原卷业务背景与给定材料（点击展开/折叠）</span>
+        <span class="clue-summary-badge" id="clue-summary-badge" style="font-size:12px; font-weight:700; color:#d97706; background:#fef3c7; padding:2px 8px; border-radius:12px;">🔍 题干可抄线索加载中...</span>
       </summary>
+      <div class="clue-toolbar" id="practice-clue-toolbar" style="display:flex; justify-content:space-between; align-items:center; background:#fffbeb; border:1.5px solid #fde68a; border-radius:8px; padding:8px 12px; margin-top:10px;">
+        <div style="font-size:12.5px; color:#92400e; font-weight:700; display:flex; align-items:center; gap:6px;">
+          <span>💡 卷面就地取材线索：</span>
+          <span id="clue-count-badge" style="background:#f59e0b; color:#fff; border-radius:10px; padding:1px 7px; font-size:11.5px; font-weight:900;">0</span>
+          <span style="font-weight:normal; color:#b45309;">处（已用黄色高亮标出，点击可看抄词目标与采分规则）</span>
+        </div>
+        <button id="btn-toggle-clues" class="btn" style="padding:4px 10px; font-size:12px; font-weight:800; background:#fff; border:1px solid #d97706; color:#b45309;">
+          <span id="clue-toggle-icon">👁️</span> 题干线索高亮：<span id="clue-toggle-text">开</span>
+        </button>
+      </div>
       <div class="item-desc" id="practice-context-content" style="margin-top:8px;"></div>
     </details>
 
@@ -343,6 +354,7 @@
     <div class="dir-nav-tabs" style="display:flex; gap:8px; padding:12px 20px 0 20px; border-bottom:2px solid var(--border); background:#fff; overflow-x:auto;">
       <button id="tactics-tab-plan" class="btn active" style="padding:7px 14px; font-size:13px; font-weight:900;">🎯 73分及格计划</button>
       <button id="tactics-tab-order" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🧭 考场做题顺序</button>
+      <button id="tactics-tab-copy" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900; background:#fef3c7; color:#92400e; border:1.5px solid #f59e0b;">📑 题干抄书全景地图</button>
       <button id="tactics-tab-rhymes" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">⚡ 8大题口诀速记</button>
       <button id="tactics-tab-facts" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🔢 必背数字规范</button>
       <button id="tactics-tab-math" class="btn" style="padding:7px 14px; font-size:13px; font-weight:900;">🧮 混淆矩阵与公式</button>
@@ -460,9 +472,9 @@
 
 <!-- Scripts -->
 <script src="bank.js"></script>
-<script src="lessons.js"></script>
+<script src="lessons.js?v=20261117_clues"></script>
 <script src="chat-render.js"></script>
-<script src="app.js?v=20261117_1"></script>
+<script src="app.js?v=20261117_clues"></script>
 <script src="tutor.js"></script>
 </body>
 </html>
