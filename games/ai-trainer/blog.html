@@ -870,6 +870,67 @@
       font-weight: 700;
       vertical-align: middle;
     }
+    /* 抄书线索 ↔ 答案位置 互跳（09 卷）：题干「📋 抄至…」→ 答案行；答案行末「↩ 原文」→ 题干 */
+    a.clue-tag { text-decoration: none; cursor: pointer; }
+    a.clue-tag::after { content: "→"; margin-left: 3px; font-size: 10px; }
+    a.clue-tag:hover, a.clue-tag:focus-visible { background: #d97706; outline: 2px solid #92400e; outline-offset: 1px; }
+    .jump-back {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 4px;
+      padding: 1px 6px;
+      border: 1px solid #f59e0b;
+      border-radius: 4px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.3;
+      text-decoration: none;
+      white-space: nowrap;
+      vertical-align: 1px;
+      cursor: pointer;
+    }
+    .jump-back:hover, .jump-back:focus-visible { background: #fde68a; outline: 2px solid #b45309; outline-offset: 1px; }
+    @keyframes jumpFlash {
+      0%, 40% { background-color: #fde047; box-shadow: 0 0 0 3px rgba(245, 158, 11, .6); }
+      100% { background-color: transparent; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0); }
+    }
+    .jump-flash {
+      animation: jumpFlash 2.2s ease-out;
+      border-radius: 4px;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+    }
+    .jump-menu {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 310;
+      width: max-content;
+      min-width: 220px;
+      max-width: min(360px, calc(100vw - 24px));
+      background: #fff;
+      border: 2px solid var(--ink);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 0 var(--ink);
+      padding: 6px;
+      font-size: 13px;
+    }
+    .jump-menu-title { padding: 4px 8px 6px; font-size: 11.5px; font-weight: 800; color: var(--ink-3); }
+    .jump-menu-items a {
+      display: block;
+      padding: 7px 8px;
+      border-radius: 6px;
+      color: var(--ink);
+      line-height: 1.45;
+      text-decoration: none;
+    }
+    .jump-menu-items a:hover, .jump-menu-items a:focus-visible { background: var(--yellow-soft); outline: none; }
+    .jump-menu-items b { margin-right: 6px; color: var(--blue-d); white-space: nowrap; }
+    @media print {
+      a.clue-tag::after, .jump-back, .jump-menu { display: none !important; }
+    }
     .copy-map-card {
       background: #ffffff;
       border: 1.5px solid var(--border);
@@ -2131,13 +2192,13 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              <mark class="refer-clue" data-target="题 4 测试报告、题 7 培训讲义" data-tip="定义 OCR 的核心价值，写测试报告或培训讲义时直接用作第一段开篇。" title="【可抄至】题 4 测试报告、题 7 培训讲义&#10;【评分依据】定义 OCR 的核心价值，写测试报告或培训讲义时直接用作第一段开篇。">OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本<span class="clue-tag">📋 抄至题4/7项目背景</span></mark>。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是<mark class="refer-clue" data-target="题 1 第(1)问 需求明确（数据用途）" data-tip="直接抄作第(1)问中“需求明确”的数据用途：“解决 RPA 自动填写网页表单时验证码需要人工输入、流程造成阻塞的问题”。" title="【可抄至】题 1 第(1)问 需求明确（数据用途）&#10;【评分依据】直接抄作第(1)问中“需求明确”的数据用途：“解决 RPA 自动填写网页表单时验证码需要人工输入、流程造成阻塞的问题”。">每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降<span class="clue-tag">📋 抄至题1数据用途/题4背景</span></mark>。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，<mark class="refer-clue" data-target="题 1 流程目标、题 2 优化目标、题 4 测试报告、题 6 流程概述" data-tip="直接定义算法项目的落地目的，写在题 1、题 2、题 4、题 6 开头。" title="【可抄至】题 1 流程目标、题 2 优化目标、题 4 测试报告、题 6 流程概述&#10;【评分依据】直接定义算法项目的落地目的，写在题 1、题 2、题 4、题 6 开头。">通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写<span class="clue-tag">📋 抄至题1/2/4/6业务目标</span></mark>。<br><br>你将作为一名人工智能训练师为验证码识别模型的训练采集可用的图像数据，并对图像数据进行清洗。
+              <mark class="refer-clue" id="src-09-1-1" data-jump="ans-09-4-4-L0 ans-09-7-1-L1" data-target="题 4 测试报告、题 7 培训讲义" data-tip="定义 OCR 的核心价值，写测试报告或培训讲义时直接用作第一段开篇。" title="【可抄至】题 4 测试报告、题 7 培训讲义&#10;【评分依据】定义 OCR 的核心价值，写测试报告或培训讲义时直接用作第一段开篇。">OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本<a class="clue-tag" href="#ans-09-4-4-L0">📋 抄至题4/7项目背景</a></mark>。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是<mark class="refer-clue" id="src-09-1-2" data-jump="ans-09-1-1-L0 ans-09-4-4-L0" data-target="题 1 第(1)问 需求明确（数据用途）" data-tip="直接抄作第(1)问中“需求明确”的数据用途：“解决 RPA 自动填写网页表单时验证码需要人工输入、流程造成阻塞的问题”。" title="【可抄至】题 1 第(1)问 需求明确（数据用途）&#10;【评分依据】直接抄作第(1)问中“需求明确”的数据用途：“解决 RPA 自动填写网页表单时验证码需要人工输入、流程造成阻塞的问题”。">每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降<a class="clue-tag" href="#ans-09-1-1-L0">📋 抄至题1数据用途/题4背景</a></mark>。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，<mark class="refer-clue" id="src-09-1-3" data-jump="ans-09-1-1 ans-09-2-2 ans-09-4-4-L0 ans-09-6-2-L0" data-target="题 1 流程目标、题 2 优化目标、题 4 测试报告、题 6 流程概述" data-tip="直接定义算法项目的落地目的，写在题 1、题 2、题 4、题 6 开头。" title="【可抄至】题 1 流程目标、题 2 优化目标、题 4 测试报告、题 6 流程概述&#10;【评分依据】直接定义算法项目的落地目的，写在题 1、题 2、题 4、题 6 开头。">通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写<a class="clue-tag" href="#ans-09-1-1">📋 抄至题1/2/4/6业务目标</a></mark>。<br><br>你将作为一名人工智能训练师为验证码识别模型的训练采集可用的图像数据，并对图像数据进行清洗。
             </div>
           </details>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-1-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（5 分）：（1）请结合业务与模型训练需求，详细设计验证码识别模型的数据采集完整步骤。（5分）
             </div>
@@ -2145,10 +2206,10 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、需求明确：采验证码图片和数字标签，训练识别模型；准确率≥95%、覆盖率≥90%。<span class="badge-source">📋 抄：题 1 题干（1）</span><br>
-二、来源清晰：从 RPA 系统截图、生成接口、历史图片；覆盖干扰线、模糊、遮挡等样式。<span class="badge-source">📋 抄：卷首 RPA 段 + 题 5 手册 2.3</span><br>
-三、方式合理：系统自动截图、批量导出、模拟生成；识别失败样本实时回流。<span class="badge-source">📋 抄：题 5 手册 2.1 + 2.3 + 表格「加入错例库」</span><br>
-四、存储安全：图片和标签分开存，建数据台账，权限控制、定期备份。<span class="badge-source">📋 抄：题 5 手册 2.2「生成结构化质检表格」</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-1-1-L0">一、需求明确：采验证码图片和数字标签，训练识别模型；准确率≥95%、覆盖率≥90%。<span class="badge-source">📋 抄：题 1 题干（1）</span></span><br>
+<span class="copy-line" id="ans-09-1-1-L1">二、来源清晰：从 RPA 系统截图、生成接口、历史图片；覆盖干扰线、模糊、遮挡等样式。<span class="badge-source">📋 抄：卷首 RPA 段 + 题 5 手册 2.3</span></span><br>
+<span class="copy-line" id="ans-09-1-1-L2">三、方式合理：系统自动截图、批量导出、模拟生成；识别失败样本实时回流。<span class="badge-source">📋 抄：题 5 手册 2.1 + 2.3 + 表格「加入错例库」</span></span><br>
+<span class="copy-line" id="ans-09-1-1-L3">四、存储安全：图片和标签分开存，建数据台账，权限控制、定期备份。<span class="badge-source">📋 抄：题 5 手册 2.2「生成结构化质检表格」</span></span><br>
 五、更新机制：增量补充新样式和错误样本，实施版本管理。<span class="badge-source">📋 抄：题 5 手册 2.3「训练样本覆盖不足」+ 题 3 题干</span></div>
             </div>
 
@@ -2169,17 +2230,17 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-1-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
-              第（2）问（5 分）：（2）为保障数据集<mark class="refer-clue" data-target="题 1 第(3)问 审核三率指标" data-tip="题干明示审核三率：“精准”对应准确率≥95%，“统一”对应一致率≥95%，“可用”对应完整率≥90%。" title="【可抄至】题 1 第(3)问 审核三率指标&#10;【评分依据】题干明示审核三率：“精准”对应准确率≥95%，“统一”对应一致率≥95%，“可用”对应完整率≥90%。">精准、统一、可用于模型训练<span class="clue-tag">📋 抄至题1审核三率</span></mark>，请设计完整的业务数据处理流程，说明各环节具体工作内容。（5分）
+              第（2）问（5 分）：（2）为保障数据集<mark class="refer-clue" id="src-09-1-4" data-jump="ans-09-1-3-L0" data-target="题 1 第(3)问 审核三率指标" data-tip="题干明示审核三率：“精准”对应准确率≥95%，“统一”对应一致率≥95%，“可用”对应完整率≥90%。" title="【可抄至】题 1 第(3)问 审核三率指标&#10;【评分依据】题干明示审核三率：“精准”对应准确率≥95%，“统一”对应一致率≥95%，“可用”对应完整率≥90%。">精准、统一、可用于模型训练<a class="clue-tag" href="#ans-09-1-3-L0">📋 抄至题1审核三率</a></mark>，请设计完整的业务数据处理流程，说明各环节具体工作内容。（5分）
             </div>
             
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
               <div class="baodi-body">一、数据清洗：去除无法打开、损坏、非验证码、严重模糊遮挡、尺寸过小、重复图片，处理标签缺失。<span class="badge-source">📋 抄：题 3 题干（1）清洗标准</span><br>
-二、数据转换：统一 JPG/PNG 格式和命名；按模型输入灰度化 convert(&#039;L&#039;)、缩放 resize((32,32))、提取像素特征 getdata()。<span class="badge-source">📋 抄：题 4 黑题代码</span><br>
-三、数据核验：自动核验格式与标签；人工抽检 5%–10% 样本，准确率≥95%、完整率≥90%，不达标重做。<span class="badge-source">📋 抄：题 3 题干有效1无效0 + 题 1 审核标准</span><br>
+<span class="copy-line" id="ans-09-1-2-L1">二、数据转换：统一 JPG/PNG 格式和命名；按模型输入灰度化 convert(&#039;L&#039;)、缩放 resize((32,32))、提取像素特征 getdata()。<span class="badge-source">📋 抄：题 4 黑题代码</span></span><br>
+<span class="copy-line" id="ans-09-1-2-L2">三、数据核验：自动核验格式与标签；人工抽检 5%–10% 样本，准确率≥95%、完整率≥90%，不达标重做。<span class="badge-source">📋 抄：题 3 题干有效1无效0 + 题 1 审核标准</span></span><br>
 四、数据归档：按批次、类型、训练集 captcha_train.csv / 测试集 captcha_test.csv 分类存储，记录元数据。<span class="badge-source">📋 抄：题 4 题干（1）+ 题 5 手册 2.2</span></div>
             </div>
 
@@ -2198,7 +2259,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-1-3" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（3）问（5 分）：（3）数据质量直接决定 AI 模型效果，请描述验证码数据集的全流程审核方案，设计对应的落地审核流程。（5分）
             </div>
@@ -2206,7 +2267,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、审核指标：设定三率——准确率≥95%、完整率≥90%、一致率≥95%。<span class="badge-source">📋 抄：题 1 考核要求「精准、统一、可用于模型训练」</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-1-3-L0">一、审核指标：设定三率——准确率≥95%、完整率≥90%、一致率≥95%。<span class="badge-source">📋 抄：题 1 考核要求「精准、统一、可用于模型训练」</span></span><br>
 二、审核方法：双层审核。第一层程序自动校验格式尺寸与标签；第二层人工抽检 5%–10% 样本复核清晰度与业务合理性。<span class="badge-source">📋 抄：题 4 代码 + 题 3 题干可用状态</span><br>
 三、结果处理：闭环管理。问题分类修复或删除；修复后重新审核直至达标；记录结果形成报告。<span class="badge-source">📋 抄：题 3 清洗六标准 + 题 5 表格处理建议</span></div>
             </div>
@@ -2283,13 +2344,13 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是<mark class="refer-clue" data-target="题 2 业务背景分析" data-tip="分析业务模块问题前先阐述背景：RPA 表单自动填写因验证码识别错误导致流程阻塞。" title="【可抄至】题 2 业务背景分析&#10;【评分依据】分析业务模块问题前先阐述背景：RPA 表单自动填写因验证码识别错误导致流程阻塞。">每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降<span class="clue-tag">📋 抄至题2业务痛点</span></mark>。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，<mark class="refer-clue" data-target="题 2 模块优化方案目标" data-tip="优化方案的出发点正是将人工填写优化为高准确率的自动填写。" title="【可抄至】题 2 模块优化方案目标&#10;【评分依据】优化方案的出发点正是将人工填写优化为高准确率的自动填写。">通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写<span class="clue-tag">📋 抄至题2优化目标</span></mark>。<br><br>你将作为一名人工智能训练师为验证码识别模型的业务模块进行优化。
+              OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是<mark class="refer-clue" id="src-09-2-1" data-jump="ans-09-2-1" data-target="题 2 业务背景分析" data-tip="分析业务模块问题前先阐述背景：RPA 表单自动填写因验证码识别错误导致流程阻塞。" title="【可抄至】题 2 业务背景分析&#10;【评分依据】分析业务模块问题前先阐述背景：RPA 表单自动填写因验证码识别错误导致流程阻塞。">每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降<a class="clue-tag" href="#ans-09-2-1">📋 抄至题2业务痛点</a></mark>。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，<mark class="refer-clue" id="src-09-2-2" data-jump="ans-09-2-2" data-target="题 2 模块优化方案目标" data-tip="优化方案的出发点正是将人工填写优化为高准确率的自动填写。" title="【可抄至】题 2 模块优化方案目标&#10;【评分依据】优化方案的出发点正是将人工填写优化为高准确率的自动填写。">通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写<a class="clue-tag" href="#ans-09-2-2">📋 抄至题2优化目标</a></mark>。<br><br>你将作为一名人工智能训练师为验证码识别模型的业务模块进行优化。
             </div>
           </details>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-2-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（4 分）：（1）请结合人工智能训练相关业务知识，梳理模型运行过程中常见问题，并逐一分析产生原因。（4分）
             </div>
@@ -2297,9 +2358,9 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">人：标注人员对规范理解不一致导致标签错误。<span class="badge-source">📋 抄：题 3 题干「对处理好的数据标注」+ 题 8「标注结果不一致」</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-2-1-L0">人：标注人员对规范理解不一致导致标签错误。<span class="badge-source">📋 抄：题 3 题干「对处理好的数据标注」+ 题 8「标注结果不一致」</span></span><br>
 机：截图工具在不同分辨率下不稳定，导致图片缺失或截取不全。<span class="badge-source">📋 抄：题 5 手册 2.1「自动截取验证码图片」+ 题 4 代码</span><br>
-料：样本覆盖不足，缺乏模糊、遮挡、干扰线、扭曲等复杂样本及新样式验证码。<span class="badge-source">📋 抄：题 5 手册 2.3 逐字 + 题 5 质检表错误类型</span><br>
+<span class="copy-line" id="ans-09-2-1-L2">料：样本覆盖不足，缺乏模糊、遮挡、干扰线、扭曲等复杂样本及新样式验证码。<span class="badge-source">📋 抄：题 5 手册 2.3 逐字 + 题 5 质检表错误类型</span></span><br>
 法：缺乏全流程闭环质量管理，错误样本未能沉淀并回流再训练。<span class="badge-source">📋 抄：题 1 第(3)问闭环管理 + 题 5「加入错例库」</span></div>
             </div>
 
@@ -2319,7 +2380,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-2-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（2）问（6 分）：（2）针对上述识别出的问题，设计完整的业务模块优化方案。（6分）
             </div>
@@ -2410,13 +2471,13 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>为了能训练出验证码识别模型，需要对采集好的验证数据进行标注，要求制定合理的标注方法和数据格式，以满足验证码识别模型的训练需求。在完成数据标注和处理后，基于标注数据实现验证码识别模型的训练和测试。<br><br>为了能训练出验证码识别模型，需要<mark class="refer-clue" data-target="题 2 人员标注规范问题、题 8 指导方案" data-tip="清洗完成后的核心环节是可用性标注，需严格防止人员主观尺度不一致。" title="【可抄至】题 2 人员标注规范问题、题 8 指导方案&#10;【评分依据】清洗完成后的核心环节是可用性标注，需严格防止人员主观尺度不一致。">对处理好的数据进行标注<span class="clue-tag">📋 抄至题2/题8标注规范</span></mark>，要求标注出数字验证码图片的验证码文字内容。
+              在OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>为了能训练出验证码识别模型，需要对采集好的验证数据进行标注，要求制定合理的标注方法和数据格式，以满足验证码识别模型的训练需求。在完成数据标注和处理后，基于标注数据实现验证码识别模型的训练和测试。<br><br>为了能训练出验证码识别模型，需要<mark class="refer-clue" id="src-09-3-1" data-jump="ans-09-2-1-L0 ans-09-8-2" data-target="题 2 人员标注规范问题、题 8 指导方案" data-tip="清洗完成后的核心环节是可用性标注，需严格防止人员主观尺度不一致。" title="【可抄至】题 2 人员标注规范问题、题 8 指导方案&#10;【评分依据】清洗完成后的核心环节是可用性标注，需严格防止人员主观尺度不一致。">对处理好的数据进行标注<a class="clue-tag" href="#ans-09-2-1-L0">📋 抄至题2/题8标注规范</a></mark>，要求标注出数字验证码图片的验证码文字内容。
             </div>
           </details>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-3-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（10 分）：(1)请结合验证码识别模型训练需求，制定验证码图像数据清洗标准，内容保存至“提交资料/题目3/模型训练.docx”文件中。（10分）
             </div>
@@ -2428,7 +2489,7 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
 二、清洗标准（五删一统）：<br>
 1. 删无效文件（打不开、损坏、0KB）；<br>
 2. 删小图（尺寸小于 32×32 像素）；<br>
-3. 删坏图（严重模糊、遮挡、字符不可认）；<span class="badge-source">📋 抄：题 5 手册 2.3 逐字</span><br>
+<span class="copy-line" id="ans-09-3-1-L4">3. 删坏图（严重模糊、遮挡、字符不可认）；<span class="badge-source">📋 抄：题 5 手册 2.3 逐字</span></span><br>
 4. 删错图（非验证码无关图片）；<br>
 5. 删重图（MD5 查重或完全相同图片）；<br>
 6. 统格式（统一命名格式与 JPG/PNG）。<br>
@@ -2456,16 +2517,16 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-3-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
-              第（2）问（5 分）：(2)业务需求为识别“<mark class="refer-clue" data-target="题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练" data-tip="题干直接规定标注规则：清晰可认的有效验证码必须标 1。" title="【可抄至】题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练&#10;【评分依据】题干直接规定标注规则：清晰可认的有效验证码必须标 1。">有效验证码图像(用数字1代表)<span class="clue-tag">📋 抄至有效标1</span></mark>”和“<mark class="refer-clue" data-target="题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练" data-tip="题干直接规定标注规则：打不开/看不清/非验证码标 0，拿不准标 2 提请复核。" title="【可抄至】题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练&#10;【评分依据】题干直接规定标注规则：打不开/看不清/非验证码标 0，拿不准标 2 提请复核。">无效验证码图像(用数字0代表)<span class="clue-tag">📋 抄至无效标0</span></mark>”两种验证码图像数据的可用状态。请基于后续模型训练测试需求，为验证码图像数据制定数据可用性标注规范。（5分）
+              第（2）问（5 分）：(2)业务需求为识别“<mark class="refer-clue" id="src-09-3-2" data-jump="ans-09-3-2-L1 ans-09-1-2-L2 ans-09-4-1" data-target="题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练" data-tip="题干直接规定标注规则：清晰可认的有效验证码必须标 1。" title="【可抄至】题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练&#10;【评分依据】题干直接规定标注规则：清晰可认的有效验证码必须标 1。">有效验证码图像(用数字1代表)<a class="clue-tag" href="#ans-09-3-2-L1">📋 抄至有效标1</a></mark>”和“<mark class="refer-clue" id="src-09-3-3" data-jump="ans-09-3-2-L1 ans-09-1-2-L2 ans-09-4-1" data-target="题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练" data-tip="题干直接规定标注规则：打不开/看不清/非验证码标 0，拿不准标 2 提请复核。" title="【可抄至】题 3 第(2)问 标注规范、题 1 第(2)问 数据核验、题 4 划分与训练&#10;【评分依据】题干直接规定标注规则：打不开/看不清/非验证码标 0，拿不准标 2 提请复核。">无效验证码图像(用数字0代表)<a class="clue-tag" href="#ans-09-3-2-L1">📋 抄至无效标0</a></mark>”两种验证码图像数据的可用状态。请基于后续模型训练测试需求，为验证码图像数据制定数据可用性标注规范。（5分）
             </div>
             
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
               <div class="baodi-body">一、标注范围：清洗后的全部验证码图片。<br>
-二、标注格式：有效验证码用数字 1 代表，无效验证码用数字 0 代表。<span class="badge-source">📋 抄：题 3 题干（2）直接抄</span><br>
+<span class="copy-line" id="ans-09-3-2-L1">二、标注格式：有效验证码用数字 1 代表，无效验证码用数字 0 代表。<span class="badge-source">📋 抄：题 3 题干（2）直接抄</span></span><br>
 三、标注标准：清晰可辨认标 1；打不开、无法辨认、非验证码标 0；争议样本标 2 提请复核。<span class="badge-source">📋 抄：题 5 手册 2.3 + 表格噪点/干扰线/扭曲行</span><br>
 四、质检机制：双人背靠背抽检 5%–10%，一致率达 95% 以上方可入库；争议样本由组长仲裁。<span class="badge-source">📋 抄：题 1 审核标准 + 题 8 指导方案</span></div>
             </div>
@@ -2551,9 +2612,9 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-4-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
-              第（1）问（2 分）：（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，<mark class="refer-clue" data-target="题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法" data-tip="测试报告中的训练集名称必须写 captcha_train.csv（8:2 划分，random_state=42）。" title="【可抄至】题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法&#10;【评分依据】测试报告中的训练集名称必须写 captcha_train.csv（8:2 划分，random_state=42）。">训练集（保存为captcha_train.csv）<span class="clue-tag">📋 抄至训练集文件名</span></mark>和<mark class="refer-clue" data-target="题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法" data-tip="测试报告中的测试集名称必须写 captcha_test.csv。" title="【可抄至】题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法&#10;【评分依据】测试报告中的测试集名称必须写 captcha_test.csv。">测试集（保存为captcha_test.csv）<span class="clue-tag">📋 抄至测试集文件名</span></mark>。（2分）            </div>
+              第（1）问（2 分）：（1）请打开“模型训练与测试”项目中的 captcha_dataset_split.ipynb 文件，按照要求补齐相关代码，基于验证码图像数据和标注文件，将数据集划分为训练集和测试集，<mark class="refer-clue" id="src-09-4-1" data-jump="ans-09-4-1-L4-5 ans-09-4-4-L2" data-target="题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法" data-tip="测试报告中的训练集名称必须写 captcha_train.csv（8:2 划分，random_state=42）。" title="【可抄至】题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法&#10;【评分依据】测试报告中的训练集名称必须写 captcha_train.csv（8:2 划分，random_state=42）。">训练集（保存为captcha_train.csv）<a class="clue-tag" href="#ans-09-4-1-L4-5">📋 抄至训练集文件名</a></mark>和<mark class="refer-clue" id="src-09-4-2" data-jump="ans-09-4-1-L4-5 ans-09-4-4-L2" data-target="题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法" data-tip="测试报告中的测试集名称必须写 captcha_test.csv。" title="【可抄至】题 4 第(1)问 代码输出文件名、第(4)问 测试报告测试方法&#10;【评分依据】测试报告中的测试集名称必须写 captcha_test.csv。">测试集（保存为captcha_test.csv）<a class="clue-tag" href="#ans-09-4-1-L4-5">📋 抄至测试集文件名</a></mark>。（2分）            </div>
             
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
@@ -2562,8 +2623,8 @@ print(f&#x27;混淆矩阵:\n{cm}&#x27;)</code></pre>
 核心代码：<br>
 from sklearn.model_selection import train_test_split<br>
 train_data, test_data = train_test_split(data, test_size=0.2, random_state=42, stratify=data[&#039;label&#039;])<br>
-train_data.to_csv(&#039;captcha_train.csv&#039;, index=False)<br>
-test_data.to_csv(&#039;captcha_test.csv&#039;, index=False) <span class="badge-source">📋 抄：题 4 题干（1）文件名逐字</span></div>
+<span class="copy-line" id="ans-09-4-1-L4-5">train_data.to_csv(&#039;captcha_train.csv&#039;, index=False)<br>
+test_data.to_csv(&#039;captcha_test.csv&#039;, index=False) <span class="badge-source">📋 抄：题 4 题干（1）文件名逐字</span></span></div>
             </div>
 
             <!-- 练习版展开 -->
@@ -2609,15 +2670,15 @@ joblib.dump(model, &#039;captcha_model.pkl&#039;) <span class="badge-source">�
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-4-3" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
-              第（3）问（4 分）：（3）经过测试后得到如下结果：<mark class="refer-clue" data-target="题 4 第(3)问 算式、第(4)问 指标分析" data-tip="四大指标算出来全都是 80%：准确率=160/200=80%，精确率=80/100=80%，召回率=80/100=80%，F1=80%！" title="【可抄至】题 4 第(3)问 算式、第(4)问 指标分析&#10;【评分依据】四大指标算出来全都是 80%：准确率=160/200=80%，精确率=80/100=80%，召回率=80/100=80%，F1=80%！">TP=80，FP=20，FN=20，TN=80<span class="clue-tag">📋 抄至题4混淆矩阵四大指标</span></mark>。请计算出模型测试的<mark class="refer-clue" data-target="题 4 第(4)问 测试报告第四部分“指标评估”" data-tip="测试报告的评估部分直接使用这四个指标展开分析。" title="【可抄至】题 4 第(4)问 测试报告第四部分“指标评估”&#10;【评分依据】测试报告的评估部分直接使用这四个指标展开分析。">准确率、精确率、召回率和F1分数<span class="clue-tag">📋 抄至题4指标框架</span></mark>。（4分）
+              第（3）问（4 分）：（3）经过测试后得到如下结果：<mark class="refer-clue" id="src-09-4-3" data-jump="ans-09-4-3-L0 ans-09-4-4-L3" data-target="题 4 第(3)问 算式、第(4)问 指标分析" data-tip="四大指标算出来全都是 80%：准确率=160/200=80%，精确率=80/100=80%，召回率=80/100=80%，F1=80%！" title="【可抄至】题 4 第(3)问 算式、第(4)问 指标分析&#10;【评分依据】四大指标算出来全都是 80%：准确率=160/200=80%，精确率=80/100=80%，召回率=80/100=80%，F1=80%！">TP=80，FP=20，FN=20，TN=80<a class="clue-tag" href="#ans-09-4-3-L0">📋 抄至题4混淆矩阵四大指标</a></mark>。请计算出模型测试的<mark class="refer-clue" id="src-09-4-4" data-jump="ans-09-4-4-L3" data-target="题 4 第(4)问 测试报告第四部分“指标评估”" data-tip="测试报告的评估部分直接使用这四个指标展开分析。" title="【可抄至】题 4 第(4)问 测试报告第四部分“指标评估”&#10;【评分依据】测试报告的评估部分直接使用这四个指标展开分析。">准确率、精确率、召回率和F1分数<a class="clue-tag" href="#ans-09-4-4-L3">📋 抄至题4指标框架</a></mark>。（4分）
             </div>
             
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">已知：TP=80，FP=20，FN=20，TN=80。<span class="badge-source">📋 抄：题 4 题干（3）已知</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-4-3-L0">已知：TP=80，FP=20，FN=20，TN=80。<span class="badge-source">📋 抄：题 4 题干（3）已知</span></span><br>
 1. 准确率 (Accuracy) ＝ (TP+TN)/(TP+TN+FP+FN) ＝ (80+80)/200 ＝ 160/200 ＝ 80%<br>
 2. 精确率 (Precision) ＝ TP/(TP+FP) ＝ 80/(80+20) ＝ 80/100 ＝ 80%<br>
 3. 召回率 (Recall) ＝ TP/(TP+FN) ＝ 80/(80+20) ＝ 80/100 ＝ 80%<br>
@@ -2656,7 +2717,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-4-4" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（4）问（6 分）：（4）请结合模型测试结果，对验证码识别模型的测试效果进行分析，并编写测试报告。（6分）
             </div>
@@ -2664,10 +2725,10 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、项目背景：本项目面向 RPA 网页表单自动填写场景，通过 OCR 与机器学习识别验证码数字，减少人工填写造成的流程阻塞。<span class="badge-source">📋 抄：卷首 OCR 段 + RPA 段</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-4-4-L0">一、项目背景：本项目面向 RPA 网页表单自动填写场景，通过 OCR 与机器学习识别验证码数字，减少人工填写造成的流程阻塞。<span class="badge-source">📋 抄：卷首 OCR 段 + RPA 段</span></span><br>
 二、测试目的：评估模型在测试集 captcha_test.csv 上的泛化性能。<span class="badge-source">📋 抄：题 4 题干（1）</span><br>
-三、测试方法：按 8:2 划分测试集，提取 32×32 灰度特征，输出混淆矩阵与评估指标。<span class="badge-source">📋 抄：题 4 黑题代码</span><br>
-四、指标评估：测试集样本 200 个，TP=80, FP=20, FN=20, TN=80。准确率 80%、精确率 80%、召回率 80%、F1 80%，达到基线指标。<span class="badge-source">📋 抄：第(3)问算式</span><br>
+<span class="copy-line" id="ans-09-4-4-L2">三、测试方法：按 8:2 划分测试集，提取 32×32 灰度特征，输出混淆矩阵与评估指标。<span class="badge-source">📋 抄：题 4 黑题代码</span></span><br>
+<span class="copy-line" id="ans-09-4-4-L3">四、指标评估：测试集样本 200 个，TP=80, FP=20, FN=20, TN=80。准确率 80%、精确率 80%、召回率 80%、F1 80%，达到基线指标。<span class="badge-source">📋 抄：第(3)问算式</span></span><br>
 五、改进建议：针对 20 个误报与 20 个漏报样本，补充复杂背景与干扰线样本，增强预处理去噪。<span class="badge-source">📋 抄：题 5 手册 2.3 + 质检表</span></div>
             </div>
 
@@ -2687,7 +2748,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-4-5" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（5）问（6 分）：（5）请结合验证码识别错误案例，分析模型识别错误可能产生的原因，并提出纠正方法。（6分）
             </div>
@@ -2775,8 +2836,8 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
               <span class="arrow">▼</span>
             </summary>
-            <div class="prompt-content">OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，系统会持续记录识别结果、识别耗时、人工介入情况、错误类型、图片质量、验证码样式等运行质检数据。你作为一名人工智能训练师，需要<mark class="refer-clue" data-target="题 5 第(1)问 数据分析报告“二、分析目的”" data-tip="分析目的直接照抄题干要求句子。" title="【可抄至】题 5 第(1)问 数据分析报告“二、分析目的”&#10;【评分依据】分析目的直接照抄题干要求句子。">根据验证码识别系统的运行质检数据，对系统使用效果进行分析，发现系统运行中的问题，并提出优化需求和智能解决方案<span class="clue-tag">📋 抄至题5报告目的</span></mark>。
-<div style="margin-top:12px; padding:12px 14px; background:#faf8f5; border:1.5px solid var(--border); border-radius:10px;"><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">【资料一】《验证码识别系统操作手册 V1.0》</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">第一章：系统概述</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA 验证码识别系统是一款面向网页表单自动填写场景的智能识别工具。系统通过 OCR 模型识别数字验证码图片，并将识别结果返回给 RPA 流程，<mark class="refer-clue" data-target="题 5 第(1)问 数据分析报告“一、项目背景”" data-tip="分析报告的项目背景直接照抄手册第一章，一分不扣！" title="【可抄至】题 5 第(1)问 数据分析报告“一、项目背景”&#10;【评分依据】分析报告的项目背景直接照抄手册第一章，一分不扣！">旨在减少人工输入验证码环节，提高表单填写效率和业务自动化水平<span class="clue-tag">📋 抄至题5报告背景</span></mark>。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">第二章：核心功能与运行机制</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.1 验证码自动识别模块：<mark class="refer-clue" data-target="题 1 采集方式、题 6 阶段一采集" data-tip="采集流程中的第一动作：RPA 流程到达验证码输入环节时自动截图。" title="【可抄至】题 1 采集方式、题 6 阶段一采集&#10;【评分依据】采集流程中的第一动作：RPA 流程到达验证码输入环节时自动截图。">系统在 RPA 流程运行过程中自动截取验证码图片<span class="clue-tag">📋 抄至题1/题6采集步骤</span></mark>，并对图片进行<mark class="refer-clue" data-target="题 1 数据转换、题 6 阶段二预处理" data-tip="题 1 数据转换和题 6 模型调用前必须写入灰度化、去噪预处理。" title="【可抄至】题 1 数据转换、题 6 阶段二预处理&#10;【评分依据】题 1 数据转换和题 6 模型调用前必须写入灰度化、去噪预处理。">格式统一、尺寸调整、灰度化、去噪等预处理<span class="clue-tag">📋 抄至题1/题6预处理</span></mark>。处理完成后，系统调用验证码识别模型输出识别结果和置信度，高置信度结果可直接用于自动填写。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.2 质检数据记录模块：系统会记录每次验证码识别的运行数据，生成结构化质检表格（如导出格式为.xlsx）。数据维度涵盖：<mark class="refer-clue" data-target="题 5 第(1)问 分析报告“三、分析方法”、题 1 存储安全台账" data-tip="把手册 2.2 的数据维度抄写完整，说明按此逐列进行统计分析。" title="【可抄至】题 5 第(1)问 分析报告“三、分析方法”、题 1 存储安全台账&#10;【评分依据】把手册 2.2 的数据维度抄写完整，说明按此逐列进行统计分析。">样本编号、验证码类型、图片质量、系统识别结果、人工确认结果、是否正确、置信度、识别耗时、人工介入情况和错误类型<span class="clue-tag">📋 抄至题5分析维度/题1台账</span></mark>。训练师需利用该数据分析系统的实际识别效果。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.3 当前系统局限：在现行架构下，系统对清晰、规则的数字验证码识别效果较好，但在遇到<mark class="refer-clue" data-target="题 1 来源、题 2 原因、题 3 清洗、题 4 误差、题 5 结论、题 6 场景" data-tip="【全卷最强采分词汇】“模糊、遮挡、低分辨率、干扰线较多、字符扭曲明显”是贯穿 6 道大题的标准答案原词！" title="【可抄至】题 1 来源、题 2 原因、题 3 清洗、题 4 误差、题 5 结论、题 6 场景&#10;【评分依据】【全卷最强采分词汇】“模糊、遮挡、低分辨率、干扰线较多、字符扭曲明显”是贯穿 6 道大题的标准答案原词！">模糊、遮挡、低分辨率、干扰线较多或字符扭曲明显<span class="clue-tag">📋 抄至全卷核心缺陷词</span></mark>的验证码时，容易出现识别错误。<mark class="refer-clue" data-target="题 2 问题原因、题 4 误差原因、题 5 优化需求" data-tip="直接照抄 2.3 节局限说明作为分析结论与优化需求。" title="【可抄至】题 2 问题原因、题 4 误差原因、题 5 优化需求&#10;【评分依据】直接照抄 2.3 节局限说明作为分析结论与优化需求。">当业务系统出现新样式验证码，而训练样本覆盖不足时，模型识别准确率会明显下降<span class="clue-tag">📋 抄至覆盖不足导致准确率下降</span></mark>。</p><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">【资料二】《质检数据.xlsx》（运行质检抽检数据表 12 笔抽检记录）</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>编号</th><th>类型</th><th>质量</th><th>系统识别</th><th>人工结果</th><th>正误</th><th>置信度</th><th>耗时</th><th>介入</th><th>错误类型</th><th>处理建议</th></tr></thead><tbody><tr>
+            <div class="prompt-content">OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，系统会持续记录识别结果、识别耗时、人工介入情况、错误类型、图片质量、验证码样式等运行质检数据。你作为一名人工智能训练师，需要<mark class="refer-clue" id="src-09-5-1" data-jump="ans-09-5-1-L1" data-target="题 5 第(1)问 数据分析报告“二、分析目的”" data-tip="分析目的直接照抄题干要求句子。" title="【可抄至】题 5 第(1)问 数据分析报告“二、分析目的”&#10;【评分依据】分析目的直接照抄题干要求句子。">根据验证码识别系统的运行质检数据，对系统使用效果进行分析，发现系统运行中的问题，并提出优化需求和智能解决方案<a class="clue-tag" href="#ans-09-5-1-L1">📋 抄至题5报告目的</a></mark>。
+<div style="margin-top:12px; padding:12px 14px; background:#faf8f5; border:1.5px solid var(--border); border-radius:10px;"><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">【资料一】《验证码识别系统操作手册 V1.0》</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">第一章：系统概述</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA 验证码识别系统是一款面向网页表单自动填写场景的智能识别工具。系统通过 OCR 模型识别数字验证码图片，并将识别结果返回给 RPA 流程，<mark class="refer-clue" id="src-09-5-2" data-jump="ans-09-5-1-L0" data-target="题 5 第(1)问 数据分析报告“一、项目背景”" data-tip="分析报告的项目背景直接照抄手册第一章，一分不扣！" title="【可抄至】题 5 第(1)问 数据分析报告“一、项目背景”&#10;【评分依据】分析报告的项目背景直接照抄手册第一章，一分不扣！">旨在减少人工输入验证码环节，提高表单填写效率和业务自动化水平<a class="clue-tag" href="#ans-09-5-1-L0">📋 抄至题5报告背景</a></mark>。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">第二章：核心功能与运行机制</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.1 验证码自动识别模块：<mark class="refer-clue" id="src-09-5-3" data-jump="ans-09-1-1-L2 ans-09-6-2-L2" data-target="题 1 采集方式、题 6 阶段一采集" data-tip="采集流程中的第一动作：RPA 流程到达验证码输入环节时自动截图。" title="【可抄至】题 1 采集方式、题 6 阶段一采集&#10;【评分依据】采集流程中的第一动作：RPA 流程到达验证码输入环节时自动截图。">系统在 RPA 流程运行过程中自动截取验证码图片<a class="clue-tag" href="#ans-09-1-1-L2">📋 抄至题1/题6采集步骤</a></mark>，并对图片进行<mark class="refer-clue" id="src-09-5-4" data-jump="ans-09-1-2-L1 ans-09-6-2-L3" data-target="题 1 数据转换、题 6 阶段二预处理" data-tip="题 1 数据转换和题 6 模型调用前必须写入灰度化、去噪预处理。" title="【可抄至】题 1 数据转换、题 6 阶段二预处理&#10;【评分依据】题 1 数据转换和题 6 模型调用前必须写入灰度化、去噪预处理。">格式统一、尺寸调整、灰度化、去噪等预处理<a class="clue-tag" href="#ans-09-1-2-L1">📋 抄至题1/题6预处理</a></mark>。处理完成后，系统调用验证码识别模型输出识别结果和置信度，高置信度结果可直接用于自动填写。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.2 质检数据记录模块：系统会记录每次验证码识别的运行数据，生成结构化质检表格（如导出格式为.xlsx）。数据维度涵盖：<mark class="refer-clue" id="src-09-5-5" data-jump="ans-09-5-1-L2 ans-09-1-1-L3" data-target="题 5 第(1)问 分析报告“三、分析方法”、题 1 存储安全台账" data-tip="把手册 2.2 的数据维度抄写完整，说明按此逐列进行统计分析。" title="【可抄至】题 5 第(1)问 分析报告“三、分析方法”、题 1 存储安全台账&#10;【评分依据】把手册 2.2 的数据维度抄写完整，说明按此逐列进行统计分析。">样本编号、验证码类型、图片质量、系统识别结果、人工确认结果、是否正确、置信度、识别耗时、人工介入情况和错误类型<a class="clue-tag" href="#ans-09-5-1-L2">📋 抄至题5分析维度/题1台账</a></mark>。训练师需利用该数据分析系统的实际识别效果。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.3 当前系统局限：在现行架构下，系统对清晰、规则的数字验证码识别效果较好，但在遇到<mark class="refer-clue" id="src-09-5-6" data-jump="ans-09-1-1-L1 ans-09-2-1-L2 ans-09-3-1-L4 ans-09-4-5 ans-09-5-1-L7 ans-09-6-1-L2" data-target="题 1 来源、题 2 原因、题 3 清洗、题 4 误差、题 5 结论、题 6 场景" data-tip="【全卷最强采分词汇】“模糊、遮挡、低分辨率、干扰线较多、字符扭曲明显”是贯穿 6 道大题的标准答案原词！" title="【可抄至】题 1 来源、题 2 原因、题 3 清洗、题 4 误差、题 5 结论、题 6 场景&#10;【评分依据】【全卷最强采分词汇】“模糊、遮挡、低分辨率、干扰线较多、字符扭曲明显”是贯穿 6 道大题的标准答案原词！">模糊、遮挡、低分辨率、干扰线较多或字符扭曲明显<a class="clue-tag" href="#ans-09-1-1-L1">📋 抄至全卷核心缺陷词</a></mark>的验证码时，容易出现识别错误。<mark class="refer-clue" id="src-09-5-7" data-jump="ans-09-2-1-L2 ans-09-4-5 ans-09-5-2-L0" data-target="题 2 问题原因、题 4 误差原因、题 5 优化需求" data-tip="直接照抄 2.3 节局限说明作为分析结论与优化需求。" title="【可抄至】题 2 问题原因、题 4 误差原因、题 5 优化需求&#10;【评分依据】直接照抄 2.3 节局限说明作为分析结论与优化需求。">当业务系统出现新样式验证码，而训练样本覆盖不足时，模型识别准确率会明显下降<a class="clue-tag" href="#ans-09-2-1-L2">📋 抄至覆盖不足导致准确率下降</a></mark>。</p><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">【资料二】《质检数据.xlsx》（运行质检抽检数据表 12 笔抽检记录）</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>编号</th><th>类型</th><th>质量</th><th>系统识别</th><th>人工结果</th><th>正误</th><th>置信度</th><th>耗时</th><th>介入</th><th>错误类型</th><th>处理建议</th></tr></thead><tbody><tr>
                 <td><b>QJ0001</b></td>
                 <td>4位数字</td>
                 <td>清晰</td>
@@ -2920,11 +2981,11 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
                 <td>是</td>
                 <td>数字误识别</td>
                 <td>加入错例库</td>
-            </tr></tbody></table></div><div class="rhyme-banner" style="background:#fffbeb; border:1.5px solid #f59e0b; margin:10px 0;"><div class="rhyme-icon">📊</div><div class="rhyme-content"><div class="rhyme-text" style="color:#b45309; font-size:13.5px;">【末行统计汇总】：<mark class="refer-clue" data-target="题 5 第(1)问 分析报告“四、分析结论”、第(3)问 优化目标" data-tip="准确率=7÷12=58.3%，人工介入率=5÷12=41.7%！优化方案目标设定为：准确率提升至 80% 以上，介入率降低至 25% 以下！" title="【可抄至】题 5 第(1)问 分析报告“四、分析结论”、第(3)问 优化目标&#10;【评分依据】准确率=7÷12=58.3%，人工介入率=5÷12=41.7%！优化方案目标设定为：准确率提升至 80% 以上，介入率降低至 25% 以下！">共记录样本 12 条；识别正确 7 条（准确率 58.3%）；错误 5 条；人工介入 5 条（介入率 41.7%）<span class="clue-tag">📋 抄至题5准确率58.3%/介入率41.7%</span></mark>；主要错误集中在干扰线、模糊、遮挡和低分辨率样本。</div></div></div></div></div>
+            </tr></tbody></table></div><div class="rhyme-banner" style="background:#fffbeb; border:1.5px solid #f59e0b; margin:10px 0;"><div class="rhyme-icon">📊</div><div class="rhyme-content"><div class="rhyme-text" style="color:#b45309; font-size:13.5px;">【末行统计汇总】：<mark class="refer-clue" id="src-09-5-8" data-jump="ans-09-5-1-L4-6 ans-09-5-3-L0" data-target="题 5 第(1)问 分析报告“四、分析结论”、第(3)问 优化目标" data-tip="准确率=7÷12=58.3%，人工介入率=5÷12=41.7%！优化方案目标设定为：准确率提升至 80% 以上，介入率降低至 25% 以下！" title="【可抄至】题 5 第(1)问 分析报告“四、分析结论”、第(3)问 优化目标&#10;【评分依据】准确率=7÷12=58.3%，人工介入率=5÷12=41.7%！优化方案目标设定为：准确率提升至 80% 以上，介入率降低至 25% 以下！">共记录样本 12 条；识别正确 7 条（准确率 58.3%）；错误 5 条；人工介入 5 条（介入率 41.7%）<a class="clue-tag" href="#ans-09-5-1-L4-6">📋 抄至题5准确率58.3%/介入率41.7%</a></mark>；主要错误集中在干扰线、模糊、遮挡和低分辨率样本。</div></div></div></div></div>
           </details>
 
           <!-- 逐问保底答案 -->          
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-5-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（4 分）：（1）请基于上述质检数据（质检数据.xlsx）进行分析，对该验证码识别系统进行全面分析，输出完整的数据分析报告。
             </div>
@@ -2932,14 +2993,14 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、项目背景：系统面向 RPA 网页表单自动填写场景，通过 OCR 模型识别数字验证码并返回结果，旨在减少人工输入环节、提升自动化水平。<span class="badge-source">📋 抄：手册第一章</span><br>
-二、分析目的：根据运行质检数据分析实际使用效果，发现运行问题，提出优化需求与方案。<span class="badge-source">📋 抄：题目第 3 段</span><br>
-三、分析方法：基于质检数据.xlsx，按样本编号、验证码类型、图片质量、识别结果、人工结果、是否正确、置信度、耗时、人工介入、错误类型逐列统计分析。<span class="badge-source">📋 抄：手册 2.2 数据维度</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-5-1-L0">一、项目背景：系统面向 RPA 网页表单自动填写场景，通过 OCR 模型识别数字验证码并返回结果，旨在减少人工输入环节、提升自动化水平。<span class="badge-source">📋 抄：手册第一章</span></span><br>
+<span class="copy-line" id="ans-09-5-1-L1">二、分析目的：根据运行质检数据分析实际使用效果，发现运行问题，提出优化需求与方案。<span class="badge-source">📋 抄：题目第 3 段</span></span><br>
+<span class="copy-line" id="ans-09-5-1-L2">三、分析方法：基于质检数据.xlsx，按样本编号、验证码类型、图片质量、识别结果、人工结果、是否正确、置信度、耗时、人工介入、错误类型逐列统计分析。<span class="badge-source">📋 抄：手册 2.2 数据维度</span></span><br>
 四、分析结论：<br>
-1. 抽检 12 条记录中，正确 7 条，整体准确率约为 58.3%；<span class="badge-source">📋 抄：表格末行【汇总】7÷12</span><br>
+<span class="copy-line" id="ans-09-5-1-L4-6">1. 抽检 12 条记录中，正确 7 条，整体准确率约为 58.3%；<span class="badge-source">📋 抄：表格末行【汇总】7÷12</span><br>
 2. 人工介入 5 条，介入率约为 41.7%，自动化程度仍有提升空间；<span class="badge-source">📋 抄：表格末行【汇总】5÷12</span><br>
-3. 识别错误主要集中在干扰线、模糊、遮挡和低分辨率样本；<span class="badge-source">📋 抄：表格末行【汇总】问题集中项</span><br>
-4. 对清晰规则验证码效果好，复杂样本与新样式覆盖不足时准确率显著下降。<span class="badge-source">📋 抄：手册 2.3 当前局限</span></div>
+3. 识别错误主要集中在干扰线、模糊、遮挡和低分辨率样本；<span class="badge-source">📋 抄：表格末行【汇总】问题集中项</span></span><br>
+<span class="copy-line" id="ans-09-5-1-L7">4. 对清晰规则验证码效果好，复杂样本与新样式覆盖不足时准确率显著下降。<span class="badge-source">📋 抄：手册 2.3 当前局限</span></span></div>
             </div>
 
             <!-- 练习版展开 -->
@@ -2964,7 +3025,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-5-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（2）问（4 分）：（2）请结合数据分析结果，对该验证码识别系统提出优化需求。
             </div>
@@ -2972,7 +3033,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">需求一（数据层面）：增补干扰线、模糊、遮挡、低分辨率及新样式验证码样本，解决覆盖不足问题。<span class="badge-source">📋 抄：手册 2.3</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-5-2-L0">需求一（数据层面）：增补干扰线、模糊、遮挡、低分辨率及新样式验证码样本，解决覆盖不足问题。<span class="badge-source">📋 抄：手册 2.3</span></span><br>
 需求二（算法层面）：强化图像预处理（自适应二值化、去噪），优化模型架构，提升复杂样本识别能力。<span class="badge-source">📋 抄：手册 2.1「预处理」</span><br>
 需求三（流程层面）：设置动态置信度分流阈值（如 0.85），优化人机协同路由，降低人工介入率。<span class="badge-source">📋 抄：手册 2.1 置信度 + 题 6 手册第 3 步</span><br>
 需求四（机制层面）：建立错误样本沉淀与错例库，形成持续回流再训练机制。<span class="badge-source">📋 抄：表格处理建议「加入错例库」+ 题 6 阶段六</span></div>
@@ -2993,7 +3054,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-5-3" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（3）问（7 分）：（3）基于你提出的优化需求，为该验证码识别系统设计完整的智能解决方案。
             </div>
@@ -3001,7 +3062,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、目标设定：整体识别准确率由 58.3% 提升至 80% 以上，人工介入率由 41.7% 降至 25% 以内。<span class="badge-source">📋 抄：汇总行 58.3%/41.7% 设定改进目标值</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-5-3-L0">一、目标设定：整体识别准确率由 58.3% 提升至 80% 以上，人工介入率由 41.7% 降至 25% 以内。<span class="badge-source">📋 抄：汇总行 58.3%/41.7% 设定改进目标值</span></span><br>
 二、核心措施：<br>
 1. 数据增强：定向补充干扰线、噪点、遮挡、扭曲样本，扩充训练集覆盖度；<span class="badge-source">📋 抄：手册 2.3</span><br>
 2. 算法升级：灰度化后引入中值滤波与自适应阈值分割；换用轻量 CNN 模型提升特征提取；<span class="badge-source">📋 抄：手册 2.1</span><br>
@@ -3085,11 +3146,11 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">OCR文字识别技术是搭建视觉图像和计算机文本操作的桥梁，它基于计算机视觉和人工智能技术，可以将手写或印刷的字符图像转换成可编辑或搜索的文本。OCR技术已经成功应用于各个领域。在社会业务中，被广泛的用于企业的文档处理和管理。现代企业的日常工作涉及到大量的文档处理，如果采用传统的手写或印刷方式，不仅效率低下，还容易出现错误。采用OCR技术，可以极大地提高文档处理效率和准确性。<br><br>某RPA（机器人流程自动化）系统可以帮助业务人员进行网页表单数据的自动填写，但是每次填写都需要先输入数字验证码，这个操作会使流程造成一定的阻塞和效率下降。因此，系统开发人员想要利用人工智能技术准确识别验证码数字，通过识别验证码图片得到验证码数字，将人工填写验证码的步骤优化为自动填写。<br><br>验证码识别系统上线运行后，在清晰、规则的数字验证码场景下识别效果较好，但在遇到低置信度、模糊、遮挡、干扰线较多、字符扭曲或低分辨率验证码时，仍可能出现识别错误。你作为一名人工智能训练师，需要结合系统运行特点，为该验证码识别系统设计人工与智能协同的最优方式和流程。
-<div style="margin-top:12px; padding:12px 14px; background:#faf8f5; border:1.5px solid var(--border); border-radius:10px;"><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">验证码识别系统操作手册</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">一、验证码识别系统人机交互模式说明</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA验证码识别系统提供三种基础交互路由模式，以适应不同质量、不同难度的验证码识别场景：</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">1.全自动识别模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(1)问 全自动模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 全自动模式适用场景&#10;【评分依据】直接照抄第一句。">适用于清晰、规则、置信度较高的数字验证码<span class="clue-tag">📋 抄至题6全自动场景</span></mark>。系统自动截取验证码图片，经预处理后调用OCR识别模型，直接输出验证码数字，并返回给RPA流程自动填写。<mark class="refer-clue" data-target="题 6 第(1)问 全自动模式分配理由" data-tip="直接照抄末句。" title="【可抄至】题 6 第(1)问 全自动模式分配理由&#10;【评分依据】直接照抄末句。">该模式处理速度快、人工成本低，适合标准化验证码场景<span class="clue-tag">📋 抄至题6全自动理由</span></mark>。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.人工复核模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(1)问 全人工模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 全人工模式适用场景&#10;【评分依据】直接照抄第一句。">适用于图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码<span class="clue-tag">📋 抄至题6全人工场景</span></mark>。系统将验证码图片、AI识别结果和置信度推送给人工复核人员，<mark class="refer-clue" data-target="题 6 第(1)问 全人工模式分配理由" data-tip="直接照抄第二、三句。" title="【可抄至】题 6 第(1)问 全人工模式分配理由&#10;【评分依据】直接照抄第二、三句。">由人工确认最终验证码内容后返回RPA流程。该模式准确率高，但处理效率相对较低<span class="clue-tag">📋 抄至题6全人工理由</span></mark>。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.人机协同模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(1)问 人机协同模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 人机协同模式适用场景&#10;【评分依据】直接照抄第一句。">适用于AI能够给出初步识别结果，但结果存在不确定性的验证码<span class="clue-tag">📋 抄至题6人机协同场景</span></mark>。系统先由AI完成识别和置信度判断，置信度高的样本自动通过，置信度低或异常样本转人工确认。人工修正后的样本进入错例库，用于后续模型优化。<mark class="refer-clue" data-target="题 6 第(1)问 最优交互方式总结" data-tip="照抄第 3 节末句作为推荐最优方式总结，稳拿满分！" title="【可抄至】题 6 第(1)问 最优交互方式总结&#10;【评分依据】照抄第 3 节末句作为推荐最优方式总结，稳拿满分！">该模式兼顾效率和准确率，是验证码识别系统的推荐交互方式<span class="clue-tag">📋 抄至题6最优方式总结</span></mark>。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">二、验证码识别系统人机交互流程设计规范</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">为了提升RPA自动填写流程的稳定性，训练师应按照以下流程配置人机协同机制：</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段一" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段一&#10;【评分依据】照抄大标题及说明文字。">1.验证码采集<span class="clue-tag">📋 抄至阶段一验证码采集</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段二" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段二&#10;【评分依据】照抄大标题及说明文字。">2.AI自动识别<span class="clue-tag">📋 抄至阶段二AI自动识别</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">系统对验证码图片进行预处理，并调用识别模型输出验证码结果和置信度。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段三" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段三&#10;【评分依据】照抄大标题及说明文字。">3.置信度判断<span class="clue-tag">📋 抄至阶段三置信度判断</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段四" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段四&#10;【评分依据】照抄大标题及说明文字。">4.人工复核与修正<span class="clue-tag">📋 抄至阶段四人工复核与修正</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段五" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段五&#10;【评分依据】照抄大标题及说明文字。">5.结果回传与流程继续<span class="clue-tag">📋 抄至阶段五结果回传与流程继续</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">系统将最终验证码结果传递给RPA流程，完成网页表单填写。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" data-target="题 6 第(2)问 六大步骤阶段六" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段六&#10;【评分依据】照抄大标题及说明文字。">6.错误样本沉淀<span class="clue-tag">📋 抄至阶段六错误样本沉淀</span></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。</p></div></div>
+<div style="margin-top:12px; padding:12px 14px; background:#faf8f5; border:1.5px solid var(--border); border-radius:10px;"><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">验证码识别系统操作手册</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">一、验证码识别系统人机交互模式说明</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA验证码识别系统提供三种基础交互路由模式，以适应不同质量、不同难度的验证码识别场景：</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">1.全自动识别模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-1" data-jump="ans-09-6-1-L1" data-target="题 6 第(1)问 全自动模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 全自动模式适用场景&#10;【评分依据】直接照抄第一句。">适用于清晰、规则、置信度较高的数字验证码<a class="clue-tag" href="#ans-09-6-1-L1">📋 抄至题6全自动场景</a></mark>。系统自动截取验证码图片，经预处理后调用OCR识别模型，直接输出验证码数字，并返回给RPA流程自动填写。<mark class="refer-clue" id="src-09-6-2" data-jump="ans-09-6-1-L1" data-target="题 6 第(1)问 全自动模式分配理由" data-tip="直接照抄末句。" title="【可抄至】题 6 第(1)问 全自动模式分配理由&#10;【评分依据】直接照抄末句。">该模式处理速度快、人工成本低，适合标准化验证码场景<a class="clue-tag" href="#ans-09-6-1-L1">📋 抄至题6全自动理由</a></mark>。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">2.人工复核模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-3" data-jump="ans-09-6-1-L2" data-target="题 6 第(1)问 全人工模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 全人工模式适用场景&#10;【评分依据】直接照抄第一句。">适用于图片模糊、遮挡严重、低分辨率、干扰线较多或模型置信度较低的验证码<a class="clue-tag" href="#ans-09-6-1-L2">📋 抄至题6全人工场景</a></mark>。系统将验证码图片、AI识别结果和置信度推送给人工复核人员，<mark class="refer-clue" id="src-09-6-4" data-jump="ans-09-6-1-L2" data-target="题 6 第(1)问 全人工模式分配理由" data-tip="直接照抄第二、三句。" title="【可抄至】题 6 第(1)问 全人工模式分配理由&#10;【评分依据】直接照抄第二、三句。">由人工确认最终验证码内容后返回RPA流程。该模式准确率高，但处理效率相对较低<a class="clue-tag" href="#ans-09-6-1-L2">📋 抄至题6全人工理由</a></mark>。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.人机协同模式</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-5" data-jump="ans-09-6-1-L3" data-target="题 6 第(1)问 人机协同模式适用场景" data-tip="直接照抄第一句。" title="【可抄至】题 6 第(1)问 人机协同模式适用场景&#10;【评分依据】直接照抄第一句。">适用于AI能够给出初步识别结果，但结果存在不确定性的验证码<a class="clue-tag" href="#ans-09-6-1-L3">📋 抄至题6人机协同场景</a></mark>。系统先由AI完成识别和置信度判断，置信度高的样本自动通过，置信度低或异常样本转人工确认。人工修正后的样本进入错例库，用于后续模型优化。<mark class="refer-clue" id="src-09-6-6" data-jump="ans-09-6-1-L0" data-target="题 6 第(1)问 最优交互方式总结" data-tip="照抄第 3 节末句作为推荐最优方式总结，稳拿满分！" title="【可抄至】题 6 第(1)问 最优交互方式总结&#10;【评分依据】照抄第 3 节末句作为推荐最优方式总结，稳拿满分！">该模式兼顾效率和准确率，是验证码识别系统的推荐交互方式<a class="clue-tag" href="#ans-09-6-1-L0">📋 抄至题6最优方式总结</a></mark>。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">二、验证码识别系统人机交互流程设计规范</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">为了提升RPA自动填写流程的稳定性，训练师应按照以下流程配置人机协同机制：</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-7" data-jump="ans-09-6-2-L2" data-target="题 6 第(2)问 六大步骤阶段一" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段一&#10;【评分依据】照抄大标题及说明文字。">1.验证码采集<a class="clue-tag" href="#ans-09-6-2-L2">📋 抄至阶段一验证码采集</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">RPA流程运行到验证码输入环节时，系统自动截取验证码图片，并记录图片来源、采集时间和验证码类型。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-8" data-jump="ans-09-6-2-L3" data-target="题 6 第(2)问 六大步骤阶段二" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段二&#10;【评分依据】照抄大标题及说明文字。">2.AI自动识别<a class="clue-tag" href="#ans-09-6-2-L3">📋 抄至阶段二AI自动识别</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">系统对验证码图片进行预处理，并调用识别模型输出验证码结果和置信度。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-9" data-jump="ans-09-6-2-L4" data-target="题 6 第(2)问 六大步骤阶段三" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段三&#10;【评分依据】照抄大标题及说明文字。">3.置信度判断<a class="clue-tag" href="#ans-09-6-2-L4">📋 抄至阶段三置信度判断</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">当识别置信度达到设定阈值时，系统直接将识别结果返回RPA流程自动填写；当置信度低于阈值，或图片存在模糊、遮挡、干扰线等异常情况时，进入人工复核。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-10" data-jump="ans-09-6-2-L5" data-target="题 6 第(2)问 六大步骤阶段四" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段四&#10;【评分依据】照抄大标题及说明文字。">4.人工复核与修正<a class="clue-tag" href="#ans-09-6-2-L5">📋 抄至阶段四人工复核与修正</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">人工复核人员查看验证码图片和AI识别结果，确认正确验证码内容，并将修正结果返回系统。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-11" data-jump="ans-09-6-2-L6" data-target="题 6 第(2)问 六大步骤阶段五" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段五&#10;【评分依据】照抄大标题及说明文字。">5.结果回传与流程继续<a class="clue-tag" href="#ans-09-6-2-L6">📋 抄至阶段五结果回传与流程继续</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">系统将最终验证码结果传递给RPA流程，完成网页表单填写。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);"><mark class="refer-clue" id="src-09-6-12" data-jump="ans-09-6-2-L7" data-target="题 6 第(2)问 六大步骤阶段六" data-tip="照抄大标题及说明文字。" title="【可抄至】题 6 第(2)问 六大步骤阶段六&#10;【评分依据】照抄大标题及说明文字。">6.错误样本沉淀<a class="clue-tag" href="#ans-09-6-2-L7">📋 抄至阶段六错误样本沉淀</a></mark></p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">识别错误、低置信度和人工修正样本进入错例库，定期用于数据补充和模型再训练，形成持续优化闭环。</p></div></div>
           </details>
 
           <!-- 逐问保底答案 -->          
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-6-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（10 分）：（1）请为该验证码识别系统找到人工与智能交互的最优方式。（10分）
             </div>
@@ -3097,10 +3158,10 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">推荐采用【人机协同模式】作为最优交互方式。<span class="badge-source">📋 抄：手册 3. 末句</span><br>
-1. 全自动识别模式：适用清晰、规则、高置信度验证码；理由：速度快、零人工成本，但遇到复杂样本易出错。<span class="badge-source">📋 抄：手册 1. 第一句及末句</span><br>
-2. 全人工识别模式：适用图片模糊、遮挡严重、低分辨率、干扰线多或模型低置信度验证码；理由：准确率高，但处理效率低、人力成本高。<span class="badge-source">📋 抄：手册 2. 第一句及二、三句</span><br>
-3. 人机协同模式：适用 AI 能够给出初步识别但存在不确定性的验证码；理由：高置信度自动通过，低置信度快速转人工复核修正，修正样本沉淀至错例库反哺模型；兼顾效率与准确率，是系统的推荐交互方式。<span class="badge-source">📋 抄：手册 3. 第一至三句及末句</span></div>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-6-1-L0">推荐采用【人机协同模式】作为最优交互方式。<span class="badge-source">📋 抄：手册 3. 末句</span></span><br>
+<span class="copy-line" id="ans-09-6-1-L1">1. 全自动识别模式：适用清晰、规则、高置信度验证码；理由：速度快、零人工成本，但遇到复杂样本易出错。<span class="badge-source">📋 抄：手册 1. 第一句及末句</span></span><br>
+<span class="copy-line" id="ans-09-6-1-L2">2. 全人工识别模式：适用图片模糊、遮挡严重、低分辨率、干扰线多或模型低置信度验证码；理由：准确率高，但处理效率低、人力成本高。<span class="badge-source">📋 抄：手册 2. 第一句及二、三句</span></span><br>
+<span class="copy-line" id="ans-09-6-1-L3">3. 人机协同模式：适用 AI 能够给出初步识别但存在不确定性的验证码；理由：高置信度自动通过，低置信度快速转人工复核修正，修正样本沉淀至错例库反哺模型；兼顾效率与准确率，是系统的推荐交互方式。<span class="badge-source">📋 抄：手册 3. 第一至三句及末句</span></span></div>
             </div>
 
             <!-- 练习版展开 -->
@@ -3121,7 +3182,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-6-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（2）问（10 分）：（2）请为该验证码识别系统设计人工与智能交互的最优流程。（10分）
             </div>
@@ -3129,14 +3190,14 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">一、流程概述：设计“采集—识别—判断—复核—回传—沉淀”的人机协同闭环流程。<span class="badge-source">📋 抄：手册「二、流程设计规范」6 个小标题</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-6-2-L0">一、流程概述：设计“采集—识别—判断—复核—回传—沉淀”的人机协同闭环流程。<span class="badge-source">📋 抄：手册「二、流程设计规范」6 个小标题</span></span><br>
 二、具体步骤：<br>
-阶段一 验证码采集：RPA 流程到达验证码输入环节时，系统自动截取验证码图片并记录元数据。<span class="badge-source">📋 抄：手册第 1 步</span><br>
-阶段二 AI 自动识别：系统进行预处理并调用 OCR 模型输出识别结果与置信度。<span class="badge-source">📋 抄：手册第 2 步</span><br>
-阶段三 置信度判断：置信度≥阈值直接回传自动填表；置信度&lt;阈值或质量异常转人工复核。<span class="badge-source">📋 抄：手册第 3 步</span><br>
-阶段四 人工复核与修正：复核人员查看图片与 AI 初识结果，确认或修正正确数字后提交。<span class="badge-source">📋 抄：手册第 4 步</span><br>
-阶段五 结果回传与流程继续：系统将最终验证码传递给 RPA 流程完成网页表单填写。<span class="badge-source">📋 抄：手册第 5 步</span><br>
-阶段六 错误样本沉淀：低置信度、识别错误及人工修正样本沉淀至错例库，用于模型持续迭代训练。<span class="badge-source">📋 抄：手册第 6 步</span></div>
+<span class="copy-line" id="ans-09-6-2-L2">阶段一 验证码采集：RPA 流程到达验证码输入环节时，系统自动截取验证码图片并记录元数据。<span class="badge-source">📋 抄：手册第 1 步</span></span><br>
+<span class="copy-line" id="ans-09-6-2-L3">阶段二 AI 自动识别：系统进行预处理并调用 OCR 模型输出识别结果与置信度。<span class="badge-source">📋 抄：手册第 2 步</span></span><br>
+<span class="copy-line" id="ans-09-6-2-L4">阶段三 置信度判断：置信度≥阈值直接回传自动填表；置信度&lt;阈值或质量异常转人工复核。<span class="badge-source">📋 抄：手册第 3 步</span></span><br>
+<span class="copy-line" id="ans-09-6-2-L5">阶段四 人工复核与修正：复核人员查看图片与 AI 初识结果，确认或修正正确数字后提交。<span class="badge-source">📋 抄：手册第 4 步</span></span><br>
+<span class="copy-line" id="ans-09-6-2-L6">阶段五 结果回传与流程继续：系统将最终验证码传递给 RPA 流程完成网页表单填写。<span class="badge-source">📋 抄：手册第 5 步</span></span><br>
+<span class="copy-line" id="ans-09-6-2-L7">阶段六 错误样本沉淀：低置信度、识别错误及人工修正样本沉淀至错例库，用于模型持续迭代训练。<span class="badge-source">📋 抄：手册第 6 步</span></span></div>
             </div>
 
             <!-- 练习版展开 -->
@@ -3219,22 +3280,22 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              随着人工智能技术在企业自动化流程中的应用不断深入，OCR识别、数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成验证码识别项目中的<mark class="refer-clue" data-target="题 7 第(1)问 讲义四大核心章节目录" data-tip="题干直接给出的四项工作内容，直接抄成讲义前四章小标题（采集/清洗/标注/测试）。" title="【可抄至】题 7 第(1)问 讲义四大核心章节目录&#10;【评分依据】题干直接给出的四项工作内容，直接抄成讲义前四章小标题（采集/清洗/标注/测试）。">数据采集、清洗、标注和测试工作<span class="clue-tag">📋 抄至讲义四大章节</span></mark>，也需要能够<mark class="refer-clue" data-target="题 7 第(2)问 培训对象与方法匹配" data-tip="题干指明培训对象为初/中级工，为第(2)问选择实操练习法和演示法（边讲边练）提供充分依据。" title="【可抄至】题 7 第(2)问 培训对象与方法匹配&#10;【评分依据】题干指明培训对象为初/中级工，为第(2)问选择实操练习法和演示法（边讲边练）提供充分依据。">面向五级/初级工、四级/中级工开展基础培训<span class="clue-tag">📋 抄至培训对象与方法</span></mark>。
+              随着人工智能技术在企业自动化流程中的应用不断深入，OCR识别、数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成验证码识别项目中的<mark class="refer-clue" id="src-09-7-1" data-jump="ans-09-7-1" data-target="题 7 第(1)问 讲义四大核心章节目录" data-tip="题干直接给出的四项工作内容，直接抄成讲义前四章小标题（采集/清洗/标注/测试）。" title="【可抄至】题 7 第(1)问 讲义四大核心章节目录&#10;【评分依据】题干直接给出的四项工作内容，直接抄成讲义前四章小标题（采集/清洗/标注/测试）。">数据采集、清洗、标注和测试工作<a class="clue-tag" href="#ans-09-7-1">📋 抄至讲义四大章节</a></mark>，也需要能够<mark class="refer-clue" id="src-09-7-2" data-jump="ans-09-7-2" data-target="题 7 第(2)问 培训对象与方法匹配" data-tip="题干指明培训对象为初/中级工，为第(2)问选择实操练习法和演示法（边讲边练）提供充分依据。" title="【可抄至】题 7 第(2)问 培训对象与方法匹配&#10;【评分依据】题干指明培训对象为初/中级工，为第(2)问选择实操练习法和演示法（边讲边练）提供充分依据。">面向五级/初级工、四级/中级工开展基础培训<a class="clue-tag" href="#ans-09-7-2">📋 抄至培训对象与方法</a></mark>。
             </div>
           </details>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-7-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
-              第（1）问（1 分）：（1）如果安排你<mark class="refer-clue" data-target="题 7 第(1)问 讲义大纲主题" data-tip="题干直接指定讲义编写主题，封皮与大纲总标题直接照抄。" title="【可抄至】题 7 第(1)问 讲义大纲主题&#10;【评分依据】题干直接指定讲义编写主题，封皮与大纲总标题直接照抄。">围绕“验证码识别数据处理与标注”编写培训讲义<span class="clue-tag">📋 抄至讲义大纲主题</span></mark>，请列出培训讲义目录，并对每部分培训内容做简要说明。（1分）
+              第（1）问（1 分）：（1）如果安排你<mark class="refer-clue" id="src-09-7-3" data-jump="ans-09-7-1-L0" data-target="题 7 第(1)问 讲义大纲主题" data-tip="题干直接指定讲义编写主题，封皮与大纲总标题直接照抄。" title="【可抄至】题 7 第(1)问 讲义大纲主题&#10;【评分依据】题干直接指定讲义编写主题，封皮与大纲总标题直接照抄。">围绕“验证码识别数据处理与标注”编写培训讲义<a class="clue-tag" href="#ans-09-7-1-L0">📋 抄至讲义大纲主题</a></mark>，请列出培训讲义目录，并对每部分培训内容做简要说明。（1分）
             </div>
             
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">培训讲义目录及说明：<br>
-一、验证码识别项目背景：介绍 RPA 自动表单填写需求及 OCR 识别技术的作用。<span class="badge-source">📋 抄：卷首 OCR+RPA 段</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-7-1-L0">培训讲义目录及说明：</span><br>
+<span class="copy-line" id="ans-09-7-1-L1">一、验证码识别项目背景：介绍 RPA 自动表单填写需求及 OCR 识别技术的作用。<span class="badge-source">📋 抄：卷首 OCR+RPA 段</span></span><br>
 二、验证码数据采集要求：讲解采集来源（截图/接口/历史库）、命名规则与数据保存规范。<span class="badge-source">📋 抄：题 1 第(1)问</span><br>
 三、图像数据清洗标准：讲解五删一统标准（删损坏、过小、模糊、无关、重复，统格式），指定存放至 /data/cleaned/。<span class="badge-source">📋 抄：题 3 清洗标准</span><br>
 四、可用性数据标注规范：讲解有效验证码标 1、无效标 0、争议标 2 提请复核的规范与质检要求。<span class="badge-source">📋 抄：题 3 标注规范</span><br>
@@ -3258,7 +3319,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-7-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（2）问（2 分）：（2）请针对“验证码识别数据处理与标注”培训，从下述培训方法中选择两种合适的方法，并说明选择原因：讲授法、演示法、案例分析法、实操练习法、小组研讨法。（2分）
             </div>
@@ -3341,13 +3402,13 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
               <span class="arrow">▼</span>
             </summary>
             <div class="prompt-content">
-              随着验证码识别系统在RPA自动化流程中的应用，五级/初级工、四级/中级工在实际工作中可能会遇到<mark class="refer-clue" data-target="题 8 第(1)问 采集处理常见问题选题一" data-tip="题干直接给出的常见问题之一，直接选作第(1)问分析对象，指导方案抄题1采集与题3清洗标准。" title="【可抄至】题 8 第(1)问 采集处理常见问题选题一&#10;【评分依据】题干直接给出的常见问题之一，直接选作第(1)问分析对象，指导方案抄题1采集与题3清洗标准。">数据采集不规范<span class="clue-tag">📋 抄至采集不规范问题</span></mark>、<mark class="refer-clue" data-target="题 8 第(1)问 采集处理常见问题选题二" data-tip="题干直接给出的常见问题之二，指导方案抄题3六大清洗标准与题5质检缺陷类型。" title="【可抄至】题 8 第(1)问 采集处理常见问题选题二&#10;【评分依据】题干直接给出的常见问题之二，指导方案抄题3六大清洗标准与题5质检缺陷类型。">图片质量不达标<span class="clue-tag">📋 抄至质量不达标问题</span></mark>、<mark class="refer-clue" data-target="题 8 第(2)问 标注一致性问题与指导处理" data-tip="题干直接指明的标注核心痛点，指导建议直接抄题 3 标注规范(1/0)和题 1 审核一致性要求。" title="【可抄至】题 8 第(2)问 标注一致性问题与指导处理&#10;【评分依据】题干直接指明的标注核心痛点，指导建议直接抄题 3 标注规范(1/0)和题 1 审核一致性要求。">标注结果不一致<span class="clue-tag">📋 抄至标注不一致问题</span></mark>、<mark class="refer-clue" data-target="题 8 指导常见问题选题三" data-tip="题干直接给出的常见问题之三，指导方案抄题 4 混淆矩阵与四大评价指标。" title="【可抄至】题 8 指导常见问题选题三&#10;【评分依据】题干直接给出的常见问题之三，指导方案抄题 4 混淆矩阵与四大评价指标。">模型测试结果理解不清<span class="clue-tag">📋 抄至测试理解问题</span></mark>等问题。作为一名三级/高级人工智能训练师，需要能够对初中级人员进行工作指导，帮助其解决数据处理和标注过程中的常见问题。
+              随着验证码识别系统在RPA自动化流程中的应用，五级/初级工、四级/中级工在实际工作中可能会遇到<mark class="refer-clue" id="src-09-8-1" data-jump="ans-09-8-1" data-target="题 8 第(1)问 采集处理常见问题选题一" data-tip="题干直接给出的常见问题之一，直接选作第(1)问分析对象，指导方案抄题1采集与题3清洗标准。" title="【可抄至】题 8 第(1)问 采集处理常见问题选题一&#10;【评分依据】题干直接给出的常见问题之一，直接选作第(1)问分析对象，指导方案抄题1采集与题3清洗标准。">数据采集不规范<a class="clue-tag" href="#ans-09-8-1">📋 抄至采集不规范问题</a></mark>、<mark class="refer-clue" id="src-09-8-2" data-jump="ans-09-8-1-L0" data-target="题 8 第(1)问 采集处理常见问题选题二" data-tip="题干直接给出的常见问题之二，指导方案抄题3六大清洗标准与题5质检缺陷类型。" title="【可抄至】题 8 第(1)问 采集处理常见问题选题二&#10;【评分依据】题干直接给出的常见问题之二，指导方案抄题3六大清洗标准与题5质检缺陷类型。">图片质量不达标<a class="clue-tag" href="#ans-09-8-1-L0">📋 抄至质量不达标问题</a></mark>、<mark class="refer-clue" id="src-09-8-3" data-jump="ans-09-8-2-L0" data-target="题 8 第(2)问 标注一致性问题与指导处理" data-tip="题干直接指明的标注核心痛点，指导建议直接抄题 3 标注规范(1/0)和题 1 审核一致性要求。" title="【可抄至】题 8 第(2)问 标注一致性问题与指导处理&#10;【评分依据】题干直接指明的标注核心痛点，指导建议直接抄题 3 标注规范(1/0)和题 1 审核一致性要求。">标注结果不一致<a class="clue-tag" href="#ans-09-8-2-L0">📋 抄至标注不一致问题</a></mark>、<mark class="refer-clue" id="src-09-8-4" data-jump="prac-09-8" data-target="题 8 指导常见问题选题三" data-tip="题干直接给出的常见问题之三，指导方案抄题 4 混淆矩阵与四大评价指标。" title="【可抄至】题 8 指导常见问题选题三&#10;【评分依据】题干直接给出的常见问题之三，指导方案抄题 4 混淆矩阵与四大评价指标。">模型测试结果理解不清<a class="clue-tag" href="#prac-09-8">📋 抄至测试理解问题</a></mark>等问题。作为一名三级/高级人工智能训练师，需要能够对初中级人员进行工作指导，帮助其解决数据处理和标注过程中的常见问题。
             </div>
           </details>
 
           <!-- 逐问保底答案 -->
           
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-8-1" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（1）问（1 分）：（1）请列举验证码识别数据采集或数据处理过程中常见的一个问题，并说明你会如何指导初中级人员解决该问题。（1分）
             </div>
@@ -3355,7 +3416,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">常见问题：数据采集或清洗过程中，部分验证码图片尺寸过小（&lt;32×32）或文件损坏打不开。<span class="badge-source">📋 抄：题 3 第(1)问清洗标准</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-8-1-L0">常见问题：数据采集或清洗过程中，部分验证码图片尺寸过小（&lt;32×32）或文件损坏打不开。<span class="badge-source">📋 抄：题 3 第(1)问清洗标准</span></span><br>
 指导步骤：<br>
 1. 演示示范：向初中级人员演示如何利用自动化脚本或看图软件查看图片分辨率与文件大小；<br>
 2. 明确标准：强调按五删一统标准执行，凡是打不开或尺寸过小的直接移入无效目录，不得混入 /data/cleaned/；<span class="badge-source">📋 抄：题 3 路径</span><br>
@@ -3377,7 +3438,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             
           </div>
         
-          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;">
+          <div style="margin-top:14px; padding:12px 14px; background:#fff; border:1.5px solid var(--border); border-radius:10px;" id="ans-09-8-2" class="subq-box">
             <div style="font-weight:900; font-size:14.5px; color:var(--ink); margin-bottom:8px;">
               第（2）问（1 分）：（2）请列举验证码图像标注过程中常见的一个问题，并说明你会如何指导初中级人员进行规范处理。（1分）
             </div>
@@ -3385,7 +3446,7 @@ F1 ＝2×P×R/(P＋R)＝2×0.8×0.8/(0.8＋0.8)＝ 0.8，即 80%</div>
             <!-- 极简保底版 -->
             <div class="baodi-card" style="margin:8px 0;">
               <div class="baodi-title">📌 极简保底背诵版（考场必背骨架 · 小标题＋关键词＋核心数字）</div>
-              <div class="baodi-body">常见问题：在对复杂验证码（如带干扰线、轻微遮挡）进行可用性标注时，不同标注人员判定尺度不一致，导致同一类图片有人标 1 有人标 0。<span class="badge-source">📋 抄：题 3 题干（2）+ 题 8 题干</span><br>
+              <div class="baodi-body"><span class="copy-line" id="ans-09-8-2-L0">常见问题：在对复杂验证码（如带干扰线、轻微遮挡）进行可用性标注时，不同标注人员判定尺度不一致，导致同一类图片有人标 1 有人标 0。<span class="badge-source">📋 抄：题 3 题干（2）+ 题 8 题干</span></span><br>
 指导步骤：<br>
 1. 统一认知：组织对照标注样例集，重申“以人眼能否准确识别出全部数字”为准则，能认出标 1，认不出标 0；<span class="badge-source">📋 抄：题 3 标注标准</span><br>
 2. 规范流程：明确规定遇到模糊、遮挡等争议样本一律先标 2，提交组长或专家复核，严禁凭主观猜测标注；<span class="badge-source">📋 抄：题 3 标注标准</span><br>
@@ -3928,6 +3989,12 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
     <div class="term-pop-body"></div>
   </div>
 
+  <!-- 抄书线索跳转菜单（一处原文可抄到多处，或一行答案出自多处时弹出；全页共用一个） -->
+  <div class="jump-menu" id="jumpMenu" role="menu" hidden>
+    <div class="jump-menu-title"></div>
+    <div class="jump-menu-items"></div>
+  </div>
+
   <!-- Persistent Bottom Audio Player Bar -->
   <div class="audio-bar" id="audioBar">
     <div class="player-left">
@@ -4181,6 +4248,217 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
         setTimeout(() => btn.innerText = originalText, 2000);
       });
     }
+
+    // 抄书线索 ↔ 答案位置 互跳（09 卷）。
+    // 题干里的「📋 抄至…」跳到答案里对应的那一行；答案行末的「↩ 原文」跳回题干出处。
+    // 映射只写在线索的 data-jump 上（目标 id 列表），反向链接在这里按它反推，两头不会对不上。
+    // 一处原文能抄到多处、或一行答案出自不同题的题干时，弹菜单让人选；同一题干里的几处原文一起闪。
+    // 每次跳转前把当前位置记进 history：浏览器「返回」（手机侧滑返回）就能回到起跳的地方。
+    (function () {
+      const clues = Array.prototype.slice.call(document.querySelectorAll('.refer-clue[data-jump]'));
+      const menu = document.getElementById('jumpMenu');
+      if (!clues.length || !menu) return;
+      const menuTitle = menu.querySelector('.jump-menu-title');
+      const menuItems = menu.querySelector('.jump-menu-items');
+      const header = document.querySelector('.blog-nav');
+      const bar = document.getElementById('audioBar');
+      let menuFor = null;
+
+      function clip(t, n) {
+        t = String(t || '').replace(/\s+/g, ' ').trim();
+        return t.length > n ? t.slice(0, n) + '…' : t;
+      }
+      function plainText(el) {
+        const c = el.cloneNode(true);
+        c.querySelectorAll('.badge-source, .clue-tag, .jump-back').forEach(x => x.remove());
+        return c.textContent;
+      }
+      function cardNo(el) {
+        const card = el.closest('.question-card');
+        return card ? card.id.replace('prac-09-', '') : '';
+      }
+      // 「09题6 第(1)问」+「1. 全自动识别模式…」
+      function targetLabel(el) {
+        const m = el.id.match(/^ans-09-\d+-(\d+)/);
+        const where = '09题' + cardNo(el) + (m ? ' 第(' + m[1] + ')问' : '');
+        if (el.classList.contains('copy-line')) return [where, clip(plainText(el), 28)];
+        if (el.classList.contains('subq-box')) return [where, '整问答题框'];
+        return [where, '整题'];
+      }
+      function sourceLabel(el) {
+        return ['09题' + cardNo(el) + (el.closest('.q-prompt-box') ? ' 题干' : ' 题目'), clip(plainText(el), 28)];
+      }
+
+      function reveal(el) {
+        for (let d = el.closest('details'); d; d = d.parentElement ? d.parentElement.closest('details') : null) d.open = true;
+      }
+      function flash(els) {
+        els.forEach(el => {
+          el.classList.remove('jump-flash');
+          void el.offsetWidth;            // 重新触发动画
+          el.classList.add('jump-flash');
+        });
+      }
+      function scrollToY(y) {
+        try { window.scrollTo({ top: y, behavior: 'instant' }); } catch (e) { window.scrollTo(0, y); }
+      }
+      function go(els) {
+        closeMenu();
+        const first = els[0];
+        try {
+          history.replaceState(Object.assign({}, history.state, { jumpY: window.scrollY }), '');
+          history.pushState({ jumpTo: first.id }, '', '#' + first.id);
+        } catch (e) { /* file:// 等环境下 history 不可用，照样跳 */ }
+        els.forEach(reveal);
+        requestAnimationFrame(() => {
+          first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          flash(els);
+        });
+      }
+
+      function visibleBox() {
+        const vv = window.visualViewport;
+        const x = vv ? vv.offsetLeft : 0;
+        const y = vv ? vv.offsetTop : 0;
+        const w = vv ? vv.width : document.documentElement.clientWidth;
+        const h = vv ? vv.height : window.innerHeight;
+        const navBottom = header && getComputedStyle(header).position !== 'static' ? header.getBoundingClientRect().bottom : 0;
+        return {
+          left: x, right: x + w,
+          top: Math.max(navBottom, y),
+          bottom: Math.min(bar ? bar.getBoundingClientRect().top : Infinity, y + h)
+        };
+      }
+      function place() {
+        if (!menuFor) return;
+        const r = menuFor.getBoundingClientRect();
+        const box = visibleBox();
+        if (r.bottom <= box.top || r.top >= box.bottom) { closeMenu(); return; }
+        const w = menu.offsetWidth;
+        const h = menu.offsetHeight;
+        const left = Math.min(Math.max(r.left, box.left + 12), box.right - w - 12);
+        let top = r.bottom + 6;
+        if (top + h > box.bottom - 6 && r.top - 6 - h >= box.top + 6) top = r.top - 6 - h;
+        menu.style.left = Math.round(left) + 'px';
+        menu.style.top = Math.round(top) + 'px';
+      }
+      function openMenu(anchor, title, entries) {
+        closeMenu();
+        menuTitle.textContent = title;
+        menuItems.textContent = '';
+        entries.forEach(entry => {
+          const a = document.createElement('a');
+          a.href = '#' + entry.els[0].id;
+          a.setAttribute('role', 'menuitem');
+          const b = document.createElement('b');
+          b.textContent = entry.label[0];
+          a.appendChild(b);
+          a.appendChild(document.createTextNode(entry.label[1]));
+          a.addEventListener('click', e => { e.preventDefault(); go(entry.els); });
+          menuItems.appendChild(a);
+        });
+        menu.hidden = false;
+        menuFor = anchor;
+        anchor.setAttribute('aria-expanded', 'true');
+        place();
+        const firstItem = menuItems.querySelector('a');
+        if (firstItem) firstItem.focus({ preventScroll: true });
+      }
+      function closeMenu() {
+        if (!menuFor) return;
+        menuFor.setAttribute('aria-expanded', 'false');
+        menuFor = null;
+        menu.hidden = true;
+      }
+
+      // 正向：线索 → 答案
+      const back = new Map();   // 目标 id → [线索]
+      clues.forEach(clue => {
+        const targets = clue.dataset.jump.split(/\s+/).map(id => {
+          const el = document.getElementById(id);
+          if (!el) console.warn('[抄书跳转] 找不到目标', id, '（线索', clue.id + '）');
+          return el;
+        }).filter(Boolean);
+        targets.forEach(t => {
+          if (!back.has(t.id)) back.set(t.id, []);
+          back.get(t.id).push(clue);
+        });
+        const tag = clue.querySelector('a.clue-tag');
+        if (!tag || !targets.length) return;
+        if (targets.length > 1) {
+          tag.title = '这段原文能抄到 ' + targets.length + ' 处，点开选一处跳过去';
+          tag.setAttribute('aria-haspopup', 'menu');
+          tag.setAttribute('aria-expanded', 'false');
+        } else {
+          tag.title = '跳到答案里抄这段原文的位置';
+        }
+        tag.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (targets.length === 1) { go(targets); return; }
+          if (menuFor === tag) { closeMenu(); return; }
+          openMenu(tag, '这段原文能抄到 ' + targets.length + ' 处：',
+            targets.map(t => ({ label: targetLabel(t), els: [t] })));
+        });
+      });
+
+      // 反向：答案 → 线索（行末 / 小问标题 / 题卡标题后追加「↩ 原文」）
+      back.forEach((srcs, id) => {
+        const target = document.getElementById(id);
+        const host = target.classList.contains('copy-line') ? target
+          : target.classList.contains('subq-box') ? target.firstElementChild
+          : target.querySelector('.q-title');
+        if (!host) return;
+        const sameCard = new Set(srcs.map(s => s.closest('.question-card'))).size === 1;
+        const a = document.createElement('a');
+        a.className = 'jump-back';
+        a.href = '#' + srcs[0].id;
+        a.textContent = '↩ 原文' + (srcs.length > 1 ? ' ×' + srcs.length : '');
+        a.title = sameCard ? '跳回题干里的出处' : '这里的内容出自 ' + srcs.length + ' 处题干，点开选一处';
+        if (!sameCard) {
+          a.setAttribute('aria-haspopup', 'menu');
+          a.setAttribute('aria-expanded', 'false');
+        }
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (sameCard) { go(srcs); return; }
+          if (menuFor === a) { closeMenu(); return; }
+          openMenu(a, '这里的内容出自 ' + srcs.length + ' 处题干：',
+            srcs.map(s => ({ label: sourceLabel(s), els: [s] })));
+        });
+        host.appendChild(a);
+      });
+
+      // 「返回」回到起跳位置
+      window.addEventListener('popstate', e => {
+        closeMenu();
+        const st = e.state;
+        if (st && typeof st.jumpY === 'number') { scrollToY(st.jumpY); return; }
+        const el = st && st.jumpTo ? document.getElementById(st.jumpTo) : null;
+        if (el) { reveal(el); el.scrollIntoView({ block: 'center' }); flash([el]); }
+      });
+      // 直接打开带 #src-… 的链接时，出处在折叠的题干里，要先展开
+      function openHash() {
+        let id = '';
+        try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+        const el = id ? document.getElementById(id) : null;
+        if (!el || !el.closest('details:not([open])')) return;
+        reveal(el);
+        requestAnimationFrame(() => { el.scrollIntoView({ block: 'center' }); flash([el]); });
+      }
+      openHash();
+      window.addEventListener('hashchange', openHash);
+
+      document.addEventListener('pointerdown', e => {
+        if (menuFor && !menu.contains(e.target) && !menuFor.contains(e.target)) closeMenu();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && menuFor) { const f = menuFor; closeMenu(); f.focus(); }
+      });
+      window.addEventListener('scroll', () => { if (menuFor) requestAnimationFrame(place); }, { passive: true });
+      window.addEventListener('resize', closeMenu);
+    })();
 
     // 8 大模版术语弹窗：点一下打开/再点关闭；电脑上悬停预览、点击固定；
     // 点空白处或按 Esc 关闭。弹窗避开顶部导航和底部播放条，放不下就翻到术语上方。
