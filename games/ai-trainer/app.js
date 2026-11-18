@@ -594,6 +594,11 @@
       }
     } else {
       state.cloze.list = state.bank.practical.filter(it => it.paperKey === state.cloze.filter || it.chapter === state.cloze.filter);
+      // 兜底：不认识的筛选值（如别的页面写进同名 localStorage 的值）回退到全部，避免空列表卡在「题目加载中...」
+      if (state.cloze.list.length === 0) {
+        state.cloze.filter = 'all';
+        state.cloze.list = state.bank.practical;
+      }
     }
 
     const restoreId = targetId || state.cloze.lastItemId;
@@ -1214,6 +1219,11 @@
       }
     } else {
       sourceList = state.bank.theory.filter(t => t.paper === state.theory.filter);
+    }
+    // 兜底：任何筛选得到空列表都回退到全部，否则标题会一直停在「题目加载中...」
+    if (sourceList.length === 0) {
+      state.theory.filter = 'all';
+      sourceList = [...state.bank.theory];
     }
 
     if (state.theory.isRandom) {

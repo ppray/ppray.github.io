@@ -306,6 +306,11 @@
       }
     } else {
       state.cloze.list = state.bank.practical.filter(it => it.paperKey === state.cloze.filter || it.chapter === state.cloze.filter);
+      // 兜底：不认识的筛选值回退到全部，避免空列表卡在「题目加载中...」
+      if (state.cloze.list.length === 0) {
+        state.cloze.filter = 'all';
+        state.cloze.list = state.bank.practical;
+      }
     }
 
     const restoreId = targetId || state.cloze.lastItemId;
@@ -899,6 +904,12 @@
       }
     } else {
       sourceList = state.bank.theory.filter(t => t.chapter === state.theory.filter);
+    }
+    // 兜底：与 games/ai-trainer 共用 localStorage，对方写入的卷筛选（03/09/0107）这里不认识，
+    // 空列表会让标题一直停在「题目加载中...」，回退到全部
+    if (sourceList.length === 0) {
+      state.theory.filter = 'all';
+      sourceList = [...state.bank.theory];
     }
 
     if (state.theory.isRandom) {
@@ -1506,9 +1517,10 @@
 
       // Determine initial mode (URL hash > localStorage > 'cloze')
       const hash = (window.location && window.location.hash ? window.location.hash : '').replace('#', '');
-      const initialMode = (hash === 'theory' || hash === 'cloze' || hash === 'memorize')
-        ? hash
-        : (localStorage.getItem('aiTrainer_mode') || 'cloze');
+      const isKnownMode = m => m === 'theory' || m === 'cloze' || m === 'memorize';
+      const savedMode = localStorage.getItem('aiTrainer_mode');
+      // games/ai-trainer 会存 'practice' 模式，本页没有这个视图，回退到 cloze 以免整页空白
+      const initialMode = isKnownMode(hash) ? hash : (isKnownMode(savedMode) ? savedMode : 'cloze');
 
       // 1. Restore Cloze state & question position
       applyClozeFilter({ keepIndex: true, targetId: state.cloze.lastItemId });
