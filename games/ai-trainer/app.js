@@ -1,6 +1,6 @@
 /**
  * 人工智能训练师（三级／高级）全真模拟考试 · 刷题与实操采分点挖空连击
- * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及 200 道理论考题
+ * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及样卷 09 理论 100 题（含全解析）
  * 支持全本地记忆功能：刷新页面/切换标签页无缝回到上次答题位置，完整记录答题历史与错题本
  * 参考 games/cloze-combo 交互架构与视觉手感
  */
@@ -852,8 +852,8 @@
 
     if (dirModalTitle && dirModalSubtitle) {
       if (state.dirViewMode === 'theory') {
-        dirModalTitle.textContent = '理论知识考核 200 题答题卡与做题历史';
-        dirModalSubtitle.textContent = '按考纲 5 大章节完整收录 200 题，直观查看掌握与错题情况，点击直接跳转答题';
+        dirModalTitle.textContent = '样卷 09 理论知识考核 100 题答题卡与做题历史';
+        dirModalSubtitle.textContent = '按考纲 6 大章节完整收录 100 题（80道单选+20道判断），直观查看掌握与错题情况，点击直接跳转答题';
       } else {
         dirModalTitle.textContent = '实操技能考核 24 大题大纲目录（01 & 09 & 07卷）';
         dirModalSubtitle.textContent = '收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关';
@@ -1064,7 +1064,7 @@
     if (dirModal) dirModal.style.display = 'none';
   }
 
-  // --- 7. Theory Quiz Logic (200 Questions) ---
+  // --- 7. Theory Quiz Logic (100 Questions · 样卷 09) ---
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -1730,7 +1730,7 @@
       state.theory.isRandom = !state.theory.isRandom;
       localStorage.setItem('aiTrainer_theoryRandom', state.theory.isRandom);
       applyTheoryFilter();
-      showToast(state.theory.isRandom ? '🔀 已开启随机出题（全题库乱序）' : '📋 已切换为顺序刷题（按 001~200 题号）');
+      showToast(state.theory.isRandom ? '🔀 已开启随机出题（全题库乱序）' : '📋 已切换为顺序刷题（按 001~100 题号）');
     });
   }
 
