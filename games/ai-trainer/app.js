@@ -1,6 +1,6 @@
 /**
  * 人工智能训练师（三级／高级）全真模拟考试 · 刷题与实操采分点挖空连击
- * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及样卷 09 理论 100 题（含全解析）
+ * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及理论 03 / 09 / 01&07 三套卷 400 题（含全解析）
  * 支持全本地记忆功能：刷新页面/切换标签页无缝回到上次答题位置，完整记录答题历史与错题本
  * 参考 games/cloze-combo 交互架构与视觉手感
  */
@@ -75,6 +75,48 @@
   const sfx = new SoundFX();
 
   // --- 2. Application State & Local Storage Recovery ---
+  // 理论题库 v2（2026-11-18）：03 / 09 / 01&07 三套卷并存，题号在卷内重复，定位一律改用 id。
+  // 历史遗留：c0dfd7c 之前 theory-001~200 是 01&07 卷，c0dfd7c 起 theory-001~100 改指 09 卷。
+  // 这里一次性把 01&07 时代的记录迁到 theory-0107-NNN：101~200 号必然是 01&07；
+  // 001~100 号按作答时间判断，早于 c0dfd7c 在 GitHub Pages 构建完成（2026-11-18 06:36:39 UTC）的算 01&07。
+  // Cloudflare Pages（*.pages.dev）从未部署过 c0dfd7c（停在 28faec5），那里的 theory-NNN 全是 01&07。
+  (function migrateTheoryIdsV2() {
+    try {
+      if (localStorage.getItem('aiTrainer_theoryIdV2')) return;
+      const onCloudflare = /(^|\.)pages\.dev$/.test((window.location && window.location.hostname) || '');
+      const CUTOFF = onCloudflare ? Infinity : Date.UTC(2026, 10, 18, 6, 36, 39);
+      const hist = JSON.parse(localStorage.getItem('aiTrainer_theoryHistory') || '{}') || {};
+      const passed = JSON.parse(localStorage.getItem('aiTrainer_passed') || '[]') || [];
+      const mistakes = JSON.parse(localStorage.getItem('aiTrainer_mistakes') || '[]') || [];
+      const moved = new Map(); // old id -> new id
+      const oldNum = id => { const m = /^theory-(\d{3})$/.exec(id); return m ? parseInt(m[1], 10) : null; };
+      const to0107 = id => 'theory-0107-' + id.slice('theory-'.length);
+      Object.keys(hist).forEach(id => {
+        const n = oldNum(id);
+        if (n === null) return;
+        const rec = hist[id];
+        const isOld = n > 100 || !rec || !rec.timestamp || rec.timestamp < CUTOFF;
+        if (isOld) { moved.set(id, to0107(id)); hist[to0107(id)] = rec; delete hist[id]; }
+      });
+      const remap = ids => ids.map(id => {
+        if (moved.has(id)) return moved.get(id);
+        const n = oldNum(id);
+        return n !== null && (n > 100 || onCloudflare) ? to0107(id) : id;
+      });
+      localStorage.setItem('aiTrainer_theoryHistory', JSON.stringify(hist));
+      localStorage.setItem('aiTrainer_passed', JSON.stringify(remap(passed)));
+      localStorage.setItem('aiTrainer_mistakes', JSON.stringify(remap(mistakes)));
+      const lastNum = localStorage.getItem('aiTrainer_theoryNum');
+      if (lastNum && !localStorage.getItem('aiTrainer_theoryId')) {
+        localStorage.setItem('aiTrainer_theoryId', (parseInt(lastNum, 10) > 100 || onCloudflare) ? 'theory-0107-' + lastNum : 'theory-' + lastNum);
+      }
+      ['aiTrainer_theoryNum', 'aiTrainer_theoryLastNumByFilter'].forEach(k => localStorage.removeItem(k));
+      localStorage.setItem('aiTrainer_theoryIdV2', '1');
+    } catch (e) {
+      console.warn('Theory history migration skipped:', e);
+    }
+  })();
+
   const savedClozeHistory = JSON.parse(localStorage.getItem('aiTrainer_clozeHistory') || '{}');
   const savedTheoryHistory = JSON.parse(localStorage.getItem('aiTrainer_theoryHistory') || '{}');
 
@@ -132,9 +174,9 @@
       isRandom: localStorage.getItem('aiTrainer_theoryRandom') === 'true',
       autoNext: localStorage.getItem('aiTrainer_theoryAutoNext') !== 'false',
       autoNextTimer: null,
-      lastNum: localStorage.getItem('aiTrainer_theoryNum') || null,
+      lastId: localStorage.getItem('aiTrainer_theoryId') || null,
       mistakeSession: {}, // track questions answered during current mistake practice session
-      lastNumByFilter: JSON.parse(localStorage.getItem('aiTrainer_theoryLastNumByFilter') || '{}')
+      lastIdByFilter: JSON.parse(localStorage.getItem('aiTrainer_theoryLastIdByFilter') || '{}') || {}
     },
     history: {
       cloze: savedClozeHistory,   // itemId -> { filled: { [blankIdx]: { text, status } }, isCompleted: boolean }
@@ -163,11 +205,11 @@
 
       localStorage.setItem('aiTrainer_theoryFilter', state.theory.filter);
       if (state.theory.list && state.theory.list[state.theory.index]) {
-        const num = state.theory.list[state.theory.index].num;
-        state.theory.lastNum = num;
-        localStorage.setItem('aiTrainer_theoryNum', num);
-        state.theory.lastNumByFilter[state.theory.filter] = num;
-        localStorage.setItem('aiTrainer_theoryLastNumByFilter', JSON.stringify(state.theory.lastNumByFilter));
+        const id = state.theory.list[state.theory.index].id;
+        state.theory.lastId = id;
+        localStorage.setItem('aiTrainer_theoryId', id);
+        state.theory.lastIdByFilter[state.theory.filter] = id;
+        localStorage.setItem('aiTrainer_theoryLastIdByFilter', JSON.stringify(state.theory.lastIdByFilter));
       }
       localStorage.setItem('aiTrainer_theoryHistory', JSON.stringify(state.history.theory));
 
@@ -505,7 +547,7 @@
           if (state.mode === 'memorize') renderMemorizeView();
         } else {
           state.theory.filter = ch.id;
-          applyTheoryFilter({ targetNum: state.theory.lastNumByFilter[ch.id] || (ch.id === 'all' ? state.theory.lastNum : null) });
+          applyTheoryFilter({ targetId: state.theory.lastIdByFilter[ch.id] || (ch.id === 'all' ? state.theory.lastId : null) });
         }
         renderChapterFilters();
         saveHistory();
@@ -529,7 +571,7 @@
         if (state.mode === 'memorize') renderMemorizeView();
       } else {
         state.theory.filter = 'mistakes';
-        applyTheoryFilter({ targetNum: null });
+        applyTheoryFilter({ targetId: null });
       }
       renderChapterFilters();
       saveHistory();
@@ -852,8 +894,9 @@
 
     if (dirModalTitle && dirModalSubtitle) {
       if (state.dirViewMode === 'theory') {
-        dirModalTitle.textContent = '样卷 09 理论知识考核 100 题答题卡与做题历史';
-        dirModalSubtitle.textContent = '按考纲 6 大章节完整收录 100 题（80道单选+20道判断），直观查看掌握与错题情况，点击直接跳转答题';
+        const papers = getTheoryPapers();
+        dirModalTitle.textContent = `理论知识考核 ${state.bank.theory.length} 题答题卡与做题历史`;
+        dirModalSubtitle.textContent = `${papers.map(p => `${p.name} ${p.count} 题`).join(' · ')}，按卷分章查看掌握与错题情况，点击直接跳转答题`;
       } else {
         dirModalTitle.textContent = '实操技能考核 24 大题大纲目录（01 & 09 & 07卷）';
         dirModalSubtitle.textContent = '收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关';
@@ -991,11 +1034,16 @@
     `;
     dirBody.appendChild(summaryCard);
 
-    const chapters = (state.bank.theoryChapters || []).filter(c => c.id !== 'all');
     const currentQ = state.theory.list && state.theory.list[state.theory.index];
 
-    chapters.forEach(ch => {
-      const qs = state.bank.theory.filter(q => q.chapter === ch.id);
+    // 卷 → 章节两级分组：章节 id（如「职业道德与规范」）在不同卷里会重名，必须连同 paper 一起匹配
+    const groups = [];
+    getTheoryPapers().forEach(paper => {
+      (paper.chapters || []).forEach(ch => groups.push({ paper, ch }));
+    });
+
+    groups.forEach(({ paper, ch }) => {
+      const qs = state.bank.theory.filter(q => q.paper === paper.id && q.chapter === ch.id);
       if (qs.length === 0) return;
 
       const groupEl = document.createElement('div');
@@ -1004,7 +1052,7 @@
       const chAnswered = qs.filter(q => state.history.theory[q.id]?.answered).length;
       groupEl.innerHTML = `
         <div class="theory-sheet-group-title">
-          <span>📚 ${ch.name}</span>
+          <span>📚 ${paper.name} · ${ch.name}</span>
           <span style="font-size:12px; color:var(--ink-2); font-weight:700;">进度：${chAnswered} / ${qs.length}</span>
         </div>
       `;
@@ -1026,7 +1074,7 @@
 
         btn.className = btnClass;
         btn.textContent = q.num;
-        btn.title = `题号 ${q.num}：${q.q.slice(0, 35)}...`;
+        btn.title = `${theoryPaperName(q.paper)} 题号 ${q.num}：${q.q.slice(0, 35)}...`;
 
         btn.addEventListener('click', () => {
           if (state.mode !== 'theory') {
@@ -1036,13 +1084,13 @@
           if (foundIdxInCurrent >= 0) {
             state.theory.index = foundIdxInCurrent;
           } else {
-            state.theory.filter = 'all';
-            applyTheoryFilter({ targetNum: q.num });
+            state.theory.filter = q.paper || 'all';
+            applyTheoryFilter({ targetId: q.id });
             renderChapterFilters();
           }
           loadTheoryQuestion();
           closeDirectoryModal();
-          showToast(`已跳转至理论题号 ${q.num}`);
+          showToast(`已跳转至${theoryPaperName(q.paper)}理论题号 ${q.num}`);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
@@ -1064,7 +1112,20 @@
     if (dirModal) dirModal.style.display = 'none';
   }
 
-  // --- 7. Theory Quiz Logic (100 Questions · 样卷 09) ---
+  // --- 7. Theory Quiz Logic (03 / 09 / 01&07 三套卷，题号卷内重复，按 id 定位) ---
+  function getTheoryPapers() {
+    return (state.bank && state.bank.theoryPapers) || [];
+  }
+
+  function theoryPaperName(paperId) {
+    const p = getTheoryPapers().find(x => x.id === paperId);
+    return p ? p.name : '';
+  }
+
+  function isKnownTheoryFilter(f) {
+    return f === 'all' || f === 'mistakes' || getTheoryPapers().some(p => p.id === f);
+  }
+
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -1137,8 +1198,10 @@
   }
 
   function applyTheoryFilter(options = {}) {
-    const { keepIndex = false, targetNum = null } = (typeof options === 'boolean' ? { keepIndex: options } : options);
+    const { keepIndex = false, targetId = null } = (typeof options === 'boolean' ? { keepIndex: options } : options);
     let sourceList = [];
+    // 旧版本存下的筛选可能是已不存在的章节 id（如「职业道德与规范」），回退到全部，避免空列表白屏
+    if (!isKnownTheoryFilter(state.theory.filter)) state.theory.filter = 'all';
     if (state.theory.filter === 'all') {
       sourceList = [...state.bank.theory];
     } else if (state.theory.filter === 'mistakes') {
@@ -1150,18 +1213,19 @@
         sourceList = [...state.bank.theory];
       }
     } else {
-      sourceList = state.bank.theory.filter(t => t.chapter === state.theory.filter);
+      sourceList = state.bank.theory.filter(t => t.paper === state.theory.filter);
     }
 
     if (state.theory.isRandom) {
       state.theory.list = shuffleArray(sourceList);
     } else {
-      state.theory.list = sourceList.sort((a, b) => parseInt(a.num, 10) - parseInt(b.num, 10));
+      // 题库本身已按「卷序 → 题号」排好；不能再按 num 排，否则「全部」里三套卷会交错
+      state.theory.list = sourceList;
     }
 
-    const restoreNum = targetNum || state.theory.lastNumByFilter[state.theory.filter] || (state.theory.filter === 'all' ? state.theory.lastNum : null);
-    if (restoreNum) {
-      const foundIdx = state.theory.list.findIndex(t => t.num === restoreNum);
+    const restoreId = targetId || state.theory.lastIdByFilter[state.theory.filter] || (state.theory.filter === 'all' ? state.theory.lastId : null);
+    if (restoreId) {
+      const foundIdx = state.theory.list.findIndex(t => t.id === restoreId);
       if (foundIdx >= 0) {
         state.theory.index = foundIdx;
       } else if (!keepIndex || state.theory.index >= state.theory.list.length) {
@@ -1210,7 +1274,7 @@
     }
 
     $('#theory-title').textContent = item.q;
-    $('#theory-tag-ch').textContent = item.chapter || '理论知识';
+    $('#theory-tag-ch').textContent = [theoryPaperName(item.paper), item.chapter || '理论知识'].filter(Boolean).join(' · ');
     $('#theory-tag-type').textContent = item.type === 'judge' ? '判断题' : (item.type === 'multi' ? '多选题' : '单选题');
     $('#theory-tag-num').textContent = `题号 ${item.num}`;
     $('#theory-index-badge').textContent = `${state.theory.index + 1} / ${state.theory.list.length}`;
@@ -1519,7 +1583,8 @@
       state.theory.answered = false;
       state.theory.selected = null;
       state.theory.mistakeSession = {};
-      state.theory.lastNumByFilter = {};
+      state.theory.lastIdByFilter = {};
+      state.theory.lastId = null;
 
       [
         'aiTrainer_maxCombo',
@@ -1530,8 +1595,8 @@
         'aiTrainer_clozeHistory',
         'aiTrainer_theoryHistory',
         'aiTrainer_clozeItemId',
-        'aiTrainer_theoryNum',
-        'aiTrainer_theoryLastNumByFilter'
+        'aiTrainer_theoryId',
+        'aiTrainer_theoryLastIdByFilter'
       ].forEach(k => localStorage.removeItem(k));
 
       updateHUD();
@@ -1730,7 +1795,7 @@
       state.theory.isRandom = !state.theory.isRandom;
       localStorage.setItem('aiTrainer_theoryRandom', state.theory.isRandom);
       applyTheoryFilter();
-      showToast(state.theory.isRandom ? '🔀 已开启随机出题（全题库乱序）' : '📋 已切换为顺序刷题（按 001~100 题号）');
+      showToast(state.theory.isRandom ? '🔀 已开启随机出题（全题库乱序）' : '📋 已切换为顺序刷题（按卷序与题号）');
     });
   }
 
@@ -1840,7 +1905,7 @@
       applyClozeFilter({ keepIndex: true, targetId: state.cloze.lastItemId });
 
       // 2. Restore Theory state & question position
-      applyTheoryFilter({ keepIndex: true, targetNum: state.theory.lastNum });
+      applyTheoryFilter({ keepIndex: true, targetId: state.theory.lastId });
 
       // 3. Switch to initial mode and display views
       switchMode(initialMode);
