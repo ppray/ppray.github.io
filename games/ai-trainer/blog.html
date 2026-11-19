@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>人工智能训练师（高级/三级）实操通关博客 · 8大题型解题通式与24道实操大题全真带背</title>
-  <meta name="description" content="人工智能训练师（高级/三级）实操全真模拟试题高分通关指南：8大考核题型万能模版、01/09/07全套24道大题核心采分点拆解、Python算法实操代码精析、全套MiMo TTS原声有声带背与磨耳朵。">
+  <title>人工智能训练师（高级/三级）实操通关博客 · 8大题型解题通式与32道实操大题全真解析带背</title>
+  <meta name="description" content="人工智能训练师（高级/三级）实操全真模拟试题高分通关指南：8大考核题型万能模版、01/09/07/03全套32道大题核心采分点拆解、Python算法实操代码精析、全套MiMo TTS原声有声带背与磨耳朵。">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <style>
     :root {
@@ -1140,6 +1140,12 @@
             <li><a href="#prac-07-1" class="toc-sublink">07题1: 自然场景吸烟检测业务流程设计</a></li><li><a href="#prac-07-2" class="toc-sublink">07题2: 自然场景吸烟检测模块效果优化</a></li><li><a href="#prac-07-3" class="toc-sublink">07题3: 自然场景吸烟检测数据处理规范制定</a></li><li><a href="#prac-07-4" class="toc-sublink">07题4: 自然场景吸烟检测算法测试</a></li><li><a href="#prac-07-5" class="toc-sublink">07题5: 自然场景吸烟检测系统监控和优化</a></li><li><a href="#prac-07-6" class="toc-sublink">07题6: 吸烟检测系统人机交互流程设计（20 分）</a></li><li><a href="#prac-07-7" class="toc-sublink">07题7: 数据采集和处理培训</a></li><li><a href="#prac-07-8" class="toc-sublink">07题8: 数据采集和处理指导</a></li>
           </ul>
         </div>
+        <div class="toc-group">
+          <a href="#paper-03" class="toc-mainlink">📑 03卷</a>
+          <ul class="toc-sublist">
+            <li><a href="#prac-03-1" class="toc-sublink">03题1: 政务服务智能问答业务流程设计</a></li><li><a href="#prac-03-2" class="toc-sublink">03题2: 政务服务智能问答业务模块效果优化</a></li><li><a href="#prac-03-3" class="toc-sublink">03题3: 命名实体识别数据处理规范制定</a></li><li><a href="#prac-03-4" class="toc-sublink">03题4: 命名实体识别算法测试</a></li><li><a href="#prac-03-5" class="toc-sublink">03题5: 智能卖点生成系统监控和优化</a></li><li><a href="#prac-03-6" class="toc-sublink">03题6: 智能卖点生成系统人机交互流程设计</a></li><li><a href="#prac-03-7" class="toc-sublink">03题7: 数据标注培训</a></li><li><a href="#prac-03-8" class="toc-sublink">03题8: 数据采集和处理指导</a></li>
+          </ul>
+        </div>
         
     </aside>
 
@@ -1156,16 +1162,16 @@
         </div>
         <h1 class="hero-title">人工智能训练师（高级/三级）实操全真题通关博客</h1>
         <p class="hero-desc">
-          本博客系统梳理了 01卷（自动化营销）、09卷（验证码识别）、07卷（自然吸烟检测）共 3 套全真模拟卷、24 道实操技能大题。提炼出 8 大考核题型的解题通式与采分公式，并将 Python 算法实操代码逐行拆解。同时全网独家集成小米 MiMo TTS 茉莉原声带背，支持边看边听、倍速播放与通勤磨耳朵。
+          本博客系统梳理了 01卷（自动化营销）、09卷（验证码识别）、07卷（自然吸烟检测）、03卷（政务问答／实体识别／智能卖点）共 4 套全真模拟卷、32 道实操技能大题。提炼出 8 大考核题型的解题通式与采分公式，并将 Python 算法实操代码逐行拆解。同时全网独家集成小米 MiMo TTS 茉莉原声带背（01／09／07 卷 24 题），支持边看边听、倍速播放与通勤磨耳朵。
         </p>
         <div class="hero-meta-grid">
           <div class="meta-box">
             <div class="meta-label">试卷总数</div>
-            <div class="meta-val">3 套全真卷</div>
+            <div class="meta-val">4 套全真卷</div>
           </div>
           <div class="meta-box">
             <div class="meta-label">实操大题</div>
-            <div class="meta-val">24 道全收录</div>
+            <div class="meta-val">32 道全收录</div>
           </div>
           <div class="meta-box">
             <div class="meta-label">题型分类</div>
@@ -3984,6 +3990,367 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
           </div>
         </section>
         
+        <section class="paper-section" id="paper-03">
+          <div class="paper-banner">
+            <div class="paper-banner-left">
+              <h2 class="paper-title">03卷 · 政务问答·实体识别·智能卖点</h2>
+              <p class="paper-desc">以政务服务智能问答、命名实体识别（NER）与电商智能卖点生成为核心场景，考查知识库数据采集与疑似重复处理、BIO 标注规范与清洗标准、CRF 模型测试报告与错例分析、话术模版数据分析与置信度人机分流。</p>
+            </div>
+            <div class="paper-banner-right">
+              <a class="btn btn-paper-play" href="/games/ai-trainer/#cloze" target="_blank" style="text-decoration:none;" title="本卷暂无 MiMo 音频，可先挖空自测">
+                <span>🎯 本卷挖空自测（暂无音频）</span>
+              </a>
+            </div>
+          </div>
+          <div class="questions-list">
+            
+        <article class="question-card" id="prac-03-1" data-qid="prac-03-1">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">流程设计 (15分)</span>
+                <span class="badge badge-num">第 1 题</span>
+              </div>
+              <h3 class="q-title">03题1：政务服务智能问答业务流程设计</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              智能问答服务是“互联网+政务服务”技术体系建设的要求之一，也是政府网站及新媒体考核要求之一。随着移动互联网的发展，政务服务从线下向线上的转移带来巨大的咨询服务量。传统的政府网上公开的政务办事信息，多按政府部门、专业的政务办事术语等为分类制定检索条件，对普通群众查询办事信息形成认知门槛，人们无法根据自己的需求快速找到相应的政务办事项目和信息。A公司是一家电子政务领域的科技公司，计划开发一套政务服务智能问答模型，根据政务服务事项的相关信息，解答用户关于办理政务服务的相关问题。<br><br>你将作为一名人工智能训练师，为政务服务智能问答提供可用的数据，成功训练出模型。<br><br>（1）假设你需要设计政务服务智能问答模型，为了构建政务服务问答知识库，需要采集什么样的数据？请列出采集数据的种类和要求。（5分）<br><br>（2）为了构建政务服务问答知识库，可以通过哪些采集的方法获取数据？（5分）<br><br>（3）数据质量对于AI模型的性能至关重要。当清洗数据时，发现疑似重复数据该怎么处理？（5分）<br><br>本题分值：15分　　考核时间：25分钟　　考核形式：实操<br><br>考核要求：（1）能够结合人工智能技术要求和业务特征，设计整套业务数据采集流程；（2）能够结合人工智能技术要求和业务特征，设计整套业务数据处理流程；（3）能够结合人工智能技术要求和业务特征，设计整套业务数据审核流程。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：采集数据的种类和要求（5分）</strong><br>一、采集数据种类（3分）：<br><mark class="score-key" title="核心采分点">政务服务事项基本信息</mark>——事项名称、办理条件、申请材料、办理流程、办理时限、收费标准、办理地点等；<br><mark class="score-key" title="核心采分点">政务办事指南（办事指南）</mark>——各事项的办事指南、常见问题FAQ；<br><mark class="score-key" title="核心采分点">政策法规文件</mark>——法律法规、规范性文件及政策解读；<br><mark class="score-key" title="核心采分点">用户咨询问答对</mark>——12345热线、政务客服历史咨询记录及人工客服问答数据；<br><mark class="score-key" title="核心采分点">部门与窗口信息</mark>——受理部门、联系方式、办公时间等；<br><mark class="score-key" title="核心采分点">材料表单类数据</mark>——申请表样例、材料清单模板等。<br>二、采集数据要求（2分）：<br><mark class="score-key" title="核心采分点">真实权威（官方渠道、来源权威）</mark>——数据须来源于政府门户网站、政务服务平台等官方权威渠道，确保内容真实准确；<br><mark class="score-key" title="核心采分点">覆盖全面（完整性好、完整覆盖）</mark>——覆盖全部政务服务事项，避免知识库出现缺口；<br><mark class="score-key" title="核心采分点">准确一致（口径统一）</mark>——事项信息与最新政策保持一致，口径统一；<br><mark class="score-key" title="核心采分点">及时更新（时效性）</mark>——政策调整后同步更新数据；<br><mark class="score-key" title="核心采分点">脱敏合规（安全合规、合规安全）</mark>——涉及个人信息的数据须脱敏处理，合法合规使用。<br><strong>（2）：数据采集方法（5分）</strong><br><mark class="score-key" title="核心采分点">网络爬虫采集（爬虫程序）</mark>——编写爬虫程序从政府门户网站、政务服务网等公开页面批量抓取事项信息和办事指南；<br><mark class="score-key" title="核心采分点">系统API对接（接口对接与数据库导出）</mark>——与政务服务平台系统API对接，导出结构化的事项库数据；<br><mark class="score-key" title="核心采分点">人工整理加工（人工整理采集）</mark>——从办事指南、政策文件（PDF/Word）中人工摘录、整理形成问答知识条目；<br><mark class="score-key" title="核心采分点">实地调研访谈收集（问卷调查与访谈）</mark>——向窗口工作人员、办事群众收集高频咨询问题；<br><mark class="score-key" title="核心采分点">历史记录导出（日志数据导出）</mark>——从12345热线、在线客服系统中导出历史咨询问答记录。<br><strong>（3）：疑似重复数据的处理（5分）</strong><br><mark class="score-key" title="核心采分点">重复判定（相似度算法自动识别）</mark>——先通过文本相似度算法（余弦相似度、编辑距离、SimHash指纹等）结合关键词比对，自动识别疑似重复数据；<br><mark class="score-key" title="核心采分点">人工复核（人工确认复核）</mark>——对系统判定为疑似重复的记录进行人工确认，防止“同义不同答”或“同名不同事项”的数据被误删；<br><mark class="score-key" title="核心采分点">保留策略（其余删除、保留最优记录）</mark>——确认重复后，保留信息最全、发布时间最新、来源最权威的一条记录，其余记录标记删除；<br><mark class="score-key" title="核心采分点">信息合并（记录合并）</mark>——对内容互补的记录进行合并，整合为一条完整记录并保留原始出处；<br><mark class="score-key" title="核心采分点">记录归档</mark>——重复数据的处理结果记入数据台账，备份后再删除，确保处理过程可追溯。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">采集六类数据：事项基本信息、办事指南、政策法规、咨询问答对、部门窗口信息、材料表单；五项要求：真实权威、覆盖全面、准确一致、及时更新、脱敏合规。采集五法：爬虫、API对接、人工整理、调研访谈、历史记录导出。疑似重复按「判定→复核→保留→合并→归档」五步走，确认重复前先人工复核，防止误删。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-2" data-qid="prac-03-2">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">效果优化 (10分)</span>
+                <span class="badge badge-num">第 2 题</span>
+              </div>
+              <h3 class="q-title">03题2：政务服务智能问答业务模块效果优化</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              智能问答服务是“互联网+政务服务”技术体系建设的要求之一，也是政府网站及新媒体考核要求之一。随着移动互联网的发展，政务服务从线下向线上的转移带来巨大的咨询服务量。传统的政府网上公开的政务办事信息，多按政府部门、专业的政务办事术语等为分类制定检索条件，对普通群众查询办事信息形成认知门槛，人们无法根据自己的需求快速找到相应的政务办事项目和信息。A公司是一家电子政务领域的科技公司，计划开发一套政务服务智能问答模型，根据政务服务事项的相关信息，解答用户关于办理政务服务的相关问题。<br><br>你将作为一名人工智能训练师，为政务服务智能问答提供可用的数据，成功训练出模型。<br><br>（1）用户通过政务服务咨询平台咨询问题时，咨询了关于A事项的问题，但系统未识别该问题，可能的原因有哪些？（4分）<br><br>（2）哪些情况下需要对数据库进行优化，请结合你的业务知识，识别可能的问题，并分析可能的原因？（6分）<br><br>本题分值：10分　　考核时间：15分钟　　考核形式：实操<br><br>考核要求：（1）能够结合业务知识，识别业务流程中单一模块的问题；（2）能够结合人工智能技术设计业务模块优化方案并推动实施。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：问题未识别的可能原因（4分）</strong><br><mark class="score-key" title="核心采分点">知识库未覆盖该事项（知识库无该事项条目）</mark>——A事项相关数据未采集入库，或知识库更新不及时导致条目缺失；<br><mark class="score-key" title="核心采分点">问句匹配度低（表述与标准问法不一致）</mark>——用户咨询采用口语化表述、错别字或同义词，与知识库中的标准问法差异较大，检索匹配失败；<br><mark class="score-key" title="核心采分点">训练样本不足（意图识别模型能力不足）</mark>——该类问题的训练样本少，模型未学习到相应意图，导致意图识别错误；<br><mark class="score-key" title="核心采分点">数据质量问题</mark>——知识库中A事项数据缺失、错误或格式不统一，影响检索与召回。<br><strong>（2）：数据库优化的情形及原因（6分）</strong><br><mark class="score-key" title="核心采分点">定期更新维护（知识库长期未更新）</mark>——政策法规调整后旧答案失效，须定期更新维护，保证答案与最新政策一致；<br><mark class="score-key" title="核心采分点">数据重复冗余</mark>——相似条目过多影响检索效率和准确率，须去重合并；<br><mark class="score-key" title="核心采分点">数据缺失（字段不全）</mark>——覆盖事项不全导致答非所问，须补充采集完善数据；<br><mark class="score-key" title="核心采分点">检索命中率低、响应慢</mark>——数据量增长后索引结构不合理，须重建索引、优化存储结构；<br><mark class="score-key" title="核心采分点">错误数据混入</mark>——人工录入或爬虫采集错误导致答错，须清洗校验；<br><mark class="score-key" title="核心采分点">用户高频未识别问题集中</mark>——说明知识库标准问法与真实问法脱节，须根据咨询日志补充同义问法。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">未识别四原因：知识库未覆盖、问句匹配度低、训练样本不足、数据质量问题。数据库优化六情形：长期未更新、重复冗余、数据缺失、检索命中率低响应慢、错误数据混入、高频未识别问题集中。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-3" data-qid="prac-03-3">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">数据规范 (15分)</span>
+                <span class="badge badge-num">第 3 题</span>
+              </div>
+              <h3 class="q-title">03题3：命名实体识别数据处理规范制定</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              命名实体识别（Named Entity Recognition，简称NER）（也称为实体识别、实体分块和实体提取）是NLP中一项非常基础的任务，旨在将文本中的命名实体定位并分类为预先定义的类别，如人员、组织、位置、时间表达式、数量、货币值、百分比等。<br><br>你作为一名人工智能训练师，将进行命名实体识别任务的数据准备。<br><br>（1）为命名实体识别数据制定数据清洗标准，并说明清洗后的待标注数据（data_cleaned.tsv）应满足的保存要求。（10分）<br><br>（2）基于下述标注需求和格式示例，为命名实体识别数据制定完整的标注规范。（5分）<br><br>标注数据需求：按BIO schema标注8种实体：国籍（CONT）、学历学位（EDU）、地区（LOC）、人名（NAME）、组织（ORG）、专业（PRO）、民族（RACE）、职位头衔（TITLE）。<br><br>本题分值：15分　　考核时间：30分钟　　考核形式：实操<br><br>考核要求：（1）能够结合人工智能技术要求和业务特征，设计数据清洗和标注流程；（2）能够结合人工智能技术要求和业务特征，制定数据清洗和标注规范。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：数据清洗标准制定（10分）</strong><br>问题概述：命名实体识别原始数据中常见的六类质量问题：①一行多个字符或字符与标签数不对应；②空行异常、连续多个空行；③标签不在BIO定义集合内或格式错误；④重复样本；⑤乱码、非法字符或不可见字符；⑥编码格式不统一、多列或缺标签列。<br>1. 清洗标准（写出6条标准）：（6分）<br>标准一<mark class="score-key" title="核心采分点">格式校验</mark>：每行必须为“字符＋制表符＋标签”两列格式，字符与标签一一对应，删除字段缺失、多列或空列的行；<br>标准二<mark class="score-key" title="核心采分点">单字符校验</mark>：每行仅保留一个字符（汉字、字母、数字或标点），一行多个字符的行须拆分校验或删除；<br>标准三<mark class="score-key" title="核心采分点">标签合法性校验</mark>：标签必须属于BIO合法标签集合（B/I/O加8类实体），非法标签行修正或删除；<br>标准四<mark class="score-key" title="核心采分点">空行处理</mark>：句与句之间仅保留一个空行作为分隔符，删除连续多个空行及句首句尾多余空行；<br>标准五<mark class="score-key" title="核心采分点">样本去重（去重与乱码处理、删除完全重复的样本）</mark>：删除完全重复的样本，删除含乱码、不可见字符的行，统一转换为UTF-8编码；<br>标准六<mark class="score-key" title="核心采分点">完整性校验</mark>：清洗后统计总行数、句子数并与原始数据比对，防止误删有效数据，形成清洗记录。<br>1. 清洗后待标注数据（data_cleaned.tsv）的保存要求：（4分）<br><mark class="score-key" title="核心采分点">①文件命名为 data_cleaned.tsv，采用UTF-8编码保存；②两列TSV格式，每行为“字符＋制表符＋标签”，字符与标签一一对应，不得出现多列或缺列；③句子之间仅用一个空行分隔，不得出现连续空行；④标签仅保留BIO合法标签集合内的标签；⑤保存前统计总行数、句子数并与原始数据比对，防止误删有效数据，形成清洗记录以备追溯。</mark><br><strong>（2）：标注规范制定（5分）</strong><br>1. 标注格式（BIO schema，填空）：（1分）<br>B-X表示<mark class="score-key" title="核心采分点">实体起始字符（实体首字符）</mark>；I-X表示<mark class="score-key" title="核心采分点">实体内部字符</mark>；O表示<mark class="score-key" title="核心采分点">非实体字符</mark>；<br>每行格式为<mark class="score-key" title="核心采分点">“字符＋制表符＋标签”</mark>，以<mark class="score-key" title="核心采分点">制表符（Tab键）</mark>分隔；句子之间以<mark class="score-key" title="核心采分点">一个空行</mark>分隔。<br>1. 八类标签定义与示例（填表）：（2分）<br>CONT　含义：<mark class="score-key" title="核心采分点">国籍</mark>　示例：中国、美国<br>EDU　含义：<mark class="score-key" title="核心采分点">学历学位</mark>　示例：本科、硕士、博士<br>LOC　含义：<mark class="score-key" title="核心采分点">地区（省市等）</mark>　示例：浙江、杭州<br>NAME　含义：<mark class="score-key" title="核心采分点">人名</mark>　示例：张伟<br>ORG　含义：<mark class="score-key" title="核心采分点">组织机构（公司、单位、学校）</mark>　示例：阿里巴巴<br>PRO　含义：<mark class="score-key" title="核心采分点">专业</mark>　示例：计算机科学与技术<br>RACE　含义：<mark class="score-key" title="核心采分点">民族</mark>　示例：汉族、回族<br>TITLE　含义：<mark class="score-key" title="核心采分点">职位头衔</mark>　示例：工程师、总经理、教授<br>1. 特殊情况处理与反馈途径：（1分）<br><mark class="score-key" title="核心采分点">①对边界不清、归属歧义的样本不凭猜测标注，先标记为争议样本提交组长复核；②同类实体相邻出现时，按B/I分别标注各自实体；③标注分歧和疑难问题定期汇总，反馈给项目负责人统一口径，并据此更新标注规范。（无法判断归属的字符标O并记录到问题清单，不得凭猜测随意标注；争议样本提交组长复核，按“标注人员记录问题→组长复核→专家仲裁→更新标注规则”的流程处理。）</mark><br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">清洗六标准：格式校验、单字符校验、标签合法性校验、空行处理、样本去重、完整性校验。BIO：B 实体起始、I 实体内部、O 非实体；每行「字符＋制表符＋标签」，以 Tab 分隔，句子之间一个空行。八类标签记准中文含义。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-4" data-qid="prac-03-4">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">算法测试 (20分)</span>
+                <span class="badge badge-num">第 4 题</span>
+              </div>
+              <h3 class="q-title">03题4：命名实体识别算法测试</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              命名实体识别（Named Entity Recognition，简称NER）（也称为实体识别、实体分块和实体提取）是NLP中一项非常基础的任务，旨在将文本中的命名实体定位并分类为预先定义的类别，如人员、组织、位置、时间表达式、数量、货币值、百分比等。<br><br>你作为一名人工智能训练师，将进行命名实体识别任务的模型训练，并对结果进行测试与分析。本次考核不涉及编程，无需上机操作。<br><br>（1）请完成命名实体识别数据集划分：说明划分训练集、验证集和测试集的目的，并写出一种常见的划分比例（训练集：验证集：测试集）。（2分）<br><br>（2）请按顺序写出模型训练的基本流程（不少于四个步骤，如：数据准备 → …… → 模型训练 → ……）。（2分）<br><br>（3）请写出模型测试中常用的性能评价指标（至少四种），并说明混淆矩阵的作用。（4分）<br><br>（4）请对测试结果进行分析，并编写测试报告。（6分）<br><br>（5）请结合命名实体识别模型测试中常见的错误类型（如实体边界错误、实体漏识别、标签混淆等），举出至少一个错误案例，分析错误产生的原因并指出可能的纠正方法。（6分）<br><br>本题分值：20分　　考核时间：35分钟　　考核形式：实操<br><br>考核要求：（1）能够维护日常训练集与测试集；（2）能使用工具对算法进行训练；（3）能够使用测试工具对人工智能产品的使用进行测试；（4）能够对测试结果进行分析，编写测试报告；（5）能够运用工具，分析算法中错误案例产生的原因并进行纠正。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：数据集划分（2分）</strong><br>划分目的：<mark class="score-key" title="核心采分点">将数据划分为训练集、验证集和测试集：训练集用于模型学习参数，验证集用于调参并防止过拟合，测试集用于最终评估模型泛化能力；三者互不重叠，才能客观评估模型在未见数据上的表现</mark><br>常见划分比例：训练集：验证集：测试集 ＝ <mark class="score-key" title="核心采分点">8:1:1（答 7:2:1、8:2:0 等合理比例同样给分）</mark><br><strong>（2）：模型训练（2分）</strong><br>模型训练基本流程：<br>①<mark class="score-key" title="核心采分点">数据准备</mark>（加载训练数据并构造字符特征）<br>②<mark class="score-key" title="核心采分点">模型选择与参数配置</mark>（如选择条件随机场CRF模型、设置迭代次数等参数）<br>③<mark class="score-key" title="核心采分点">模型训练</mark>（基于训练集拟合模型参数）<br>④<mark class="score-key" title="核心采分点">模型评估与调参</mark>（用验证集评估效果并调整参数）<br><strong>（3）：模型测试：性能指标及混淆矩阵（4分）</strong><br>常用性能评价指标：（至少4个，2分）<mark class="score-key" title="核心采分点">准确率（Accuracy）、精确率（Precision）、召回率（Recall）、F1分数；答宏平均（Macro）、微平均（Micro）亦可</mark><br>混淆矩阵的作用：（2分）<mark class="score-key" title="核心采分点">以矩阵形式展示各标签“预测值与真实值”的对应情况：对角线元素为各标签被正确预测的数量，非对角线元素反映标签之间的混淆情况，据此可定位模型容易混淆的标签类型，为改进模型提供依据</mark><br><strong>（4）：测试报告（6分）</strong><br>项目背景：本项目为<mark class="score-key" title="核心采分点">命名实体识别（NER）</mark>任务，按<mark class="score-key" title="核心采分点">BIO schema</mark>标注国籍、学历学位、地区、人名、组织、专业、民族、职位头衔8类实体，目标是训练能准确定位并分类文本中<mark class="score-key" title="核心采分点">命名实体</mark>。（1分）<br>测试目的：评估NER模型在测试集上的<mark class="score-key" title="核心采分点">字符级标注性能（识别准确率）</mark>，判断模型对8类实体的识别准确程度，发现模型当前存在的问题。（1分）<br>测试方法：按比例划分<mark class="score-key" title="核心采分点">训练集、验证集和测试集</mark>，使用CRF序列标注模型训练，在测试集上计算各标签的<mark class="score-key" title="核心采分点">精确率、召回率和F1分数</mark>，并生成混淆矩阵进行评估。（2分）<br>测试结果：模型对高频实体（如人名NAME、地区LOC）识别效果较好，对低频实体（如民族RACE、专业PRO）识别效果较弱；混淆矩阵对角线元素集中，说明大部分字符标签预测正确；主要混淆集中在O与各实体标签之间，即实体边界识别不准，存在<mark class="score-key" title="核心采分点">实体漏识别（B/I标签被预测为O）</mark>和<mark class="score-key" title="核心采分点">边界错位（B与I混用）</mark>问题；相邻实体标签之间也有少量混淆，如ORG与LOC在“地名＋机构名”连用时容易混淆。（2分）<br>改进建议：补充低频实体类型的训练样本；优化特征模板（增加词性、边界特征）；对低置信度预测进行人工复核回流再训练，持续提升模型识别准确率。<br><strong>（5）：错误案例分析（6分）</strong><br>案例一：句子“张伟是杭州阿里巴巴公司的工程师”中，模型将“杭州阿里巴巴”整体预测为ORG，未识别出LOC实体“杭州”。（3分）<br>原因：<mark class="score-key" title="核心采分点">“地名＋组织名”连用的训练样本不足，实体边界特征不明显，导致模型边界判断错误：将“杭州阿里巴巴”整体预测为ORG，未识别出LOC实体“杭州”</mark><br>纠正：<mark class="score-key" title="核心采分点">补充含地名与组织名连用的标注样本；增加词性和上下文边界特征；重新训练并复核该类句子</mark><br>案例二：句子“李明，汉族，本科学历”中，模型将“汉族”预测为O，造成RACE实体漏识别。（3分）<br>原因：<mark class="score-key" title="核心采分点">民族（RACE）属低频实体，训练样本少，模型未充分学习民族类实体特征，将“汉族”预测为O，造成RACE实体漏识别</mark><br>纠正：<mark class="score-key" title="核心采分点">扩充民族、学历等低频实体的训练语料；对低置信度样本人工复核并回流训练集；调整类别权重后重新训练模型</mark><br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">划分比例 8:1:1；训练四步：数据准备→模型选择与参数配置→模型训练→模型评估与调参。指标写满四个：准确率、精确率、召回率、F1。测试结果的两类问题：实体漏识别（B/I 被预测为 O）、边界错位（B 与 I 混用）。错例分析按「原因＋纠正」成对作答。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-5" data-qid="prac-03-5">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">系统监控 (15分)</span>
+                <span class="badge badge-num">第 5 题</span>
+              </div>
+              <h3 class="q-title">03题5：智能卖点生成系统监控和优化</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              在电商领域，当消费者进店、进行商品咨询或主动要求推荐时，客服人员通常会介绍商品卖点，以期望能打动消费者促成下单购买。因此，商品卖点的文案编写维护是客服/营销的重要工作之一。传统的卖点文案编写费时费力，且非常考验客服/营销人员的文案编写能力。为帮助降低商品卖点文案编写难度，乐言科技基于大语言模型（LLM）打造了智能卖点生成产品，利用AI文本生成能力进行商品卖点话术的智能生成。<br><br>本项目中，你作为人工智能训练师，将对该智能产品进行分析和优化设计。<br><br>请阅读附件一《AI智能卖点生成》产品操作手册，智能卖点生成数据见附件二。<br><br>（1）请对该智能产品的智能卖点生成数据（附件二）进行分析，并输出分析报告。（4分）<br><br>（2）请对该智能产品提出优化需求。（4分）<br><br>（3）请基于提出的优化需求，为该智能产品的应用设计智能解决方案。（7分）<br><br>本题分值：15分　　考核时间：20分钟　　考核形式：实操<br><br>考核要求：（1）能够对单一智能产品使用的数据进行全面分析，输出分析报告；（2）能够对单一智能产品提出优化需求；（3）能够为单一智能产品的应用设计智能解决方案。<br><br><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">二、附件</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">附件一　《AI智能卖点生成》产品操作手册（第五、六题）</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">版本：V2.3｜发布单位：乐言科技｜适用对象：电商客服、营销人员及运营管理人员</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">一、产品概述</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">AI智能卖点生成是乐言科技基于大语言模型（LLM）打造的商品卖点话术智能生成产品，利用AI文本生成能力进行商品卖点话术的智能生成，帮助客服/营销人员降低卖点文案编写难度，提升话术编写效率与内容质量。本产品通过“商品信息输入—话术风格模版匹配—AI生成卖点—人工确认交付”的标准化流程，将卖点文案的编写由人工创作升级为人机协同生产。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">核心能力：①卖点智能生成——基于大语言模型，结合商品特征与话术风格模版，一键生成多条候选卖点话术；②话术风格模版库——内置多种话术风格模版（如场景种草型、功能卖点型、限时促销型、情感陪伴型、成分功效型），每种模版附有样例商品与标准话术范例；③置信度评估——每条生成卖点附带生成置信度（0～1）；④敏感内容检测——自动识别卖点中的价格承诺、功效宣称、绝对化用语等敏感内容并提示人工复核；⑤数据留痕与导出——完整记录店铺、商品、模版、生成结果、置信度与人工修改情况，支持导出为“智能卖点生成.csv”数据文件。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">适用对象：客服人员（消费者咨询时快速获取卖点话术）、营销人员（商品上新、活动推广时批量生成卖点文案）、运营管理人员（维护话术风格模版库，监控生成质量与人工修改情况）。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">二、快速上手：一次完整的卖点生成操作（五步）</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">①选择店铺：在工作台首页下拉框选择目标店铺；②选择商品：按商品名称或类目检索，选中需要生成卖点的商品，系统自动带入商品名称、商品类目等特征信息；③选择话术风格模版：在模版列表中勾选一种模版，每个模版均展示“模版名称、风格说明、模版样例商品”三项信息，请优先选择与目标商品同类目、同风格的模版；④生成卖点：点击“生成”按钮，系统调用大语言模型输出卖点话术初稿，并显示每条卖点的生成置信度；⑤确认交付：置信度高且无敏感内容的卖点可直接采纳交付；置信度低或命中敏感内容提示的卖点须人工编辑修改后再交付。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">账号权限说明：生成权限可执行卖点生成与编辑；管理权限额外可维护话术风格模版库与查看全局数据报表。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">三、功能操作说明</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.1 话术风格模版管理。话术风格模版是卖点生成的风格基准，决定了生成话术的语气、结构与侧重点。模版复用说明：同一话术风格模版可被多家店铺选用，模版样例商品仅用于展示该风格的话术范例，实际生成时系统以所选商品的特征信息为准；若所选模版的样例商品与实际商品在类目、卖点特征上差异很大，生成卖点与商品特征的匹配度会明显下降，此时应更换同类目模版或联系管理员补充模版。模版继承提示：新商品沿用旧模版生成卖点时，系统会提示“风格继承”确认，建议结合商品自身特点核对生成结果；模版内容由管理员定期更新迭代，禁止未经适配直接继承陈旧风格。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.2 卖点生成与置信度。点击“生成”后，系统输出卖点初稿及置信度（取值范围0～1），系统处理方式如下表：</p><div class="materials-table-box"><table class="materials-table"><thead><tr><th>置信度区间</th><th>系统处理方式</th><th>建议操作</th></tr></thead><tbody><tr><td style="white-space:nowrap;">≥0.85</td><td style="white-space:nowrap;">标记为“高置信”</td><td style="white-space:nowrap;">可直接采纳交付</td></tr><tr><td style="white-space:nowrap;">0.75～0.85</td><td style="white-space:nowrap;">标记为“中置信”</td><td style="white-space:nowrap;">建议人工快速核对后采纳</td></tr><tr><td style="white-space:nowrap;">＜0.75</td><td style="white-space:nowrap;">标记为“低置信”并置灰</td><td style="white-space:nowrap;">必须人工编辑修改后方可交付</td></tr></tbody></table></div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.3 敏感内容审核。系统对生成卖点自动执行敏感内容检测，命中以下任一类型的卖点强制进入人工编辑，不可直接交付：①价格承诺类——如“全网最低价”“永久降价”等对价格作确定性承诺的表述；②功效宣称类——如“根治”“治愈”等涉及医疗、保健功效的夸大表述；③绝对化用语——如“第一”“最好”“顶级”等《广告法》限制用语。人工编辑修改后的卖点重新提交检测，通过后方可交付使用。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.4 结果交付与样本沉淀。①最终确认的卖点一键交付至客服话术库或营销物料库；②人工修改前后的卖点对照自动留存：人工修正样本进入优质样例库，用于后续模版更新和模型优化，低质量样本进入错例库；③系统持续记录卖点采纳率、人工修改率等运行指标，供运营管理人员定期复盘。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">3.5 数据导出与字段说明。进入“数据中心”页面可导出“智能卖点生成.csv”数据文件，字段包括：店铺名称（发起卖点生成的所属店铺）、商品名称（本次生成卖点所针对的商品）、商品类目（商品所属类目）、话术风格模版（本次生成所选用的模版名称）、模版样例商品（该模版内置的样例商品名称，仅作风格范例展示）、生成卖点（系统生成的卖点话术内容）、生成置信度（模型对该条卖点的置信度，0～1）、是否人工修改（该条卖点交付前是否经过人工修改）。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">四、常见问题（FAQ）</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">Q1：生成的卖点与商品特征对不上怎么办？请检查所选话术风格模版的样例商品与目标商品是否同类目；若差异较大，更换同类目模版后重新生成，并反馈管理员补充对应类目模版。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">Q2：为什么有的卖点直接置灰无法交付？该条卖点置信度低于0.75，属于低置信结果，必须人工编辑修改后重新提交检测，通过后才能交付。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">Q3：同一模版生成的卖点在不同店铺看起来雷同怎么办？同一话术风格模版被多家店铺共用时，卖点话术易出现同质化。建议各店铺结合自身商品特征与品牌调性进行人工润色，并向管理员申请定制店铺专属模版。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">Q4：生成服务中断怎么办？系统自动切换至人工编写模式并记录故障。恢复后未完成的生成任务可在“任务列表”中重新发起。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">Q5：如何参与产品优化？人工修改的卖点会自动沉淀入库。建议编辑人员在修改时保留AI初稿对照，修正样本越完整，模版与模型的迭代优化效果越好。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">五、附则</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">①本手册适用于AI智能卖点生成产品V2.3及以上版本，界面如有更新以实际版本为准；②使用中如遇本手册未覆盖的问题，请联系乐言科技技术支持或咨询系统管理员；③本产品生成内容须经人工审核确认后方可对外使用，发布方对最终发布内容负责。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">附件二　智能卖点生成数据表（智能卖点生成.csv，第五题）</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">下表为该智能产品的智能卖点生成数据，共36条记录，字段依次为：店铺名称、商品名称、商品类目、话术风格模版、模版样例商品、生成卖点、生成置信度、是否人工修改。（与随卷原始文件《智能卖点生成.csv》一致）</p><div class="materials-table-box"><table class="materials-table"><thead><tr><th>店铺名称</th><th>商品名称</th><th>类目</th><th>话术风格模版</th><th>模版样例商品</th><th>生成卖点</th><th>置信度</th><th>人工修改</th></tr></thead><tbody><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">低脂鸡胸肉即食装</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版E-成分功效型</td><td style="white-space:nowrap;">维C精华液</td><td style="white-space:normal; min-width:15em;">富含高浓度活性成分，温和不刺激，敏感肌也可以放心使用。</td><td style="white-space:nowrap;">0.67</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">星辰家居旗舰店</td><td style="white-space:nowrap;">智能体脂秤</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版D-情感陪伴型</td><td style="white-space:nowrap;">儿童安抚玩偶</td><td style="white-space:normal; min-width:15em;">每一个夜晚，都有它温柔陪伴，给孩子满满的安全感。</td><td style="white-space:nowrap;">0.65</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">儿童保温杯316不锈钢</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.82</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">北欧简约陶瓷马克杯</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.64</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">星辰家居旗舰店</td><td style="white-space:nowrap;">冷萃冻干咖啡条</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版D-情感陪伴型</td><td style="white-space:nowrap;">儿童安抚玩偶</td><td style="white-space:normal; min-width:15em;">每一个夜晚，都有它温柔陪伴，给孩子满满的安全感。</td><td style="white-space:nowrap;">0.67</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">智能体脂秤</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.62</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">户外防泼水双肩包</td><td style="white-space:nowrap;">百货</td><td style="white-space:nowrap;">模版C-限时促销型</td><td style="white-space:nowrap;">夏日防晒冰袖</td><td style="white-space:normal; min-width:15em;">限时直降！今晚24点前下单立减50元，错过再等一年！</td><td style="white-space:nowrap;">0.78</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">婴儿硅胶软勺套装</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.56</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">便携折叠晾衣架</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.59</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">蓝牙跑步运动耳机</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版E-成分功效型</td><td style="white-space:nowrap;">维C精华液</td><td style="white-space:normal; min-width:15em;">富含高浓度活性成分，温和不刺激，敏感肌也可以放心使用。</td><td style="white-space:nowrap;">0.71</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">极客数码专卖店</td><td style="white-space:nowrap;">儿童保温杯316不锈钢</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版D-情感陪伴型</td><td style="white-space:nowrap;">儿童安抚玩偶</td><td style="white-space:normal; min-width:15em;">每一个夜晚，都有它温柔陪伴，给孩子满满的安全感。</td><td style="white-space:nowrap;">0.58</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">迷你破壁料理机</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.64</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">户外防泼水双肩包</td><td style="white-space:nowrap;">百货</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.63</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">低脂鸡胸肉即食装</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.86</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">低脂鸡胸肉即食装</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.59</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">星辰家居旗舰店</td><td style="white-space:nowrap;">儿童防蓝光眼镜</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版D-情感陪伴型</td><td style="white-space:nowrap;">儿童安抚玩偶</td><td style="white-space:normal; min-width:15em;">每一个夜晚，都有它温柔陪伴，给孩子满满的安全感。</td><td style="white-space:nowrap;">0.57</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">极客数码专卖店</td><td style="white-space:nowrap;">无线充电动能手游柄</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版D-情感陪伴型</td><td style="white-space:nowrap;">儿童安抚玩偶</td><td style="white-space:normal; min-width:15em;">每一个夜晚，都有它温柔陪伴，给孩子满满的安全感。</td><td style="white-space:nowrap;">0.65</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">弱碱天然苏打水</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版C-限时促销型</td><td style="white-space:nowrap;">夏日防晒冰袖</td><td style="white-space:normal; min-width:15em;">限时直降！今晚24点前下单立减50元，错过再等一年！</td><td style="white-space:nowrap;">0.81</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">迷你破壁料理机</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版C-限时促销型</td><td style="white-space:nowrap;">夏日防晒冰袖</td><td style="white-space:normal; min-width:15em;">限时直降！今晚24点前下单立减50元，错过再等一年！</td><td style="white-space:nowrap;">0.79</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">全棉抗菌毛巾三件套</td><td style="white-space:nowrap;">百货</td><td style="white-space:nowrap;">模版C-限时促销型</td><td style="white-space:nowrap;">夏日防晒冰袖</td><td style="white-space:normal; min-width:15em;">限时直降！今晚24点前下单立减50元，错过再等一年！</td><td style="white-space:nowrap;">0.71</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">智能体脂秤</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.67</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">北欧简约陶瓷马克杯</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版E-成分功效型</td><td style="white-space:nowrap;">维C精华液</td><td style="white-space:normal; min-width:15em;">富含高浓度活性成分，温和不刺激，敏感肌也可以放心使用。</td><td style="white-space:nowrap;">0.59</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">婴儿硅胶软勺套装</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.89</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">燕麦谷物脆片</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.64</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">便携折叠晾衣架</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版E-成分功效型</td><td style="white-space:nowrap;">维C精华液</td><td style="white-space:normal; min-width:15em;">富含高浓度活性成分，温和不刺激，敏感肌也可以放心使用。</td><td style="white-space:nowrap;">0.82</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">燕麦谷物脆片</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版C-限时促销型</td><td style="white-space:nowrap;">夏日防晒冰袖</td><td style="white-space:normal; min-width:15em;">限时直降！今晚24点前下单立减50元，错过再等一年！</td><td style="white-space:nowrap;">0.78</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">蓝牙跑步运动耳机</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.91</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">全棉抗菌毛巾三件套</td><td style="white-space:nowrap;">百货</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.76</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">儿童防蓝光眼镜</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.8</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">冷萃冻干咖啡条</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.89</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">蓝牙跑步运动耳机</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.73</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">儿童保温杯316不锈钢</td><td style="white-space:nowrap;">母婴</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.69</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">弱碱天然苏打水</td><td style="white-space:nowrap;">食品</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.82</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">便携折叠晾衣架</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.92</td><td style="white-space:nowrap;">是</td></tr><tr><td style="white-space:nowrap;">悦童母婴专营店</td><td style="white-space:nowrap;">北欧简约陶瓷马克杯</td><td style="white-space:nowrap;">家居</td><td style="white-space:nowrap;">模版B-功能卖点型</td><td style="white-space:nowrap;">无线蓝牙耳机</td><td style="white-space:normal; min-width:15em;">采用新一代核心技术，性能提升30%，续航更持久，一机多用更省心。</td><td style="white-space:nowrap;">0.95</td><td style="white-space:nowrap;">否</td></tr><tr><td style="white-space:nowrap;">轻食健康生活馆</td><td style="white-space:nowrap;">无线充电动能手游柄</td><td style="white-space:nowrap;">数码</td><td style="white-space:nowrap;">模版A-场景种草型</td><td style="white-space:nowrap;">女士羊毛大衣</td><td style="white-space:normal; min-width:15em;">下班回家的路上，握着它就像握住了冬日里的一杯暖意，让疲惫瞬间被治愈。</td><td style="white-space:nowrap;">0.55</td><td style="white-space:nowrap;">是</td></tr></tbody></table></div>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：数据分析报告（4分）</strong><br>项目背景：智能卖点生成产品基于<mark class="score-key" title="核心采分点">大语言模型（LLM）</mark>，利用AI文本生成能力进行商品卖点话术的智能生成，帮助客服/营销降低卖点文案编写难度。（1分）<br>分析目的：通过对智能卖点生成数据（附件二）的全面分析，评估卖点生成效果，发现系统存在的问题，为提出优化需求提供数据支撑。<br>分析方法：对数据逐列统计，采用<mark class="score-key" title="核心采分点">数量统计、比率分析和对比分析方法</mark>，重点围绕话术风格模版、店铺、商品与生成卖点之间的对应关系展开。（1分）<br>分析结论：<br>（1）<mark class="score-key" title="核心采分点">话术风格模版使用情况（部分模版被高频复用）</mark>：数据中共有多种话术风格模版，各模版的使用次数分布不均，部分模版被高频复用；（1分）<br>（2）<mark class="score-key" title="核心采分点">同一模版跨店铺复用（导致卖点同质化、缺乏店铺特色）</mark>：同一话术风格模版被用于多家店铺，不同店铺共用同一风格模版生成卖点，导致卖点话术同质化、缺乏店铺特色；<br>（3）<mark class="score-key" title="核心采分点">模版样例商品与实际商品差异大（生成卖点与商品特征匹配度低）</mark>：模版中的商品与实际生成卖点商品差异很大，模版样例商品与实际商品在类目、卖点特征上不一致，生成卖点与商品特征匹配度低；<br>（4）<mark class="score-key" title="核心采分点">卖点话术风格继承问题（卖点表述陈旧、风格不统一）</mark>：新商品直接继承旧模版风格，未结合商品自身特点更新，导致卖点表述陈旧、风格不统一。（1分）<br>初步建议：建立商品与模版的匹配机制，按店铺和商品类目定制风格模版；定期更新迭代模版；对生成卖点开展质量监控，低质量卖点回流优化。<br><strong>（2）：优化需求（4分）</strong><br>优化需求一：<mark class="score-key" title="核心采分点">提升卖点与商品特征的匹配度（品与模版关联匹配，建立商品信息与风格模版的关联，按商品类目定制模版）</mark>（数据和模版层面——建立商品信息与风格模版的关联，按商品类目定制模版）；<br>优化需求二：<mark class="score-key" title="核心采分点">解决卖点话术同质化（店铺差异化卖点：为不同店铺生成差异化卖点，避免同一模版跨店铺直接复用）</mark>（产品和运营层面——为不同店铺生成差异化卖点，避免同一模版跨店铺直接复用）；<br>优化需求三：<mark class="score-key" title="核心采分点">建立话术风格更新与继承管理机制（模版迭代管理：模版定期迭代，禁止未经适配的直接继承）</mark>（模版管理层面——模版定期迭代，禁止未经适配的直接继承）；<br>优化需求四：<mark class="score-key" title="核心采分点">完善系统运行监控（质量监控指标体系：持续记录生成卖点质量、商家采纳率、人工修改率等指标并定期复盘）</mark>（工程和监控层面——持续记录生成卖点质量、商家采纳率、人工修改率等指标并定期复盘）。<br><strong>（3）：智能解决方案（7分）</strong><br>方案目标：提升智能卖点生成产品的生成质量与商品匹配度，重点解决<mark class="score-key" title="核心采分点">解决卖点同质化、模版与商品差异大、风格继承陈旧（模版跨店铺复用导致卖点同质化、样例商品与实际商品差异大导致卖点与商品匹配度低、风格继承导致卖点陈旧过时）</mark>等问题。<br>核心措施（5方面）：<br>（1）数据层——补充采集商品详情、类目属性、历史优质卖点等数据，建立商品特征库；<br>（2）模版层——<mark class="score-key" title="核心采分点">按商品类目和店铺风格定制话术风格模版，模版样例商品与目标商品保持同类目，建立模版版本管理和定期更新机制（建立商品类目/店铺与风格模版的匹配机制，按商品类目定制模版；模版内容定期更新迭代，禁止未经适配直接继承旧模版）</mark><br>（3）模型层——<mark class="score-key" title="核心采分点">基于大语言模型，用店铺和商品维度的优质语料微调生成策略，低质量生成样本回流再训练（将沉淀的优质人工修正样本和低质量样本回流，用于模型再训练/微调，提升生成置信度与卖点质量）</mark><br>（4）人机协同——AI生成卖点初稿，低置信度或涉及价格承诺、功效宣称等敏感内容的卖点转人工编辑确认，人工修正样本沉淀为优质样例；<br>（5）监控闭环——<mark class="score-key" title="核心采分点">持续记录卖点采纳率、人工修改率、商品转化等指标，定期复盘迭代模版和模型（持续记录生成卖点质量、商家采纳率、人工修改率等指标，建立监控看板，定期复盘并反馈优化）</mark><br>分阶段实施计划：<br>第一阶段（1个月）整理卖点生成数据和问题清单，完成商品特征库搭建；<br>第二阶段（2-3个月）<mark class="score-key" title="核心采分点">完成类目定制模版和模型微调优化</mark><br>第三阶段（3-6个月）建立监控看板和样本回流机制，持续迭代。<br>预期效果：<mark class="score-key" title="核心采分点">卖点与商品匹配度提升、话术同质化明显改善、商家采纳率提高（卖点与商品匹配度显著提升，同质化问题明显改善；敏感卖点全部经人工把关合规交付；样本闭环沉淀，模版与模型持续迭代，商家采纳率上升）</mark><br>保障机制：成立由<mark class="score-key" title="核心采分点">人工智能训练师、系统开发人员、客服/营销业务人员（等）</mark>人员组成的优化小组，定期复盘运行数据，更新模版和标注规范，持续跟踪系统指标。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">分析四结论：模版高频复用、同一模版跨店铺复用致同质化、样例商品与实际商品差异大、话术风格继承陈旧。四条优化需求分别落在数据和模版、产品和运营、模版管理、工程和监控四个层面；方案按数据层、模版层、模型层、人机协同、监控闭环五方面展开。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-6" data-qid="prac-03-6">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">人机交互 (20分)</span>
+                <span class="badge badge-num">第 6 题</span>
+              </div>
+              <h3 class="q-title">03题6：智能卖点生成系统人机交互流程设计</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              在电商领域，当消费者进店、进行商品咨询或主动要求推荐时，客服人员通常会介绍商品卖点，以期望能打动消费者促成下单购买。因此，商品卖点的文案编写维护是客服/营销的重要工作之一。传统的卖点文案编写费时费力，且非常考验客服/营销人员的文案编写能力。为帮助降低商品卖点文案编写难度，乐言科技基于大语言模型（LLM）打造了智能卖点生成产品，利用AI文本生成能力进行商品卖点话术的智能生成。<br><br>本项目中，你作为人工智能训练师，将对该智能产品进行分析和优化设计。请阅读附件一《AI智能卖点生成》产品操作手册，智能卖点生成数据见附件二。<br><br>（1）请为该智能产品找到人工与智能交互的最优方式。（10分）<br><br>（2）请为该智能产品设计人工与智能交互的最优流程。（10分）<br><br>本题分值：20分　　考核时间：15分钟　　考核形式：实操<br><br>考核要求：（1）能够通过数据分析，找到单一场景下人工和智能交互的最优方式；（2）能够通过数据分析，设计单一场景下人工和智能交互的最优流程。<br><br><div style="font-size:14px; font-weight:900; color:var(--blue-d); background:#f0f4ff; border-left:4px solid var(--blue); padding:6px 12px; border-radius:4px; margin:10px 0 6px 0;">二、附件</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">本题作答依据附件一《AI智能卖点生成》产品操作手册（全文已随题5列出，见题5附件部分）和附件二数据表（见题5附件部分）；随卷附件三全文如下。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">附件三　智能卖点生成系统人机交互材料手册（第六题）</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（一）最优方式结论</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">最优方式为“人机协同模式”，即 AI 自动生成模式、人工编辑模式、人机协同模式相结合的方式。三种模式按卖点特征与风险等级分工：常规卖点交由 AI 直接生成，敏感与特殊卖点由人工兜底，人工修正结果回流用于持续优化。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（二）三种工作模式的分配方案</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">表1　三种工作模式的适用场景与分配理由</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>模式</th><th>适用场景</th><th>分配理由</th></tr></thead><tbody><tr><td style="white-space:nowrap;">AI 自动生成模式</td><td style="white-space:normal; min-width:15em;">常规商品、模版匹配度高、生成置信度高的卖点话术</td><td style="white-space:normal; min-width:15em;">AI 自动生成效率高、人工成本低，适合标准化、大批量的卖点生成场景，可直接交付使用</td></tr><tr><td style="white-space:nowrap;">人工编辑模式</td><td style="white-space:normal; min-width:15em;">生成置信度低、涉及价格承诺和功效宣称等敏感内容、商品特征特殊（定制类、新品类）的卖点</td><td style="white-space:normal; min-width:15em;">由人工编辑确认最终卖点内容后再交付，保证卖点准确合规；准确率高但处理效率相对较低</td></tr><tr><td style="white-space:nowrap;">人机协同模式</td><td style="white-space:normal; min-width:15em;">AI 能够给出初稿卖点、但内容存在不确定性的场景</td><td style="white-space:normal; min-width:15em;">AI 先生成卖点初稿并给出置信度判断，置信度高的自动通过，置信度低或涉及敏感内容的转人工编辑确认；人工修正后的卖点进入优质样例库，用于后续模版和模型优化</td></tr></tbody></table></div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（三）要点总结</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">采用“人机协同模式”能够兼顾生成效率、卖点准确率与合规性，是智能卖点生成系统的推荐交互方式。</p><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">基于“人机协同模式”，设计“卖点生成请求接收—商品与模版匹配—AI 生成卖点初稿—置信度与合规判断—人工编辑确认—结果交付—样本沉淀回流”的完整人机交互流程。</p><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（二）流程六阶段</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">表2　人机交互流程六阶段</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>阶段</th><th>环节名称</th><th>核心动作</th></tr></thead><tbody><tr><td style="white-space:nowrap;">阶段一</td><td style="white-space:nowrap;">卖点生成请求接收</td><td style="white-space:normal; min-width:15em;">客服/营销人员发起卖点生成请求，系统记录商品信息、店铺信息和生成场景</td></tr><tr><td style="white-space:nowrap;">阶段二</td><td style="white-space:nowrap;">商品与模版匹配</td><td style="white-space:normal; min-width:15em;">系统根据商品类目和店铺特征匹配对应的话术风格模版，并获取商品特征数据</td></tr><tr><td style="white-space:nowrap;">阶段三</td><td style="white-space:nowrap;">AI 生成卖点初稿</td><td style="white-space:normal; min-width:15em;">调用大语言模型基于商品特征和模版生成卖点初稿，并输出置信度</td></tr><tr><td style="white-space:nowrap;">阶段四</td><td style="white-space:nowrap;">置信度与合规判断</td><td style="white-space:normal; min-width:15em;">置信度达到阈值且不含敏感内容的卖点直接通过，置信度低或涉及敏感内容的进入人工编辑</td></tr><tr><td style="white-space:nowrap;">阶段五</td><td style="white-space:nowrap;">人工编辑确认</td><td style="white-space:normal; min-width:15em;">人工编辑人员查看商品信息和 AI 初稿，确认或修改卖点内容后提交</td></tr><tr><td style="white-space:nowrap;">阶段六</td><td style="white-space:nowrap;">结果交付与样本沉淀</td><td style="white-space:normal; min-width:15em;">最终卖点交付使用，人工修正样本进入优质样例库，低质量样本进入错例库，定期用于模版更新和模型再训练</td></tr></tbody></table></div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（三）判断节点设计</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">表3　四个判断节点的规则设计</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>节点</th><th>节点名称</th><th>判断规则</th></tr></thead><tbody><tr><td style="white-space:nowrap;">节点1</td><td style="white-space:nowrap;">置信度阈值判断</td><td style="white-space:normal; min-width:15em;">置信度 ≥ 0.85 直接通过自动交付；置信度 ＜ 0.85 进入人工编辑</td></tr><tr><td style="white-space:nowrap;">节点2</td><td style="white-space:nowrap;">敏感内容判断</td><td style="white-space:normal; min-width:15em;">卖点中出现价格承诺、功效宣称、绝对化用语等敏感内容，强制进入人工编辑</td></tr><tr><td style="white-space:nowrap;">节点3</td><td style="white-space:nowrap;">人工编辑结果判断</td><td style="white-space:normal; min-width:15em;">人工确认后的卖点交付使用，同时将人工修改前后的样本对照沉淀入库</td></tr><tr><td style="white-space:nowrap;">节点4</td><td style="white-space:nowrap;">样本回流判断</td><td style="white-space:normal; min-width:15em;">人工修正样本和低质量样本定期回流，用于模版更新和模型再训练</td></tr></tbody></table></div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（四）异常处理</div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">表4　异常情形与处理方式</div><div class="materials-table-box"><table class="materials-table"><thead><tr><th>异常情形</th><th>处理方式</th></tr></thead><tbody><tr><td style="white-space:nowrap;">AI 生成服务故障</td><td style="white-space:nowrap;">自动转人工编写，并记录故障</td></tr><tr><td style="white-space:nowrap;">生成结果多次不合格</td><td style="white-space:nowrap;">触发人工全量接管</td></tr><tr><td style="white-space:nowrap;">商品信息缺失</td><td style="white-space:nowrap;">提示补充商品资料后再生成</td></tr></tbody></table></div><div style="font-size:13.5px; font-weight:800; color:var(--ink); margin:8px 0 4px 0;">（五）流程优势</div><p style="margin:6px 0; font-size:13px; line-height:1.7; color:var(--ink);">该流程实现常规卖点自动生成、敏感卖点人工兜底、人工样本闭环优化，人机交互兼顾效率、准确率与合规性。</p>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：人工与智能交互的最优方式（10分）</strong><br>最优方式为“<mark class="score-key" title="核心采分点">人机协同模式</mark>”，即AI自动生成模式、人工编辑模式、人机协同模式相结合的方式。（1分）<br>1、AI自动生成模式：适用场景为<mark class="score-key" title="核心采分点">常规商品、置信度高（≥0.85）、不含敏感内容的标准化卖点批量生成</mark>（1分）<br>分配理由：<mark class="score-key" title="核心采分点">生成效率高、成本低，AI自动交付即可满足质量要求</mark>（2分）<br>2、人工编辑模式：适用场景为<mark class="score-key" title="核心采分点">置信度低（＜0.75）或涉及价格承诺、功效宣称、绝对化用语等敏感内容的卖点</mark>（1分）<br>分配理由：<mark class="score-key" title="核心采分点">敏感内容合规风险高、低置信度质量不可靠，必须人工把关</mark>（2分）<br>3、人机协同模式：适用场景为<mark class="score-key" title="核心采分点">中等置信度（0.75～0.85）的卖点，AI生成初稿、人工编辑确认修正</mark>（1分）<br>分配理由：<mark class="score-key" title="核心采分点">兼顾生成效率与内容质量，人工微调成本低</mark>（2分）<br>4、最优方式总结：采用“人机协同模式”能够兼顾生成效率、卖点准确率与合规性，是智能卖点生成系统的推荐交互方式。<br><strong>（2）：人工与智能交互的最优流程（10分）</strong><br>流程概述：基于“人机协同模式”，设计“<mark class="score-key" title="核心采分点">卖点生成请求接收—商品与模版匹配—AI生成卖点初稿—置信度与合规判断—人工编辑确认—结果交付—样本沉淀回流</mark>”的完整人机交互流程。（1分）<br>流程步骤：<br>阶段一——<mark class="score-key" title="核心采分点">卖点生成请求接收：客服/营销人员发起卖点生成请求，系统记录商品信息、店铺信息和生成场景</mark>（1分）<br>阶段二——<mark class="score-key" title="核心采分点">商品与模版匹配：系统根据商品类目和店铺特征匹配对应的话术风格模版，并获取商品特征数据</mark>（1分）<br>阶段三——<mark class="score-key" title="核心采分点">AI生成卖点初稿：调用大语言模型基于商品特征和模版生成卖点初稿，并输出置信度</mark>（1分）<br>阶段四——<mark class="score-key" title="核心采分点">置信度与合规判断：置信度达到阈值且不含敏感内容的卖点直接通过，置信度低或涉及敏感内容的进入人工编辑</mark>（1分）<br>阶段五——<mark class="score-key" title="核心采分点">人工编辑人员查看商品信息和AI初稿，确认或修改卖点内容后提交</mark>（1分）<br>阶段六——<mark class="score-key" title="核心采分点">结果交付与样本沉淀：最终卖点交付使用，人工修正样本进入优质样例库，低质量样本进入错例库，定期用于模版更新和模型再训练</mark>（1分）<br>判断节点设计：<br>节点1　<mark class="score-key" title="核心采分点">置信度阈值判断</mark>（0.5分）：置信度≥0.85直接通过自动交付，置信度＜0.85进入人工编辑；<br>节点2　<mark class="score-key" title="核心采分点">敏感内容检测判断</mark>（0.5分）：卖点中出现价格承诺、功效宣称、绝对化用语等敏感内容，强制进入人工编辑；<br>节点3　<mark class="score-key" title="核心采分点">人工编辑结果判断</mark>（0.5分）：人工确认后的卖点交付使用，同时将人工修改前后的样本对照沉淀入库；<br>节点4　<mark class="score-key" title="核心采分点">样本回流更新判断</mark>（0.5分）：人工修正样本和低质量样本定期回流，用于模版更新和模型再训练。<br>异常处理：<mark class="score-key" title="核心采分点">生成失败或置信度过低时自动转人工编写；命中敏感内容立即拦截并转人工处理；系统故障时降级为纯人工模式并记录未完成任务，恢复后重新生成，保证业务不中断</mark>（1分）<br>流程优势：该流程实现常规卖点自动生成、敏感卖点人工兜底、人工样本闭环优化，人机交互兼顾效率、准确率与合规性。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">最优方式＝人机协同模式。分流看置信度：≥0.85 自动交付；0.75～0.85 人机协同；＜0.75 或命中价格承诺、功效宣称、绝对化用语转人工。流程七环节：请求接收→商品与模版匹配→AI 生成初稿→置信度与合规判断→人工编辑确认→结果交付→样本沉淀回流；四个判断节点、异常处理别漏。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-7" data-qid="prac-03-7">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">培训考核 (3分)</span>
+                <span class="badge badge-num">第 7 题</span>
+              </div>
+              <h3 class="q-title">03题7：数据标注培训</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              随着人工智能技术在政务服务、自然语言处理和电商等领域的应用不断深入，数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成智能问答、命名实体识别和智能卖点生成项目中的数据采集、清洗、标注和测试工作，也需要能够面向五级/初级工、四级/中级工开展基础培训和工作指导。<br><br>（1）请提供数据标注培训讲义的目录，并对培训内容做简单描述。（1分）<br><br>（2）请针对数据标注培训，从下述方法中选择合适的培训方法，并简述原因：讲授法、演示法、研讨法、视听法、角色扮演法。（2分）<br><br>本题分值：3分　　考核时间：10分钟　　考核形式：实操<br><br>考核要求：（1）能够编写初级培训讲义；（2）能够对五级/初级工、四级/中级工开展知识和技术培训。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：培训讲义目录及内容描述（1分）</strong><br>①数据标注概述与业务背景——介绍<mark class="score-key" title="核心采分点">数据标注工作（命名实体识别数据标注/命名实体识别任务）</mark>（1分）的业务价值，以及BIO标注在模型训练中的作用；<br>②标注规范与标签定义——讲解CONT、EDU、LOC、NAME、ORG、PRO、RACE、TITLE八类实体的定义和BIO标注格式；<br>③标注工具使用与操作演示——讲解标注工具的安装、打开数据、逐字符标注和导出流程；<br>④常见问题与争议样本处理——讲解边界不清、实体归属歧义等常见问题的处理方法和争议样本上报流程；<br>⑤标注质检与考核——讲解抽检规则、一致性要求和标注质量考核标准。<br><strong>（2）：培训方法选择（2分）</strong><br>选择：讲授法＋演示法（可辅以研讨法）。<br>讲授法解决<mark class="score-key" title="核心采分点">懂不懂标准（标签定义、BIO格式等规范类知识的系统讲授问题，帮助初中级人员快速建立统一认知）</mark>（1分）：标签定义、BIO格式等规范类知识适合系统讲授，帮助初中级人员快速建立统一认知；<br>演示法解决<mark class="score-key" title="核心采分点">能不能做对（标注工具操作和典型例句标注过程的现场演示问题，直观展示标准做法，学员易于模仿上手）</mark>（1分）：现场演示标注工具操作和典型例句标注过程，直观展示标准做法，学员易于模仿上手；若再辅以研讨法，可组织学员讨论争议样本，统一标注口径。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">讲义围绕命名实体识别数据标注展开。讲授法解决「懂不懂标准」，演示法解决「能不能做对」，可辅以研讨法统一争议样本口径。</div>
+          </div>
+        </article>
+        
+        <article class="question-card" id="prac-03-8" data-qid="prac-03-8">
+          <header class="q-header">
+            <div class="q-title-group">
+              <div class="q-badges">
+                <span class="badge badge-paper">03卷</span>
+                <span class="badge badge-type">指导考核 (2分)</span>
+                <span class="badge badge-num">第 8 题</span>
+              </div>
+              <h3 class="q-title">03题8：数据采集和处理指导</h3>
+            </div>
+            <div class="q-actions">
+              <a href="/games/ai-trainer/#cloze" target="_blank" class="btn btn-sm btn-practice" title="前往连击游戏自测本题">
+                🎯 挖空自测
+              </a>
+            </div>
+          </header>
+
+          <details class="q-prompt-box">
+            <summary class="prompt-toggle">
+              <span>📋 考核背景与考题指令 (点击展开/折叠)</span>
+              <span class="arrow">▼</span>
+            </summary>
+            <div class="prompt-content">
+              随着人工智能技术在政务服务、自然语言处理和电商等领域的应用不断深入，数据标注、模型训练和系统质检等工作逐渐成为人工智能训练师的重要工作内容。作为一名三级/高级人工智能训练师，既需要能够完成智能问答、命名实体识别和智能卖点生成项目中的数据采集、清洗、标注和测试工作，也需要能够面向五级/初级工、四级/中级工开展基础培训和工作指导。<br><br>（1）请简述数据采集和处理的常见问题的解决方案内容（至少提供教材中五个中的一个部分名称及简要说明）。（1分）<br><br>（2）请简述数据标注流程中可指导的常见问题指导方向（至少提供教材中七个中的一个部分名称及简要说明）。（1分）<br><br>本题分值：2分　　考核时间：10分钟　　考核形式：实操<br><br>考核要求：（1）能够指导五级/初级工、四级/中级工解决数据采集、处理问题；（2）能够指导五级/初级工、四级/中级工解决数据标注问题。<br><br>
+            </div>
+          </details>
+
+          <div class="answer-section">
+            <div class="section-tag">💡 标准答案与采分要点拆解（答题卡逐空对照）</div>
+            <div class="answer-body">
+              <strong>（1）：数据采集、处理问题指导（1分）</strong><br>选择教材中“数据清洗”部分：指导初中级人员对采集到的数据检查完整性、去除重复数据、处理缺失值和异常值、统一编码与格式后再入库；以本项目为例，对采集的政务问答和NER文本数据，先查内容是否<mark class="score-key" title="核心采分点">完整（有无缺失、遗漏）</mark>（0.5分），再查是否<mark class="score-key" title="核心采分点">重复（存在重复样本）</mark>（0.5分）、格式是否统一，问题数据删除或单独记录，质量一般的数据保留并标记待复核。<br><strong>（2）：数据标注问题指导（1分）</strong><br>选择教材中“标注规范执行与一致性”指导方向：指导标注人员严格按标签定义统一标注口径，对边界不清、归属歧义的样本不凭猜测标注，先标记为争议样本提交组长复核；定期开展标注一致性<mark class="score-key" title="核心采分点">抽检评估（一致性检查/抽查考核）</mark>（0.5分），对不一致的人员回炉培训并更新<mark class="score-key" title="核心采分点">标注规范（标注口径/标注手册）</mark>（0.5分）。<br>
+            </div>
+          </div>
+
+          <div class="takeaway-box">
+            <div class="takeaway-head">
+              <span class="takeaway-icon">⚡</span>
+              <span class="takeaway-title">考场高分口诀与避坑指南</span>
+            </div>
+            <div class="takeaway-text">数据清洗指导：先查内容是否完整，再查是否重复。标注指导：定期开展一致性抽检评估，不一致者回炉培训并更新标注规范。</div>
+          </div>
+        </article>
+        
+          </div>
+        </section>
+        
 
     </main>
   </div>
@@ -4056,14 +4423,15 @@ print(&quot;F1分数：&quot;, f1)</code></pre>
     const chkAutoNext = document.getElementById('chkAutoNext');
 
     // Build playlist from question cards
-    document.querySelectorAll('.question-card').forEach((card, idx) => {
+    document.querySelectorAll('.question-card').forEach((card) => {
       const qid = card.dataset.qid;
       const slug = card.dataset.slug;
+      if (!slug) return; // 03 卷暂无音频，不进播放列表（否则自动连播会请求不存在的 mp3）
       const title = card.querySelector('.q-title')?.innerText || qid;
       const paperBadge = card.querySelector('.badge-paper')?.innerText || '';
       const typeBadge = card.querySelector('.badge-type')?.innerText || '';
       playlist.push({
-        index: idx,
+        index: playlist.length,
         qid: qid,
         slug: slug,
         title: title,

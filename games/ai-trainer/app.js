@@ -1,6 +1,6 @@
 /**
  * 人工智能训练师（三级／高级）全真模拟考试 · 刷题与实操采分点挖空连击
- * 严格对齐原卷 24 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8）及理论 03 / 09 / 01&07 三套卷 400 题（含全解析）
+ * 严格对齐原卷 32 道实操大题（01卷 1~8、09卷 1~8、07卷 1~8、03卷 1~8）及理论 03 / 09 / 01&07 三套卷 400 题（含全解析）
  * 支持全本地记忆功能：刷新页面/切换标签页无缝回到上次答题位置，完整记录答题历史与错题本
  * 参考 games/cloze-combo 交互架构与视觉手感
  */
@@ -156,7 +156,7 @@
     mode: initialMode, // 'cloze' | 'theory' | 'memorize'
     dirViewMode: initialMode === 'theory' ? 'theory' : 'outline',
     cloze: {
-      filter: localStorage.getItem('aiTrainer_clozeFilter') || 'all', // 'all' | '01' | '09' | '07' | 'mistakes'
+      filter: localStorage.getItem('aiTrainer_clozeFilter') || 'all', // 'all' | '01' | '09' | '07' | '03' | 'mistakes'
       list: [],
       index: 0,
       activeBlank: 0,
@@ -525,10 +525,11 @@
 
     if (state.mode === 'cloze' || state.mode === 'memorize') {
       chapters = state.bank.practicalChapters || [
-        { id: 'all', name: '全部实操考卷 (24 大题)' },
+        { id: 'all', name: '全部实操考卷 (32 大题)' },
         { id: '01', name: '01 卷 · 自动化营销模型 (8 题)' },
         { id: '09', name: '09 卷 · 验证码识别模型 (8 题)' },
-        { id: '07', name: '07 卷 · 吸烟检测模型 (8 题)' }
+        { id: '07', name: '07 卷 · 吸烟检测模型 (8 题)' },
+        { id: '03', name: '03 卷 · 政务问答／NER／智能卖点 (8 题)' }
       ];
       currentFilter = state.cloze.filter;
     } else {
@@ -588,7 +589,7 @@
       state.cloze.mistakeSession = {};
       state.cloze.list = state.bank.practical.filter(it => state.stats.mistakeItems.has(it.id));
       if (state.cloze.list.length === 0) {
-        showToast('暂无实操错题！已切回全部 24 大题');
+        showToast(`暂无实操错题！已切回全部 ${state.bank.practical.length} 大题`);
         state.cloze.filter = 'all';
         state.cloze.list = state.bank.practical;
       }
@@ -903,8 +904,8 @@
         dirModalTitle.textContent = `理论知识考核 ${state.bank.theory.length} 题答题卡与做题历史`;
         dirModalSubtitle.textContent = `${papers.map(p => `${p.name} ${p.count} 题`).join(' · ')}，按卷分章查看掌握与错题情况，点击直接跳转答题`;
       } else {
-        dirModalTitle.textContent = '实操技能考核 24 大题大纲目录（01 & 09 & 07卷）';
-        dirModalSubtitle.textContent = '收录全部 24 道实操大题，点击任意题目卡片直接开启挖空闯关';
+        dirModalTitle.textContent = `实操技能考核 ${state.bank.practical.length} 大题大纲目录（01 & 09 & 07 & 03 卷）`;
+        dirModalSubtitle.textContent = `收录全部 ${state.bank.practical.length} 道实操大题，点击任意题目卡片直接开启挖空闯关`;
       }
     }
 
@@ -966,7 +967,7 @@
         <div class="dir-group-title" style="justify-content:space-between;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span>📋</span>
-            <span>考纲 01&09&07 连续 24 大题完整对照清单（共 24 题）</span>
+            <span>考纲 01&09&07&03 连续 ${state.bank.practical.length} 大题完整对照清单（共 ${state.bank.practical.length} 题）</span>
           </div>
           <span style="font-size:12px; color:var(--ink-2); font-weight:700;">对齐考试标准顺序</span>
         </div>`;
@@ -984,7 +985,8 @@
       const papers = [
         { key: '01', title: '01 卷 · 自动化营销模型业务（共 8 大题）' },
         { key: '09', title: '09 卷 · 验证码识别模型与 RPA（共 8 大题）' },
-        { key: '07', title: '07 卷 · 自然场景吸烟检测模型（共 8 大题）' }
+        { key: '07', title: '07 卷 · 自然场景吸烟检测模型（共 8 大题）' },
+        { key: '03', title: '03 卷 · 政务智能问答／命名实体识别／智能卖点生成（共 8 大题）' }
       ];
 
       papers.forEach(p => {
