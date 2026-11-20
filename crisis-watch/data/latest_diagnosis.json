@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-19 02:42",
- "drawdown": -0.0628,
+ "generated": "2026-11-20 02:27",
+ "drawdown": -0.0811,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
@@ -10,8 +10,8 @@
   "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -6.3%(高点 2026-10-06)",
+  "SPY 距高点回撤 -8.1%(高点 2026-10-06)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[financial +1] 资金避险涌入国债(TLT +4.2%)"
+  "[financial +1] 资金避险涌入国债(TLT +4.4%)"
  ]
 }
