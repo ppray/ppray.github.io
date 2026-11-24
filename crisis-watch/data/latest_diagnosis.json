@@ -1,20 +1,18 @@
 {
- "generated": "2026-11-21 02:39",
- "drawdown": -0.1146,
+ "generated": "2026-11-24 05:23",
+ "drawdown": -0.0729,
  "diagnosis": "generic",
  "confidence": 0.0,
  "scores": {
   "financial": 0.29,
   "rates_debt": 0.0,
-  "services": 0.17,
-  "inflation_energy": 0.25
+  "services": 0.0,
+  "inflation_energy": 0.0
  },
  "evidence": [
-  "SPY 距高点回撤 -11.5%(高点 2026-10-06)",
+  "SPY 距高点回撤 -7.3%(高点 2026-10-06)",
   "回撤未达危机级别(-12%),以下信号仅作日常监测参考",
-  "[financial +1] 信用利差走阔(HYG-IEF -3.9%)",
-  "[financial +1] 资金避险涌入国债(TLT +5.8%)",
-  "[services +1] 可选消费显著弱于必需(XLY-XLP -9.9%)",
-  "[inflation_energy +1] 能源板块逆势跑赢(XLE相对 +6.4%)"
+  "[financial +1] 信用利差走阔(HYG-IEF -3.6%)",
+  "[financial +1] 资金避险涌入国债(TLT +6.2%)"
  ]
 }
